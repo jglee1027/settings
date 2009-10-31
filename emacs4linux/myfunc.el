@@ -1,5 +1,5 @@
 (defun j-add-new-line-to-eof()
-  "¹öÆÛ ¸¶Áö¸·¿¡ new lineÀÌ ¾øÀ¸¸é Ãß°¡ÇÑ´Ù."
+  "ë²„í¼ ë§ˆì§€ë§‰ì— new lineì´ ì—†ìœ¼ë©´ ì¶”ê°€í•œë‹¤."
   (interactive)
   (save-excursion
 	(goto-char (point-max))
@@ -7,13 +7,13 @@
 		  (insert "\n"))))
 
 (defun j-is-already-exist-if-def-pragma-once()
-  "#pragma once°¡ ÀÌ¹Ì #ifdef OS_WIN ~ #endif¾È¿¡ ÀÖ´ÂÁö Ã¼Å©ÇÑ´Ù."
+  "#pragma onceê°€ ì´ë¯¸ #ifdef OS_WIN ~ #endifì•ˆì— ìˆëŠ”ì§€ ì²´í¬í•œë‹¤."
   (save-excursion
 	(c-up-conditional 1)
 	(looking-at "#[ \t\n]*ifdef[ \t\n]*OS_WIN")))
 
 (defun j-add-if-def-pragma-once()
-  "#pragma once¸¦ #ifdef OS_WIN ~ #endif¾È¿¡ ÀÖµµ·Ï ¼öÁ¤ÇÑ´Ù."
+  "#pragma onceë¥¼ #ifdef OS_WIN ~ #endifì•ˆì— ìˆë„ë¡ ìˆ˜ì •í•œë‹¤."
   (interactive)
   (save-excursion
 	(goto-char (point-min))
@@ -23,7 +23,7 @@
 	  (insert "#ifdef OS_WIN\n#\tpragma once\n#endif"))))
 
 (defun j-get-header-define-string()
-  "header define ¹®ÀÚ¿­À» »ı¼ºÇÏ¿© ¸®ÅÏÇÑ´Ù."
+  "header define ë¬¸ìì—´ì„ ìƒì„±í•˜ì—¬ ë¦¬í„´í•œë‹¤."
   (interactive)
   (let (define-string)
 	(setq define-string (buffer-file-name (current-buffer)))
@@ -34,7 +34,7 @@
 	(setq define-string (replace-regexp-in-string "[/\\.]" "_" define-string))))
 
 (defun j-is-already-exist-if-def-header(header-define-name)
-  "#define header-define-name ÀÌ Á¸ÀçÇÏ´ÂÁö Ã¼Å©ÇÑ´Ù. Á¸ÀçÇÏ¸é t ±×·¸Áö ¾ÊÀ¸¸é nil¸®ÅÏÇÑ´Ù."
+  "#define header-define-name ì´ ì¡´ì¬í•˜ëŠ”ì§€ ì²´í¬í•œë‹¤. ì¡´ì¬í•˜ë©´ t ê·¸ë ‡ì§€ ì•Šìœ¼ë©´ nilë¦¬í„´í•œë‹¤."
   (interactive)
   (save-excursion
 	(let (define-header-name-regexp)
@@ -43,7 +43,7 @@
 	  (re-search-forward  define-header-name-regexp nil t))))
 
 (defun j-add-ifndef-header-define-name()
-  "#ifndef header_file_h #define header_file_h ~ #endif°¡ ¾øÀ¸¸é Ãß°¡ÇÑ´Ù."
+  "#ifndef header_file_h #define header_file_h ~ #endifê°€ ì—†ìœ¼ë©´ ì¶”ê°€í•œë‹¤."
   (interactive)
   (save-excursion
 	(let (header-define-name new-line count-of-new-line) 
@@ -58,7 +58,7 @@
 			  (setq count-of-new-line (+ 1 count-of-new-line))
 			  (forward-char -1))
 			(cond ((>= count-of-new-line 2)
-				   ;; new lineÀÌ ÇÊ¿ä¾ø´Â °æ¿ì »èÁ¦ÇÑ´Ù.
+				   ;; new lineì´ í•„ìš”ì—†ëŠ” ê²½ìš° ì‚­ì œí•œë‹¤.
 				   (delete-char (- count-of-new-line 2))
 				   (setq new-line ""))
 				  ((equal count-of-new-line 1)
@@ -70,17 +70,17 @@
 			(insert (format "#endif // %s\n" header-define-name)))))))
 
 (defun j-modify-header-file-for-g++()
-  "g++ warningÁ¦°ÅÇÏ±â À§ÇØ ¸¶Áö¸·ÁÙ¿¡ new line, #ifndef ~, #ifdef OS_WIN #pragma once ~À» header file¿¡ Ãß°¡ÇÑ´Ù."
+  "g++ warningì œê±°í•˜ê¸° ìœ„í•´ ë§ˆì§€ë§‰ì¤„ì— new line, #ifndef ~, #ifdef OS_WIN #pragma once ~ì„ header fileì— ì¶”ê°€í•œë‹¤."
   (interactive)
   (j-add-ifndef-header-define-name)
   (j-add-if-def-pragma-once))
 
 (defun j-get-makefile-dir()
-  "ÇöÀç ¹öÆÛÀÇ À§Ä¡¸¦ ±âÁØÀ¸·Î MakefileÀÌ Á¸ÀçÇÏ´ÂÁö Á¸ÀçÇÏÁö ¾ÊÀ¸¸é »óÀ§ µğ·ºÅä¸®¿¡¼­ Á¶»çÇÏ¿© root±îÁö Á¶»çÇÑ´Ù. MakefileÀ» ¹ß°ßÇÏ¸é ¹ß°ßÇÑ µğ·ºÅä¸®¸¦ ¸®ÅÏ ±×·¸Áö ¾ÊÀ¸¸é nil¸®ÅÏÇÑ´Ù."
+  "í˜„ì¬ ë²„í¼ì˜ ìœ„ì¹˜ë¥¼ ê¸°ì¤€ìœ¼ë¡œ Makefileì´ ì¡´ì¬í•˜ëŠ”ì§€ ì¡´ì¬í•˜ì§€ ì•Šìœ¼ë©´ ìƒìœ„ ë””ë ‰í† ë¦¬ì—ì„œ ì¡°ì‚¬í•˜ì—¬ rootê¹Œì§€ ì¡°ì‚¬í•œë‹¤. Makefileì„ ë°œê²¬í•˜ë©´ ë°œê²¬í•œ ë””ë ‰í† ë¦¬ë¥¼ ë¦¬í„´ ê·¸ë ‡ì§€ ì•Šìœ¼ë©´ nilë¦¬í„´í•œë‹¤."
   (interactive)
   (let (makefile-dir point-of-directory)
 	(setq makefile-dir (buffer-file-name))
-	;; filebuffer°¡ ¾Æ´Ñ°æ¿ì Ã³¸®
+	;; filebufferê°€ ì•„ë‹Œê²½ìš° ì²˜ë¦¬
 	(if (equal makefile-dir nil)
 		(setq makefile-dir ""))
 	(while (and (not (equal makefile-dir ""))
@@ -91,7 +91,7 @@
 	  makefile-dir)))
 
 (defun j-make ()
-  "MakefileÆÄÀÏ À§Ä¡¸¦ ÀÚµ¿À¸·Î Ã£¾Æ ÄÄÆÄÀÏ ¸í·É ¹®ÀÚ¿­À» ÀÚµ¿À¸·Î »ı¼ºÇÑ´Ù.¿¹) make -C <DIR>"
+  "MakefileíŒŒì¼ ìœ„ì¹˜ë¥¼ ìë™ìœ¼ë¡œ ì°¾ì•„ ì»´íŒŒì¼ ëª…ë ¹ ë¬¸ìì—´ì„ ìë™ìœ¼ë¡œ ìƒì„±í•œë‹¤.ì˜ˆ) make -C <DIR>"
   (interactive)
   (let (compile-string makefile-dir)
 	(setq makefile-dir (j-get-makefile-dir))

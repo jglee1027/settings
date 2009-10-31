@@ -5,7 +5,7 @@
 (when enable-multibyte-characters
   (set-language-environment "Korean")
  
-(setq-default file-name-coding-system 'euc-kr)
+(setq-default file-name-coding-system 'utf-8)
 
 ;; the following setting is unnecessary from 20.5 >
 
@@ -15,9 +15,9 @@
 (setq input-method-verbose-flag nil
       input-method-highlight-flag nil)
  
-(prefer-coding-system 'euc-kr)
-(set-default-coding-systems 'euc-kr)
-;;(setq default-process-coding-system '(euc-kr . euc-kr))
+(prefer-coding-system 'utf-8)
+(set-default-coding-systems 'utf-8)
+;;(setq default-process-coding-system '(utf-8 . utf-8))
 (when window-system
   (global-set-key "\C-\\" 'undefined))
   (add-hook 'quail-inactivate-hook 'delete-quail-completions)
@@ -27,14 +27,14 @@
 
 (unless window-system
   (menu-bar-mode -1)
-  (set-keyboard-coding-system 'euc-kr)
-  (set-terminal-coding-system 'euc-kr)
+  (set-keyboard-coding-system 'utf-8)
+  (set-terminal-coding-system 'utf-8)
   (define-key encoded-kbd-mode-map [27] nil))
 
 (set-selection-coding-system 'ctext)
 
 ;; Hangul Mail setting
-(setq-default sendmail-coding-system 'euc-kr)
+(setq-default sendmail-coding-system 'utf-8)
 
 ;; turn off C-h during input
 (eval-after-load "quail"
@@ -337,25 +337,25 @@
 (when enable-multibyte-characters
   (set-language-environment "Korean")
  
-  (setq-default file-name-coding-system 'euc-kr)
+  (setq-default file-name-coding-system 'utf-8)
   (setq default-korean-keyboard "3")
   ;; (setq input-method-verbose-flag nil
   ;;       input-method-highlight-flag nil)
-  (prefer-coding-system 'euc-kr)
-  (set-default-coding-systems 'euc-kr)
+  (prefer-coding-system 'utf-8)
+  (set-default-coding-systems 'utf-8)
 
-  (set-keyboard-coding-system 'euc-kr)
-  (set-terminal-coding-system 'euc-kr)
+  (set-keyboard-coding-system 'utf-8)
+  (set-terminal-coding-system 'utf-8)
   (define-key encoded-kbd-mode-map [27] nil)
  
 ;  (set-selection-coding-system 'compound-text-with-extensions)
 (set-selection-coding-system
- (cond ((eq system-type 'windows-nt) 'euc-kr-dos)
-       (t 'euc-kr)))
+ (cond ((eq system-type 'windows-nt) 'utf-8-dos)
+       (t 'utf-8)))
 
  
   ;; Hangul Mail setting
-  (setq-default sendmail-coding-system 'euc-kr))
+  (setq-default sendmail-coding-system 'utf-8))
 (unless (or enable-multibyte-characters window-system)
   (standard-display-european t)
   (set-input-mode (car (current-input-mode))
