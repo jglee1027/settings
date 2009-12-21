@@ -498,4 +498,4 @@
 ;; my function
 
 (load-library "~/myfunc.el")
-
+(load-library "~/j-highlight.el")
