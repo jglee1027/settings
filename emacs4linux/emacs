@@ -125,7 +125,8 @@
 ;;; =============================================================
 ;;; Programming Modes
 ;;; =============================================================
-
+(setq auto-mode-alist (append '(("\\.mm$" . objc-mode)
+								("\\.m$" . objc-mode)) auto-mode-alist))
 (c-add-style
  "java"
  '((c-basic-offset . 4)
@@ -378,8 +379,11 @@
 (when window-system 
 	(set-background-color "#e0f0e0")
 	(set-foreground-color "black")
-	(set-face-font 'default (font-spec :family "Andale Mono" :size 12.0))
-	(set-fontset-font nil 'korean-ksc5601 (font-spec :family "NanumGothic_AndaleMono" :registry "unicode-bmp" :lang "ko" :size 12.0)))
+	(set-face-font 'default (font-spec :family "Andale Mono" :size 11.0))
+	(set-fontset-font nil 'korean-ksc5601 (font-spec :family
+										   "NanumGothic_AndaleMono"
+										   :registry "unicode-bmp" :lang
+										   "ko" :size 11.0)))
 
 (set-cursor-color "khaki")
 ;;(set-face-foreground 'region "white")
@@ -401,6 +405,7 @@
 ;; secure on shell mode
 (add-hook 'comint-output-filter-functions 'comint-watch-for-password-prompt)
 
+(setq c-basic-offset 4)
 (setq default-tab-width 4)
 (setq tab-stop-list '(4 8 12 16 20 24 28 32 36 40 44 48 52 56 60 64 68 72 76 80 84 88 92 96 100 104 108 112 116 120))
 (setq column-number-mode t) 
@@ -440,7 +445,10 @@
 	 '(font-lock-preprocessor-face ((t (:foreground "magenta"))))
 	 '(font-lock-string-face ((t (:foreground "red"))))
 	 '(font-lock-variable-name-face ((t (:foreground "gray40"))))
-	 '(isearch ((t (:background "red"))))
+
+	 '(isearch ((t (:background "green" :foreground "black"))))
+	 '(isearch-lazy-highlight-face ((t (:background "yellow" :foreground "black"))))
+
 	 '(jde-java-font-lock-modifier-face ((((class color) (background dark)) (:foreground "yellow"))))
 	 '(jde-java-font-lock-operator-face ((((class color)) (:foreground "yellow"))))
 	 '(jde-java-font-lock-package-face ((((class color) (background dark)) (:foreground "green"))))
@@ -458,8 +466,8 @@
 		'(font-lock-function-name-face ((t (:foreground "cyan"))))
 		'(font-lock-variable-name-face ((t (:foreground "gray"))))
 
-		'(isearch ((t (:background "red"))))
-		'(isearch-lazy-highlight-face ((t (:background "yellow"))))
+		'(isearch ((t (:background "green" :foreground "black"))))
+		'(isearch-lazy-highlight-face ((t (:background "yellow" :foreground "black"))))
 
 		'(cscope-line-face ((((class color) (background dark)) (:foreground "yellow")))))
 )
