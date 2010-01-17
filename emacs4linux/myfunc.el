@@ -85,10 +85,7 @@
 		(setq makefile-dir ""))
 	(while (and (not (equal makefile-dir ""))
 				(not (file-exists-p (concat makefile-dir "/Makefile"))))
-	  (setq makefile-dir (replace-regexp-in-string "/[^/]+$" "" makefile-dir)))
-	(if (equal makefile-dir "")
-		""
-	  makefile-dir)))
+	  (setq makefile-dir (replace-regexp-in-string "/[^/]+$" "" makefile-dir)))))
 
 (defun j-make ()
   "Makefile파일 위치를 자동으로 찾아 컴파일 명령 문자열을 자동으로 생성한다.예) make -C <DIR>"
@@ -108,7 +105,83 @@
    (lambda (&optional arg) "Keyboard macro." (interactive "p") (kmacro-exec-ring-item (quote ("#ifdef OS_UNIX#endif" 0 "%d")) arg)))
 (setq compilation-scroll-output t)
 
+(defun j-get-extensions-to-visit()
+  (let (extension extensions-to-visit)
+	(if (null (buffer-file-name))
+		(setq extensions-to-visit nil)
+	  (progn
+		(setq extension (file-name-extension (buffer-file-name)))
+		(cond ((equal extension "c")
+			   (setq extensions-to-visit '("h")))
+			  ((equal extension "cpp")
+			   (setq extensions-to-visit '("h")))
+			  ((equal extension "m")
+			   (setq extensions-to-visit '("h")))
+			  ((equal extension "mm")
+			   (setq extensions-to-visit '("h")))
+			  ((equal extension "h")
+			   (setq extensions-to-visit '("c" "cpp" "m" "mm")))
+			  (t
+			   (setq extensions-to-visit nil)))))))
+
+(defun j-visit-header-or-source-file()
+  "현재 파일과 연관된 헤더/소스파일을 오픈한다."
+  (interactive)
+  (let (extensions-to-visit extension file-name-to-visit)
+	(setq extensions-to-visit (j-get-extensions-to-visit))
+	(message (catch 'visit-exception
+			   (if (equal extensions-to-visit nil)
+				   (throw 'visit-exception "Not supported"))
+			   (let (file-name)
+				 (setq file-name-to-visit (file-name-sans-extension (buffer-file-name)))
+				 (while (not (equal (setq extension (pop extensions-to-visit)) nil))
+				   (setq file-name (concat file-name-to-visit "." extension))
+				   (if (file-exists-p file-name)
+					   (progn
+							 (find-file file-name)
+							 (throw 'visit-exception file-name))))
+				 (throw 'visit-exception (format "%s was not found." file-name)))))))
+
+(defvar j-grep-find-default-directory nil)
+
+(defun j-grep-find-get-name-options()
+  (let (name-option extension)
+	(if (null (buffer-file-name))
+		(setq name-option "")
+	  (progn
+		(setq extension (file-name-extension (buffer-file-name)))
+		(cond ((or (equal extension "c") (equal extension "cpp") (equal extension "h"))
+			   (setq name-option "-name '*.[cChH]' -o -name '*.[cC][pP][pP]'"))
+			  ((or (equal extension "m") (equal extension "mm"))
+			   (setq name-option "-name '*.[cChH]' -o -name '*.[cC][pP][pP]' -o -name '*.mm' -o name '*.m'"))
+			  ((equal extension "java")
+			   (setq name-option "-name '*.java'"))
+			  (t
+			   (setq name-option "")))))))
+
+(defun j-grep-find-set-default-directory()
+  "grep-find할 디렉토리를 설정한다."
+  (interactive)
+  (if (null j-grep-find-default-directory)
+	  (setq j-grep-find-default-directory default-directory))
+  (setq j-grep-find-default-directory
+		(read-shell-command "directory for j-grep-find: " j-grep-find-default-directory)))
+
+(defun j-grep-find()
+  "현재 파일형식과 현재 커서의 심볼을 가지고 grep-find한다."
+  (interactive)
+  (if (null j-grep-find-default-directory)
+	  (j-grep-find-set-default-directory))
+  (grep-find (read-shell-command "Run find (like this): "
+								 (format "find %s -type f %s | xargs -e grep -nH -e '\\<%s\\>'"
+										 j-grep-find-default-directory
+										 (j-grep-find-get-name-options)
+										 (symbol-at-point)))))
+
 (define-key global-map (kbd "C-c m w") 'ifdef-os-win)
 (define-key global-map (kbd "C-c m u") 'ifdef-os-unix)
 (define-key global-map (kbd "C-c m m") 'j-modify-header-file-for-g++)
 (define-key global-map (kbd "C-c c") 'j-make)
+(define-key global-map (kbd "C-c h") 'j-visit-header-or-source-file)
+(define-key global-map (kbd "C-c g") 'j-grep-find)
+(define-key global-map (kbd "C-c M-g") 'j-grep-find-set-default-directory)
