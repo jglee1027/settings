@@ -151,11 +151,13 @@
 	  (progn
 		(setq extension (file-name-extension (buffer-file-name)))
 		(cond ((or (equal extension "c") (equal extension "cpp") (equal extension "h"))
-			   (setq name-option "-name '*.[cChH]' -o -name '*.[cC][pP][pP]'"))
+			   (setq name-option "\\( -name '*.[cChH]' -o -name '*.[cC][pP][pP]' \\)"))
 			  ((or (equal extension "m") (equal extension "mm"))
-			   (setq name-option "-name '*.[cChH]' -o -name '*.[cC][pP][pP]' -o -name '*.mm' -o name '*.m'"))
+			   (setq name-option "\\( -name '*.[cChH]' -o -name '*.[cC][pP][pP]' -o -name '*.mm' -o name '*.m' \\)"))
 			  ((equal extension "java")
 			   (setq name-option "-name '*.java'"))
+			  ((equal extension "el")
+			   (setq name-option "-name '*.el'"))
 			  (t
 			   (setq name-option "")))))))
 
@@ -173,7 +175,7 @@
   (if (null j-grep-find-default-directory)
 	  (j-grep-find-set-default-directory))
   (grep-find (read-shell-command "Run find (like this): "
-								 (format "find %s -type f %s | xargs -e grep -nH -e '\\<%s\\>'"
+								 (format "find %s -type f %s -print0 | xargs -0 -e grep -nH -e '\\<%s\\>'"
 										 j-grep-find-default-directory
 										 (j-grep-find-get-name-options)
 										 (symbol-at-point)))))
