@@ -78,14 +78,15 @@
 (defun j-get-makefile-dir()
   "현재 버퍼의 위치를 기준으로 Makefile이 존재하는지 존재하지 않으면 상위 디렉토리에서 조사하여 root까지 조사한다. Makefile을 발견하면 발견한 디렉토리를 리턴 그렇지 않으면 nil리턴한다."
   (interactive)
-  (let (makefile-dir point-of-directory)
+  (let (makefile-dir)
 	(setq makefile-dir (buffer-file-name))
 	;; filebuffer가 아닌경우 처리
 	(if (equal makefile-dir nil)
-		(setq makefile-dir ""))
-	(while (and (not (equal makefile-dir ""))
-				(not (file-exists-p (concat makefile-dir "/Makefile"))))
-	  (setq makefile-dir (replace-regexp-in-string "/[^/]+$" "" makefile-dir)))))
+		(setq makefile-dir "")
+	  (while (and (not (equal makefile-dir ""))
+				  (not (file-exists-p (concat makefile-dir "/Makefile"))))
+		(setq makefile-dir (replace-regexp-in-string "/[^/]+$" "" makefile-dir))))
+	(setq makefile-dir makefile-dir)))
 
 (defun j-make ()
   "Makefile파일 위치를 자동으로 찾아 컴파일 명령 문자열을 자동으로 생성한다.예) make -C <DIR>"
@@ -94,7 +95,7 @@
 	(setq makefile-dir (j-get-makefile-dir))
 	(if (equal makefile-dir "")
 		(setq compile-string "make ")
-	  (setq compile-string (format "make -C %s " (j-get-makefile-dir))))
+	  (setq compile-string (format "make -C %s " makefile-dir)))
 	(setq compile-string (read-from-minibuffer "Compile command: " compile-string))
 	(compile compile-string)))
 

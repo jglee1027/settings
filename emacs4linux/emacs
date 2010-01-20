@@ -478,9 +478,9 @@
 (setq semantic-load-turn-everything-on t)
 (require 'semantic-load)
 
-;; ============================================================
-;; IRC
-;; ============================================================
+;;; ============================================================
+;;; IRC
+;;; ============================================================
 
 (custom-set-variables
  ;; auto join
@@ -502,6 +502,18 @@
 	  erc-user-full-name "The little prince"
 	  erc-password nil
 	  erc-prompt-for-password t)
+
+;;; ============================================================
+;;; org-mode
+;;; ============================================================
+(require 'org-install)
+(add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
+(define-key global-map "\C-cl" 'org-store-link)
+(define-key global-map "\C-ca" 'org-agenda)
+(setq org-log-done t)
+(setq org-agenda-files (list "~/org/hobby.org"
+							 "~/org/study.org"
+							 "~/org/work.org"))
 
 ;; my function
 
