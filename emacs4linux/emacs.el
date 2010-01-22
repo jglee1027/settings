@@ -440,10 +440,37 @@
 ;;; org-mode
 ;;; ============================================================
 (require 'org-install)
+
 (add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
+
 (define-key global-map "\C-cl" 'org-store-link)
 (define-key global-map "\C-ca" 'org-agenda)
+
 (setq org-log-done t)
+(setq org-todo-keywords
+	  '((sequence "TODO(t)" "STARTED(s)" "WAITING(w)" "APPT(a)" "|" "DONE(d)" "CANCELED(c)" "POSTPONED(p)")
+		(sequence "TODO(t)" "|" "DONE(d)")
+		(sequence "REPORT(r)" "BUG(b)" "KNOWNCAUSE(k)" "|" "FIXED(f)")))
+
+(setq org-todo-keyword-faces
+	  '(("TODO" . (:foreground "firebrick2" :weight bold))
+		("STARTED" . (:foreground "olivedrab"' :weight bold))
+		("WAITING" . (:foreground "sienna" :weight bold))
+		("APPT" . (:foreground "steelblue" :weight bold))
+		("DONE" . (:foreground "forestgreen" :weight bold))
+		("DEFERRED" . (:foreground "forestgreen" :weight bold))
+		("CANCELED" . shadow)))
+
+(setq org-tag-alist '(("@work" . ?w)
+					  ("@home" . ?h)
+					  ("computer" . ?c)
+					  ("project" . ?p)
+					  ("reading" . ?r)
+					  ("music" . ?m)
+					  ("video" . ?v)))
+
+(setq org-columns-default-format "%7TODO(To Do) %5Effort(Time){:} %6CLOCKSUM{Total} %38ITEM(Details) %TAGS(Context)")
+(setq org-global-properties '(("Effort_All" . "0 0:10 0:20 0:30 1:00 2:00 3:00 4:00 8:00")))
 (setq org-agenda-files (list "~/org/hobby.org"
 							 "~/org/study.org"
 							 "~/org/work.org"))
