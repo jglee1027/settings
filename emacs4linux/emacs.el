@@ -7,8 +7,7 @@
 (define-key global-map (kbd "C-c c") 'compile)
 (define-key global-map (kbd "C-c TAB") 'indent-relative)
 (define-key global-map (kbd "C-x %") 'query-replace-regexp)
-(define-key global-map (kbd "C-x p") 'previous-buffer)
-(define-key global-map (kbd "C-x n") 'next-buffer)
+
 ;; gdb
 (define-key global-map (kbd "<f5>") 'gud-step)
 (define-key global-map (kbd "<f6>") 'gud-next)
@@ -448,9 +447,9 @@
 
 (setq org-log-done t)
 (setq org-todo-keywords
-	  '((sequence "TODO(t)" "STARTED(s)" "WAITING(w)" "APPT(a)" "|" "DONE(d)" "CANCELED(c)" "POSTPONED(p)")
-		(sequence "TODO(t)" "|" "DONE(d)")
-		(sequence "REPORT(r)" "BUG(b)" "KNOWNCAUSE(k)" "|" "FIXED(f)")))
+	  '((sequence "TODO(t)" "STARTED(s!)" "WAITING(w@/!)" "APPT(a@)" "|" "DONE(d!)" "CANCELED(c@)" "POSTPONED(p@)")
+		(sequence "TODO(t)" "|" "DONE(d!)")
+		(sequence "REPORT(r)" "BUG(b!)" "KNOWNCAUSE(k!)" "|" "FIXED(f@)")))
 
 (setq org-todo-keyword-faces
 	  '(("TODO" . (:foreground "firebrick2" :weight bold))
@@ -474,7 +473,7 @@
 (setq org-agenda-files (list "~/org/hobby.org"
 							 "~/org/study.org"
 							 "~/org/work.org"))
-
+(setq org-clock-persist t)
 ;;; =============================================================
 ;;; Misc.
 ;;; =============================================================
