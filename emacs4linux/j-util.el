@@ -173,13 +173,17 @@
 (defun j-grep-find()
   "현재 파일형식과 현재 커서의 심볼을 가지고 grep-find한다."
   (interactive)
-  (if (null j-grep-find-default-directory)
-	  (j-grep-find-set-default-directory))
-  (grep-find (read-shell-command "Run find (like this): "
-								 (format "find %s -type f %s -print0 | xargs -0 -e grep -nH -e '\\<%s\\>'"
-										 j-grep-find-default-directory
-										 (j-grep-find-get-name-options)
-										 (symbol-at-point)))))
+  (let (symbol)
+	(if (null j-grep-find-default-directory)
+		(j-grep-find-set-default-directory))
+	(setq symbol (symbol-at-point))
+	(if (null symbol)
+		(setq symbol (read-from-minibuffer "symbol to find: ")))
+	(grep-find (read-shell-command "Run find (like this): "
+								   (format "find %s -type f %s -print0 | xargs -0 -e grep -nH -e '\\<%s\\>'"
+										   j-grep-find-default-directory
+										   (j-grep-find-get-name-options)
+										   symbol)))))
 
 (define-key global-map (kbd "C-c m w") 'ifdef-os-win)
 (define-key global-map (kbd "C-c m u") 'ifdef-os-unix)
