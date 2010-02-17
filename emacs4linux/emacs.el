@@ -3,15 +3,24 @@
 (require 'ecb)
 (require 'semantic-load)
 
+(ffap-bindings)
+
 (define-key global-map (kbd "C-c RET") 'semantic-complete-analyze-inline)
 (define-key global-map (kbd "C-c c") 'compile)
 (define-key global-map (kbd "C-c TAB") 'indent-relative)
 (define-key global-map (kbd "C-x %") 'query-replace-regexp)
 
 ;; gdb
-(define-key global-map (kbd "<f5>") 'gud-step)
-(define-key global-map (kbd "<f6>") 'gud-next)
-(define-key global-map (kbd "<f7>") 'gud-finish)
+(add-hook 'gdb-mode-hook
+		  (lambda()
+			(global-set-key [f5] 'gud-step)
+			(global-set-key (kbd "C-<f5>") 'gud-stepi)
+			(global-set-key [f6] 'gud-next)
+			(global-set-key (kbd "C-<f6>") 'gud-nexti)
+			(global-set-key [f7] 'gud-finish)
+			(global-set-key [f8] 'gud-cont)
+			(global-set-key (kbd "M-<up>") 'gud-up)
+			(global-set-key (kbd "M-<down>") 'gud-down)))
 
 ;;; =============================================================
 ;;; Syntax Highlighting, Spell Checking, Completion
