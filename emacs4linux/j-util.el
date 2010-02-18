@@ -162,15 +162,19 @@
 			  (t
 			   (setq name-option "")))))))
 
+(if (eq system-type 'gnu/linux)
+	(defalias 'j-read-shell-command 'read-shell-command)
+  (defalias 'j-read-shell-command 'read-from-minibuffer))
+
 (defun j-grep-find-set-default-directory()
   "grep-find할 디렉토리를 설정한다."
   (interactive)
   (if (null j-grep-find-default-directory)
 	  (setq j-grep-find-default-directory default-directory))
   (setq j-grep-find-default-directory
-		(read-shell-command "directory for j-grep-find: " j-grep-find-default-directory)))
+		(j-read-shell-command "directory for j-grep-find: " j-grep-find-default-directory)))
 
-(defun j-grep-find()
+(defun j-grep-find-symbol-at-point()
   "현재 파일형식과 현재 커서의 심볼을 가지고 grep-find한다."
   (interactive)
   (let (symbol)
@@ -179,16 +183,30 @@
 	(setq symbol (symbol-at-point))
 	(if (null symbol)
 		(setq symbol (read-from-minibuffer "symbol to find: ")))
-	(grep-find (read-shell-command "Run find (like this): "
+	(grep-find (j-read-shell-command "Run find (like this): "
 								   (format "find %s -type f %s -print0 | xargs -0 -e grep -nH -e '\\<%s\\>'"
 										   j-grep-find-default-directory
 										   (j-grep-find-get-name-options)
 										   symbol)))))
+
+(defun j-grep-find-file()
+  "파일이름에 해당하는 파일을 찾는다."
+  (interactive)
+  (let (file-name)
+	(if (null j-grep-find-default-directory)
+		(j-grep-find-set-default-directory))
+	(setq file-name (read-from-minibuffer "file-name to find: "))
+	(grep-find (j-read-shell-command "Run find (like this): "
+								   (format "find %s -type f -name '%s'"
+										   j-grep-find-default-directory
+										   file-name)))))
+
 
 (define-key global-map (kbd "C-c m w") 'ifdef-os-win)
 (define-key global-map (kbd "C-c m u") 'ifdef-os-unix)
 (define-key global-map (kbd "C-c m m") 'j-modify-header-file-for-g++)
 (define-key global-map (kbd "C-c c") 'j-make)
 (define-key global-map (kbd "C-c h") 'j-visit-header-or-source-file)
-(define-key global-map (kbd "C-c g") 'j-grep-find)
+(define-key global-map (kbd "C-c g") 'j-grep-find-symbol-at-point)
+(define-key global-map (kbd "C-c f") 'j-grep-find-file)
 (define-key global-map (kbd "C-c M-g") 'j-grep-find-set-default-directory)
