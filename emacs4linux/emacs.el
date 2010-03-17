@@ -1,7 +1,5 @@
-(require 'cl)
-(require 'xcscope)
-(require 'ecb)
-(require 'semantic-load)
+(if (file-exists-p "~/settings/emacs4linux/xcscope.el")
+	(require 'xcscope))
 
 (ffap-bindings)
 
@@ -447,7 +445,6 @@
 ;;; ============================================================
 ;;; org-mode
 ;;; ============================================================
-(require 'org-install)
 
 (add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
 
@@ -483,6 +480,7 @@
 							 "~/org/study.org"
 							 "~/org/work.org"))
 (setq org-clock-persist t)
+
 ;;; =============================================================
 ;;; Misc.
 ;;; =============================================================
