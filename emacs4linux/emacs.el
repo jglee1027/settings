@@ -358,31 +358,40 @@
 ;;; =============================================================
 ;;; Private Settting and Customization
 ;;; =============================================================
+(defvar default-encoding
+  (let (lang)
+  (setq lang (getenv "LANG"))
+  (cond ((not (equal (string-match "UTF-8" lang) nil))
+		 'utf-8)
+		((not (equal (string-match "EUC-KR" lang) nil))
+		 'euc-kr)
+		(t
+		 'utf-8))))
 
 (when enable-multibyte-characters
   (set-language-environment "Korean")
   
-  (setq-default file-name-coding-system 'utf-8)
+  (setq-default file-name-coding-system default-encoding)
   (setq default-korean-keyboard "3")
   ;; (setq input-method-verbose-flag nil
   ;;       input-method-highlight-flag nil)
-  (prefer-coding-system 'utf-8)
-  (set-default-coding-systems 'utf-8)
+  (prefer-coding-system default-encoding)
+  (set-default-coding-systems default-encoding)
 
-  (set-keyboard-coding-system 'utf-8)
-  (set-terminal-coding-system 'utf-8)
+  (set-keyboard-coding-system default-encoding)
+  (set-terminal-coding-system default-encoding)
   (define-key encoded-kbd-mode-map [27] nil)
   
   ;; (set-selection-coding-system 'compound-text-with-extensions)
   (set-selection-coding-system
-   (cond ((eq system-type 'windows-nt) 'utf-8-dos)
+   (cond ((eq system-type 'windows-nt) 'cp949-dos)
 		 (t 'utf-8)))
   
   (unless window-system
 	(menu-bar-mode -1))
   
   ;; Hangul Mail setting
-  (setq-default sendmail-coding-system 'utf-8))
+  (setq-default sendmail-coding-system default-encoding))
 
 (unless (or enable-multibyte-characters window-system)
   (standard-display-european t)

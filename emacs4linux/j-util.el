@@ -162,7 +162,7 @@
 			  (t
 			   (setq name-option "")))))))
 
-(if (eq system-type 'gnu/linux)
+(if (functionp 'read-shell-command)
 	(defalias 'j-read-shell-command 'read-shell-command)
   (defalias 'j-read-shell-command 'read-from-minibuffer))
 
