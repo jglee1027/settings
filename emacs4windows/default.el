@@ -10,12 +10,6 @@
 ;;; General setting
 ;;; =============================================================
 
-;; (load-file "../site-lisp/cedet-1.0pre4/common/cedet.el")
-;; (add-to-list 'load-path "../site-lisp/ecb-2.32")
-(require 'cedet)
-(require 'ecb)
-(require 'xcscope)
- 
 (setq inhibit-default-init t)
 
 ; For automatically expanding tab key input to spaces.
@@ -28,10 +22,14 @@
 ;;; Ruby Language Environment
 ;;; =============================================================
 
-(require 'ruby-mode)
-(require 'rubydb)
-(require 'inf-ruby)
-(require 'ruby-electric)
+(condition-case nil
+	(progn
+	  (require 'ruby-mode)
+	  (require 'rubydb)
+	  (require 'inf-ruby)
+	  (require 'ruby-electric))
+  (error nil))
+	  
 (setq auto-mode-alist (cons '("\.rb$" . ruby-mode) auto-mode-alist))
 
 ;;; =============================================================
@@ -270,14 +268,19 @@
     (define-key quail-translation-keymap (kbd "C-SPC") 'set-mark-command)
     (define-key quail-translation-keymap "\C-?" 'quail-translation-help)))
 (define-key global-map (kbd "C-x RET s") 'decode-coding-region)
-;; (define-key global-map "\C-x\C-g" `goto-line)
 (define-key global-map (kbd "C-c C-s a") 'semantic-complete-analyze-inline)
 (define-key global-map (kbd "C-c RET") 'semantic-ia-complete-symbol-menu)
-(define-key global-map (kbd "<f7>") 'compile)
+(define-key global-map (kbd "C-c c") 'compile)
 (define-key global-map (kbd "C-c TAB") 'indent-relative)
 (define-key global-map (kbd "C-x p") 'previous-buffer)
 (define-key global-map (kbd "C-x n") 'next-buffer)
 
+;; gdb
+(define-key global-map (kbd "<f5>") 'gud-step)
+(define-key global-map (kbd "<f6>") 'gud-next)
+(define-key global-map (kbd "<f7>") 'gud-finish)
+
+(setq compilation-scroll-output t)
 
 ;; C-SPC or C-\ for toggling input method.
 ;; F9 for switching with hanja input, C-F9 for switching with symbol input
