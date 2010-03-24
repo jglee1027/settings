@@ -128,8 +128,8 @@
    '(font-lock-string-face ((t (:foreground "red"))))
    '(font-lock-variable-name-face ((t (:foreground "gray40"))))
 
-   '(isearch ((t (:background "green" :foreground "black"))))
-   '(isearch-lazy-highlight-face ((t (:background "yellow" :foreground "black"))))
+   '(isearch ((t (:background "red" :foreground "black"))))
+   '(isearch-lazy-highlight-face ((t (:background "blue" :foreground "black"))))
 
    '(jde-java-font-lock-modifier-face ((((class color) (background dark)) (:foreground "yellow"))))
    '(jde-java-font-lock-operator-face ((((class color)) (:foreground "yellow"))))
@@ -148,8 +148,8 @@
    '(font-lock-function-name-face ((t (:foreground "cyan"))))
    '(font-lock-variable-name-face ((t (:foreground "gray"))))
 
-   '(isearch ((t (:background "green" :foreground "black"))))
-   '(isearch-lazy-highlight-face ((t (:background "yellow" :foreground "black"))))
+   '(isearch ((t (:background "red" :foreground "black"))))
+   '(isearch-lazy-highlight-face ((t (:background "blue" :foreground "black"))))
 
    '(cscope-line-face ((((class color) (background dark)) (:foreground "yellow")))))
   )
@@ -170,7 +170,7 @@
  "java"
  '((c-basic-offset . 4)
    (c-comment-only-line-offset 0 . 0)
-   ( comment-color "blue" )
+   (comment-color "blue" )
    (c-hanging-comment-starter-p)
    (c-offsets-alist
     (topmost-intro-cont . +)
