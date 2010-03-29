@@ -129,7 +129,7 @@
    '(font-lock-variable-name-face ((t (:foreground "gray40"))))
 
    '(isearch ((t (:background "red" :foreground "black"))))
-   '(isearch-lazy-highlight-face ((t (:background "blue" :foreground "black"))))
+   '(isearch-lazy-highlight-face ((t (:background "gray" :foreground "black"))))
 
    '(jde-java-font-lock-modifier-face ((((class color) (background dark)) (:foreground "yellow"))))
    '(jde-java-font-lock-operator-face ((((class color)) (:foreground "yellow"))))
@@ -149,7 +149,7 @@
    '(font-lock-variable-name-face ((t (:foreground "gray"))))
 
    '(isearch ((t (:background "red" :foreground "black"))))
-   '(isearch-lazy-highlight-face ((t (:background "blue" :foreground "black"))))
+   '(isearch-lazy-highlight-face ((t (:background "gray" :foreground "black"))))
 
    '(cscope-line-face ((((class color) (background dark)) (:foreground "yellow")))))
   )
