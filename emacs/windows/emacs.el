@@ -194,6 +194,7 @@
  '(compilation-warning ((t (:foreground "Orange"))))
  '(cscope-line-face ((nil)))
  '(cscope-line-number-face ((nil)))
+ '(cscope-mouse-face ((t (:inherit highlight))))
  '(cursor ((t (:background "yellow" :foreground "black"))))
  '(ecb-default-highlight-face ((t (:inherit highlight))))
  '(ecb-type-tag-class-face ((t (:foreground "green"))))
