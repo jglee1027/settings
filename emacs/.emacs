@@ -1,3 +1,6 @@
+(iswitchb-mode)
+(which-function-mode)
+
 (add-to-list 'load-path "~/settings/emacs/site-lisp")
 (load-library "j-util")
 (load-library "j-highlight")
