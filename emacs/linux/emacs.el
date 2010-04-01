@@ -1,5 +1,6 @@
-(if (file-exists-p "~/settings/emacs4linux/xcscope.el")
-	(require 'xcscope))
+(condition-case nil
+	(require 'xcscope)
+  (error nil))
 
 (ffap-bindings)
 
@@ -116,6 +117,7 @@
    ;; If you edit it by hand, you could mess it up, so be careful.
    ;; Your init file should contain only one such instance.
    ;; If there is more than one, they won't work right.
+   
    '(cscope-line-face ((((class color) (background dark)) (:foreground "yellow"))))
    '(font-lock-built-in-face ((t (:foreground "magenta"))))
    '(font-lock-comment-delimiter-face ((t (:foreground "SkyBlue4"))))
@@ -131,21 +133,24 @@
    '(isearch ((t (:background "red" :foreground "black"))))
    '(isearch-lazy-highlight-face ((t (:background "gray" :foreground "black"))))
 
-   '(jde-java-font-lock-modifier-face ((((class color) (background dark)) (:foreground "yellow"))))
-   '(jde-java-font-lock-operator-face ((((class color)) (:foreground "yellow"))))
-   '(jde-java-font-lock-package-face ((((class color) (background dark)) (:foreground "green"))))
+   '(jde-java-font-lock-modifier-face ((t (:foreground "yellow"))))
+   '(jde-java-font-lock-operator-face ((t (:foreground "yellow"))))
+   '(jde-java-font-lock-package-face ((t (:foreground "green"))))
    '(lazy-highlight ((t (:background "yellow")))))
   )
 (unless window-system
   (custom-set-faces
-   '(font-lock-built-in-face ((t (:foreground "magenta"))))
+   '(font-lock-builtin-face ((t (:foreground "magenta"))))
    '(font-lock-preprocessor-face ((t (:foreground "magenta"))))
    '(font-lock-comment-face ((t (:foreground "blue"))))
    '(font-lock-comment-delimiter-face ((t (:foreground "blue"))))
-   '(font-lock-string-face ((t (:foreground "red"))))
+   '(font-lock-constant-face ((t (:foreground "green"))))
    '(font-lock-doc-face ((t (:foreground "blue"))))
-   '(font-lock-keyword-face ((t (:foreground "yellow"))))
    '(font-lock-function-name-face ((t (:foreground "cyan"))))
+   '(font-lock-keyword-face ((t (:foreground "yellow"))))
+   '(font-lock-preprocessor-face ((t (:foreground "magenta"))))
+   '(font-lock-string-face ((t (:foreground "red"))))
+   '(font-lock-type-face ((t (:foreground "green"))))
    '(font-lock-variable-name-face ((t (:foreground "gray"))))
 
    '(isearch ((t (:background "red" :foreground "black"))))
@@ -494,5 +499,3 @@
 ;;; Misc.
 ;;; =============================================================
 (autoload 'which "which" nil t)
-(load-library "j-util")
-(load-library "j-highlight")

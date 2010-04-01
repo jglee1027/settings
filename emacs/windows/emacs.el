@@ -175,37 +175,50 @@
  '(show-paren-mode t)
  '(tool-bar-mode nil))
 (custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
  '(default ((t (:inherit nil
-						 :stipple nil
-						 :background "#e0f0e0"
-						 :foreground "Black"
-						 :inverse-video nil
-						 :box nil
-						 :strike-through nil
-						 :overline nil
-						 :underline nil
-						 :slant normal
-						 :weight normal
-						 :height 98
-						 :width normal
-						 :foundry "outline"
-						 :family "³ª´®°íµñ_AndaleMono"))))
- '(cscope-line-face ((((class color) (background dark)) (:foreground "yellow"))))
- '(font-lock-built-in-face ((t (:foreground "magenta"))))
- '(font-lock-comment-delimiter-face ((t (:foreground "blue4"))))
- '(font-lock-comment-face ((t (:foreground "blue4"))))
- '(font-lock-doc-face ((t (:foreground "blue4"))))
- '(font-lock-function-name-face ((t (:foreground "cyan4"))))
- '(font-lock-keyword-face ((t (:foreground "yellow4"))))
+			    :stipple nil
+				:background "#102050"
+				:foreground "white"
+				:inverse-video nil
+				:box nil
+				:strike-through nil
+				:overline nil
+				:underline nil
+				:slant normal
+				:weight normal
+				:height 98
+				:width normal
+				:foundry "outline"
+				:family "³ª´®°íµñ_AndaleMono"))))
+ '(compilation-info ((t (:foreground "DodgerBlue"))))
+ '(compilation-warning ((t (:foreground "Orange"))))
+ '(cscope-line-face ((t (:foreground "yellow"))))
+ '(cursor ((t (:background "yellow" :foreground "black"))))
+ '(ecb-default-highlight-face ((t (:inherit highlight))))
+ '(ecb-type-tag-class-face ((t (:foreground "green"))))
+ '(ecb-type-tag-enum-face ((t (:foreground "green"))))
+ '(ecb-type-tag-group-face ((t (:foreground "green"))))
+ '(ecb-type-tag-interface-face ((t (:foreground "green"))))
+ '(ecb-type-tag-struct-face ((t (:foreground "green"))))
+ '(ecb-type-tag-typedef-face ((t (:foreground "green"))))
+ '(ecb-type-tag-union-face ((t (:foreground "green"))))
+ '(font-lock-builtin-face ((t (:foreground "violet"))))
+ '(font-lock-comment-delimiter-face ((t (:foreground "DodgerBlue"))))
+ '(font-lock-comment-face ((t (:foreground "DodgerBlue"))))
+ '(font-lock-constant-face ((t (:foreground "green"))))
+ '(font-lock-doc-face ((t (:foreground "DodgerBlue"))))
+ '(font-lock-function-name-face ((t (:foreground "cyan"))))
+ '(font-lock-keyword-face ((t (:foreground "yellow"))))
  '(font-lock-preprocessor-face ((t (:foreground "magenta"))))
- '(font-lock-string-face ((t (:foreground "red4"))))
- '(font-lock-variable-name-face ((t (:foreground "gray50"))))
- '(isearch ((t (:background "red"))))
- '(lazy-highlight ((t (:background "gray")))))
+ '(font-lock-string-face ((t (:foreground "red"))))
+ '(font-lock-type-face ((t (:foreground "green"))))
+ '(font-lock-variable-name-face ((t (:foreground "gray70"))))
+ '(fringe ((nil)))
+ '(highlight ((t (:background "SkyBlue" :foreground "black"))))
+ '(isearch ((t (:background "red" :foreground "black"))))
+ '(lazy-highlight ((t (:background "DarkGray" :foreground "black"))))
+ '(mode-line ((t (:background "gray" :foreground "black"))))
+ '(mouse ((t nil))))
 
 (setq erc-server "irc.freenode.net" 
 	  erc-port 6667 
