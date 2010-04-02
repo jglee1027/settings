@@ -26,15 +26,6 @@
 (unless window-system
   (menu-bar-mode nil))
 
-;; grep-find
-(if (and (eq system-type 'windows-nt)
-         (null window-system))
-    (progn
-      (setq-default grep-command "grep -n -e")
-      (setq-default grep-find-command
-                    '("find . -type f -exec grep -n -e {} /dev/null \\;" . 32))
-      (setq-default grep-find-use-xargs nil)))
-
 ;; Language setting
 (defvar default-encoding
   (let (lang)
@@ -42,6 +33,8 @@
 	(cond ((not (equal (string-match "UTF-8" lang) nil))
 		   'utf-8)
 		  ((not (equal (string-match "EUC-KR" lang) nil))
+		   'euc-kr)
+		  ((eq system-type 'windows-nt)
 		   'euc-kr)
 		  (t
 		   'utf-8))))
