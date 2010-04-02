@@ -184,7 +184,7 @@
 	(if (null symbol)
 		(setq symbol (read-from-minibuffer "symbol to find: ")))
 	(grep-find (j-read-shell-command "Run find (like this): "
-								   (format "find %s -type f %s -print0 | xargs -0 grep -nH -e '\\<%s\\>'"
+								   (format "find %s -type f %s -print0 | xargs -0 grep -nH -e \"\\<%s\\>\""
 										   j-grep-find-default-directory
 										   (j-grep-find-get-name-options)
 										   symbol)))))
