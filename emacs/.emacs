@@ -1,6 +1,8 @@
 ;; ======================================================================
 ;; General setting
 ;; ======================================================================
+(add-to-list 'load-path "~/settings/emacs/site-lisp")
+
 ;; tab
 (setq c-basic-offset 4)
 (setq default-tab-width 4)
@@ -308,7 +310,6 @@
 ;; ======================================================================
 ;; Misc. Customization
 ;; ======================================================================
-(add-to-list 'load-path "~/settings/emacs/site-lisp")
 (load-library "j-util")
 (load-library "j-highlight")
 
