@@ -172,7 +172,12 @@
   (if (null j-grep-find-default-directory)
 	  (setq j-grep-find-default-directory default-directory))
   (setq j-grep-find-default-directory
-		(j-read-shell-command "directory for j-grep-find: " j-grep-find-default-directory)))
+		(completing-read "directory for j-grep-find: "
+						 'ffap-read-file-or-url-internal
+						 nil
+						 nil
+						 j-grep-find-default-directory)))
+
 
 (defun j-grep-find-symbol-at-point()
   "현재 파일형식과 현재 커서의 심볼을 가지고 grep-find한다."
