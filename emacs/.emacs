@@ -2,6 +2,12 @@
 ;; General setting
 ;; ======================================================================
 (add-to-list 'load-path "~/settings/emacs/site-lisp")
+(let (old-default-directory)
+  (setq old-default-directory default-directory)
+  (setq default-directory "~/settings/emacs/site-lisp")
+  (if (fboundp 'normal-top-level-add-subdirs-to-load-path)
+    (normal-top-level-add-subdirs-to-load-path))
+  (setq default-directory old-default-directory))
 
 ;; tab
 (setq c-basic-offset 4)
@@ -91,8 +97,8 @@
 ;; tags
 (fset 'find-next-tag "\C-u\256")
 (fset 'find-prev-tag "\C-u-\256")
-(global-set-key "\M-]" 'find-next-tag)
-(global-set-key "\M-[" 'find-prev-tag)
+(global-set-key (kbd "M-8") 'find-next-tag)
+(global-set-key (kbd "M-7") 'find-prev-tag)
 
 ;; gdb
 (add-hook 'gdb-mode-hook
@@ -103,6 +109,7 @@
 			(global-set-key (kbd "C-<f6>") 'gud-nexti)
 			(global-set-key [f7] 'gud-finish)
 			(global-set-key [f8] 'gud-cont)
+			(global-set-key [f12] 'gdb-many-windows)
 			(global-set-key (kbd "M-<up>") 'gud-up)
 			(global-set-key (kbd "M-<down>") 'gud-down)))
 
@@ -134,6 +141,8 @@
 (condition-case nil
 	(progn
 	  (require 'ruby-mode)
+	  (require 'auto-complete)
+	  (global-auto-complete-mode t)
 	  (require 'rubydb)
 	  (require 'inf-ruby)
 	  (require 'ruby-electric))
