@@ -25,6 +25,7 @@
 (ffap-bindings)
 (iswitchb-mode)
 (which-function-mode)
+(windmove-default-keybindings)
 
 (setq semantic-load-turn-everything-on t)
 (setq vc-make-backup-files t)
