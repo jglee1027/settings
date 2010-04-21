@@ -26,6 +26,11 @@
 (iswitchb-mode)
 (which-function-mode)
 (windmove-default-keybindings)
+(condition-case nil
+	(progn
+	  (require 'auto-complete)
+	  (global-auto-complete-mode t))
+  (error nil))
 
 (setq semantic-load-turn-everything-on t)
 (setq vc-make-backup-files t)
@@ -142,8 +147,6 @@
 (condition-case nil
 	(progn
 	  (require 'ruby-mode)
-	  (require 'auto-complete)
-	  (global-auto-complete-mode t)
 	  (require 'rubydb)
 	  (require 'inf-ruby)
 	  (require 'ruby-electric))
