@@ -34,7 +34,8 @@
 	(setq define-string (replace-regexp-in-string "[/\\.]" "_" define-string))))
 
 (defun j-is-already-exist-if-def-header(header-define-name)
-  "#define header-define-name 이 존재하는지 체크한다. 존재하면 t 그렇지 않으면 nil리턴한다."
+  "#define header-define-name 이 존재하는지 체크한다.
+존재하면 t 그렇지 않으면 nil리턴한다."
   (interactive)
   (save-excursion
 	(let (define-header-name-regexp)
@@ -70,13 +71,18 @@
 			(insert (format "#endif // %s\n" header-define-name)))))))
 
 (defun j-modify-header-file-for-g++()
-  "g++ warning제거하기 위해 마지막줄에 new line, #ifndef ~, #ifdef OS_WIN #pragma once ~을 header file에 추가한다."
+  "g++ warning제거하기 위해 마지막줄에
+new line, #ifndef ~, #ifdef OS_WIN #pragma once ~을 header file에 추가한다."
   (interactive)
   (j-add-ifndef-header-define-name)
   (j-add-if-def-pragma-once))
 
 (defun j-get-makefile-dir()
-  "현재 버퍼의 위치를 기준으로 Makefile이 존재하는지 존재하지 않으면 상위 디렉토리에서 조사하여 root까지 조사한다. Makefile을 발견하면 발견한 디렉토리를 리턴 그렇지 않으면 nil리턴한다."
+  "Makefile 존재 디렉토리 알려준다.
+
+현재 버퍼의 위치를 기준으로 Makefile이 존재하는지 체크하여
+존재하면 존재하는 Makefile파일의 디렉토리를 리턴한다.
+존재하지 않으면 계속 상위 디렉토리에서 조사하여 root까지 조사한다."
   (interactive)
   (let (makefile-dir)
 	(setq makefile-dir (buffer-file-name))
@@ -88,15 +94,21 @@
 		(setq makefile-dir (replace-regexp-in-string "/[^/]+$" "" makefile-dir))))
 	(setq makefile-dir makefile-dir)))
 
+(defvar j-make-command-history nil)
 (defun j-make ()
-  "Makefile파일 위치를 자동으로 찾아 컴파일 명령 문자열을 자동으로 생성한다.예) make -C <DIR>"
+  "Makefile파일 위치를 찾아 컴파일 명령 문자열을 자동으로 생성
+예) make -C <DIR>"
   (interactive)
   (let (compile-string makefile-dir)
 	(setq makefile-dir (j-get-makefile-dir))
 	(if (equal makefile-dir "")
 		(setq compile-string "make ")
 	  (setq compile-string (format "make -C %s " makefile-dir)))
-	(setq compile-string (read-from-minibuffer "Compile command: " compile-string))
+	(setq compile-string (read-from-minibuffer "Compile command: "
+											   compile-string
+											   nil
+											   nil
+											   'j-make-command-history))
 	(compile compile-string)))
 
 (put 'narrow-to-region 'disabled nil)
@@ -143,7 +155,38 @@
 							 (throw 'visit-exception file-name))))
 				 (throw 'visit-exception (format "%s was not found." file-name)))))))
 
+(defvar j-grep-find-symbol-history nil)
+(defvar j-grep-find-symbol-command-history nil)
+(defvar j-grep-find-file-history nil)
+(defvar j-grep-find-file-command-history nil)
 (defvar j-grep-find-default-directory nil)
+(defvar j-grep-find-default-directory-history nil)
+(defvar j-grep-find-ignore-path "*.git* *.svn* *.cvs* *~ *#")
+(defvar j-grep-find-ignore-path-history nil)
+
+(defun j-read-shell-command (prompt initial-contents &optional history)
+  (if (functionp 'read-shell-command)
+	  (read-shell-command prompt
+						  initial-contents
+						  history)
+	(read-from-minibuffer prompt
+						  initial-contents
+						  nil
+						  nil
+						  history)))
+
+(defun j-grep-find-get-path-options()
+  (let (path-list path-option)
+	(if (equal j-grep-find-ignore-path "")
+		(setq path-option "")
+	  (progn
+		(setq path-list 
+			  (mapcar (lambda (x) (format "-path '%s'" x))
+					  (split-string j-grep-find-ignore-path)))
+		(setq path-option (pop path-list))
+		(while path-list
+		  (setq path-option (concat path-option " -o " (pop path-list))))
+		(setq path-option (concat "! \\( " path-option " \\)"))))))
 
 (defun j-grep-find-get-name-options()
   (let (name-option extension)
@@ -159,12 +202,16 @@
 			   (setq name-option "-name '*.java'"))
 			  ((equal extension "el")
 			   (setq name-option "-name '*.el'"))
+			  ((equal extension "rb")
+			   (setq name-option "-name '*.rb'"))
 			  (t
 			   (setq name-option "")))))))
 
-(if (functionp 'read-shell-command)
-	(defalias 'j-read-shell-command 'read-shell-command)
-  (defalias 'j-read-shell-command 'read-from-minibuffer))
+(defun j-grep-find-set-ignore-path()
+  (interactive)
+  (setq j-grep-find-ignore-path
+		(read-from-minibuffer "ignore path for j-grep-find: "
+							  j-grep-find-ignore-path)))
 
 (defun j-grep-find-set-default-directory()
   "grep-find할 디렉토리를 설정한다."
@@ -176,8 +223,8 @@
 						 'ffap-read-file-or-url-internal
 						 nil
 						 nil
-						 j-grep-find-default-directory)))
-
+						 j-grep-find-default-directory
+						 'j-grep-find-default-directory-history)))
 
 (defun j-grep-find-symbol-at-point()
   "현재 파일형식과 현재 커서의 심볼을 가지고 grep-find한다."
@@ -188,12 +235,18 @@
 	(setq symbol (symbol-at-point))
 	(if (null symbol)
 		(setq symbol ""))
-	(setq symbol (read-from-minibuffer "symbol to find: " (format "%s" symbol)))
+	(setq symbol (read-from-minibuffer "symbol to find: "
+									   (format "%s" symbol)
+									   nil
+									   nil
+									   'j-grep-find-symbol-history))
 	(grep-find (j-read-shell-command "Run find (like this): "
-								   (format "find %s -type f %s -print0 | xargs -0 grep -nH -e \"\\<%s\\>\""
-										   j-grep-find-default-directory
-										   (j-grep-find-get-name-options)
-										   symbol)))))
+									 (format "find %s -type f %s %s -print0 | xargs -0 grep -nH -e \"\\<%s\\>\""
+											 j-grep-find-default-directory
+											 (j-grep-find-get-name-options)
+											 (j-grep-find-get-path-options)
+											 symbol)
+									 'j-grep-find-symbol-command-history))))
 
 (defun j-grep-find-file()
   "파일이름에 해당하는 파일을 찾는다."
@@ -201,11 +254,16 @@
   (let (file-name)
 	(if (null j-grep-find-default-directory)
 		(j-grep-find-set-default-directory))
-	(setq file-name (read-from-minibuffer "file-name to find: "))
+	(setq file-name (read-from-minibuffer "file-name to find: "
+										  nil
+										  nil
+										  nil
+										  'j-grep-find-file-history))
 	(grep-find (j-read-shell-command "Run find (like this): "
 								   (format "find %s -type f -name '%s'"
 										   j-grep-find-default-directory
-										   file-name)))))
+										   file-name)
+								   'j-grep-find-file-command-history))))
 
 
 (define-key global-map (kbd "C-c m w") 'ifdef-os-win)
@@ -213,6 +271,7 @@
 (define-key global-map (kbd "C-c m m") 'j-modify-header-file-for-g++)
 (define-key global-map (kbd "C-c c") 'j-make)
 (define-key global-map (kbd "C-c h") 'j-visit-header-or-source-file)
-(define-key global-map (kbd "C-c g") 'j-grep-find-symbol-at-point)
-(define-key global-map (kbd "C-c f") 'j-grep-find-file)
-(define-key global-map (kbd "C-c M-g") 'j-grep-find-set-default-directory)
+(define-key global-map (kbd "C-c j s") 'j-grep-find-symbol-at-point)
+(define-key global-map (kbd "C-c j f") 'j-grep-find-file)
+(define-key global-map (kbd "C-c j d") 'j-grep-find-set-default-directory)
+(define-key global-map (kbd "C-c j i") 'j-grep-find-set-ignore-path)
