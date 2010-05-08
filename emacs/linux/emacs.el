@@ -50,6 +50,17 @@
   )
 (unless window-system
   (custom-set-faces
+   '(cscope-line-face ((nil)))
+   '(cscope-line-number-face ((nil)))
+   '(cscope-mouse-face ((t (:inherit highlight))))
+   '(ecb-default-highlight-face ((t (:inherit highlight))))
+   '(ecb-type-tag-class-face ((t (:foreground "green"))))
+   '(ecb-type-tag-enum-face ((t (:foreground "green"))))
+   '(ecb-type-tag-group-face ((t (:foreground "green"))))
+   '(ecb-type-tag-interface-face ((t (:foreground "green"))))
+   '(ecb-type-tag-struct-face ((t (:foreground "green"))))
+   '(ecb-type-tag-typedef-face ((t (:foreground "green"))))
+   '(ecb-type-tag-union-face ((t (:foreground "green"))))
    '(font-lock-builtin-face ((t (:foreground "magenta"))))
    '(font-lock-preprocessor-face ((t (:foreground "magenta"))))
    '(font-lock-comment-face ((t (:foreground "blue"))))
@@ -62,9 +73,8 @@
    '(font-lock-string-face ((t (:foreground "red"))))
    '(font-lock-type-face ((t (:foreground "green"))))
    '(font-lock-variable-name-face ((t (:foreground "gray"))))
-
+   '(highlight ((t (:background "blue" :foreground "black"))))
    '(isearch ((t (:background "red" :foreground "black"))))
    '(isearch-lazy-highlight-face ((t (:background "gray" :foreground "black"))))
-
-   '(cscope-line-face ((((class color) (background dark)) (:foreground "yellow")))))
+   '(region ((t (:background "white" :foreground "black")))))
   )
