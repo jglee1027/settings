@@ -175,7 +175,7 @@ new line, #ifndef ~, #ifdef OS_WIN #pragma once ~을 header file에 추가한다
 						  nil
 						  history)))
 
-(defun j-grep-find-get-path-options()
+(defun j-get-find-path-options()
   (let (path-list path-option)
 	(if (equal j-grep-find-ignore-path "")
 		(setq path-option "")
@@ -188,7 +188,7 @@ new line, #ifndef ~, #ifdef OS_WIN #pragma once ~을 header file에 추가한다
 		  (setq path-option (concat path-option " -o " (pop path-list))))
 		(setq path-option (concat "! \\( " path-option " \\)"))))))
 
-(defun j-grep-find-get-name-options()
+(defun j-get-find-name-options()
   (let (name-option extension)
 	(if (null (buffer-file-name))
 		(setq name-option "")
@@ -210,21 +210,26 @@ new line, #ifndef ~, #ifdef OS_WIN #pragma once ~을 header file에 추가한다
 (defun j-grep-find-set-ignore-path()
   (interactive)
   (setq j-grep-find-ignore-path
-		(read-from-minibuffer "ignore path for j-grep-find: "
+		(read-from-minibuffer "Ignore path for j-grep-find: "
 							  j-grep-find-ignore-path)))
+
+(defmacro j-set-default-directory(prompt var var-history)
+  `(progn (if (null ,var)
+			  (setq ,var default-directory))
+		  (setq ,var
+				(completing-read ,prompt
+								 'ffap-read-file-or-url-internal
+								 nil
+								 nil
+								 ,var
+								 ,var-history))))
 
 (defun j-grep-find-set-default-directory()
   "grep-find할 디렉토리를 설정한다."
   (interactive)
-  (if (null j-grep-find-default-directory)
-	  (setq j-grep-find-default-directory default-directory))
-  (setq j-grep-find-default-directory
-		(completing-read "directory for j-grep-find: "
-						 'ffap-read-file-or-url-internal
-						 nil
-						 nil
-						 j-grep-find-default-directory
-						 'j-grep-find-default-directory-history)))
+  (j-set-default-directory "Directory for j-grep-find: "
+						   j-grep-find-default-directory
+						   'j-grep-find-default-directory-history))
 
 (defun j-grep-find-symbol-at-point()
   "현재 파일형식과 현재 커서의 심볼을 가지고 grep-find한다."
@@ -235,16 +240,16 @@ new line, #ifndef ~, #ifdef OS_WIN #pragma once ~을 header file에 추가한다
 	(setq symbol (symbol-at-point))
 	(if (null symbol)
 		(setq symbol ""))
-	(setq symbol (read-from-minibuffer "symbol to find: "
+	(setq symbol (read-from-minibuffer "Symbol to find: "
 									   (format "%s" symbol)
 									   nil
 									   nil
 									   'j-grep-find-symbol-history))
 	(grep-find (j-read-shell-command "Run find (like this): "
-									 (format "find %s -type f %s %s -print0 | xargs -0 grep -nH -e \"\\<%s\\>\""
+									 (format "find -L %s -type f %s %s -print0 | xargs -0 grep -nH -e \"\\<%s\\>\""
 											 j-grep-find-default-directory
-											 (j-grep-find-get-name-options)
-											 (j-grep-find-get-path-options)
+											 (j-get-find-name-options)
+											 (j-get-find-path-options)
 											 symbol)
 									 'j-grep-find-symbol-command-history))))
 
@@ -254,17 +259,45 @@ new line, #ifndef ~, #ifdef OS_WIN #pragma once ~을 header file에 추가한다
   (let (file-name)
 	(if (null j-grep-find-default-directory)
 		(j-grep-find-set-default-directory))
-	(setq file-name (read-from-minibuffer "file-name to find: "
+	(setq file-name (read-from-minibuffer "File-name to find: "
 										  nil
 										  nil
 										  nil
 										  'j-grep-find-file-history))
 	(grep-find (j-read-shell-command "Run find (like this): "
-								   (format "find %s -type f -name '%s'"
+								   (format "find -L %s -type f -name '%s'"
 										   j-grep-find-default-directory
 										   file-name)
 								   'j-grep-find-file-command-history))))
 
+(defvar j-create-tags-command nil)
+(defvar j-create-tags-command-history nil)
+(defvar j-create-tags-directory nil)
+(defvar j-create-tags-directory-history nil)
+(defvar j-visit-tags-directory nil)
+(defvar j-visit-tags-directory-history nil)
+
+(defun j-create-tags()
+  "TAGS파일 생성"
+  (interactive)
+  (j-set-default-directory "create tags: "
+						   j-create-tags-directory
+						   'j-create-tags-directory-history)
+  (shell-command (j-read-shell-command "Run find (like this): "
+									   (format "find -L %s -type f %s %s -print | etags - -o %s/TAGS"
+											   j-create-tags-directory
+											   (j-get-find-name-options)
+											   (j-get-find-path-options)
+											   j-create-tags-directory)
+									   'j-create-tags-command-history)
+				 "*j-create-tag*"))
+
+(defun j-visit-tags()
+  (interactive)
+  (setq j-visit-tags-directory (j-read-shell-command "Visit tags: "
+													 j-create-tags-directory
+													 'j-visit-tags-directory-history))
+  (visit-tags-table j-visit-tags-directory))
 
 (define-key global-map (kbd "C-c m w") 'ifdef-os-win)
 (define-key global-map (kbd "C-c m u") 'ifdef-os-unix)
@@ -275,3 +308,5 @@ new line, #ifndef ~, #ifdef OS_WIN #pragma once ~을 header file에 추가한다
 (define-key global-map (kbd "C-c j f") 'j-grep-find-file)
 (define-key global-map (kbd "C-c j d") 'j-grep-find-set-default-directory)
 (define-key global-map (kbd "C-c j i") 'j-grep-find-set-ignore-path)
+(define-key global-map (kbd "C-c j t") 'j-create-tags)
+(define-key global-map (kbd "C-c j v") 'j-visit-tags)
