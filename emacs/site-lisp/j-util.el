@@ -4,7 +4,7 @@
   (save-excursion
 	(goto-char (point-max))
 	(if (equal (looking-back "\n") nil)
-		  (insert "\n"))))
+		(insert "\n"))))
 
 (defun j-is-already-exist-if-def-pragma-once()
   "#pragma once가 이미 #ifdef OS_WIN ~ #endif안에 있는지 체크한다."
@@ -113,9 +113,9 @@ new line, #ifndef ~, #ifdef OS_WIN #pragma once ~을 header file에 추가한다
 
 (put 'narrow-to-region 'disabled nil)
 (fset 'ifdef-os-win
-   (lambda (&optional arg) "Keyboard macro." (interactive "p") (kmacro-exec-ring-item (quote ("#ifdef OS_WIN#endif" 0 "%d")) arg)))
+	  (lambda (&optional arg) "Keyboard macro." (interactive "p") (kmacro-exec-ring-item (quote ("#ifdef OS_WIN#endif" 0 "%d")) arg)))
 (fset 'ifdef-os-unix
-   (lambda (&optional arg) "Keyboard macro." (interactive "p") (kmacro-exec-ring-item (quote ("#ifdef OS_UNIX#endif" 0 "%d")) arg)))
+	  (lambda (&optional arg) "Keyboard macro." (interactive "p") (kmacro-exec-ring-item (quote ("#ifdef OS_UNIX#endif" 0 "%d")) arg)))
 (setq compilation-scroll-output t)
 
 (defun j-get-extensions-to-visit()
@@ -151,8 +151,8 @@ new line, #ifndef ~, #ifdef OS_WIN #pragma once ~을 header file에 추가한다
 				   (setq file-name (concat file-name-to-visit "." extension))
 				   (if (file-exists-p file-name)
 					   (progn
-							 (find-file file-name)
-							 (throw 'visit-exception file-name))))
+						 (find-file file-name)
+						 (throw 'visit-exception file-name))))
 				 (throw 'visit-exception (format "%s was not found." file-name)))))))
 
 (defvar j-grep-find-symbol-history nil)
@@ -265,17 +265,21 @@ new line, #ifndef ~, #ifdef OS_WIN #pragma once ~을 header file에 추가한다
 										  nil
 										  'j-grep-find-file-history))
 	(grep-find (j-read-shell-command "Run find (like this): "
-								   (format "find -L %s -type f -name '%s'"
-										   j-grep-find-default-directory
-										   file-name)
-								   'j-grep-find-file-command-history))))
+									 (format "find -L %s -type f -name '%s'"
+											 j-grep-find-default-directory
+											 file-name)
+									 'j-grep-find-file-command-history))))
 
 (defvar j-create-tags-command nil)
 (defvar j-create-tags-command-history nil)
 (defvar j-create-tags-directory nil)
 (defvar j-create-tags-directory-history nil)
-(defvar j-visit-tags-directory nil)
-(defvar j-visit-tags-directory-history nil)
+
+(defun j-icompleting-read (prompt choices)
+  (let ((iswitchb-make-buflist-hook
+         (lambda ()
+           (setq iswitchb-temp-buflist choices))))
+    (iswitchb-read-buffer prompt)))
 
 (defun j-create-tags()
   "TAGS파일 생성"
@@ -292,12 +296,41 @@ new line, #ifndef ~, #ifdef OS_WIN #pragma once ~을 header file에 추가한다
 									   'j-create-tags-command-history)
 				 "*j-create-tag*"))
 
-(defun j-visit-tags()
+
+(defvar j-etags-tag-info-alist nil)
+
+(defun j-etags-make-tag-info-alist(file)
+  (goto-char (point-min))
+  (setq j-etags-tag-info-alist nil)
+  (when (re-search-forward (concat "\f\n" "\\(" file "\\)" ",") nil t)
+    (let ((path (save-excursion (forward-line 1) (file-of-tag)))
+		  tag-info)
+	  (forward-line 1)
+	  (while (not (or (eobp) (looking-at "\f")))
+		(setq tag-info (save-excursion (etags-snarf-tag t)))
+		(add-to-list 'j-etags-tag-info-alist tag-info t)
+		(forward-line 1))
+	  t)))
+
+(defun j-etags-goto-tag-in-file()
   (interactive)
-  (setq j-visit-tags-directory (j-read-shell-command "Visit tags: "
-													 j-create-tags-directory
-													 'j-visit-tags-directory-history))
-  (visit-tags-table j-visit-tags-directory))
+  (let ((file (buffer-file-name)))
+	(save-excursion
+	  (let ((first-time t)
+			(gotany nil))
+		(while (visit-tags-table-buffer (not first-time))
+		  (setq first-time nil)
+		  (if (j-etags-make-tag-info-alist file)
+			  (setq gotany t)))
+		(or gotany
+			(error "File %s not in current tags tables" file))))
+	(let ((tags (mapcar (lambda (x) (car x))
+						j-etags-tag-info-alist))
+		  tag-info)
+	  (setq tag-info (assoc (j-icompleting-read "Goto tag in file: "
+								 tags)
+							j-etags-tag-info-alist))
+	  (etags-goto-tag-location tag-info))))
 
 (define-key global-map (kbd "C-c m w") 'ifdef-os-win)
 (define-key global-map (kbd "C-c m u") 'ifdef-os-unix)
@@ -309,4 +342,6 @@ new line, #ifndef ~, #ifdef OS_WIN #pragma once ~을 header file에 추가한다
 (define-key global-map (kbd "C-c j d") 'j-grep-find-set-default-directory)
 (define-key global-map (kbd "C-c j i") 'j-grep-find-set-ignore-path)
 (define-key global-map (kbd "C-c j t") 'j-create-tags)
-(define-key global-map (kbd "C-c j v") 'j-visit-tags)
+(define-key global-map (kbd "C-c j m") 'j-etags-goto-tag-in-file)
+(define-key global-map (kbd "C-c j v") 'visit-tags-table)
+(define-key global-map (kbd "C-c j .") 'tags-apropos)
