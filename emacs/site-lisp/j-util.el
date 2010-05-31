@@ -1,3 +1,9 @@
+(defun j-icompleting-read (prompt choices)
+  (let ((iswitchb-make-buflist-hook
+         (lambda ()
+           (setq iswitchb-temp-buflist choices))))
+    (iswitchb-read-buffer prompt)))
+
 (defun j-add-new-line-to-eof()
   "버퍼 마지막에 new line이 없으면 추가한다."
   (interactive)
@@ -231,12 +237,20 @@ new line, #ifndef ~, #ifdef OS_WIN #pragma once ~을 header file에 추가한다
 						   j-grep-find-default-directory
 						   'j-grep-find-default-directory-history))
 
+(defun j-grep-find-select-grep-buffer(current-buffer msg)
+  (condition-case nil
+	  (progn
+		(select-window (get-buffer-window current-buffer))
+		(forward-line 4))
+	(error nil)))
+
+(add-to-list 'compilation-finish-functions 'j-grep-find-select-grep-buffer)
+
 (defun j-grep-find-symbol-at-point()
   "현재 파일형식과 현재 커서의 심볼을 가지고 grep-find한다."
   (interactive)
   (let (symbol)
-	(if (null j-grep-find-default-directory)
-		(j-grep-find-set-default-directory))
+	(j-grep-find-set-default-directory)
 	(setq symbol (symbol-at-point))
 	(if (null symbol)
 		(setq symbol ""))
@@ -257,8 +271,7 @@ new line, #ifndef ~, #ifdef OS_WIN #pragma once ~을 header file에 추가한다
   "파일이름에 해당하는 파일을 찾는다."
   (interactive)
   (let (file-name)
-	(if (null j-grep-find-default-directory)
-		(j-grep-find-set-default-directory))
+	(j-grep-find-set-default-directory)
 	(setq file-name (read-from-minibuffer "File-name to find: "
 										  nil
 										  nil
@@ -274,12 +287,6 @@ new line, #ifndef ~, #ifdef OS_WIN #pragma once ~을 header file에 추가한다
 (defvar j-create-tags-command-history nil)
 (defvar j-create-tags-directory nil)
 (defvar j-create-tags-directory-history nil)
-
-(defun j-icompleting-read (prompt choices)
-  (let ((iswitchb-make-buflist-hook
-         (lambda ()
-           (setq iswitchb-temp-buflist choices))))
-    (iswitchb-read-buffer prompt)))
 
 (defun j-create-tags()
   "TAGS파일 생성"
