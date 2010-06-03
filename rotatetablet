@@ -76,7 +76,7 @@ echo 'Trying to unrotate again...'
 /usr/bin/xrandr -o $N &
 fi
 
-xsetwacom set stylus Rotate $T &
+xsetwacom set "Serial Wacom Tablet" Rotate $T &
 echo $N > $STATUS_FILE
 }
 
