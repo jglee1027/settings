@@ -2,7 +2,7 @@
 
 #STATUS_FILE=~/.rotate-status
 STATUS_FILE=/tmp/.rotate-status
-
+STYLUS=$(xsetwacom --list | grep 'STYLUS' | awk '{gsub(/ STYLUS/, ""); gsub(/[ \t]+$/, ""); print}')
 ################## Compiz Prevention
 function compiz_on {
 USER=`ps -ef |grep metacity |grep -v grep|awk -F" " '{print $1}'`
@@ -76,7 +76,7 @@ echo 'Trying to unrotate again...'
 /usr/bin/xrandr -o $N &
 fi
 
-xsetwacom set "Serial Wacom Tablet" Rotate $T &
+xsetwacom set "$STYLUS" Rotate $T &
 echo $N > $STATUS_FILE
 }
 
