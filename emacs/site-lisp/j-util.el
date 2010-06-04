@@ -167,7 +167,7 @@ new line, #ifndef ~, #ifdef OS_WIN #pragma once ~을 header file에 추가한다
 (defvar j-grep-find-file-command-history nil)
 (defvar j-grep-find-default-directory nil)
 (defvar j-grep-find-default-directory-history nil)
-(defvar j-grep-find-ignore-path "*.git* *.svn* *.cvs* *~ *#")
+(defvar j-grep-find-ignore-path "*.git* *.svn* *.cvs* *~ *# *TAGS *cscope.out")
 (defvar j-grep-find-ignore-path-history nil)
 
 (defun j-read-shell-command (prompt initial-contents &optional history)

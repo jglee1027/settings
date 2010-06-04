@@ -147,10 +147,26 @@
 (condition-case nil
 	(progn
 	  (require 'ruby-mode)
+	  (require 'rdebug)
 	  (require 'rubydb)
 	  (require 'inf-ruby)
 	  (require 'ruby-electric))
   (error nil))
+
+;; rdebug keys
+(defun rdebug-keys (map)
+  (define-key map [f5] 'rdebug-step)
+  (define-key map (kbd "C-<f5>") 'gud-stepi)
+  (define-key map [f6] 'rdebug-next)
+  (define-key map (kbd "C-<f6>") 'gud-nexti)
+  (define-key map [f7] 'gud-finish)
+  (define-key map [f8] 'gud-cont)
+  (define-key map [f12] 'rdebug-restore-debugger-window-layout)
+  (define-key map (kbd "M-<up>") 'gud-up)
+  (define-key map (kbd "M-<down>") 'gud-down)
+  (define-key map [f9]    'rdebug-toggle-source-breakpoint)
+  (define-key map [C-f9]  'rdebug-toggle-source-breakpoint-enabled))
+(setq rdebug-populate-common-keys-function 'rdebug-keys)
 
 (setq auto-mode-alist (append '(("\\.cs$" . java-mode)
 								("\\.h$" . c++-mode)
