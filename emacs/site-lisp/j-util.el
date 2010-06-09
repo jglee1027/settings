@@ -308,7 +308,6 @@ new line, #ifndef ~, #ifdef OS_WIN #pragma once ~을 header file에 추가한다
 
 (defun j-etags-make-tag-info-alist(file)
   (goto-char (point-min))
-  (setq j-etags-tag-info-alist nil)
   (when (re-search-forward (concat "\f\n" "\\(" file "\\)" ",") nil t)
     (let ((path (save-excursion (forward-line 1) (file-of-tag)))
 		  tag-info)
@@ -321,6 +320,7 @@ new line, #ifndef ~, #ifdef OS_WIN #pragma once ~을 header file에 추가한다
 
 (defun j-etags-goto-tag-in-file()
   (interactive)
+  (setq j-etags-tag-info-alist nil)
   (let ((file (buffer-file-name)))
 	(save-excursion
 	  (let ((first-time t)
