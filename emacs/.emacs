@@ -221,12 +221,12 @@
 ;; JDE
 ;; Copy `/usr/local/share/emacs/20.3/site-lisp/jde-2.1.3/jtags*'to `/usr/local/bin/'
 (condition-case nil
-    (require 'jde)
+	(progn
+	  (require 'jde)
+	  (add-hook 'jde-mode-hook
+				(lambda()
+				  (local-set-key (kbd "C-c C-v .") 'jde-complete-minibuf))))
   (error nil))
-
-(if (eq system-type 'windows-nt)
-    (setq jde-db-source-directories '("C:/jdk1.2/src/"))
-  (setq jde-db-source-directories '("/usr/local/jdk1.2/src")))
 
 ;; ======================================================================
 ;; Cscope
