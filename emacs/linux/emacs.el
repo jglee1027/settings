@@ -5,14 +5,12 @@
   (set-background-color "#102050")
   (set-foreground-color "white")
   (set-face-font 'default
-				 (font-spec :family "Andale Mono"
-							:size 11.0))
+  				 (font-spec :family "NanumGothic_AndaleMono"
+  							:size 10.0))
   (set-fontset-font nil
-					'korean-ksc5601
-					(font-spec :family "NanumGothic_AndaleMono"
-							   :registry "unicode-bmp"
-							   :lang "ko"
-							   :size 11.0))
+  					'korean-ksc5601
+  					(font-spec :family "NanumGothic_AndaleMono"
+  							   :size 10.0))
   (custom-set-variables
    '(scroll-bar-mode (quote right)))
   (custom-set-faces
@@ -46,7 +44,8 @@
    '(isearch ((t (:background "red" :foreground "black"))))
    '(lazy-highlight ((t (:background "DarkGray" :foreground "black"))))
    '(mode-line ((t (:background "gray" :foreground "black"))))
-   '(mouse ((t nil))))
+   '(mouse ((t nil)))
+   '(region ((t (:background "gray" :foreground "black")))))
   )
 (unless window-system
   (custom-set-faces
