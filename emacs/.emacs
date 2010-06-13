@@ -97,6 +97,7 @@
 (define-key global-map (kbd "C-c C-s a") 'semantic-complete-analyze-inline)
 (define-key global-map (kbd "C-c RET") 'semantic-ia-complete-symbol-menu)
 (define-key global-map (kbd "C-c c") 'compile)
+(define-key global-map (kbd "C-c r") 'recompile)
 (define-key global-map (kbd "C-c TAB") 'indent-relative)
 (define-key global-map (kbd "C-x p") 'previous-buffer)
 (define-key global-map (kbd "C-x n") 'next-buffer)
