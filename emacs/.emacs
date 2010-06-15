@@ -108,18 +108,26 @@
 (global-set-key (kbd "M-8") 'find-next-tag)
 (global-set-key (kbd "M-7") 'find-prev-tag)
 
-;; gdb
-(add-hook 'gdb-mode-hook
-		  (lambda()
-			(global-set-key [f5] 'gud-step)
-			(global-set-key (kbd "C-<f5>") 'gud-stepi)
-			(global-set-key [f6] 'gud-next)
-			(global-set-key (kbd "C-<f6>") 'gud-nexti)
-			(global-set-key [f7] 'gud-finish)
-			(global-set-key [f8] 'gud-cont)
-			(global-set-key [f12] 'gdb-many-windows)
-			(global-set-key (kbd "M-<up>") 'gud-up)
-			(global-set-key (kbd "M-<down>") 'gud-down)))
+;; gud
+(defun gud-mode-common-keys()
+  (message ">>> run gud-mode-common-keys")
+  (global-set-key [f5] 'gud-step)
+  (global-set-key (kbd "C-<f5>") 'gud-stepi)
+  (global-set-key [f6] 'gud-next)
+  (global-set-key (kbd "C-<f6>") 'gud-nexti)
+  (global-set-key [f7] 'gud-finish)
+  (global-set-key [f8] 'gud-cont)
+  (global-set-key [f12] 'gdb-many-windows)
+  (global-set-key (kbd "M-<up>") 'gud-up)
+  (global-set-key (kbd "M-<down>") 'gud-down))
+
+(add-hook 'gdb-mode-hook 'gud-mode-common-keys)
+(add-hook 'sdb-mode-hook 'gud-mode-common-keys)
+(add-hook 'dbx-mode-hook 'gud-mode-common-keys)
+(add-hook 'xdb-mode-hook 'gud-mode-common-keys)
+(add-hook 'perldb-mode-hook 'gud-mode-common-keys)
+(add-hook 'pdb-mode-hook 'gud-mode-common-keys)
+(add-hook 'jdb-mode-hook 'gud-mode-common-keys)
 
 ;; ======================================================================
 ;; Mode line and minibuffer
@@ -228,6 +236,11 @@
 	  (add-hook 'jde-mode-hook
 				(lambda()
 				  (local-set-key (kbd "C-c C-v .") 'jde-complete-minibuf))))
+  (error nil))
+
+;; Android
+(condition-case nil
+ 	(require 'android)
   (error nil))
 
 ;; ======================================================================
