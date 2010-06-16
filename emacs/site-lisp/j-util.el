@@ -333,11 +333,13 @@ new line, #ifndef ~, #ifdef OS_WIN #pragma once ~을 header file에 추가한다
 			(error "File %s not in current tags tables" file))))
 	(let ((tags (mapcar (lambda (x) (car x))
 						j-etags-tag-info-alist))
+		  line
 		  tag-info)
 	  (setq tag-info (assoc (j-icompleting-read "Goto tag in file: "
 								 tags)
 							j-etags-tag-info-alist))
-	  (etags-goto-tag-location tag-info))))
+	  (setq line (car (cdr tag-info)))
+	  (goto-line line))))
 
 (define-key global-map (kbd "C-c m w") 'ifdef-os-win)
 (define-key global-map (kbd "C-c m u") 'ifdef-os-unix)
