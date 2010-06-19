@@ -1,9 +1,37 @@
+;; ======================================================================
+;; common functions
+;; ======================================================================
 (defun j-icompleting-read (prompt choices)
   (let ((iswitchb-make-buflist-hook
          (lambda ()
            (setq iswitchb-temp-buflist choices))))
     (iswitchb-read-buffer prompt)))
 
+(defun j-read-shell-command (prompt initial-contents &optional history)
+  (if (functionp 'read-shell-command)
+	  (read-shell-command prompt
+						  initial-contents
+						  history)
+	(read-from-minibuffer prompt
+						  initial-contents
+						  nil
+						  nil
+						  history)))
+
+(defmacro j-set-default-directory(prompt var var-history)
+  `(progn (if (null ,var)
+			  (setq ,var default-directory))
+		  (setq ,var
+				(completing-read ,prompt
+								 'ffap-read-file-or-url-internal
+								 nil
+								 nil
+								 ,var
+								 ,var-history))))
+
+;; ======================================================================
+;; utility functions
+;; ======================================================================
 (defun j-add-new-line-to-eof()
   "버퍼 마지막에 new line이 없으면 추가한다."
   (interactive)
@@ -28,16 +56,23 @@
 	  (kill-line)
 	  (insert "#ifdef OS_WIN\n#\tpragma once\n#endif"))))
 
+(defvar j-once-header-project-root-directory  nil)
+(defvar j-once-header-project-root-directory-history nil)
+
 (defun j-get-header-define-string()
   "header define 문자열을 생성하여 리턴한다."
   (interactive)
   (let (define-string)
 	(setq define-string (buffer-file-name (current-buffer)))
-	(setq define-string (replace-regexp-in-string "^.+/HOffice8/Common/" "" define-string))
-	(setq define-string (replace-regexp-in-string "^.+/HOffice8/Hwp8/" "" define-string))
-	(setq define-string (replace-regexp-in-string "^.+/HOffice8/HNexcel8/" "" define-string))
-	(setq define-string (replace-regexp-in-string "^.+/HOffice8/HSlide8/" "" define-string))
-	(setq define-string (replace-regexp-in-string "[/\\.]" "_" define-string))))
+	(j-set-default-directory "Project root directory: "
+							 j-once-header-project-root-directory
+							 'j-once-header-project-root-directory-history)
+	(setq define-string (replace-regexp-in-string j-once-header-project-root-directory
+												  ""
+												  define-string))
+	(setq define-string (upcase (replace-regexp-in-string "[/\\.]"
+														  "_"
+														  define-string)))))
 
 (defun j-is-already-exist-if-def-header(header-define-name)
   "#define header-define-name 이 존재하는지 체크한다.
@@ -46,7 +81,8 @@
   (save-excursion
 	(let (define-header-name-regexp)
 	  (goto-char (point-min))
-	  (setq define-header-name-regexp (format "^[ \t]*#[ \t\n]*define[ \t\n]+%s" header-define-name))
+	  (setq define-header-name-regexp (format "^[ \t]*#[ \t\n]*define[ \t\n]+%s"
+											  header-define-name))
 	  (re-search-forward  define-header-name-regexp nil t))))
 
 (defun j-add-ifndef-header-define-name()
@@ -58,7 +94,9 @@
 	  (if (equal (j-is-already-exist-if-def-header header-define-name) nil)
 		  (progn
 			(goto-char (point-min))
-			(insert (format "#ifndef %s\n#define %s\n\n" header-define-name header-define-name))
+			(insert (format "#ifndef %s\n#define %s\n\n"
+							header-define-name
+							header-define-name))
 			(goto-char (point-max))
 			(setq count-of-new-line 0)
 			(while (and (looking-back "\n") (not (bobp)))
@@ -97,7 +135,9 @@ new line, #ifndef ~, #ifdef OS_WIN #pragma once ~을 header file에 추가한다
 		(setq makefile-dir "")
 	  (while (and (not (equal makefile-dir ""))
 				  (not (file-exists-p (concat makefile-dir "/Makefile"))))
-		(setq makefile-dir (replace-regexp-in-string "/[^/]+$" "" makefile-dir))))
+		(setq makefile-dir (replace-regexp-in-string "/[^/]+$"
+													 ""
+													 makefile-dir))))
 	(setq makefile-dir makefile-dir)))
 
 (defvar j-make-command-history nil)
@@ -163,17 +203,6 @@ new line, #ifndef ~, #ifdef OS_WIN #pragma once ~을 header file에 추가한다
 (defvar j-grep-find-ignore-path "*.git* *.svn* *.cvs* *~ *# *TAGS *cscope.out")
 (defvar j-grep-find-ignore-path-history nil)
 
-(defun j-read-shell-command (prompt initial-contents &optional history)
-  (if (functionp 'read-shell-command)
-	  (read-shell-command prompt
-						  initial-contents
-						  history)
-	(read-from-minibuffer prompt
-						  initial-contents
-						  nil
-						  nil
-						  history)))
-
 (defun j-get-find-path-options()
   (let (path-list path-option)
 	(if (equal j-grep-find-ignore-path "")
@@ -209,19 +238,11 @@ new line, #ifndef ~, #ifdef OS_WIN #pragma once ~을 header file에 추가한다
 (defun j-grep-find-set-ignore-path()
   (interactive)
   (setq j-grep-find-ignore-path
-		(read-from-minibuffer "Ignore path for j-grep-find: "
-							  j-grep-find-ignore-path)))
-
-(defmacro j-set-default-directory(prompt var var-history)
-  `(progn (if (null ,var)
-			  (setq ,var default-directory))
-		  (setq ,var
-				(completing-read ,prompt
-								 'ffap-read-file-or-url-internal
-								 nil
-								 nil
-								 ,var
-								 ,var-history))))
+		(read-from-minibuffer "Ignore paths for j-grep-find: "
+							  j-grep-find-ignore-path
+							  nil
+							  nil
+							  'j-grep-find-ignore-path-history)))
 
 (defun j-grep-find-set-default-directory()
   "grep-find할 디렉토리를 설정한다."
@@ -284,7 +305,7 @@ new line, #ifndef ~, #ifdef OS_WIN #pragma once ~을 header file에 추가한다
 (defun j-create-tags()
   "TAGS파일 생성"
   (interactive)
-  (j-set-default-directory "create tags: "
+  (j-set-default-directory "Create tags: "
 						   j-create-tags-directory
 						   'j-create-tags-directory-history)
   (shell-command (j-read-shell-command "Run find (like this): "
@@ -329,7 +350,7 @@ new line, #ifndef ~, #ifdef OS_WIN #pragma once ~을 header file에 추가한다
 		  line
 		  tag-info)
 	  (setq tag-info (assoc (j-icompleting-read "Goto tag in file: "
-								 tags)
+												tags)
 							j-etags-tag-info-alist))
 	  (setq line (car (cdr tag-info)))
 	  (goto-line line))))
