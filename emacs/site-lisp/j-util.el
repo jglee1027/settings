@@ -117,13 +117,6 @@ new line, #ifndef ~, #ifdef OS_WIN #pragma once ~을 header file에 추가한다
 											   'j-make-command-history))
 	(compile compile-string)))
 
-(put 'narrow-to-region 'disabled nil)
-(fset 'ifdef-os-win
-	  (lambda (&optional arg) "Keyboard macro." (interactive "p") (kmacro-exec-ring-item (quote ("#ifdef OS_WIN#endif" 0 "%d")) arg)))
-(fset 'ifdef-os-unix
-	  (lambda (&optional arg) "Keyboard macro." (interactive "p") (kmacro-exec-ring-item (quote ("#ifdef OS_UNIX#endif" 0 "%d")) arg)))
-(setq compilation-scroll-output t)
-
 (defun j-get-extensions-to-visit()
   (let (extension extensions-to-visit)
 	(if (null (buffer-file-name))
@@ -341,8 +334,6 @@ new line, #ifndef ~, #ifdef OS_WIN #pragma once ~을 header file에 추가한다
 	  (setq line (car (cdr tag-info)))
 	  (goto-line line))))
 
-(define-key global-map (kbd "C-c m w") 'ifdef-os-win)
-(define-key global-map (kbd "C-c m u") 'ifdef-os-unix)
 (define-key global-map (kbd "C-c m m") 'j-modify-header-file-for-g++)
 (define-key global-map (kbd "C-c c") 'j-make)
 (define-key global-map (kbd "C-c h") 'j-visit-header-or-source-file)
