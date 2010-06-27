@@ -6,7 +6,7 @@
   (setq old-default-directory default-directory)
   (setq default-directory "~/settings/emacs/site-lisp")
   (if (fboundp 'normal-top-level-add-subdirs-to-load-path)
-    (normal-top-level-add-subdirs-to-load-path))
+	  (normal-top-level-add-subdirs-to-load-path))
   (setq default-directory old-default-directory))
 
 ;; tab
@@ -44,9 +44,9 @@
 (defvar default-encoding
   (let (lang)
 	(setq lang (getenv "LANG"))
-	(cond ((not (equal (string-match "UTF-8" lang) nil))
+	(cond ((string-match "UTF-8" lang)
 		   'utf-8)
-		  ((not (equal (string-match "EUC-KR" lang) nil))
+		  ((string-match "EUC-KR" lang)
 		   'euc-kr)
 		  ((eq system-type 'windows-nt)
 		   'euc-kr)
@@ -60,18 +60,17 @@
   (setq default-korean-keyboard "3")
   (prefer-coding-system default-encoding)
   (set-default-coding-systems default-encoding)
-
   (set-keyboard-coding-system default-encoding)
-  (set-terminal-coding-system default-encoding)
+  (set-selection-coding-system default-encoding)
+  (setq-default sendmail-coding-system default-encoding)
   (define-key encoded-kbd-mode-map [27] nil)
-  
-  (set-selection-coding-system
-   (cond ((eq system-type 'windows-nt) 'cp949-dos)
-		 (t 'utf-8)))
-  
-  ;; Hangul Mail setting
-  (setq-default sendmail-coding-system default-encoding))
-
+  (set-terminal-coding-system
+   (cond ((eq default-encoding 'utf-8)
+		  (setenv "LANG" "ko_KR.UTF-8")
+		  'utf-8)
+		 ((eq default-encoding 'euc-kr)
+		  (setenv "LANG" "ko_KR.EUC-KR")
+		  'korean-cp949))))
 (unless (or enable-multibyte-characters window-system)
   (standard-display-european t)
   (set-input-mode (car (current-input-mode))
