@@ -75,6 +75,5 @@
    '(highlight ((t (:background "blue" :foreground "black"))))
    '(isearch ((t (:background "red" :foreground "black"))))
    '(isearch-lazy-highlight-face ((t (:background "gray" :foreground "black"))))
-   '(mode-line-buffer-id ((t nil)))
    '(region ((t (:background "white" :foreground "black")))))
   )
