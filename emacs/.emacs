@@ -128,6 +128,16 @@
 (add-hook 'pdb-mode-hook 'gud-mode-common-keys)
 (add-hook 'jdb-mode-hook 'gud-mode-common-keys)
 
+;; hs-minor-mode
+(add-hook 'hs-minor-mode-hook
+		  (lambda()
+			(local-set-key (kbd "C-c h '") 'hs-toggle-hiding)
+			(local-set-key (kbd "C-c h ;") 'hs-hide-level)
+			(local-set-key (kbd "C-c h h") 'hs-hide-block)
+			(local-set-key (kbd "C-c h j") 'hs-show-block)
+			(local-set-key (kbd "C-c h k") 'hs-hide-all)
+			(local-set-key (kbd "C-c h l") 'hs-show-all)))
+
 ;; ======================================================================
 ;; Mode line and minibuffer
 ;; ======================================================================

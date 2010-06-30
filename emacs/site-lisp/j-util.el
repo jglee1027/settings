@@ -357,7 +357,7 @@ new line, #ifndef ~, #ifdef OS_WIN #pragma once ~을 header file에 추가한다
 
 (define-key global-map (kbd "C-c m m") 'j-modify-header-file-for-g++)
 (define-key global-map (kbd "C-c c") 'j-make)
-(define-key global-map (kbd "C-c h") 'j-visit-header-or-source-file)
+(define-key global-map (kbd "C-c j p") 'j-visit-header-or-source-file)
 (define-key global-map (kbd "C-c j s") 'j-grep-find-symbol-at-point)
 (define-key global-map (kbd "C-c j f") 'j-grep-find-file)
 (define-key global-map (kbd "C-c j d") 'j-grep-find-set-default-directory)
@@ -366,3 +366,4 @@ new line, #ifndef ~, #ifdef OS_WIN #pragma once ~을 header file에 추가한다
 (define-key global-map (kbd "C-c j m") 'j-etags-goto-tag-in-file)
 (define-key global-map (kbd "C-c j v") 'visit-tags-table)
 (define-key global-map (kbd "C-c j .") 'tags-apropos)
+(define-key global-map (kbd "C-c j h") 'hs-minor-mode)
