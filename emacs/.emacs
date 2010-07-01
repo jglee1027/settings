@@ -322,41 +322,43 @@
 (custom-set-variables
  ;; auto join
  '(erc-autojoin-channels-alist
-   (quote (("hanirc.org"
-			"#gnome"
-			"#c++"
-			"#java"
-			"#eclipse"
-			"#lisp"
-			"#perl"
-			"#python"
-			"#ruby")
-		   ("freenode.net"
-			"##gnome"
-			"#ubuntu"
-			"#lisp"
-			"#scheme"
-			"#haskell"
-			"##c++"
-			"#perl"
-			"#ruby"
-			"#eclipse"
-			"#emacs"
-			"#python"
-			"##java"))))
+   '(("hanirc.org"
+	  "#gnome"
+	  "#c++"
+	  "#java"
+	  "#eclipse"
+	  "#lisp"
+	  "#perl"
+	  "#python"
+	  "#ruby")
+	 ("freenode.net"
+	  "#android"
+	  "#android-dev"
+	  "##gnome"
+	  "#ubuntu"
+	  "#lisp"
+	  "#scheme"
+	  "#haskell"
+	  "##c++"
+	  "#perl"
+	  "#ruby"
+	  "#eclipse"
+	  "#emacs"
+	  "#python"
+	  "##java")))
  ;; for hanirc.org
  '(erc-server-coding-system (quote (cp949 . undecided))))
-
-(setq erc-server "irc.freenode.net" 
-	  erc-port 6667 
-	  erc-nick "jjong"
-	  erc-password nil
-	  erc-prompt-for-password t)
 
 (setq erc-server "irc.hanirc.org" 
 	  erc-port 6667 
 	  erc-nick "jjong"
 	  erc-user-full-name "The little prince"
+	  erc-password nil
+	  erc-prompt-for-password t)
+
+(setq erc-server "irc.freenode.net" 
+	  erc-port 6667 
+	  erc-nick "jjong"
 	  erc-password nil
 	  erc-prompt-for-password t)
 
