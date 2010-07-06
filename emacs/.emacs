@@ -63,7 +63,8 @@
   (set-keyboard-coding-system default-encoding)
   (set-selection-coding-system default-encoding)
   (setq-default sendmail-coding-system default-encoding)
-  (define-key encoded-kbd-mode-map [27] nil)
+  (when (boundp 'encoded-kbd-mode-map)
+	(define-key encoded-kbd-mode-map [27] nil))
   (set-terminal-coding-system
    (cond ((eq default-encoding 'utf-8)
 		  (setenv "LANG" "ko_KR.UTF-8")

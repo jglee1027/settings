@@ -18,6 +18,14 @@
 						  nil
 						  history)))
 
+(defun j-is-directory(path)
+  (car (file-attributes path)))
+
+(defun j-get-super-directory(path)
+  (replace-regexp-in-string "/[^/]*$"
+							""
+							path))
+
 (defmacro j-set-default-directory(prompt var var-history)
   `(progn (if (null ,var)
 			  (setq ,var default-directory))
@@ -130,15 +138,13 @@ new line, #ifndef ~, #ifdef OS_WIN #pragma once ~을 header file에 추가한다
   (interactive)
   (let (makefile-dir)
 	(setq makefile-dir (buffer-file-name))
-	;; filebuffer가 아닌경우 처리
 	(if (equal makefile-dir nil)
-		(setq makefile-dir "")
-	  (while (and (not (equal makefile-dir ""))
-				  (not (file-exists-p (concat makefile-dir "/Makefile"))))
-		(setq makefile-dir (replace-regexp-in-string "/[^/]+$"
-													 ""
-													 makefile-dir))))
-	(setq makefile-dir makefile-dir)))
+		(setq makefile-dir default-directory) ; not filebuffer
+	  (setq makefile-dir (j-get-super-directory makefile-dir)))
+	(while (and (not (equal makefile-dir ""))
+				(not (file-exists-p (concat makefile-dir "/Makefile"))))
+	  (setq makefile-dir (j-get-super-directory makefile-dir)))
+	makefile-dir))
 
 (defvar j-make-command-history nil)
 (defun j-make ()
@@ -156,6 +162,14 @@ new line, #ifndef ~, #ifdef OS_WIN #pragma once ~을 header file에 추가한다
 											   nil
 											   'j-make-command-history))
 	(compile compile-string)))
+
+(defun j-get-sub-directory-list(dir)
+  (let ((entries (directory-files dir t))
+		(sub-dirs '()))
+	(mapcar (lambda (entry) (if (j-is-directory entry)
+							(add-to-list 'sub-dirs entry t)))
+			entries)
+	sub-dirs))
 
 (defun j-get-extensions-to-visit()
   (let (extension extensions-to-visit)
@@ -176,23 +190,76 @@ new line, #ifndef ~, #ifdef OS_WIN #pragma once ~을 header file에 추가한다
 			  (t
 			   (setq extensions-to-visit nil)))))))
 
+(defun j-visit-file(file-name-sans-ext extensions)
+  (let (file-name file-ext)
+	(while (not (equal (setq file-ext (pop extensions)) nil))
+	  (setq file-name (concat file-name-sans-ext "." file-ext))
+	  (if (file-exists-p file-name)
+		  (progn
+			(find-file file-name)
+			(throw 'visit-file-exception file-name))))))
+
+(defun j-visit-file-in-sub-dirs(sub-dir-list file-name-non-dir extensions)
+  (let (file-name-sans-ext)
+	(mapcar (lambda (entry)
+			  (setq file-name-sans-ext (concat entry "/" file-name-non-dir))
+			  (j-visit-file file-name-sans-ext extensions))
+			sub-dir-list)))
+
+(defun j-visit-file-in-dirs(super-dir-depth sub-dir-depth)
+  (let ((extensions-to-visit (j-get-extensions-to-visit))
+		file-name-sans-ext
+		file-name-non-dir
+		current-dir
+		sub-dir-list)
+	
+	(if (or (equal extensions-to-visit nil)
+			(equal (buffer-file-name) nil))
+		(throw 'visit-file-exception "Not supported!"))
+	
+	(setq file-name-sans-ext (file-name-sans-extension (buffer-file-name)))
+	(setq file-name-non-dir (file-name-nondirectory file-name-sans-ext))
+	
+	;; in current directory
+	;; in super directory
+	;; in sub-dir of super-dir
+	;; ...
+	(setq current-dir (file-name-directory file-name-sans-ext))
+	(setq sub-dir-list (j-get-sub-directory-list current-dir))
+	(dotimes (i super-dir-depth)
+	  (setq current-dir (j-get-super-directory current-dir))
+	  (if (equal current-dir "")
+		  (throw 'visit-file-exception "Not found!"))
+	  (setq sub-dir-list (j-get-sub-directory-list current-dir))
+	  (j-visit-file-in-sub-dirs sub-dir-list
+								file-name-non-dir
+								extensions-to-visit))
+	
+	;; in sub-dir of sub-dir
+	;; ...
+	(setq current-dir (file-name-directory file-name-sans-ext))
+	(setq sub-dir-list (j-get-sub-directory-list current-dir))
+	(let ((sub-dir-all-list nil))
+	  (dotimes (i sub-dir-depth)
+		(mapcar (lambda (entry)
+				  (let ((dirs (j-get-sub-directory-list entry)))
+					(mapcar (lambda (x)
+							  (add-to-list 'sub-dir-all-list x t))
+							dirs))
+				  entry)
+				sub-dir-list)
+		(setq sub-dir-list sub-dir-all-list))
+	  (j-visit-file-in-sub-dirs sub-dir-all-list
+								file-name-non-dir
+								extensions-to-visit))
+	
+  (throw 'visit-file-exception "Not found!")))
+						 
 (defun j-visit-header-or-source-file()
   "현재 파일과 연관된 헤더/소스파일을 오픈한다."
   (interactive)
-  (let (extensions-to-visit extension file-name-to-visit)
-	(setq extensions-to-visit (j-get-extensions-to-visit))
-	(message (catch 'visit-exception
-			   (if (equal extensions-to-visit nil)
-				   (throw 'visit-exception "Not supported"))
-			   (let (file-name)
-				 (setq file-name-to-visit (file-name-sans-extension (buffer-file-name)))
-				 (while (not (equal (setq extension (pop extensions-to-visit)) nil))
-				   (setq file-name (concat file-name-to-visit "." extension))
-				   (if (file-exists-p file-name)
-					   (progn
-						 (find-file file-name)
-						 (throw 'visit-exception file-name))))
-				 (throw 'visit-exception (format "%s was not found." file-name)))))))
+  (message (catch 'visit-file-exception
+			 (j-visit-file-in-dirs 2 2))))
 
 (defvar j-grep-find-symbol-history nil)
 (defvar j-grep-find-symbol-command-history nil)
