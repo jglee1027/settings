@@ -322,10 +322,9 @@ new line, #ifndef ~, #ifdef OS_WIN #pragma once ~을 header file에 추가한다
   (condition-case nil
 	  (progn
 		(select-window (get-buffer-window current-buffer))
-		(forward-line 4))
+		(forward-line 4)
+		(setq compilation-finish-function nil))
 	(error nil)))
-
-(add-to-list 'compilation-finish-functions 'j-grep-find-select-grep-buffer)
 
 (defun j-grep-find-symbol-at-point()
   "현재 파일형식과 현재 커서의 심볼을 가지고 grep-find한다."
@@ -340,6 +339,7 @@ new line, #ifndef ~, #ifdef OS_WIN #pragma once ~을 header file에 추가한다
 									   nil
 									   nil
 									   'j-grep-find-symbol-history))
+	(setq compilation-finish-function 'j-grep-find-select-grep-buffer)
 	(grep-find (j-read-shell-command "Run find (like this): "
 									 (format "find -L %s -type f %s %s -print0 | xargs -0 grep -nH -e \"\\<%s\\>\""
 											 j-grep-find-default-directory
@@ -358,6 +358,7 @@ new line, #ifndef ~, #ifdef OS_WIN #pragma once ~을 header file에 추가한다
 										  nil
 										  nil
 										  'j-grep-find-file-history))
+	(setq compilation-finish-function 'j-grep-find-select-grep-buffer)
 	(grep-find (j-read-shell-command "Run find (like this): "
 									 (format "find -L %s -type f -name '%s'"
 											 j-grep-find-default-directory
