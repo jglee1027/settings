@@ -167,7 +167,7 @@ new line, #ifndef ~, #ifdef OS_WIN #pragma once ~을 header file에 추가한다
   (let ((entries (directory-files dir t))
 		(sub-dirs '()))
 	(mapcar (lambda (entry) (if (j-is-directory entry)
-							(add-to-list 'sub-dirs entry t)))
+								(add-to-list 'sub-dirs entry t)))
 			entries)
 	sub-dirs))
 
@@ -253,8 +253,8 @@ new line, #ifndef ~, #ifdef OS_WIN #pragma once ~을 header file에 추가한다
 								file-name-non-dir
 								extensions-to-visit))
 	
-  (throw 'visit-file-exception "Not found!")))
-						 
+	(throw 'visit-file-exception "Not found!")))
+
 (defun j-visit-header-or-source-file()
   "현재 파일과 연관된 헤더/소스파일을 오픈한다."
   (interactive)
@@ -423,15 +423,75 @@ new line, #ifndef ~, #ifdef OS_WIN #pragma once ~을 header file에 추가한다
 	  (setq line (car (cdr tag-info)))
 	  (goto-line line))))
 
+;; http://www.emacswiki.org/emacs/InteractivelyDoThings
+(defun j-ido-find-file-in-tag-files ()
+  (interactive)
+  (save-excursion
+	(let ((enable-recursive-minibuffers t))
+	  (visit-tags-table-buffer))
+	(find-file
+	 (expand-file-name
+	  (ido-completing-read
+	   "Project file: " (tags-table-files) nil t)))))
+
+;; http://www.emacswiki.org/cgi-bin/wiki/ImenuMode
+(defun j-ido-goto-symbol (&optional symbol-list)
+  "Refresh imenu and jump to a place in the buffer using Ido."
+  (interactive)
+  (unless (featurep 'imenu)
+	(require 'imenu nil t))
+  (cond
+   ((not symbol-list)
+	(let ((ido-mode ido-mode)
+		  (ido-enable-flex-matching
+		   (if (boundp 'ido-enable-flex-matching)
+			   ido-enable-flex-matching t))
+		  name-and-pos symbol-names position)
+	  (unless ido-mode
+		(ido-mode 1)
+		(setq ido-enable-flex-matching t))
+	  (while (progn
+			   (imenu--cleanup)
+			   (setq imenu--index-alist nil)
+			   (j-ido-goto-symbol (imenu--make-index-alist))
+			   (setq selected-symbol
+					 (ido-completing-read "Symbol? " symbol-names))
+			   (string= (car imenu--rescan-item) selected-symbol)))
+	  (unless (and (boundp 'mark-active) mark-active)
+		(push-mark nil t nil))
+	  (setq position (cdr (assoc selected-symbol name-and-pos)))
+	  (cond
+	   ((overlayp position)
+		(goto-char (overlay-start position)))
+	   (t
+		(goto-char position)))))
+   ((listp symbol-list)
+	(dolist (symbol symbol-list)
+	  (let (name position)
+		(cond
+		 ((and (listp symbol) (imenu--subalist-p symbol))
+		  (j-ido-goto-symbol symbol))
+		 ((listp symbol)
+		  (setq name (car symbol))
+		  (setq position (cdr symbol)))
+		 ((stringp symbol)
+		  (setq name symbol)
+		  (setq position
+				(get-text-property 1 'org-imenu-marker symbol))))
+		(unless (or (null position) (null name)
+					(string= (car imenu--rescan-item) name))
+		  (add-to-list 'symbol-names name)
+		  (add-to-list 'name-and-pos (cons name position))))))))
+
 (define-key global-map (kbd "C-c m m") 'j-modify-header-file-for-g++)
 (define-key global-map (kbd "C-c c") 'j-make)
 (define-key global-map (kbd "C-c j p") 'j-visit-header-or-source-file)
 (define-key global-map (kbd "C-c j s") 'j-grep-find-symbol-at-point)
-(define-key global-map (kbd "C-c j f") 'j-grep-find-file)
+(define-key global-map (kbd "C-c j f") 'j-ido-find-file-in-tag-files)
 (define-key global-map (kbd "C-c j d") 'j-grep-find-set-default-directory)
 (define-key global-map (kbd "C-c j i") 'j-grep-find-set-ignore-path)
 (define-key global-map (kbd "C-c j t") 'j-create-tags)
-(define-key global-map (kbd "C-c j m") 'j-etags-goto-tag-in-file)
+(define-key global-map (kbd "C-c j m") 'j-ido-goto-symbol)
 (define-key global-map (kbd "C-c j v") 'visit-tags-table)
 (define-key global-map (kbd "C-c j .") 'tags-apropos)
 (define-key global-map (kbd "C-c j h") 'hs-minor-mode)
