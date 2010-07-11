@@ -24,6 +24,7 @@
 (display-time-mode t)
 (ffap-bindings)
 (iswitchb-mode)
+(ido-mode t)
 (which-function-mode)
 (windmove-default-keybindings)
 (condition-case nil
