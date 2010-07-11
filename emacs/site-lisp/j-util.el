@@ -110,7 +110,7 @@
 			(goto-char (point-max))
 			(setq count-of-new-line 0)
 			(while (and (looking-back "\n") (not (bobp)))
-			  (setq count-of-new-line (+ 1 count-of-new-line))
+			  (setq count-of-new-line (1+ count-of-new-line))
 			  (forward-char -1))
 			(cond ((>= count-of-new-line 2)
 				   ;; new line이 필요없는 경우 삭제한다.
@@ -368,28 +368,6 @@ new line, #ifndef ~, #ifdef OS_WIN #pragma once ~을 header file에 추가한다
 											 file-name)
 									 'j-grep-find-file-command-history))))
 
-(defun j-ido-find-file()
-  (interactive)
-  (let (find-command files-alist)
-	(j-grep-find-set-project-root)
-	(setq find-command
-		  (format "find -L %s -type f %s"
-				  j-grep-find-project-root
-				  (j-get-find-exclusive-path-options)))
-	(message "Finding...")
-	(setq files-alist
-		  (mapcar (lambda (x)
-					(list (file-name-nondirectory x) x))
-				  (split-string
-				   (shell-command-to-string find-command))))
-	(find-file (car
-				(cdr
-				 (assoc (ido-completing-read "Project file: "
-											 (mapcar (lambda (x)
-													   (car x))
-													 files-alist))
-						files-alist))))))
-
 (defvar j-create-tags-command nil)
 (defvar j-create-tags-command-history nil)
 (defvar j-create-tags-directory nil)
@@ -508,6 +486,45 @@ new line, #ifndef ~, #ifdef OS_WIN #pragma once ~을 header file에 추가한다
 		  (add-to-list 'symbol-names name)
 		  (add-to-list 'name-and-pos (cons name position))))))))
 
+(defun j-ido-find-file()
+  (interactive)
+  (let (chosen-name
+		find-command
+		files-alist
+		same-name-files-list
+		(same-name-files-count 0))
+	(j-grep-find-set-project-root)
+	(setq find-command
+		  (format "find -L %s -type f %s"
+				  j-grep-find-project-root
+				  (j-get-find-exclusive-path-options)))
+	(message "Finding...")
+	(setq files-alist
+		  (mapcar (lambda (x)
+					(list (file-name-nondirectory x) x))
+				  (split-string
+				   (shell-command-to-string find-command))))
+	(setq chosen-name
+		  (ido-completing-read "Project file: "
+							   (mapcar (lambda (x)
+										 (car x))
+									   files-alist)))
+	(mapcar (lambda (x)
+			  (cond ((equal chosen-name (car x))
+					 (add-to-list 'same-name-files-list
+								  (car (cdr x)))
+					 (setq same-name-files-count
+						   (1+ same-name-files-count)))))
+			files-alist)
+	(cond ((equal same-name-files-count 1)
+		   (find-file (car same-name-files-list)))
+		  ((> same-name-files-count 1)
+		   (find-file (ido-completing-read "Find file: "
+										   same-name-files-list))))))
+
+;; ======================================================================
+;; Key definition
+;; ======================================================================
 (define-key global-map (kbd "C-c m m") 'j-modify-header-file-for-g++)
 (define-key global-map (kbd "C-c c") 'j-make)
 (define-key global-map (kbd "C-c j p") 'j-visit-header-or-source-file)
