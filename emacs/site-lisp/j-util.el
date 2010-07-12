@@ -270,7 +270,7 @@ new line, #ifndef ~, #ifdef OS_WIN #pragma once ~을 header file에 추가한다
 (defvar j-grep-find-file-command-history nil)
 (defvar j-grep-find-project-root nil)
 (defvar j-grep-find-project-root-history nil)
-(defvar j-grep-find-exclusive-path "*.git* *.svn* *.cvs* *.o *.a *.so *~ *# *TAGS *cscope.out")
+(defvar j-grep-find-exclusive-path "*.git* *.svn* *.cvs* *.class *.o *.a *.so *~ *# *TAGS *cscope.out")
 (defvar j-grep-find-exclusive-path-history nil)
 
 (defun j-get-find-exclusive-path-options()
@@ -486,11 +486,13 @@ new line, #ifndef ~, #ifdef OS_WIN #pragma once ~을 header file에 추가한다
 		  (add-to-list 'symbol-names name)
 		  (add-to-list 'name-and-pos (cons name position))))))))
 
+(defvar j-ido-find-file-files-alist nil)
+(defvar j-ido-find-file-files-alist-root nil)
+
 (defun j-ido-find-file()
   (interactive)
   (let (chosen-name
 		find-command
-		files-alist
 		same-name-files-list
 		(same-name-files-count 0))
 	(j-grep-find-set-project-root)
@@ -499,23 +501,28 @@ new line, #ifndef ~, #ifdef OS_WIN #pragma once ~을 header file에 추가한다
 				  j-grep-find-project-root
 				  (j-get-find-exclusive-path-options)))
 	(message "Finding...")
-	(setq files-alist
-		  (mapcar (lambda (x)
-					(list (file-name-nondirectory x) x))
-				  (split-string
-				   (shell-command-to-string find-command))))
+	;; if the previous project root directory equals to the current one,
+	;; use the previous j-ido-find-file-files-alist to improve speed.
+	(cond ((not (equal j-grep-find-project-root
+				  j-ido-find-file-files-alist-root))
+		   (setq j-ido-find-file-files-alist
+				 (mapcar (lambda (x)
+						   (list (file-name-nondirectory x) x))
+						 (split-string
+						  (shell-command-to-string find-command))))
+		   (setq j-ido-find-file-files-alist-root j-grep-find-project-root)))
 	(setq chosen-name
 		  (ido-completing-read "Project file: "
 							   (mapcar (lambda (x)
 										 (car x))
-									   files-alist)))
+									   j-ido-find-file-files-alist)))
 	(mapcar (lambda (x)
 			  (cond ((equal chosen-name (car x))
 					 (add-to-list 'same-name-files-list
 								  (car (cdr x)))
 					 (setq same-name-files-count
 						   (1+ same-name-files-count)))))
-			files-alist)
+			j-ido-find-file-files-alist)
 	(cond ((equal same-name-files-count 1)
 		   (find-file (car same-name-files-list)))
 		  ((> same-name-files-count 1)
