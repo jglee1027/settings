@@ -270,7 +270,7 @@ new line, #ifndef ~, #ifdef OS_WIN #pragma once ~을 header file에 추가한다
 (defvar j-grep-find-file-command-history nil)
 (defvar j-grep-find-project-root nil)
 (defvar j-grep-find-project-root-history nil)
-(defvar j-grep-find-exclusive-path "*.git* *.svn* *.cvs* *.class *.o *.a *.so *~ *# *TAGS *cscope.out")
+(defvar j-grep-find-exclusive-path "*.git* *.svn* *.cvs* *.class *.obj *.o *.a *.so *~ *# *TAGS *cscope.out")
 (defvar j-grep-find-exclusive-path-history nil)
 
 (defun j-get-find-exclusive-path-options()
@@ -504,7 +504,7 @@ new line, #ifndef ~, #ifdef OS_WIN #pragma once ~을 header file에 추가한다
 	;; if the previous project root directory equals to the current one,
 	;; use the previous j-ido-find-file-files-alist to improve speed.
 	(cond ((not (equal j-grep-find-project-root
-				  j-ido-find-file-files-alist-root))
+					   j-ido-find-file-files-alist-root))
 		   (setq j-ido-find-file-files-alist
 				 (mapcar (lambda (x)
 						   (list (file-name-nondirectory x) x))
