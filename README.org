@@ -1,0 +1,28 @@
+=settings= has Emacs setting files(.el) for developers.
+Furthermore, there are useful settings(Xcode, vim, XChat, cygwin, fonts on Linux).
+In fact, =settings= are most personal.
+If you need them, use them freely.
+Give me feedback if you have any problems or issues.
+
+* Quick setup
+  Download =settings= in your home directory.
+  : git://github.com/jglee1027/settings.git
+
+  Before installation, backup your =.emacs= if necessary.
+  : cd ~
+  : cp .emacs .emacs.old
+
+  Copy =~/settings/emacs/.emacs= to =~/.emacs=
+  : cp ~/settings/emacs/.emacs ~/.emacs
+  Or run =install.sh=
+  : cd ~/settings/emacs
+  : ./install.sh
+
+* Features
+
+* License
+  It is distributed under the GNU General Public License.
+  See the accompanying =GPL-3.0.txt= file for more details.
+
+* Bug report
+  Please use the issues tab to report any issues.
