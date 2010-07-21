@@ -16,7 +16,7 @@
 				:height 98
 				:width normal
 				:foundry "outline"
-				:family "³ª´®°íµñ_AndaleMono"))))
+				:family "³ª´®°íµñÄÚµù"))))
  '(compilation-info ((t (:foreground "DodgerBlue"))))
  '(compilation-warning ((t (:foreground "Orange"))))
  '(cscope-line-face ((nil)))
