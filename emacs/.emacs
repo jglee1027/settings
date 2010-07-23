@@ -140,6 +140,16 @@
 			(local-set-key (kbd "C-c h k") 'hs-hide-all)
 			(local-set-key (kbd "C-c h l") 'hs-show-all)))
 
+;; highlight-symbol
+(condition-case nil
+	(progn
+	  (require 'highlight-symbol)
+	  (global-set-key (kbd "C-c h") 'highlight-symbol-mode)
+	  (global-set-key (kbd "C-c 8") 'highlight-symbol-at-point)
+	  (global-set-key (kbd "C-c .") 'highlight-symbol-next)
+	  (global-set-key (kbd "C-c ,") 'highlight-symbol-prev))
+  (error nil))
+
 ;; ======================================================================
 ;; Mode line and minibuffer
 ;; ======================================================================
@@ -373,3 +383,4 @@
 (if (eq system-type 'windows-nt)
  	(load-library "~/settings/emacs/windows/emacs")
   (load-library "~/settings/emacs/linux/emacs"))
+
