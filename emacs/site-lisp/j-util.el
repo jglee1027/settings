@@ -44,7 +44,7 @@
 ;; utility functions
 ;; ======================================================================
 (defun j-add-new-line-to-eof()
-  "버퍼 마지막에 new line이 없으면 추가한다."
+  "insert newline if the end of buferr is not newline."
   (interactive)
   (save-excursion
 	(goto-char (point-max))
@@ -52,13 +52,13 @@
 		(insert "\n"))))
 
 (defun j-is-already-exist-if-def-pragma-once()
-  "#pragma once가 이미 #ifdef OS_WIN ~ #endif안에 있는지 체크한다."
+  "check if current point is between '#ifdef OS_WIN' and '#endif' preprocessor condition or not."
   (save-excursion
 	(c-up-conditional 1)
 	(looking-at "#[ \t\n]*ifdef[ \t\n]*OS_WIN")))
 
 (defun j-add-if-def-pragma-once()
-  "#pragma once를 #ifdef OS_WIN ~ #endif안에 있도록 수정한다."
+  "move '#pragma' between '#ifdef OS_WIN' and '#endif'."
   (interactive)
   (save-excursion
 	(goto-char (point-min))
@@ -71,7 +71,7 @@
 (defvar j-once-header-project-root-directory-history nil)
 
 (defun j-get-header-define-string()
-  "header define 문자열을 생성하여 리턴한다."
+  "return header definition string for include guard."
   (interactive)
   (let (define-string)
 	(setq define-string (buffer-file-name (current-buffer)))
@@ -88,8 +88,7 @@
 											define-string)))))
 
 (defun j-is-already-exist-if-def-header(header-define-name)
-  "#define header-define-name 이 존재하는지 체크한다.
-존재하면 t 그렇지 않으면 nil리턴한다."
+  "check if header definition string already exists or not."
   (interactive)
   (save-excursion
 	(let (define-header-name-regexp)
@@ -99,7 +98,7 @@
 	  (re-search-forward  define-header-name-regexp nil t))))
 
 (defun j-add-ifndef-header-define-name()
-  "#ifndef header_file_h #define header_file_h ~ #endif가 없으면 추가한다."
+  "if include guards don't exist, insert include guards."
   (interactive)
   (save-excursion
 	(let (header-define-name new-line count-of-new-line) 
@@ -116,7 +115,7 @@
 			  (setq count-of-new-line (1+ count-of-new-line))
 			  (forward-char -1))
 			(cond ((>= count-of-new-line 2)
-				   ;; new line이 필요없는 경우 삭제한다.
+				   ;; delete useless newline
 				   (delete-char (- count-of-new-line 2))
 				   (setq new-line ""))
 				  ((equal count-of-new-line 1)
@@ -128,18 +127,14 @@
 			(insert (format "#endif // %s\n" header-define-name)))))))
 
 (defun j-modify-header-file-for-g++()
-  "g++ warning제거하기 위해 마지막줄에
-new line, #ifndef ~, #ifdef OS_WIN #pragma once ~을 header file에 추가한다."
+  "to supress g++ warning, insert newline at the end of buffer.
+use include guards."
   (interactive)
   (j-add-ifndef-header-define-name)
   (j-add-if-def-pragma-once))
 
 (defun j-get-makefile-dir()
-  "Makefile 존재 디렉토리 알려준다.
-
-현재 버퍼의 위치를 기준으로 Makefile이 존재하는지 체크하여
-존재하면 존재하는 Makefile파일의 디렉토리를 리턴한다.
-존재하지 않으면 계속 상위 디렉토리에서 조사하여 root까지 조사한다."
+  "return the directory(project root directory) where Makefile exist."
   (interactive)
   (let (makefile-dir)
 	(setq makefile-dir (buffer-file-name))
@@ -153,8 +148,8 @@ new line, #ifndef ~, #ifdef OS_WIN #pragma once ~을 header file에 추가한다
 
 (defvar j-make-command-history nil)
 (defun j-make ()
-  "Makefile파일 위치를 찾아 컴파일 명령 문자열을 자동으로 생성
-예) make -C <DIR>"
+  "make compile-string like following if the directory in which Makefile exist is found.
+ex) make -C project/root/directory"
   (interactive)
   (let (compile-string makefile-dir)
 	(setq makefile-dir (j-get-makefile-dir))
@@ -262,7 +257,7 @@ new line, #ifndef ~, #ifdef OS_WIN #pragma once ~을 header file에 추가한다
 	(throw 'visit-file-exception "Not found!")))
 
 (defun j-visit-header-or-source-file()
-  "현재 파일과 연관된 헤더/소스파일을 오픈한다."
+  "open the header or source file related with the current file."
   (interactive)
   (message (catch 'visit-file-exception
 			 (j-visit-file-in-dirs 2 2))))
@@ -318,7 +313,7 @@ new line, #ifndef ~, #ifdef OS_WIN #pragma once ~을 header file에 추가한다
 							  'j-grep-find-exclusive-path-history)))
 
 (defun j-grep-find-set-project-root()
-  "grep-find할 디렉토리를 설정한다."
+  "set a project root directory for grep-find"
   (interactive)
   (j-set-default-directory "Project root: "
 						   j-grep-find-project-root
@@ -333,7 +328,7 @@ new line, #ifndef ~, #ifdef OS_WIN #pragma once ~을 header file에 추가한다
 	(error nil)))
 
 (defun j-grep-find-symbol-at-point()
-  "현재 파일형식과 현재 커서의 심볼을 가지고 grep-find한다."
+  "grep-find with symbol at current point."
   (interactive)
   (let (symbol)
 	(j-grep-find-set-project-root)
@@ -355,7 +350,7 @@ new line, #ifndef ~, #ifdef OS_WIN #pragma once ~을 header file에 추가한다
 									 'j-grep-find-symbol-command-history))))
 
 (defun j-grep-find-file()
-  "파일이름에 해당하는 파일을 찾는다."
+  "search a file."
   (interactive)
   (let (file-name)
 	(j-grep-find-set-project-root)
@@ -377,7 +372,7 @@ new line, #ifndef ~, #ifdef OS_WIN #pragma once ~을 header file에 추가한다
 (defvar j-create-tags-directory-history nil)
 
 (defun j-create-tags()
-  "TAGS파일 생성"
+  "create TAG file."
   (interactive)
   (j-set-default-directory "Create tags: "
 						   j-create-tags-directory
@@ -442,7 +437,7 @@ new line, #ifndef ~, #ifdef OS_WIN #pragma once ~을 header file에 추가한다
 
 ;; http://www.emacswiki.org/cgi-bin/wiki/ImenuMode
 (defun j-ido-goto-symbol (&optional symbol-list)
-  "Refresh imenu and jump to a place in the buffer using Ido."
+  "Refresh imenu and jump to a place in the current buffer using Ido."
   (interactive)
   (unless (featurep 'imenu)
 	(require 'imenu nil t))

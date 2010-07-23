@@ -1,6 +1,6 @@
 =settings= has Emacs setting files(.el) for developers.
 Furthermore, there are useful settings(Xcode, vim, XChat, cygwin, fonts on Linux).
-In fact, =settings= are most personal.
+In fact, =settings= is most personal.
 If you need them, use them freely.
 Give me feedback if you have any problems or issues.
 
