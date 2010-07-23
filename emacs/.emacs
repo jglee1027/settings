@@ -146,8 +146,8 @@
 	  (require 'highlight-symbol)
 	  (global-set-key (kbd "C-c h") 'highlight-symbol-mode)
 	  (global-set-key (kbd "C-c 8") 'highlight-symbol-at-point)
-	  (global-set-key (kbd "C-c .") 'highlight-symbol-next)
-	  (global-set-key (kbd "C-c ,") 'highlight-symbol-prev))
+	  (global-set-key (kbd "C-c 7") 'highlight-symbol-prev)
+	  (global-set-key (kbd "C-c 9") 'highlight-symbol-next))
   (error nil))
 
 ;; ======================================================================
