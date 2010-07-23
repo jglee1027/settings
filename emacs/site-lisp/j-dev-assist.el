@@ -1,5 +1,54 @@
-(ffap-bindings)
+;;; j-dev-assist.el --- Development Asisstant for Emacs developed by Jong-Gyu
+;;
+;; Copyright 2010 Lee Jong-Gyu<jglee1027@gmail.com>
+;;
+;; Authors: Lee Jong-Gyu<jglee1027@gmail.com>
+;; Version: 0.1.0
+;; Repository: git://github.com/jglee1027/settings.git
+;;
+;; * License
+;; 	 This program is free software; you can redistribute it and/or modify
+;; 	 it under the terms of the GNU General Public License as published by
+;; 	 the Free Software Foundation; either version 2, or (at your option)
+;; 	 any later version.
+;; 
+;; 	 This program is distributed in the hope that it will be useful,
+;; 	 but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; 	 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; 	 GNU General Public License for more details.
+;; 
+;; 	 You should have received a copy of the GNU General Public License
+;; 	 along with GNU Emacs; see the file COPYING.  If not, write to the
+;; 	 Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+;; 	 Boston, MA 02111-1307, USA.
+;; 
+;;; Commentary:
+;; 
+;; * Installation
+;;   Edit your ~/.emacs file to add the line:
+;;     (add-to-list 'load-path "/path/to/j-dev-assist.el")
+;;     (require 'j-dev-assist)
+;; 
+;; * Major commands:
+;;	 C-c c `j-make'
+;;	 C-c j g `j-modify-header-file-for-g++'
+;;	 C-c j p `j-visit-header-or-source-file'
+;;	 C-c j s `j-grep-find-symbol-at-point'
+;;	 C-c j f `j-grep-find-file'
+;;	 C-c j i `j-ido-find-file'
+;;	 C-c j m `j-ido-goto-symbol'
+;;	 C-c j r `j-grep-find-set-project-root'
+;;	 C-c j e `j-grep-find-set-exclusive-path'
+;;	 C-c j t `j-create-tags'
+;;
+
+;;; Code:
+
+(require 'imenu)
+
 (ido-mode t)
+(if (boundp 'ffap-bindings)
+	(ffap-bindings))
 
 ;; ======================================================================
 ;; common functions
@@ -530,8 +579,8 @@ ex) make -C project/root/directory"
 ;; ======================================================================
 ;; Key definition
 ;; ======================================================================
-(define-key global-map (kbd "C-c m m") 'j-modify-header-file-for-g++)
 (define-key global-map (kbd "C-c c") 'j-make)
+(define-key global-map (kbd "C-c j g") 'j-modify-header-file-for-g++)
 (define-key global-map (kbd "C-c j p") 'j-visit-header-or-source-file)
 (define-key global-map (kbd "C-c j s") 'j-grep-find-symbol-at-point)
 (define-key global-map (kbd "C-c j f") 'j-grep-find-file)
@@ -543,3 +592,6 @@ ex) make -C project/root/directory"
 (define-key global-map (kbd "C-c j v") 'visit-tags-table)
 (define-key global-map (kbd "C-c j .") 'tags-apropos)
 (define-key global-map (kbd "C-c j h") 'hs-minor-mode)
+
+(provide 'j-dev-assist)
+;;; j-dev-assist.el ends here

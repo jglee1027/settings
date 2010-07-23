@@ -377,7 +377,7 @@
 ;; ======================================================================
 ;; Misc. Customization
 ;; ======================================================================
-(load-library "j-util")
+(load-library "j-dev-assist")
 (load-library "j-highlight")
 
 (if (eq system-type 'windows-nt)
