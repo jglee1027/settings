@@ -26,7 +26,7 @@
 (iswitchb-mode)
 (ido-mode t)
 (which-function-mode)
-(windmove-default-keybindings)
+
 (condition-case nil
 	(progn
 	  (require 'auto-complete)
@@ -148,6 +148,17 @@
 	  (global-set-key (kbd "C-c 8") 'highlight-symbol-at-point)
 	  (global-set-key (kbd "C-c 7") 'highlight-symbol-prev)
 	  (global-set-key (kbd "C-c 9") 'highlight-symbol-next))
+  (error nil))
+
+;; winmove
+(condition-case nil
+	(progn
+	  (require 'windmove)
+	  (global-set-key (kbd "C-x w h") 'windmove-left)
+	  (global-set-key (kbd "C-x w j") 'windmove-down)
+	  (global-set-key (kbd "C-x w k") 'windmove-up)
+	  (global-set-key (kbd "C-x w l") 'windmove-right)
+	  (windmove-default-keybindings))
   (error nil))
 
 ;; ======================================================================
