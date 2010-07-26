@@ -6,6 +6,8 @@
 ;; Version: 0.1.0
 ;; Repository: git://github.com/jglee1027/settings.git
 ;;
+;; This file is NOT part of GNU Emacs.
+;; 
 ;; * License
 ;; 	 This program is free software; you can redistribute it and/or modify
 ;; 	 it under the terms of the GNU General Public License as published by
