@@ -44,7 +44,8 @@
 (defvar j-highlight-symbol-timer-interval 1.0)
 (defvar j-highlight-symbol-timer nil)
 (defvar j-highlight-symbol-color 'hi-red-b)
-(defvar j-highlight-symbol-old-symbol-regex nil)
+(defvar j-highlight-symbol-symbol-regex nil)
+(make-variable-buffer-local 'j-highlight-symbol-symbol-regex)
 
 ;; callback function 
 (defun j-highlight-symbol-callback ()
@@ -57,19 +58,19 @@
 							   (t
 								nil))))
 	  (cond ((and symbol-regex
-				  (not (string= symbol-regex j-highlight-symbol-old-symbol-regex)))
-			 (hi-lock-unface-buffer j-highlight-symbol-old-symbol-regex)
+				  (not (string= symbol-regex j-highlight-symbol-symbol-regex)))
+			 (hi-lock-unface-buffer j-highlight-symbol-symbol-regex)
 			 (hi-lock-face-buffer symbol-regex
 								  j-highlight-symbol-color)
-			 (setq j-highlight-symbol-old-symbol-regex symbol-regex))))))
+			 (setq j-highlight-symbol-symbol-regex symbol-regex))))))
 
 ;; start function
 (defun j-highlight-symbol-run-toggle ()
   (interactive)
   (cond ((timerp j-highlight-symbol-timer)
 		 (cancel-timer j-highlight-symbol-timer)
-		 (and j-highlight-symbol-old-symbol-regex
-			  (hi-lock-unface-buffer j-highlight-symbol-old-symbol-regex))
+		 (and j-highlight-symbol-symbol-regex
+			  (hi-lock-unface-buffer j-highlight-symbol-symbol-regex))
 		 (message "j-highlight-symbol off.")
 		 (setq j-highlight-symbol-timer nil))
 		(t
