@@ -25,7 +25,6 @@
 (ffap-bindings)
 (iswitchb-mode)
 (ido-mode t)
-(which-function-mode)
 
 (condition-case nil
 	(progn
