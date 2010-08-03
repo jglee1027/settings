@@ -1,2 +1,3 @@
 #!/bin/sh
-cp .emacs ~/.emacs
+cp ~/settings/emacs/.emacs ~/.emacs
+cp ~/settings/emacs/linux/.Xresources ~/

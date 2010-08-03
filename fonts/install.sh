@@ -1,2 +1,2 @@
 #!/bin/sh
-cp ./.fonts.conf ~/
+cp ~/settings/fonts/.fonts.conf ~/
