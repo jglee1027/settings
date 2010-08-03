@@ -1,2 +1,2 @@
 #!/bin/sh
-sudo cp *.conf /etc/fonts/conf.d/
+cp ./.fonts.conf ~/
