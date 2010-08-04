@@ -192,10 +192,11 @@ use include guards."
 	(if (equal makefile-dir nil)
 		(setq makefile-dir default-directory) ; not filebuffer
 	  (setq makefile-dir (j-get-super-directory makefile-dir)))
-	(while (and (not (equal makefile-dir ""))
+	(while (and (not (or (equal makefile-dir "")
+						 (equal makefile-dir "~/")))
 				(not (file-exists-p (concat makefile-dir "/Makefile"))))
 	  (setq makefile-dir (j-get-super-directory makefile-dir)))
-	makefile-dir))
+	""))
 
 (defvar j-make-command-history nil)
 (defun j-make ()
