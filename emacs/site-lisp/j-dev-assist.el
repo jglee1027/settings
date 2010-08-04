@@ -193,7 +193,7 @@ use include guards."
 		(setq makefile-dir default-directory) ; not filebuffer
 	  (setq makefile-dir (j-get-super-directory makefile-dir)))
 	(while (and (not (or (equal makefile-dir "")
-						 (equal makefile-dir "~/")))
+						 (equal makefile-dir "~")))
 				(not (file-exists-p (concat makefile-dir "/Makefile"))))
 	  (setq makefile-dir (j-get-super-directory makefile-dir)))
 	""))
