@@ -43,6 +43,7 @@
 (defvar j-highlight-symbol-timer-interval 0.7)
 
 (defvar j-highlight-symbol-timer nil)
+(defvar j-highlight-symbol-buffers-alist nil)
 (defvar j-highlight-symbol-symbol-regex nil)
 (make-variable-buffer-local 'j-highlight-symbol-symbol-regex)
 
@@ -57,10 +58,16 @@
 							   (t
 								nil))))
 	  (cond ((and symbol-regex
-				  (not (string= symbol-regex j-highlight-symbol-symbol-regex)))
+				  (not (string= symbol-regex j-highlight-symbol-symbol-regex))
+				  (buffer-file-name))
 			 (hi-lock-unface-buffer j-highlight-symbol-symbol-regex)
 			 (hi-lock-face-buffer symbol-regex
 								  j-highlight-symbol-color)
+			 (setq j-highlight-symbol-buffers-alist
+				   (assq-delete-all (current-buffer)
+									j-highlight-symbol-buffers-alist))
+			 (add-to-list 'j-highlight-symbol-buffers-alist
+						  (list (current-buffer) symbol-regex) t)
 			 (setq j-highlight-symbol-symbol-regex symbol-regex))))))
 
 ;; start function
@@ -68,8 +75,15 @@
   (interactive)
   (cond ((timerp j-highlight-symbol-timer)
 		 (cancel-timer j-highlight-symbol-timer)
-		 (and j-highlight-symbol-symbol-regex
-			  (hi-lock-unface-buffer j-highlight-symbol-symbol-regex))
+		 (while j-highlight-symbol-buffers-alist
+		   (let* ((entry (pop j-highlight-symbol-buffers-alist))
+				  (buffer (pop entry))
+				  (symbol-regex (pop entry)))
+			 (condition-case nil
+				 (progn
+				   (set-buffer buffer)
+				   (hi-lock-unface-buffer j-highlight-symbol-symbol-regex))
+			   (error nil))))
 		 (message "j-highlight-symbol off.")
 		 (setq j-highlight-symbol-timer nil))
 		(t
