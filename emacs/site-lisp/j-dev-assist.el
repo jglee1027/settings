@@ -594,7 +594,7 @@ ex) make -C project/root/directory"
 (define-key global-map (kbd "C-c j t") 'j-create-tags)
 (define-key global-map (kbd "C-c j v") 'visit-tags-table)
 (define-key global-map (kbd "C-c j .") 'tags-apropos)
-(define-key global-map (kbd "C-c j h") 'hs-minor-mode)
+(define-key global-map (kbd "C-c j [") 'hs-minor-mode)
 
 (provide 'j-dev-assist)
 ;;; j-dev-assist.el ends here

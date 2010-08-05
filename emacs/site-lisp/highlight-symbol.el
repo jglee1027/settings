@@ -95,7 +95,7 @@
   '((((class color) (background dark))
      (:background "gray30"))
     (((class color) (background light))
-     (:background "gray90")))
+     (:background "blue" :foreground "black")))
   "*Face used by `highlight-symbol-mode'."
   :group 'highlight-symbol)
 

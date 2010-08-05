@@ -39,9 +39,10 @@
 ;; ======================================================================
 ;; highlight the symbol at current point with a idle timer
 ;; ======================================================================
-(defvar j-highlight-symbol-timer-interval 1.0)
-(defvar j-highlight-symbol-timer nil)
 (defvar j-highlight-symbol-color 'hi-red-b)
+(defvar j-highlight-symbol-timer-interval 0.7)
+
+(defvar j-highlight-symbol-timer nil)
 (defvar j-highlight-symbol-symbol-regex nil)
 (make-variable-buffer-local 'j-highlight-symbol-symbol-regex)
 
@@ -74,10 +75,10 @@
 		(t
 		 (unless hi-lock-mode (hi-lock-mode 1))
 		 (setq j-highlight-symbol-timer
-			   (run-with-idle-timer 1.5 t 'j-highlight-symbol-callback))
+			   (run-with-idle-timer j-highlight-symbol-timer-interval t 'j-highlight-symbol-callback))
 		 (message "j-highlight-symbol on."))))
 
-(define-key global-map (kbd "C-x j h") 'j-highlight-symbol-run-toggle)
+(define-key global-map (kbd "C-c j h") 'j-highlight-symbol-run-toggle)
 
 ;; ======================================================================
 ;; Using ThingAtPoint and the Existing C-s C-w

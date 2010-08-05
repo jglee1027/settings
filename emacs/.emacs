@@ -143,7 +143,7 @@
 (condition-case nil
 	(progn
 	  (require 'highlight-symbol)
-	  (global-set-key (kbd "C-c h") 'highlight-symbol-mode)
+	  (global-set-key (kbd "C-c j 8") 'highlight-symbol-mode)
 	  (global-set-key (kbd "C-c 8") 'highlight-symbol-at-point)
 	  (global-set-key (kbd "C-c 7") 'highlight-symbol-prev)
 	  (global-set-key (kbd "C-c 9") 'highlight-symbol-next))
