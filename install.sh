@@ -59,7 +59,7 @@ diff_cp ~/settings/.conkerorrc ~/.conkerorrc
 # make conkeror bookmarks synchronize with firefox bookmarks
 firefox_config_path=~/.mozilla/firefox
 conkeror_config_path=~/.conkeror.mozdev.org/conkeror
-if [ -d $firefox_profiles -a -d $conkeror_profiles ]; then
+if [ -d $firefox_config_path -a -d $conkeror_config_path ]; then
 	firefox_bookmarks=$firefox_config_path/$(cat $firefox_config_path/profiles.ini | grep Path | awk 'BEGIN { FS = "=" } { print $2 }')
 	conkeror_bookmarks=$conkeror_config_path/$(cat $conkeror_config_path/profiles.ini | grep Path | awk 'BEGIN { FS = "=" } { print $2 }')
 	cp $firefox_bookmarks/places.sqlite $conkeror_bookmarks/places.sqlite
