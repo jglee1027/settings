@@ -1,4 +1,5 @@
 #!/bin/bash
+settings_path=$(dirname `readlink -f $0`)
 
 diff_file=/tmp/install.diff
 diff_cp() {
@@ -31,30 +32,30 @@ diff_cp() {
 }
 
 echo emacs setting...
-diff_cp ~/settings/emacs/.emacs ~/.emacs
-diff_cp ~/settings/emacs/linux/.Xresources ~/.Xresources
+diff_cp $settings_path/emacs/.emacs ~/.emacs
+diff_cp $settings_path/emacs/linux/.Xresources ~/.Xresources
 echo emacs setting... OK
 
 echo vim setting...
-diff_cp ~/settings/vim/.vimrc ~/.vimrc
+diff_cp $settings_path/vim/.vimrc ~/.vimrc
 echo vim setting... OK
 
 echo font setting...
-diff_cp ~/settings/fonts/.fonts.conf ~/
+diff_cp $settings_path/fonts/.fonts.conf ~/
 echo font setting... OK
 
 echo git setting...
-diff_cp ~/settings/.gitconfig ~/.gitconfig
+diff_cp $settings_path/.gitconfig ~/.gitconfig
 echo git setting... OK
 
 if [ -d ~/.moc ]; then
 	echo moc setting...
-	diff_cp ~/settings/.moc/config ~/.moc/config
+	diff_cp $settings_path/.moc/config ~/.moc/config
 	echo moc setting... OK
 fi
 
 echo conkeror setting...
-diff_cp ~/settings/.conkerorrc ~/.conkerorrc
+diff_cp $settings_path/.conkerorrc ~/.conkerorrc
 
 # make conkeror bookmarks synchronize with firefox bookmarks
 firefox_config_path=~/.mozilla/firefox
@@ -64,4 +65,4 @@ if [ -d $firefox_config_path -a -d $conkeror_config_path ]; then
 	conkeror_bookmarks=$conkeror_config_path/$(cat $conkeror_config_path/profiles.ini | grep Path | awk 'BEGIN { FS = "=" } { print $2 }')
 	cp $firefox_bookmarks/places.sqlite $conkeror_bookmarks/places.sqlite
 fi
-echo conkeror settings...OK
+echo conkeror setting...OK
