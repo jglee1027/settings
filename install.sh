@@ -1,5 +1,5 @@
 #!/bin/bash
-settings_path=$(dirname `readlink -f $0`)
+settings_path=$(dirname $0)
 
 diff_file=/tmp/install.diff
 diff_cp() {
