@@ -223,24 +223,19 @@ ex) make -C project/root/directory"
 			entries)
 	sub-dirs))
 
+(defvar j-get-extensions-alist '(("c"		. ("h"))
+								 ("cpp"		. ("h"))
+								 ("m"		. ("h"))
+								 ("mm"		. ("h"))
+								 ("h"		. ("c" "cpp" "m" "mm"))))
+
 (defun j-get-extensions-to-visit()
   (let (extension extensions-to-visit)
-	(if (null (buffer-file-name))
-		(setq extensions-to-visit nil)
-	  (progn
-		(setq extension (file-name-extension (buffer-file-name)))
-		(cond ((equal extension "c")
-			   (setq extensions-to-visit '("h")))
-			  ((equal extension "cpp")
-			   (setq extensions-to-visit '("h")))
-			  ((equal extension "m")
-			   (setq extensions-to-visit '("h")))
-			  ((equal extension "mm")
-			   (setq extensions-to-visit '("h")))
-			  ((equal extension "h")
-			   (setq extensions-to-visit '("c" "cpp" "m" "mm")))
-			  (t
-			   (setq extensions-to-visit nil)))))))
+	(cond ((null (buffer-file-name))
+		   (setq extensions-to-visit nil))
+		  (t
+		   (setq extension (downcase (file-name-extension (buffer-file-name))))
+		   (setq extensions-to-visit (cdr (assoc extension j-get-extensions-alist)))))))
 
 (defun j-visit-file(file-name-sans-ext extensions)
   (let (file-name file-ext)
@@ -322,38 +317,41 @@ ex) make -C project/root/directory"
 (defvar j-grep-find-project-root-history nil)
 (defvar j-grep-find-exclusive-path "*.git* *.svn* *.cvs* *.class *.obj *.o *.a *.so *~ *# *TAGS *cscope.out")
 (defvar j-grep-find-exclusive-path-history nil)
+(defvar j-grep-find-extension-alist '(("c"		. "*.[cChH] *.[cC][pP][pP] *.[mM] *.[mM][mM]")
+									  ("cpp"	. "*.[cChH] *.[cC][pP][pP] *.[mM] *.[mM][mM]")
+									  ("h"		. "*.[cChH] *.[cC][pP][pP] *.[mM] *.[mM][mM]")
+									  ("java"	. "*.java")
+									  ("el"		. "*.el")
+									  ("rb"		. "*.rb")))
 
 (defun j-get-find-exclusive-path-options()
   (let (path-list path-option)
 	(if (equal j-grep-find-exclusive-path "")
 		(setq path-option "")
 	  (progn
-		(setq path-list 
-			  (mapcar (lambda (x) (format "-path '%s'" x))
-					  (split-string j-grep-find-exclusive-path)))
+		(setq path-list (mapcar (lambda (x) (format "-path '%s'" x))
+								(split-string j-grep-find-exclusive-path)))
 		(setq path-option (pop path-list))
 		(while path-list
 		  (setq path-option (concat path-option " -o " (pop path-list))))
 		(setq path-option (concat "! \\( " path-option " \\)"))))))
 
 (defun j-get-find-name-options()
-  (let (name-option extension)
-	(if (null (buffer-file-name))
-		(setq name-option "")
-	  (progn
-		(setq extension (file-name-extension (buffer-file-name)))
-		(cond ((or (equal extension "c") (equal extension "cpp") (equal extension "h"))
-			   (setq name-option "\\( -name '*.[cChH]' -o -name '*.[cC][pP][pP]' \\)"))
-			  ((or (equal extension "m") (equal extension "mm"))
-			   (setq name-option "\\( -name '*.[cChH]' -o -name '*.[cC][pP][pP]' -o -name '*.mm' -o -name '*.m' \\)"))
-			  ((equal extension "java")
-			   (setq name-option "-name '*.java'"))
-			  ((equal extension "el")
-			   (setq name-option "-name '*.el'"))
-			  ((equal extension "rb")
-			   (setq name-option "-name '*.rb'"))
-			  (t
-			   (setq name-option "")))))))
+  (let (name-option name-list extension assoc-extensions)
+	(cond ((null (buffer-file-name))
+		   (setq name-option ""))
+		  (t
+		   (setq extension (downcase (file-name-extension (buffer-file-name))))
+		   (setq assoc-extensions (cdr (assoc extension j-grep-find-extension-alist)))
+		   (cond (assoc-extensions
+				  (setq name-list (mapcar (lambda (x) (format "-name '%s'" x))
+										  (split-string assoc-extensions)))
+				  (setq name-option (pop name-list))
+				  (while name-list
+					(setq name-option (concat name-option " -o " (pop name-list))))
+				  (setq name-option (concat "\\( " name-option " \\)")))
+				 (t
+				  (setq name-option "")))))))
 
 (defun j-grep-find-set-exclusive-path()
   (interactive)
