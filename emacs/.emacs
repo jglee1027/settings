@@ -31,6 +31,7 @@
 	(progn
 	  (require 'auto-complete)
 	  (add-to-list 'ac-modes 'jde-mode)
+	  (add-to-list 'ac-modes 'objc-mode)
 	  (global-auto-complete-mode t))
   (error nil))
 
