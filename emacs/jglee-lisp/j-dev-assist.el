@@ -31,15 +31,15 @@
 ;; 
 ;; * Major commands:
 ;;	 C-c c `j-make'
+;;	 C-c j t `j-create-tags'
 ;;	 C-c j g `j-modify-header-file-for-g++'
 ;;	 C-c j p `j-visit-header-or-source-file'
-;;	 C-c j s `j-grep-find-symbol-at-point'
-;;	 C-c j f `j-grep-find-file'
+;;	 C-c j s `j-gf-symbol-at-point'
+;;	 C-c j f `j-gf-find-file'
+;;	 C-c j r `j-gf-set-project-root'
+;;	 C-c j e `j-gf-set-exclusive-path'
 ;;	 C-c j i `j-ido-find-file'
 ;;	 C-c j m `j-ido-goto-symbol'
-;;	 C-c j r `j-grep-find-set-project-root'
-;;	 C-c j e `j-grep-find-set-exclusive-path'
-;;	 C-c j t `j-create-tags'
 ;;
 
 ;;; Code:
@@ -309,40 +309,54 @@ ex) make -C project/root/directory"
   (message (catch 'visit-file-exception
 			 (j-visit-file-in-dirs 2 2))))
 
-(defvar j-grep-find-symbol-history nil)
-(defvar j-grep-find-symbol-command-history nil)
-(defvar j-grep-find-file-history nil)
-(defvar j-grep-find-file-command-history nil)
-(defvar j-grep-find-project-root nil)
-(defvar j-grep-find-project-root-history nil)
-(defvar j-grep-find-exclusive-path "*.git* *.svn* *.cvs* *.class *.obj *.o *.a *.so *~ *# *TAGS *cscope.out")
-(defvar j-grep-find-exclusive-path-history nil)
-(defvar j-grep-find-extension-alist '(("c"		. "*.[cChH] *.[cC][pP][pP] *.[mM] *.[mM][mM]")
-									  ("cpp"	. "*.[cChH] *.[cC][pP][pP] *.[mM] *.[mM][mM]")
-									  ("h"		. "*.[cChH] *.[cC][pP][pP] *.[mM] *.[mM][mM]")
-									  ("java"	. "*.java")
-									  ("el"		. "*.el")
-									  ("rb"		. "*.rb")))
+(defvar j-gf-symbol-history nil)
+(defvar j-gf-symbol-command-history nil)
+(defvar j-gf-find-file-history nil)
+(defvar j-gf-find-file-command-history nil)
+(defvar j-gf-replace-file-history nil)
+(defvar j-gf-replace-file-command-history nil)
+(defvar j-gf-project-root nil)
+(defvar j-gf-project-root-history nil)
+(defvar j-gf-exclusive-path "*.git* *.svn* *.cvs* *.class *.obj *.o *.a *.so *~ *# *.semantic *TAGS *cscope.out")
+(defvar j-gf-exclusive-path-history nil)
+(defvar j-gf-assoc-extension-alist '(("c"		. "*.[cChH] *.[cC][pP][pP] *.[mM] *.[mM][mM]")
+									 ("cpp"	. "*.[cChH] *.[cC][pP][pP] *.[mM] *.[mM][mM]")
+									 ("h"		. "*.[cChH] *.[cC][pP][pP] *.[mM] *.[mM][mM]")
+									 ("java"	. "*.java")
+									 ("el"	. "*.el")
+									 ("rb"	. "*.rb")))
 
-(defun j-get-find-exclusive-path-options()
+(defun j-gf-get-find-exclusive-path-options()
   (let (path-list path-option)
-	(if (equal j-grep-find-exclusive-path "")
+	(if (equal j-gf-exclusive-path "")
 		(setq path-option "")
 	  (progn
 		(setq path-list (mapcar (lambda (x) (format "-path '%s'" x))
-								(split-string j-grep-find-exclusive-path)))
+								(split-string j-gf-exclusive-path)))
 		(setq path-option (pop path-list))
 		(while path-list
 		  (setq path-option (concat path-option " -o " (pop path-list))))
 		(setq path-option (concat "! \\( " path-option " \\)"))))))
 
-(defun j-get-find-name-options()
+(defun j-gf-get-find-name-options(files)
+  (let (name-list name-option)
+	(if (equal files "")
+		(setq name-option "")
+	  (progn
+		(setq name-list (mapcar (lambda (x) (format "-name '%s'" x))
+								(split-string files)))
+		(setq name-option (pop name-list))
+		(while name-list
+		  (setq name-option (concat name-option " -o " (pop name-list))))
+		(setq name-option (concat "\\( " name-option " \\)"))))))
+
+(defun j-gf-get-assoc-find-name-options()
   (let (name-option name-list extension assoc-extensions)
 	(cond ((null (buffer-file-name))
 		   (setq name-option ""))
 		  (t
 		   (setq extension (downcase (file-name-extension (buffer-file-name))))
-		   (setq assoc-extensions (cdr (assoc extension j-grep-find-extension-alist)))
+		   (setq assoc-extensions (cdr (assoc extension j-gf-assoc-extension-alist)))
 		   (cond (assoc-extensions
 				  (setq name-list (mapcar (lambda (x) (format "-name '%s'" x))
 										  (split-string assoc-extensions)))
@@ -353,23 +367,23 @@ ex) make -C project/root/directory"
 				 (t
 				  (setq name-option "")))))))
 
-(defun j-grep-find-set-exclusive-path()
+(defun j-gf-set-exclusive-path()
   (interactive)
-  (setq j-grep-find-exclusive-path
+  (setq j-gf-exclusive-path
 		(read-from-minibuffer "Exclusive paths: "
-							  j-grep-find-exclusive-path
+							  j-gf-exclusive-path
 							  nil
 							  nil
-							  'j-grep-find-exclusive-path-history)))
+							  'j-gf-exclusive-path-history)))
 
-(defun j-grep-find-set-project-root()
+(defun j-gf-set-project-root()
   "set a project root directory for grep-find"
   (interactive)
   (j-set-default-directory "Project root: "
-						   j-grep-find-project-root
-						   'j-grep-find-project-root-history))
+						   j-gf-project-root
+						   'j-gf-project-root-history))
 
-(defun j-grep-find-select-grep-buffer(current-buffer msg)
+(defun j-gf-select-grep-buffer(current-buffer msg)
   (condition-case nil
 	  (progn
 		(select-window (get-buffer-window current-buffer))
@@ -377,11 +391,11 @@ ex) make -C project/root/directory"
 		(setq compilation-finish-function nil))
 	(error nil)))
 
-(defun j-grep-find-symbol-at-point()
+(defun j-gf-symbol-at-point()
   "grep-find with symbol at current point."
   (interactive)
   (let (symbol)
-	(j-grep-find-set-project-root)
+	(j-gf-set-project-root)
 	(setq symbol (symbol-at-point))
 	(if (null symbol)
 		(setq symbol ""))
@@ -389,32 +403,81 @@ ex) make -C project/root/directory"
 									   (format "%s" symbol)
 									   nil
 									   nil
-									   'j-grep-find-symbol-history))
-	(setq compilation-finish-function 'j-grep-find-select-grep-buffer)
+									   'j-gf-symbol-history))
+	(setq compilation-finish-function 'j-gf-select-grep-buffer)
 	(grep-find (j-read-shell-command "Command: "
 									 (format "find -L %s -type f %s %s -print0 | xargs -0 grep -nH -e \"\\<%s\\>\""
-											 j-grep-find-project-root
-											 (j-get-find-name-options)
-											 (j-get-find-exclusive-path-options)
+											 j-gf-project-root
+											 (j-gf-get-assoc-find-name-options)
+											 (j-gf-get-find-exclusive-path-options)
 											 symbol)
-									 'j-grep-find-symbol-command-history))))
+									 'j-gf-symbol-command-history))))
 
-(defun j-grep-find-file()
+
+(defun j-gf-find-file()
   "search a file."
   (interactive)
-  (let (file-name)
-	(j-grep-find-set-project-root)
-	(setq file-name (read-from-minibuffer "Find file: "
-										  nil
-										  nil
-										  nil
-										  'j-grep-find-file-history))
-	(setq compilation-finish-function 'j-grep-find-select-grep-buffer)
+  (let (files)
+	(j-gf-set-project-root)
+	(setq files (read-from-minibuffer "Find file: "
+									  nil
+									  nil
+									  nil
+									  'j-gf-find-file-history))
+	(setq compilation-finish-function 'j-gf-select-grep-buffer)
 	(grep-find (j-read-shell-command "Command: "
-									 (format "find -L %s -type f -name '%s'"
-											 j-grep-find-project-root
-											 file-name)
-									 'j-grep-find-file-command-history))))
+									 (format "find -L %s -type f %s "
+											 j-gf-project-root
+											 (j-gf-get-find-name-options files))
+									 'j-gf-find-file-command-history))))
+
+(defun j-gf-get-query-replace-files()
+  (let ((files nil))
+	(with-current-buffer "*j-query-replace*"
+	  (let (start end)
+		(goto-char (point-min))
+		(while (not (eobp))
+		  (setq start (point))
+		  (forward-line 1)
+		  (setq end (- (point) 1))
+		  (add-to-list 'files (buffer-substring start end) t)
+		  (setq start (point)))))
+	
+	(dolist (file files)
+	  (let ((buffer (get-file-buffer file)))
+		(if (and buffer (with-current-buffer buffer
+						  buffer-read-only))
+			(error "File `%s' is visited read-only" file))))
+	files))
+
+(defun j-gf-query-replace(from to &optional delimited)
+  (interactive
+   (let ((common
+		  (query-replace-read-args
+		   "Query replace regexp in found files" t t)))
+     (list (nth 0 common) (nth 1 common) (nth 2 common))))
+  (let (files)
+	(j-gf-set-project-root)
+	
+	(cond ((null (buffer-file-name))
+		   (setq files ""))
+		  (t
+		   (setq files (cdr (assoc (downcase (file-name-extension (buffer-file-name)))
+								   j-gf-assoc-extension-alist)))))
+
+	(setq files (read-from-minibuffer "Query replace file: "
+									  files
+									  nil
+									  nil
+									  'j-gf-replace-file-history))
+	(shell-command (j-read-shell-command "Command: "
+										 (format "find -L %s -type f %s "
+												 j-gf-project-root
+												 (j-gf-get-find-name-options files))
+										 'j-gf-replace-file-command-history)
+				   "*j-query-replace*")
+	
+	(tags-query-replace from to delimited '(j-gf-get-query-replace-files))))
 
 (defvar j-create-tags-command nil)
 (defvar j-create-tags-command-history nil)
@@ -430,12 +493,11 @@ ex) make -C project/root/directory"
   (shell-command (j-read-shell-command "Command: "
 									   (format "find -L %s -type f %s %s -print | etags - -o %s/TAGS"
 											   j-create-tags-directory
-											   (j-get-find-name-options)
-											   (j-get-find-exclusive-path-options)
+											   (j-gf-get-assoc-find-name-options)
+											   (j-gf-get-find-exclusive-path-options)
 											   j-create-tags-directory)
 									   'j-create-tags-command-history)
 				 "*j-create-tag*"))
-
 
 (defvar j-etags-tag-info-alist nil)
 
@@ -543,22 +605,22 @@ ex) make -C project/root/directory"
 		find-command
 		same-name-files-list
 		(same-name-files-count 0))
-	(j-grep-find-set-project-root)
+	(j-gf-set-project-root)
 	(setq find-command
 		  (format "find -L %s -type f %s"
-				  j-grep-find-project-root
-				  (j-get-find-exclusive-path-options)))
+				  j-gf-project-root
+				  (j-gf-get-find-exclusive-path-options)))
 	(message "Finding...")
 	;; if the previous project root directory equals to the current one,
 	;; use the previous j-ido-find-file-files-alist to improve speed.
-	(cond ((not (equal j-grep-find-project-root
+	(cond ((not (equal j-gf-project-root
 					   j-ido-find-file-files-alist-root))
 		   (setq j-ido-find-file-files-alist
 				 (mapcar (lambda (x)
 						   (list (file-name-nondirectory x) x))
 						 (split-string
 						  (shell-command-to-string find-command))))
-		   (setq j-ido-find-file-files-alist-root j-grep-find-project-root)))
+		   (setq j-ido-find-file-files-alist-root j-gf-project-root)))
 	(setq chosen-name
 		  (ido-completing-read "Project file: "
 							   (mapcar (lambda (x)
@@ -583,12 +645,13 @@ ex) make -C project/root/directory"
 (define-key global-map (kbd "C-c c") 'j-make)
 (define-key global-map (kbd "C-c j g") 'j-modify-header-file-for-g++)
 (define-key global-map (kbd "C-c j p") 'j-visit-header-or-source-file)
-(define-key global-map (kbd "C-c j s") 'j-grep-find-symbol-at-point)
-(define-key global-map (kbd "C-c j f") 'j-grep-find-file)
+(define-key global-map (kbd "C-c j s") 'j-gf-symbol-at-point)
+(define-key global-map (kbd "C-c j f") 'j-gf-find-file)
+(define-key global-map (kbd "C-c j %") 'j-gf-query-replace)
 (define-key global-map (kbd "C-c j i") 'j-ido-find-file)
 (define-key global-map (kbd "C-c j m") 'j-ido-goto-symbol)
-(define-key global-map (kbd "C-c j r") 'j-grep-find-set-project-root)
-(define-key global-map (kbd "C-c j e") 'j-grep-find-set-exclusive-path)
+(define-key global-map (kbd "C-c j r") 'j-gf-set-project-root)
+(define-key global-map (kbd "C-c j e") 'j-gf-set-exclusive-path)
 (define-key global-map (kbd "C-c j t") 'j-create-tags)
 (define-key global-map (kbd "C-c j v") 'visit-tags-table)
 (define-key global-map (kbd "C-c j .") 'tags-apropos)
