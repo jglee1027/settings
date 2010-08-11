@@ -317,7 +317,7 @@ ex) make -C project/root/directory"
 (defvar j-gf-replace-file-command-history nil)
 (defvar j-gf-project-root nil)
 (defvar j-gf-project-root-history nil)
-(defvar j-gf-exclusive-path "*.git* *.svn* *.cvs* *.class *.obj *.o *.a *.so *~ *# *.semantic *TAGS *cscope.out")
+(defvar j-gf-exclusive-path "*.git* *.svn* *.cvs* *.class *.obj *.o *.a *.so *~ *# *.cache *TAGS *cscope.out")
 (defvar j-gf-exclusive-path-history nil)
 (defvar j-gf-assoc-extension-alist '(("c"		. "*.[cChH] *.[cC][pP][pP] *.[mM] *.[mM][mM]")
 									 ("cpp"	. "*.[cChH] *.[cC][pP][pP] *.[mM] *.[mM][mM]")
