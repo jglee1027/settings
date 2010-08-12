@@ -357,7 +357,8 @@ ex) make -C project/root/directory"
 (defun j-gf-get-assoc-find-name-options()
   (let (name-option name-list extension assoc-extensions)
 	(cond ((null (buffer-file-name))
-		   (setq name-option ""))
+		   (setq name-option (j-gf-get-find-name-options
+							  (read-from-minibuffer "Find file: "))))
 		  (t
 		   (setq extension (downcase (file-name-extension (buffer-file-name))))
 		   (setq assoc-extensions (cdr (assoc extension j-gf-assoc-extension-alist)))
@@ -448,7 +449,7 @@ ex) make -C project/root/directory"
 		buffer)
 	(message "")
 	(while (not done)
-	  (message (format "Query replacing %s with %s(y/n/a/q)?" from to))
+	  (message (format "Query replacing '%s' with '%s' (y/n/a/q)?" from to))
 	  (setq key (read-event))
 	  (with-current-buffer "*grep*"
 		(setq buffer (get-buffer
@@ -490,12 +491,11 @@ ex) make -C project/root/directory"
   (interactive
    (let ((common
 		  (query-replace-read-args
-		   "Query replace regexp in found files" t t)))
+		   "Query replace regexp in files" t t)))
      (list (nth 0 common) (nth 1 common) (nth 2 common))))
   
   (j-gf-set-project-root)
-  (let ((exist-grep-buffer t)
-		(name-option)
+  (let (name-option
 		command
 		extension)
 	(cond ((null (buffer-file-name))
@@ -517,21 +517,13 @@ ex) make -C project/root/directory"
 						   (j-gf-get-find-exclusive-path-options)
 						   from)
 				   'j-gf-grep-query-command-history))
-
-	(condition-case nil
-		(set-buffer "*grep*")
-	  (error
-	   (setq exist-grep-buffer nil)))
-	(cond ((and (equal command
-					   (car j-gf-symbol-command-history))
-				exist-grep-buffer)
-		   (j-gf-grep-query-replace-ui from to))
-		  (t
-		   (shell-command command "*grep*")
-		   (with-current-buffer "*grep*"
-			 (grep-mode))
-		   (j-gf-grep-query-replace-ui from to))
-		  )))
+	
+	(shell-command command "*grep*")
+	(with-current-buffer "*grep*"
+	  (grep-mode)
+	  (hi-lock-face-buffer from
+						   'match))
+	(j-gf-grep-query-replace-ui from to)))
 
 (defun j-gf-find-file()
   "search a file."
@@ -573,7 +565,7 @@ ex) make -C project/root/directory"
   (interactive
    (let ((common
 		  (query-replace-read-args
-		   "Query replace regexp in found files" t t)))
+		   "Query replace regexp in files" t t)))
      (list (nth 0 common) (nth 1 common) (nth 2 common))))
   (let (files)
 	(j-gf-set-project-root)
