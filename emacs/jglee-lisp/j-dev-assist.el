@@ -82,12 +82,13 @@
   `(progn (if (null ,var)
 			  (setq ,var default-directory))
 		  (setq ,var
-				(completing-read ,prompt
-								 'ffap-read-file-or-url-internal
-								 nil
-								 nil
-								 ,var
-								 ,var-history))))
+				(file-name-as-directory
+				 (completing-read ,prompt
+								  'ffap-read-file-or-url-internal
+								  nil
+								  nil
+								  ,var
+								  ,var-history)))))
 
 ;; ======================================================================
 ;; utility functions
@@ -317,6 +318,7 @@ ex) make -C project/root/directory"
 (defvar j-gf-replace-file-command-history nil)
 (defvar j-gf-project-root nil)
 (defvar j-gf-project-root-history nil)
+(defvar j-gf-grep-query-command-history nil)
 (defvar j-gf-exclusive-path "*.git* *.svn* *.cvs* *.class *.obj *.o *.a *.so *~ *# *.cache *TAGS *cscope.out")
 (defvar j-gf-exclusive-path-history nil)
 (defvar j-gf-assoc-extension-alist '(("c"		. "*.[cChH] *.[cC][pP][pP] *.[mM] *.[mM][mM]")
@@ -415,6 +417,121 @@ ex) make -C project/root/directory"
 											 symbol)
 									 'j-gf-symbol-command-history))))
 
+(defun j-gf-grep-query-replace-in-current-line(from to buffer)
+  (let (begin end)
+	(with-current-buffer buffer
+	  (save-excursion
+		(beginning-of-line)
+		(setq begin (point))
+		(end-of-line)
+		(setq end (point)))
+	  (replace-regexp from to nil begin end))))
+
+(defun j-gf-grep-query-replace-ui(from to &optional delimited)
+  (interactive
+   (let ((common
+  		  (query-replace-read-args
+  		   "Query replace regexp in found files" t t)))
+     (list (nth 0 common) (nth 1 common) (nth 2 common))))
+  
+  (condition-case nil
+	  (next-error)
+	(error "Query replace finished"))
+  (condition-case nil
+	  (previous-error)
+	(error nil))
+  
+  (let ((done nil)
+		(all nil)
+		(count 0)
+		key
+		buffer)
+	(message "")
+	(while (not done)
+	  (message (format "Query replacing %s with %s(y/n/a/q)?" from to))
+	  (setq key (read-event))
+	  (with-current-buffer "*grep*"
+		(setq buffer (get-buffer
+					  (file-name-nondirectory
+					   (car
+						(car (nth 2 (car (compilation-next-error 0)))))))))
+
+	  (cond ((equal key ?y)
+			 (setq count (+ 1 count))
+			 (j-gf-grep-query-replace-in-current-line from to buffer)
+			 (condition-case nil
+				 (next-error)
+			   (error
+				(setq done t))))
+			((equal key ?n)
+			 (condition-case nil
+				 (next-error)
+			   (error
+				(setq done t))))
+			((equal key ?a)
+			 (setq all t)
+			 (setq done t))
+			((equal key ?q)
+			 (setq done t))))
+	
+	(setq done nil)
+	(cond (all
+		   (while (not done)
+			 (j-gf-grep-query-replace-in-current-line from to buffer)
+			 (setq count (+ 1 count))
+			 (condition-case nil
+				 (next-error)
+			   (error 
+				(setq done t))))))
+
+	(message "Replaced %d occurrences" count)))
+
+(defun j-gf-grep-query-replace(from to &optional delimited)
+  (interactive
+   (let ((common
+		  (query-replace-read-args
+		   "Query replace regexp in found files" t t)))
+     (list (nth 0 common) (nth 1 common) (nth 2 common))))
+  
+  (j-gf-set-project-root)
+  (let ((exist-grep-buffer t)
+		(name-option)
+		command
+		extension)
+	(cond ((null (buffer-file-name))
+		   (setq name-option ""))
+		  (t
+		   (setq extension (downcase
+							(file-name-extension (buffer-file-name))))
+		   (setq name-option (cdr (assoc
+								   extension
+								   j-gf-assoc-extension-alist)))))
+	(setq name-option (j-gf-get-find-name-options
+					   (read-from-minibuffer "Find file: "
+											 name-option)))
+	(setq command (j-read-shell-command
+				   "Command: "
+				   (format "find -L %s -type f %s %s -print0 | xargs -0 grep -nH -e \"%s\""
+						   j-gf-project-root
+						   name-option
+						   (j-gf-get-find-exclusive-path-options)
+						   from)
+				   'j-gf-grep-query-command-history))
+
+	(condition-case nil
+		(set-buffer "*grep*")
+	  (error
+	   (setq exist-grep-buffer nil)))
+	(cond ((and (equal command
+					   (car j-gf-symbol-command-history))
+				exist-grep-buffer)
+		   (j-gf-grep-query-replace-ui from to))
+		  (t
+		   (shell-command command "*grep*")
+		   (with-current-buffer "*grep*"
+			 (grep-mode))
+		   (j-gf-grep-query-replace-ui from to))
+		  )))
 
 (defun j-gf-find-file()
   "search a file."
@@ -452,7 +569,7 @@ ex) make -C project/root/directory"
 			(error "File `%s' is visited read-only" file))))
 	files))
 
-(defun j-gf-query-replace(from to &optional delimited)
+(defun j-gf-find-query-replace(from to &optional delimited)
   (interactive
    (let ((common
 		  (query-replace-read-args
@@ -478,8 +595,12 @@ ex) make -C project/root/directory"
 												 (j-gf-get-find-name-options files))
 										 'j-gf-replace-file-command-history)
 				   "*j-query-replace*")
-	
-	(tags-query-replace from to delimited '(j-gf-get-query-replace-files))))
+	(delete-other-windows)
+	(condition-case err
+		(tags-query-replace from to delimited '(j-gf-get-query-replace-files))
+	  (error 
+	   (kill-buffer "*j-query-replace*")
+	   (message "%s" (error-message-string err))))))
 
 (defvar j-create-tags-command nil)
 (defvar j-create-tags-command-history nil)
@@ -493,7 +614,7 @@ ex) make -C project/root/directory"
 						   j-create-tags-directory
 						   'j-create-tags-directory-history)
   (shell-command (j-read-shell-command "Command: "
-									   (format "find -L %s -type f %s %s -print | etags - -o %s/TAGS"
+									   (format "find -L %s -type f %s %s -print | etags - -o %sTAGS"
 											   j-create-tags-directory
 											   (j-gf-get-assoc-find-name-options)
 											   (j-gf-get-find-exclusive-path-options)
@@ -649,7 +770,8 @@ ex) make -C project/root/directory"
 (define-key global-map (kbd "C-c j p") 'j-visit-header-or-source-file)
 (define-key global-map (kbd "C-c j s") 'j-gf-symbol-at-point)
 (define-key global-map (kbd "C-c j f") 'j-gf-find-file)
-(define-key global-map (kbd "C-c j %") 'j-gf-query-replace)
+(define-key global-map (kbd "C-c j 5") 'j-gf-grep-query-replace)
+(define-key global-map (kbd "C-c j %") 'j-gf-find-query-replace)
 (define-key global-map (kbd "C-c j i") 'j-ido-find-file)
 (define-key global-map (kbd "C-c j m") 'j-ido-goto-symbol)
 (define-key global-map (kbd "C-c j r") 'j-gf-set-project-root)
