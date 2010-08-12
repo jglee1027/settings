@@ -82,12 +82,13 @@
   `(progn (if (null ,var)
 			  (setq ,var default-directory))
 		  (setq ,var
-				(completing-read ,prompt
-								 'ffap-read-file-or-url-internal
-								 nil
-								 nil
-								 ,var
-								 ,var-history))))
+				(file-name-as-directory
+				 (completing-read ,prompt
+								  'ffap-read-file-or-url-internal
+								  nil
+								  nil
+								  ,var
+								  ,var-history)))))
 
 ;; ======================================================================
 ;; utility functions
@@ -613,7 +614,7 @@ ex) make -C project/root/directory"
 						   j-create-tags-directory
 						   'j-create-tags-directory-history)
   (shell-command (j-read-shell-command "Command: "
-									   (format "find -L %s -type f %s %s -print | etags - -o %s/TAGS"
+									   (format "find -L %s -type f %s %s -print | etags - -o %sTAGS"
 											   j-create-tags-directory
 											   (j-gf-get-assoc-find-name-options)
 											   (j-gf-get-find-exclusive-path-options)
