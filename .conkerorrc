@@ -6,3 +6,5 @@ define_webjump("daum", "http://search.daum.net/search?q=%s");
 define_webjump("dmap", "http://local.daum.net/map/index.jsp?q=%s");
 define_webjump("naver", "http://search.naver.com/search.naver?query=%s");
 define_webjump("ndic", "http://dic.naver.com/search.nhn?query=%s");
+
+require("new-tabs.js");
