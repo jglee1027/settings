@@ -39,7 +39,7 @@
 ;; ======================================================================
 ;; highlight the symbol at current point with a idle timer
 ;; ======================================================================
-(defvar j-highlight-symbol-color 'highlight)
+(defvar j-highlight-symbol-color 'isearch)
 (defvar j-highlight-symbol-timer-interval 0.7)
 
 (defvar j-highlight-symbol-timer nil)
