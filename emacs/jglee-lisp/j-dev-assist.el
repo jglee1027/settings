@@ -33,7 +33,7 @@
 ;;	 C-c c `j-make'
 ;;	 C-c j t `j-create-tags'
 ;;	 C-c j g `j-modify-header-file-for-g++'
-;;	 C-c j p `j-visit-header-or-source-file'
+;;	 C-c j p `j-open-counterpart-file'
 ;;	 C-c j s `j-gf-symbol-at-point'
 ;;	 C-c j f `j-gf-find-file'
 ;;	 C-c j r `j-gf-set-project-root'
@@ -304,7 +304,7 @@ ex) make -C project/root/directory"
 	
 	(throw 'visit-file-exception "Not found!")))
 
-(defun j-visit-header-or-source-file()
+(defun j-open-counterpart-file()
   "open the header or source file related with the current file."
   (interactive)
   (message (catch 'visit-file-exception
@@ -759,7 +759,7 @@ ex) make -C project/root/directory"
 ;; ======================================================================
 (define-key global-map (kbd "C-c c") 'j-make)
 (define-key global-map (kbd "C-c j g") 'j-modify-header-file-for-g++)
-(define-key global-map (kbd "C-c j p") 'j-visit-header-or-source-file)
+(define-key global-map (kbd "C-c j p") 'j-open-counterpart-file)
 (define-key global-map (kbd "C-c j s") 'j-gf-symbol-at-point)
 (define-key global-map (kbd "C-c j f") 'j-gf-find-file)
 (define-key global-map (kbd "C-c j 5") 'j-gf-grep-query-replace)
