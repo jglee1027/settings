@@ -91,6 +91,16 @@
 (autoload 'ansi-color-for-comint-mode-on "ansi-color" nil t)
 (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
 
+;; dired
+(add-hook 'dired-load-hook
+		  (function (lambda()
+					  (load "dired-x" nil)
+					  (setq dired-guess-shell-alist-user
+							(list
+							 '("\\.[aA][vV][iI]$" "smplayer")
+							 '("\\.[mM][kK][vV]$" "smplayer")
+							 '("\\.[mM][pP]4$" "smplayer"))))))
+
 ;; ======================================================================
 ;; Key definition
 ;; ======================================================================
