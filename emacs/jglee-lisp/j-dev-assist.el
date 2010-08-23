@@ -418,6 +418,8 @@ ex) make -C project/root/directory"
 											 symbol)
 									 'j-gf-symbol-command-history))))
 
+(defvar j-gf-grep-query-replace-buffers-alist nil)
+
 (defun j-gf-grep-query-replace-in-current-line(from to buffer)
   (let (begin end)
 	(with-current-buffer buffer
@@ -448,15 +450,25 @@ ex) make -C project/root/directory"
 		key
 		buffer)
 	(message "")
+	
 	(while (not done)
-	  (message (format "Query replacing '%s' with '%s' (y/n/a/q)?" from to))
-	  (setq key (read-event))
 	  (with-current-buffer "*grep*"
 		(setq buffer (get-buffer
 					  (file-name-nondirectory
 					   (car
 						(car (nth 2 (car (compilation-next-error 0)))))))))
 
+	  (with-current-buffer buffer
+		(setq j-gf-grep-query-replace-buffers-alist
+			  (assq-delete-all buffer
+							   j-gf-grep-query-replace-buffers-alist))
+		(add-to-list 'j-gf-grep-query-replace-buffers-alist
+					 (list buffer from) t)
+		(hi-lock-face-buffer from 'query-replace))
+
+	  (message (format "Query replacing '%s' with '%s' (y/n/a/q)?" from to))
+	  (setq key (read-event))
+	  
 	  (cond ((equal key ?y)
 			 (setq count (+ 1 count))
 			 (j-gf-grep-query-replace-in-current-line from to buffer)
@@ -485,6 +497,16 @@ ex) make -C project/root/directory"
 			   (error 
 				(setq done t))))))
 
+	(while j-gf-grep-query-replace-buffers-alist
+	  (let* ((entry (pop j-gf-grep-query-replace-buffers-alist))
+			 (buffer (pop entry))
+			 (symbol-regex (pop entry)))
+		(condition-case nil
+			(progn
+			  (set-buffer buffer)
+			  (hi-lock-unface-buffer symbol-regex))
+		  (error nil))))
+	
 	(message "Replaced %d occurrences" count)))
 
 (defun j-gf-grep-query-replace(from to &optional delimited)
