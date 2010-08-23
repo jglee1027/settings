@@ -36,14 +36,15 @@ end
 puts "========================================================================"
 puts "  #{start_date} ~ #{end_date}"
 
-header_regex = /^r\d+ \| \w+ \| .+ \| \d+ lines/
+header_regex = /^r\d+ \| \w+ \| .+ \| \d+ lines?$/
+header_regex_kr = /^r\d+ \| \w+ \| .+ \| \d+ 개의 행$/
 is_continue_puts = true
 while line = STDIN.gets
-  if line =~ header_regex
+  if line =~ header_regex || line =~ header_regex_kr
     header = line.split(" | ")
     header_id = header[1]
     header_date = Time.parse(header[2].sub(/\(.+\)/,""))
-    if header_id == id &&  header_date >= start_date && header_date <= end_date
+    if header_id == id && header_date >= start_date && header_date <= end_date
       is_continue_puts = true
     else
       is_continue_puts = false
