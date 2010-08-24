@@ -776,6 +776,25 @@ ex) make -C project/root/directory"
 		   (find-file (ido-completing-read "Find file: "
 										   same-name-files-list))))))
 
+(defun j-svn-log-report()
+  (interactive)
+  (let (command
+		id
+		start-date
+		end-date)
+	(j-gf-set-project-root)
+	(setq id (read-from-minibuffer "Id: "))
+	(setq start-date (read-from-minibuffer "Start date: "))
+	(setq end-date (read-from-minibuffer "End date: "))
+	(setq command (j-read-shell-command
+				   "Command: "
+				   (format "cd %s; svn log | ~/settings/emacs/svnlr.rb -id %s -sd %s -ed %s"
+						   j-gf-project-root
+						   id
+						   start-date
+						   end-date)))
+	(shell-command command "*svn-log-report*")))
+
 ;; ======================================================================
 ;; Key definition
 ;; ======================================================================
@@ -794,6 +813,7 @@ ex) make -C project/root/directory"
 (define-key global-map (kbd "C-c j v") 'visit-tags-table)
 (define-key global-map (kbd "C-c j .") 'tags-apropos)
 (define-key global-map (kbd "C-c j [") 'hs-minor-mode)
+(define-key global-map (kbd "C-x v #") 'j-svn-log-report)
 
 (provide 'j-dev-assist)
 ;;; j-dev-assist.el ends here
