@@ -33,9 +33,6 @@ if id == nil or start_date == nil or end_date == nil
   exit
 end
 
-puts "------------------------------------------------------------------------"
-puts "   #{start_date.strftime("%Y-%m-%d")} ~ #{end_date.strftime("%Y-%m-%d")}"
-
 end_date += (60 * 60 * 24)
 header_regex = /^r\d+ \| \w+ \| .+ \| \d+ lines?$/
 header_regex_kr = /^r\d+ \| \w+ \| .+ \| \d+ 개의 행$/

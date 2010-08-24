@@ -11,3 +11,19 @@ define_webjump("ndic", "http://dic.naver.com/search.nhn?query=%s");
 
 require("new-tabs.js");
 require("clicks-in-new-buffer.js");
+
+// right mouse follows links in new buffers
+clicks_in_new_buffer_button = 2;
+
+// bind M-1~0 to switch to buffers 1-10
+function define_switch_buffer_key(key, buf_num) {
+	define_key(default_global_keymap, key,
+			   function (I) {
+				   switch_to_buffer(I.window,
+									I.window.buffers.get_buffer(buf_num));
+			   });
+}
+
+for (let i = 1; i <= 10; i++) {
+	define_switch_buffer_key("M-" + String(i % 10), i - 1);
+}
