@@ -12,7 +12,7 @@ ARGV.each do |arg|
   when :start_date
     start_date = Time.parse(arg)
   when :end_date
-    end_date = Time.parse(arg) + (60 * 60 * 24)
+    end_date = Time.parse(arg)
   end
   
   cur_arg = nil
@@ -33,12 +33,14 @@ if id == nil or start_date == nil or end_date == nil
   exit
 end
 
-puts "========================================================================"
-puts "  #{start_date} ~ #{end_date}"
+puts "------------------------------------------------------------------------"
+puts "   #{start_date.strftime("%Y-%m-%d")} ~ #{end_date.strftime("%Y-%m-%d")}"
 
+end_date += (60 * 60 * 24)
 header_regex = /^r\d+ \| \w+ \| .+ \| \d+ lines?$/
 header_regex_kr = /^r\d+ \| \w+ \| .+ \| \d+ 개의 행$/
 is_continue_puts = true
+
 while line = STDIN.gets
   if line =~ header_regex || line =~ header_regex_kr
     header = line.split(" | ")
