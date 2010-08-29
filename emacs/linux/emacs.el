@@ -2,7 +2,7 @@
 ;; Custom variables and faces
 ;; ======================================================================
 (when window-system
-  (set-background-color "#102050")
+  (set-background-color "#102040")
   (set-foreground-color "white")
   (set-face-font 'default
   				 (font-spec :family "NanumGothic_AndaleMono"
