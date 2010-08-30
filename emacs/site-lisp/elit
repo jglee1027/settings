@@ -1,0 +1,67 @@
+#!/bin/bash
+site_lisp_path=$(dirname $0)
+
+android_path="$site_lisp_path/android.el"
+android_download=""
+android_install=""
+
+auto_complete_path="$site_lisp_path/auto-complete-1.3"
+auto_complete_download="wget http://cx4a.org/pub/auto-complete/auto-complete-1.3.tar.bz2"
+auto_complete_install="tar xjf auto-complete-1.3.tar.bz2"
+
+usage() {
+	echo Emacs Lisp Installation Tool
+	echo 
+	echo Usage: elit package-name
+	echo
+	echo Packages:
+	echo "  all(all packages)"
+	echo "  android"
+	echo "  auto-complete"
+	echo "  ecb"
+	echo "  ruby-extension"
+	echo "  xcscope"
+	echo "  rdebug"
+	echo "  highlight-symbol"
+}
+
+install() {
+	if [ -z "$1" ]; then
+		return 1
+	fi
+	eval path=\$$1_path
+	if [ -e $path ]; then
+		echo Already installed!!!
+		return 2
+	fi
+	
+	echo "---> downloading..."
+	eval download=\$$1_download
+	$($download)
+	
+	echo "---> installing..."
+	eval install=\$$1_install
+	$($install)
+
+	return 0;
+}
+
+if [ $# -eq 0 ]; then
+	usage
+	exit
+fi
+cd $site_lisp_path
+
+echo $1 installing...
+
+case "$1" in
+	"android")
+		install "android"
+		;;
+	"auto-complete")
+		install "auto_complete"
+		;;
+	*)
+		usage
+		;;
+esac	
