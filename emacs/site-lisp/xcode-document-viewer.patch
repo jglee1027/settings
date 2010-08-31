@@ -1,0 +1,21 @@
+diff --git a/xcode-document-viewer.el b/xcode-document-viewer.el
+index 2e10308..a0d8193 100644
+--- a/xcode-document-viewer.el
++++ b/xcode-document-viewer.el
+@@ -42,7 +42,6 @@
+ ;; M-x xcdoc:ask-search
+ 
+ 
+-(require 'w3m-load)
+ (require 'thingatpt)
+ (require 'anything)
+ 
+@@ -128,7 +127,7 @@
+     (let ((b (save-window-excursion (w3m-browse-url (xcdoc:extract-html url) new-session) (get-buffer "*w3m*"))))
+       (ignore-errors (save-selected-window (pop-to-buffer "*w3m*")))))
+    (t
+-    (wq3m-browse-url (xcdoc:extract-html url) new-session))))
++    (w3m-browse-url (xcdoc:extract-html url) new-session))))
+ 
+ 
+ (defun xcdoc:search-source ()
