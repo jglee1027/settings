@@ -41,6 +41,10 @@ xcode_document_path="$site_lisp_path/emacs-xcode-document-viewer/"
 xcode_document_download="git clone http://github.com/imakado/emacs-xcode-document-viewer.git"
 xcode_document_install=""
 
+xcscope_path="$site_lisp_path/xcscope.el"
+xcscope_download="wget http://cscope.cvs.sourceforge.net/viewvc/cscope/cscope/contrib/xcscope/xcscope.el"
+xcscope_install=""
+
 usage() {
 	echo Emacs Lisp Installation Tool
 	echo 
@@ -55,9 +59,9 @@ usage() {
 	echo "  jdee"
 	echo "  ruby-debug"
 	echo "  ruby-mode"
-	echo "  xcscope"
 	echo "  w3m"
 	echo "  xcode-document"
+	echo "  xcscope"
 }
 
 install() {
@@ -124,6 +128,9 @@ case "$1" in
 		;;
 	"xcode-document")
 		install "xcode_document"
+		;;
+	"xcscope")
+		install "xcscope"
 		;;
 	*)
 		usage
