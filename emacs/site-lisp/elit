@@ -17,6 +17,10 @@ ecb_path="$site_lisp_path/ecb/"
 ecb_download="cvs -d:pserver:anonymous@ecb.cvs.sourceforge.net:/cvsroot/ecb login"
 ecb_install="cvs -z3 -d:pserver:anonymous@ecb.cvs.sourceforge.net:/cvsroot/ecb co ecb"
 
+highlight_symbol_path="$site_lisp_path/highlight-symbol.el"
+highlight_symbol_download="wget http://nschum.de/src/emacs/highlight-symbol/highlight-symbol.el"
+highlight_symbol_install=""
+
 jdee_path="$site_lisp_path/jdee/"
 jdee_download="svn co https://jdee.svn.sourceforge.net/svnroot/jdee/trunk/jdee/lisp jdee"
 jdee_install=""
@@ -101,6 +105,9 @@ case "$1" in
 	"ecb")
 		install "cedet"
 		install "ecb"
+		;;
+	"highlight-symbol")
+		install "highlight_symbol"
 		;;
 	"jdee")
 		install "cedet"
