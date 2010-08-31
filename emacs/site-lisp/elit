@@ -13,6 +13,10 @@ ecb_path="$site_lisp_path/ecb/"
 ecb_download="cvs -d:pserver:anonymous@ecb.cvs.sourceforge.net:/cvsroot/ecb login"
 ecb_install="cvs -z3 -d:pserver:anonymous@ecb.cvs.sourceforge.net:/cvsroot/ecb co ecb"
 
+ruby_debug_path="$site_lisp_path/ruby-debug/"
+ruby_debug_download="svn co http://ruby-debug.rubyforge.org/svn/trunk/emacs ruby-debug"
+ruby_debug_install=""
+
 ruby_mode_path="$site_lisp_path/ruby-mode/"
 ruby_mode_download="svn co http://svn.ruby-lang.org/repos/ruby/trunk/misc ruby-mode"
 ruby_mode_install=""
@@ -36,7 +40,7 @@ usage() {
 	echo "  auto-complete"
 	echo "  ecb"
 	echo "  highlight-symbol"
-	echo "  rdebug"
+	echo "  ruby-debug"
 	echo "  ruby-mode"
 	echo "  xcscope"
 	echo "  w3m"
@@ -87,6 +91,9 @@ case "$1" in
 		;;
 	"ecb")
 		install "ecb"
+		;;
+	"ruby-debug")
+		install "ruby_debug"
 		;;
 	"ruby-mode")
 		install "ruby_mode"
