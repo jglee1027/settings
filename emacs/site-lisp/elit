@@ -122,6 +122,8 @@ install() {
 		return 3
 	fi
 	
+	echo "---> $1 installing..."
+
 	eval download=\$${pkg_name}_download
 	if [ -n "$download" ]; then
 		echo "---> $download"
@@ -144,7 +146,6 @@ if [ $# -eq 0 ]; then
 fi
 cd $site_lisp_path
 
-echo "---> $1 installing..."
 
 case "$1" in
 	"all")
