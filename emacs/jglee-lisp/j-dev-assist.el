@@ -795,6 +795,13 @@ ex) make -C project/root/directory"
 						   end-date)))
 	(shell-command command "*svn-log-report*")))
 
+;; xcode-document-viewer
+(condition-case nil
+	(progn
+	  (require 'xcode-document-viewer)
+	  (setq xcdoc:document-path "/Developer/Platforms/iPhoneOS.platform/Developer/Documentation/DocSets/com.apple.adc.documentation.AppleiPhone4_0.iPhoneLibrary.docset"))
+  (error nil))
+
 ;; ======================================================================
 ;; Key definition
 ;; ======================================================================
@@ -814,6 +821,7 @@ ex) make -C project/root/directory"
 (define-key global-map (kbd "C-c j .") 'tags-apropos)
 (define-key global-map (kbd "C-c j [") 'hs-minor-mode)
 (define-key global-map (kbd "C-x v #") 'j-svn-log-report)
+(define-key global-map (kbd "C-h x") 'xcdoc:search)
 
 (provide 'j-dev-assist)
 ;;; j-dev-assist.el ends here
