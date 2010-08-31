@@ -5,9 +5,13 @@ android_path="$site_lisp_path/android.el"
 android_download=""
 android_install=""
 
-auto_complete_path="$site_lisp_path/auto-complete-1.3"
+auto_complete_path="$site_lisp_path/auto-complete-1.3/"
 auto_complete_download="wget http://cx4a.org/pub/auto-complete/auto-complete-1.3.tar.bz2"
 auto_complete_install="tar xjf auto-complete-1.3.tar.bz2"
+
+w3m_path="$site_lisp_path/emacs-w3m"
+w3m_download="cvs -d :pserver:anonymous@cvs.namazu.org:/storage/cvsroot login"
+w3m_install="cvs -d :pserver:anonymous@cvs.namazu.org:/storage/cvsroot co emacs-w3m"
 
 usage() {
 	echo Emacs Lisp Installation Tool
@@ -23,6 +27,7 @@ usage() {
 	echo "  xcscope"
 	echo "  rdebug"
 	echo "  highlight-symbol"
+	echo "  w3m"
 }
 
 install() {
@@ -37,11 +42,17 @@ install() {
 	
 	echo "---> downloading..."
 	eval download=\$$1_download
-	$($download)
+	if [ -n "$download" ]; then
+		echo "---> $download"
+		ret=$($download)
+	fi
 	
 	echo "---> installing..."
 	eval install=\$$1_install
-	$($install)
+	if [ -n "$install" ]; then
+		echo "---> $install"
+		ret=$($install)
+	fi
 
 	return 0;
 }
@@ -52,7 +63,7 @@ if [ $# -eq 0 ]; then
 fi
 cd $site_lisp_path
 
-echo $1 installing...
+echo "---> $1 installing..."
 
 case "$1" in
 	"android")
@@ -60,6 +71,9 @@ case "$1" in
 		;;
 	"auto-complete")
 		install "auto_complete"
+		;;
+	"w3m")
+		install "w3m"
 		;;
 	*)
 		usage
