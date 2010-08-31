@@ -798,6 +798,7 @@ ex) make -C project/root/directory"
 ;; xcode-document-viewer
 (condition-case nil
 	(progn
+	  (require 'w3m)
 	  (require 'xcode-document-viewer)
 	  (setq xcdoc:document-path "/Developer/Platforms/iPhoneOS.platform/Developer/Documentation/DocSets/com.apple.adc.documentation.AppleiPhone4_0.iPhoneLibrary.docset"))
   (error nil))

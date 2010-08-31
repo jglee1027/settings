@@ -1,9 +1,13 @@
 #!/bin/bash
-site_lisp_path=$(dirname $0)
+site_lisp_path=$(cd $(dirname $0); pwd)
 
 android_path="$site_lisp_path/android.el"
 android_download=""
 android_install=""
+
+anything_path="$site_lisp_path/anything.el"
+anything_download="wget http://www.emacswiki.org/emacs/anything.el"
+anything_install=""
 
 auto_complete_path="$site_lisp_path/auto-complete-1.3/"
 auto_complete_download="wget http://cx4a.org/pub/auto-complete/auto-complete-1.3.tar.bz2"
@@ -39,11 +43,13 @@ w3m_install="cvs -d :pserver:anonymous@cvs.namazu.org:/storage/cvsroot co emacs-
 
 xcode_document_path="$site_lisp_path/emacs-xcode-document-viewer/"
 xcode_document_download="git clone http://github.com/imakado/emacs-xcode-document-viewer.git"
-xcode_document_install=""
+xcode_document_install="patch -p1 -d $site_lisp_path/emacs-xcode-document-viewer -i $site_lisp_path/xcode-document-viewer.patch"
 
 xcscope_path="$site_lisp_path/xcscope.el"
 xcscope_download="wget http://cscope.cvs.sourceforge.net/viewvc/cscope/cscope/contrib/xcscope/xcscope.el"
 xcscope_install=""
+
+all="android anything auto-complete ecb highlight-symbol jdee ruby-debug ruby-mode w3m xcode-document xcscope"
 
 usage() {
 	echo Emacs Lisp Installation Tool
@@ -53,6 +59,7 @@ usage() {
 	echo Packages:
 	echo "  all(all packages)"
 	echo "  android"
+	echo "  anything"
 	echo "  auto-complete"
 	echo "  ecb"
 	echo "  highlight-symbol"
@@ -68,26 +75,66 @@ install() {
 	if [ -z "$1" ]; then
 		return 1
 	fi
-	eval path=\$$1_path
+
+	case "$1" in
+		"android")
+			pkg_name="android"
+			;;
+		"anything")
+			pkg_name="anything"
+			;;
+		"auto-complete")
+			pkg_name="auto_complete"
+			;;
+		"ecb")
+			pkg_name="ecb"
+			;;
+		"highlight-symbol")
+			pkg_name="highlight_symbol"
+			;;
+		"jdee")
+			pkg_name="jdee"
+			;;
+		"ruby-debug")
+			pkg_name="ruby_debug"
+			;;
+		"ruby-mode")
+			pkg_name="ruby_mode"
+			;;
+		"w3m")
+			pkg_name="w3m"
+			;;
+		"xcode-document")
+			pkg_name="xcode_document"
+			;;
+		"xcscope")
+			pkg_name="xcscope"
+			;;
+		*)
+			usage
+			return 2
+			;;
+	esac	
+
+	eval path=\$${pkg_name}_path
 	if [ -e $path ]; then
 		echo "$1 already installed!!!"
-		return 2
+		return 3
 	fi
 	
-	echo "---> downloading..."
-	eval download=\$$1_download
+	eval download=\$${pkg_name}_download
 	if [ -n "$download" ]; then
 		echo "---> $download"
 		ret=$($download)
 	fi
 	
-	echo "---> installing..."
-	eval install=\$$1_install
+	eval install=\$${pkg_name}_install
 	if [ -n "$install" ]; then
 		echo "---> $install"
 		ret=$($install)
 	fi
 
+	echo "---> $1 successfully installed."
 	return 0;
 }
 
@@ -100,37 +147,47 @@ cd $site_lisp_path
 echo "---> $1 installing..."
 
 case "$1" in
+	"all")
+		for pkg in $all; do
+			install $pkg
+		done
+		;;
 	"android")
-		install "android"
+		install "$1"
+		;;
+	"anything")
+		install "$1"
 		;;
 	"auto-complete")
-		install "auto_complete"
+		install "$1"
 		;;
 	"ecb")
 		install "cedet"
-		install "ecb"
+		install "$1"
 		;;
 	"highlight-symbol")
-		install "highlight_symbol"
+		install "$1"
 		;;
 	"jdee")
-		install "cedet"
-		install "jdee"
+		install "ecb"
+		install "$1"
 		;;
 	"ruby-debug")
-		install "ruby_debug"
+		install "$1"
 		;;
 	"ruby-mode")
-		install "ruby_mode"
+		install "$1"
 		;;
 	"w3m")
-		install "w3m"
+		install "$1"
 		;;
 	"xcode-document")
-		install "xcode_document"
+		install "w3m"
+		install "anything"
+		install "$1"
 		;;
 	"xcscope")
-		install "xcscope"
+		install "$1"
 		;;
 	*)
 		usage
