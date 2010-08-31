@@ -9,9 +9,17 @@ auto_complete_path="$site_lisp_path/auto-complete-1.3/"
 auto_complete_download="wget http://cx4a.org/pub/auto-complete/auto-complete-1.3.tar.bz2"
 auto_complete_install="tar xjf auto-complete-1.3.tar.bz2"
 
+cedet_path="$site_lisp_path/cedet-1.0/"
+cedet_download="wget http://sourceforge.net/projects/cedet/files/cedet/cedet-1.0.tar.gz/download"
+cedet_install="tar xzf cedet-1.0.tar.gz"
+
 ecb_path="$site_lisp_path/ecb/"
 ecb_download="cvs -d:pserver:anonymous@ecb.cvs.sourceforge.net:/cvsroot/ecb login"
 ecb_install="cvs -z3 -d:pserver:anonymous@ecb.cvs.sourceforge.net:/cvsroot/ecb co ecb"
+
+jdee_path="$site_lisp_path/jdee/"
+jdee_download="svn co https://jdee.svn.sourceforge.net/svnroot/jdee/trunk/jdee/lisp jdee"
+jdee_install=""
 
 ruby_debug_path="$site_lisp_path/ruby-debug/"
 ruby_debug_download="svn co http://ruby-debug.rubyforge.org/svn/trunk/emacs ruby-debug"
@@ -40,6 +48,7 @@ usage() {
 	echo "  auto-complete"
 	echo "  ecb"
 	echo "  highlight-symbol"
+	echo "  jdee"
 	echo "  ruby-debug"
 	echo "  ruby-mode"
 	echo "  xcscope"
@@ -53,7 +62,7 @@ install() {
 	fi
 	eval path=\$$1_path
 	if [ -e $path ]; then
-		echo Already installed!!!
+		echo "$1 already installed!!!"
 		return 2
 	fi
 	
@@ -90,7 +99,12 @@ case "$1" in
 		install "auto_complete"
 		;;
 	"ecb")
+		install "cedet"
 		install "ecb"
+		;;
+	"jdee")
+		install "cedet"
+		install "jdee"
 		;;
 	"ruby-debug")
 		install "ruby_debug"
