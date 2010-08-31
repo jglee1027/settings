@@ -9,6 +9,10 @@ auto_complete_path="$site_lisp_path/auto-complete-1.3/"
 auto_complete_download="wget http://cx4a.org/pub/auto-complete/auto-complete-1.3.tar.bz2"
 auto_complete_install="tar xjf auto-complete-1.3.tar.bz2"
 
+ecb_path="$site_lisp_path/ecb/"
+ecb_download="cvs -d:pserver:anonymous@ecb.cvs.sourceforge.net:/cvsroot/ecb login"
+ecb_install="cvs -z3 -d:pserver:anonymous@ecb.cvs.sourceforge.net:/cvsroot/ecb co ecb"
+
 ruby_mode_path="$site_lisp_path/ruby-mode/"
 ruby_mode_download="svn co http://svn.ruby-lang.org/repos/ruby/trunk/misc ruby-mode"
 ruby_mode_install=""
@@ -80,6 +84,9 @@ case "$1" in
 		;;
 	"auto-complete")
 		install "auto_complete"
+		;;
+	"ecb")
+		install "ecb"
 		;;
 	"ruby-mode")
 		install "ruby_mode"
