@@ -9,6 +9,10 @@ auto_complete_path="$site_lisp_path/auto-complete-1.3/"
 auto_complete_download="wget http://cx4a.org/pub/auto-complete/auto-complete-1.3.tar.bz2"
 auto_complete_install="tar xjf auto-complete-1.3.tar.bz2"
 
+ruby_mode_path="$site_lisp_path/ruby-mode/"
+ruby_mode_download="svn co http://svn.ruby-lang.org/repos/ruby/trunk/misc ruby-mode"
+ruby_mode_install=""
+
 w3m_path="$site_lisp_path/emacs-w3m/"
 w3m_download="cvs -d :pserver:anonymous@cvs.namazu.org:/storage/cvsroot login"
 w3m_install="cvs -d :pserver:anonymous@cvs.namazu.org:/storage/cvsroot co emacs-w3m"
@@ -27,10 +31,10 @@ usage() {
 	echo "  android"
 	echo "  auto-complete"
 	echo "  ecb"
-	echo "  ruby-extension"
-	echo "  xcscope"
-	echo "  rdebug"
 	echo "  highlight-symbol"
+	echo "  rdebug"
+	echo "  ruby-mode"
+	echo "  xcscope"
 	echo "  w3m"
 	echo "  xcode-document"
 }
@@ -76,6 +80,9 @@ case "$1" in
 		;;
 	"auto-complete")
 		install "auto_complete"
+		;;
+	"ruby-mode")
+		install "ruby_mode"
 		;;
 	"w3m")
 		install "w3m"
