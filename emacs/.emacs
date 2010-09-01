@@ -230,6 +230,30 @@
 								("\\.cflow$" . cflow-mode))
 							  auto-mode-alist))
 
+;; choose header file mode
+(defun header-file-mode-hook()
+  (if (and (file-name-extension buffer-file-name)
+		   (string-match "[hH]"(file-name-extension buffer-file-name)))
+	  (let ((filename (file-name-sans-extension buffer-file-name))
+			(mode-alist '((".c" . c-mode)
+						  (".C" . c-mode)
+						  (".cpp" . c++-mode)
+						  (".CPP" . c++-mode)
+						  (".m" . objc-mode)
+						  (".M" . objc-mode)
+						  (".mm" . objc-mode)
+						  (".MM" . objc-mode)))
+			(mode nil))
+		(dolist (ext-mode mode-alist)
+		  (if (file-exists-p (concat filename (car ext-mode)))
+			  (setq mode ext-mode)))
+		  
+		(if mode
+			(funcall (cdr mode)))
+  )))
+	
+(add-hook 'find-file-hook 'header-file-mode-hook)
+
 (c-add-style
  "java"
  '((c-basic-offset . 4)
