@@ -99,7 +99,8 @@
 							(list
 							 '("\\.[aA][vV][iI]$" "smplayer")
 							 '("\\.[mM][kK][vV]$" "smplayer")
-							 '("\\.[mM][pP]4$" "smplayer"))))))
+							 '("\\.[mM][pP]4$" "smplayer")
+							 '("\\.[wW][mM][vV]$" "smplayer"))))))
 
 ;; ======================================================================
 ;; Key definition
