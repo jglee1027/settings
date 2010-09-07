@@ -803,6 +803,25 @@ ex) make -C project/root/directory"
 	  (setq xcdoc:document-path "/Developer/Platforms/iPhoneOS.platform/Developer/Documentation/DocSets/com.apple.adc.documentation.AppleiPhone4_0.iPhoneLibrary.docset"))
   (error nil))
 
+(defun j-xcode-build()
+  (interactive)
+  (shell-command "~/settings/emacs/xcode-build"))
+
+(defvar j-xcode-doc-text-history nil)
+(defun j-xcode-doc()
+  (interactive)
+  (let ((text (symbol-at-point))
+		command)
+	(if (null text)
+		(setq text ""))
+	(setq text (read-from-minibuffer "Find text in Xcode Doc: "
+									 (format "%s" text)
+									 nil
+									 nil
+									 'j-xcode-doc-text-history))
+	(setq command (format "~/settings/emacs/xcode-doc %s" text))
+	(shell-command command)))
+
 ;; ======================================================================
 ;; Key definition
 ;; ======================================================================
@@ -823,6 +842,8 @@ ex) make -C project/root/directory"
 (define-key global-map (kbd "C-c j [") 'hs-minor-mode)
 (define-key global-map (kbd "C-x v #") 'j-svn-log-report)
 (define-key global-map (kbd "C-h x") 'xcdoc:search)
+(define-key global-map (kbd "C-c x b") 'j-xcode-build)
+(define-key global-map (kbd "C-c x h") 'j-xcode-doc)
 
 (provide 'j-dev-assist)
 ;;; j-dev-assist.el ends here

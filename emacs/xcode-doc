@@ -1,0 +1,24 @@
+#!/bin/bash
+usage() {
+	echo Xcode Documentation
+	echo
+	echo Usage: xcode-doc key-word
+}
+
+if [ $# -ne 1 ]; then
+	usage
+	exit
+fi
+
+osascript - "$1" << EOF
+on run argv
+	tell application "Xcode" to activate
+	tell application "System Events"
+		tell process "Xcode"
+			-- Developer documentation
+			keystroke "?" using {command down, option down}
+			keystroke item 1 of argv
+		end tell
+	end tell
+end run 
+EOF

@@ -1,0 +1,15 @@
+#!/bin/bash
+
+osascript - "$1" << EOF
+on run argv
+	tell application "Xcode" to activate
+	tell application "System Events"
+		tell process "Xcode"
+			-- Build
+			keystroke "B" using {command down}
+			-- Build Results
+			keystroke "B" using {command down, shift down}
+		end tell
+	end tell
+end run 
+EOF
