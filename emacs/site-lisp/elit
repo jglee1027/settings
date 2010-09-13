@@ -6,7 +6,7 @@ android_download=""
 android_install=""
 
 anything_path="$site_lisp_path/anything.el"
-anything_download="wget http://www.emacswiki.org/emacs/anything.el"
+anything_download="wget http://www.emacswiki.org/emacs/download/anything.el"
 anything_install=""
 
 auto_complete_path="$site_lisp_path/auto-complete-1.3/"
