@@ -45,7 +45,6 @@
 ;;; Code:
 
 (require 'imenu)
-(require 'anything)
 
 (ido-mode t)
 (if (boundp 'ffap-bindings)
@@ -853,6 +852,8 @@ ex) make -C project/root/directory"
 
 (defun j-doc()
   (interactive)
+  (unless (featurep 'anything)
+	(require 'anything))
   (cond ((equal mode-name "Objc/l")
 		 (j-xcode-doc))
 		((equal mode-name "JDE")
