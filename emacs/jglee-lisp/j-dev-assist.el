@@ -45,6 +45,7 @@
 ;;; Code:
 
 (require 'imenu)
+(require 'anything)
 
 (ido-mode t)
 (if (boundp 'ffap-bindings)
@@ -822,10 +823,46 @@ ex) make -C project/root/directory"
 	(setq command (format "~/settings/emacs/xcode-doc %s" text))
 	(shell-command command)))
 
+;; android-doc
+(defvar j-android-sdk-dir "/home/prince/android/android-sdk-linux_86")
+(defun* j-android-doc-source-candidates(&key class-name sdk-dir)
+  (split-string
+   (shell-command-to-string
+	(format "find %s/docs/reference -name '*%s*'"
+			sdk-dir
+			class-name))))
+
+(defun j-android-doc-source()
+  `((name . ,j-android-sdk-dir)
+	(candidates . (lambda ()
+					(j-android-doc-source-candidates
+					 :class-name anything-pattern
+					 :sdk-dir j-android-sdk-dir)))
+	(volatile)
+	(delayed)
+	(requires-pattern . 2)
+	(action . browse-url)))
+
+(defun j-android-doc()
+  (interactive)
+  (let ((symbol (symbol-at-point)))
+	(if (null symbol)
+		(setq symbol "")
+	  (setq symbol (symbol-name symbol)))
+	(anything (list (j-android-doc-source)) symbol)))
+
+(defun j-doc()
+  (interactive)
+  (cond ((equal mode-name "Objc/l")
+		 (j-xcode-doc))
+		((equal mode-name "JDE")
+		 (j-android-doc))))
+			   
 ;; ======================================================================
 ;; Key definition
 ;; ======================================================================
 (define-key global-map (kbd "C-c c") 'j-make)
+(define-key global-map (kbd "C-c h") 'j-doc)
 (define-key global-map (kbd "C-c j g") 'j-modify-header-file-for-g++)
 (define-key global-map (kbd "C-c j p") 'j-open-counterpart-file)
 (define-key global-map (kbd "C-c j s") 'j-gf-symbol-at-point)
@@ -841,9 +878,7 @@ ex) make -C project/root/directory"
 (define-key global-map (kbd "C-c j .") 'tags-apropos)
 (define-key global-map (kbd "C-c j [") 'hs-minor-mode)
 (define-key global-map (kbd "C-x v #") 'j-svn-log-report)
-(define-key global-map (kbd "C-h x") 'xcdoc:search)
 (define-key global-map (kbd "C-c x b") 'j-xcode-build)
-(define-key global-map (kbd "C-c x h") 'j-xcode-doc)
 
 (provide 'j-dev-assist)
 ;;; j-dev-assist.el ends here
