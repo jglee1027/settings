@@ -854,7 +854,7 @@ ex) make -C project/root/directory"
   (interactive)
   (unless (featurep 'anything)
 	(require 'anything))
-  (cond ((equal mode-name "Objc/l")
+  (cond ((equal mode-name "ObjC/l")
 		 (j-xcode-doc))
 		((equal mode-name "JDE")
 		 (j-android-doc))))
