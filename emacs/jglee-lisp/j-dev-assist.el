@@ -50,6 +50,10 @@
 (if (boundp 'ffap-bindings)
 	(ffap-bindings))
 
+(defgroup j-dev-assist nil
+  "Jong-Gyu Development Assist."
+  :group 'appications)
+
 ;; ======================================================================
 ;; common functions
 ;; ======================================================================
@@ -319,16 +323,24 @@ ex) make -C project/root/directory"
 (defvar j-gf-project-root nil)
 (defvar j-gf-project-root-history nil)
 (defvar j-gf-grep-query-command-history nil)
-(defvar j-gf-exclusive-path "*.git* *.svn* *.cvs* *.class *.obj *.o *.a *.so *~ *# *.cache *TAGS *cscope.out")
+(defcustom j-gf-exclusive-path
+  "*.git* *.svn* *.cvs* *.class *.obj *.o *.a *.so *~ *# *.cache *TAGS *cscope.out"
+  "Paths to exclude while find command runs"
+  :type 'string
+  :group 'j-dev-assist)
 (defvar j-gf-exclusive-path-history nil)
-(defvar j-gf-assoc-extension-alist '(("c"		. "*.[cChH] *.[cC][pP][pP] *.[mM] *.[mM][mM]")
-									 ("cpp"		. "*.[cChH] *.[cC][pP][pP] *.[mM] *.[mM][mM]")
-									 ("h"		. "*.[cChH] *.[cC][pP][pP] *.[mM] *.[mM][mM]")
-									 ("m"		. "*.[cChH] *.[cC][pP][pP] *.[mM] *.[mM][mM]")
-									 ("mm"		. "*.[cChH] *.[cC][pP][pP] *.[mM] *.[mM][mM]")
-									 ("java"	. "*.java")
-									 ("el"		. "*.el")
-									 ("rb"		. "*.rb")))
+(defcustom j-gf-assoc-extension-alist
+  '(("c"		. "*.[cChH] *.[cC][pP][pP] *.[mM] *.[mM][mM]")
+	("cpp"		. "*.[cChH] *.[cC][pP][pP] *.[mM] *.[mM][mM]")
+	("h"		. "*.[cChH] *.[cC][pP][pP] *.[mM] *.[mM][mM]")
+	("m"		. "*.[cChH] *.[cC][pP][pP] *.[mM] *.[mM][mM]")
+	("mm"		. "*.[cChH] *.[cC][pP][pP] *.[mM] *.[mM][mM]")
+	("java"		. "*.java")
+	("el"		. "*.el")
+	("rb"		. "*.rb"))
+  "Counterpart extensions"
+  :type 'alist
+  :group 'j-dev-assist)
 
 (defun j-gf-get-find-exclusive-path-options()
   (let (path-list path-option)
@@ -823,7 +835,12 @@ ex) make -C project/root/directory"
 	(shell-command command)))
 
 ;; android-doc
-(defvar j-android-sdk-dir "/home/prince/android/android-sdk-linux_86")
+(defcustom j-android-sdk-dir
+  "~/android/android-sdk-linux_86"
+  "Android SDK directory"
+  :type 'directory
+  :group 'j-dev-assist)
+
 (defun* j-android-doc-source-candidates(&key class-name sdk-dir)
   (split-string
    (shell-command-to-string
