@@ -1,3 +1,4 @@
+
 ;; ======================================================================
 ;; General setting
 ;; ======================================================================
@@ -47,6 +48,8 @@
 (defvar default-encoding
   (let (lang)
 	(setq lang (getenv "LANG"))
+	(if (null lang)
+		(setq lang ""))
 	(cond ((string-match "UTF-8" lang)
 		   'utf-8)
 		  ((string-match "EUC-KR" lang)
