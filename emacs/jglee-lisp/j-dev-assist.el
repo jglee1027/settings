@@ -75,7 +75,7 @@
 						  history)))
 
 (defun j-is-directory(path)
-  (car (file-attributes path)))
+  (equal (car (file-attributes path)) t))
 
 (defun j-get-super-directory(path)
   (replace-regexp-in-string "/[^/]*$"
@@ -281,7 +281,7 @@ ex) make -C project/root/directory"
 	(dotimes (i super-dir-depth)
 	  (setq current-dir (j-get-super-directory current-dir))
 	  (if (equal current-dir "")
-		  (throw 'visit-file-exception "Not found!"))
+		  (return))
 	  (setq sub-dir-list (j-get-sub-directory-list current-dir))
 	  (j-visit-file-in-sub-dirs sub-dir-list
 								file-name-non-dir
@@ -304,15 +304,48 @@ ex) make -C project/root/directory"
 		(setq sub-dir-list sub-dir-all-list))
 	  (j-visit-file-in-sub-dirs sub-dir-all-list
 								file-name-non-dir
-								extensions-to-visit))
+								extensions-to-visit))))
+
+(defun j-visit-file-in-project()
+  (interactive)
+  (let ((file-name-sans-ext (file-name-sans-extension (buffer-name)))
+		(same-name-files-list nil)
+		(extensions-to-visit (j-get-extensions-to-visit))
+		(same-name-files-count 0)
+		file-name
+		file-ext)
 	
-	(throw 'visit-file-exception "Not found!")))
+	(if (null j-ido-find-file-files-alist)
+		(throw 'visit-file-exception "Not found! Set project root directory"))
+
+	(while (not (null (setq file-ext (pop extensions-to-visit))))
+	  (setq file-name (concat file-name-sans-ext "." file-ext))
+	  (cond ((not (null (assoc file-name j-ido-find-file-files-alist)))
+			 (mapcar (lambda (x)
+					   (cond ((equal file-name (car x))
+							  (add-to-list 'same-name-files-list
+										   (car (cdr x)))
+							  (setq same-name-files-count
+									(1+ same-name-files-count)))))
+					 j-ido-find-file-files-alist)
+			 (cond ((equal same-name-files-count 1)
+					(throw 'visit-file-exception
+						   (buffer-file-name
+							(find-file (car same-name-files-list)))))
+				   ((> same-name-files-count 1)
+					(throw 'visit-file-exception
+						   (buffer-file-name
+							(find-file
+							 (ido-completing-read "Find file: "
+												  same-name-files-list)))))))))))
 
 (defun j-open-counterpart-file()
   "open the header or source file related with the current file."
   (interactive)
   (message (catch 'visit-file-exception
-			 (j-visit-file-in-dirs 2 2))))
+			 (j-visit-file-in-dirs 2 2)
+			 (j-visit-file-in-project)
+			 (throw 'visit-file-exception "Not found!"))))
 
 (defvar j-gf-symbol-history nil)
 (defvar j-gf-symbol-command-history nil)
@@ -897,6 +930,8 @@ ex) make -C project/root/directory"
 (define-key global-map (kbd "C-c j [") 'hs-minor-mode)
 (define-key global-map (kbd "C-x v #") 'j-svn-log-report)
 (define-key global-map (kbd "C-c x b") 'j-xcode-build)
+(define-key global-map (kbd "C-c |") 'align)
+(define-key global-map (kbd "C-c M-|") 'align-regexp)
 
 (provide 'j-dev-assist)
 ;;; j-dev-assist.el ends here
