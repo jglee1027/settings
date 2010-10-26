@@ -66,7 +66,8 @@ endif
 """ ========================================================
 """ cscope
 """ ========================================================
-set csprg=/usr/bin/cscope "cscope
+let $cscope_path=substitute(system("which cscope"), "\n", "", "")
+set csprg=$cscope_path
 set csto=0
 set cst
 set nocsverb

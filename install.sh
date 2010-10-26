@@ -11,7 +11,7 @@ diff_cp() {
 		cp $1 $2
 	fi
 	
-	diff -u $1 $2 > $diff_file
+	diff -u $2 $1 > $diff_file
 	local diff_return=$?
 	if [ $diff_return -eq 0 ]; then
 		return 1
