@@ -1,4 +1,3 @@
-
 ;; ======================================================================
 ;; General setting
 ;; ======================================================================
@@ -314,6 +313,11 @@
 (condition-case nil
  	(require 'android)
   (error nil))
+
+;; nxhtml
+(let ((nxhtml-autostart "~/settings/emacs/site-lisp/nxhtml/autostart.el"))
+  (if (file-exists-p nxhtml-autostart)
+	  (load-library nxhtml-autostart)))
 
 ;; ======================================================================
 ;; Cscope
