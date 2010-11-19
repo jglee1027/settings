@@ -29,6 +29,10 @@ jdee_path="$site_lisp_path/jdee/"
 jdee_download="svn co https://jdee.svn.sourceforge.net/svnroot/jdee/trunk/jdee/lisp jdee"
 jdee_install=""
 
+nxhtml_path="$site_lisp_path/nxhtml/"
+nxhtml_download="wget http://ourcomments.org/Emacs/DL/elisp/nxhtml/zip/nxhtml-2.08-100425.zip"
+nxhtml_install="unzip nxhtml-2.08-100425.zip"
+
 ruby_debug_path="$site_lisp_path/ruby-debug/"
 ruby_debug_download="svn co http://ruby-debug.rubyforge.org/svn/trunk/emacs ruby-debug"
 ruby_debug_install=""
@@ -64,6 +68,7 @@ usage() {
 	echo "  ecb"
 	echo "  highlight-symbol"
 	echo "  jdee"
+	echo "  nxhtml"
 	echo "  ruby-debug"
 	echo "  ruby-mode"
 	echo "  w3m"
@@ -94,6 +99,9 @@ install() {
 			;;
 		"jdee")
 			pkg_name="jdee"
+			;;
+		"nxhtml")
+			pkg_name="nxhtml"
 			;;
 		"ruby-debug")
 			pkg_name="ruby_debug"
@@ -173,6 +181,9 @@ case "$1" in
 		install "ecb"
 		install "$1"
 		;;
+	"nxhtml")
+		install "$1"
+		;;
 	"ruby-debug")
 		install "$1"
 		;;
@@ -193,4 +204,5 @@ case "$1" in
 	*)
 		usage
 		;;
-esac	
+esac
+
