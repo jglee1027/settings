@@ -315,10 +315,19 @@
   (error nil))
 
 ;; nxhtml
-(let ((nxhtml-autostart "~/settings/emacs/site-lisp/nxhtml/autostart.el"))
-  (if (file-exists-p nxhtml-autostart)
-	  (load-library nxhtml-autostart)))
+(condition-case nil
+ 	(require 'autostart)
+  (error nil))
 
+;; geben
+(condition-case nil
+	(progn
+	  (require 'geben)
+	  (define-key geben-mode-map [f5] 'geben-step-into)
+	  (define-key geben-mode-map [f6] 'geben-step-over)
+	  (define-key geben-mode-map [f7] 'geben-step-out)
+	  (define-key geben-mode-map [f8] 'geben-run))
+  (error nil))
 ;; ======================================================================
 ;; Cscope
 ;; ======================================================================
@@ -438,4 +447,3 @@
 (if (eq system-type 'windows-nt)
  	(load-library "~/settings/emacs/windows/emacs")
   (load-library "~/settings/emacs/linux/emacs"))
-

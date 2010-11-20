@@ -21,6 +21,10 @@ ecb_path="$site_lisp_path/ecb/"
 ecb_download="cvs -d:pserver:anonymous@ecb.cvs.sourceforge.net:/cvsroot/ecb login"
 ecb_install="cvs -z3 -d:pserver:anonymous@ecb.cvs.sourceforge.net:/cvsroot/ecb co ecb"
 
+geben_path="$site_lisp_path/geben/"
+geben_download="svn co http://geben-on-emacs.googlecode.com/svn/trunk/ geben"
+geben_install=""
+
 highlight_symbol_path="$site_lisp_path/highlight-symbol.el"
 highlight_symbol_download="wget http://nschum.de/src/emacs/highlight-symbol/highlight-symbol.el"
 highlight_symbol_install=""
@@ -66,6 +70,7 @@ usage() {
 	echo "  anything"
 	echo "  auto-complete"
 	echo "  ecb"
+	echo "  geben"
 	echo "  highlight-symbol"
 	echo "  jdee"
 	echo "  nxhtml"
@@ -81,48 +86,7 @@ install() {
 		return 1
 	fi
 
-	case "$1" in
-		"android")
-			pkg_name="android"
-			;;
-		"anything")
-			pkg_name="anything"
-			;;
-		"auto-complete")
-			pkg_name="auto_complete"
-			;;
-		"ecb")
-			pkg_name="ecb"
-			;;
-		"highlight-symbol")
-			pkg_name="highlight_symbol"
-			;;
-		"jdee")
-			pkg_name="jdee"
-			;;
-		"nxhtml")
-			pkg_name="nxhtml"
-			;;
-		"ruby-debug")
-			pkg_name="ruby_debug"
-			;;
-		"ruby-mode")
-			pkg_name="ruby_mode"
-			;;
-		"w3m")
-			pkg_name="w3m"
-			;;
-		"xcode-document")
-			pkg_name="xcode_document"
-			;;
-		"xcscope")
-			pkg_name="xcscope"
-			;;
-		*)
-			usage
-			return 2
-			;;
-	esac	
+	pkg_name=${1/-/_}
 
 	eval path=\$${pkg_name}_path
 	if [ -e $path ]; then
@@ -135,7 +99,7 @@ install() {
 	eval download=\$${pkg_name}_download
 	if [ -n "$download" ]; then
 		echo "---> $download"
-		$($download)
+		ret=$($download)
 		if [ $? -ne 0 ]; then
 			echo "---> ERROR: failed to download $pkg_name"
 			exit
@@ -145,7 +109,7 @@ install() {
 	eval install=\$${pkg_name}_install
 	if [ -n "$install" ]; then
 		echo "---> $install"
-		$($install)
+		ret=$($install)
 		if [ $? -ne 0 ]; then
 			echo "---> ERROR: failed to install $pkg_name"
 			exit
@@ -161,7 +125,6 @@ if [ $# -eq 0 ]; then
 	exit
 fi
 cd $site_lisp_path
-
 
 case "$1" in
 	"all")
@@ -180,6 +143,9 @@ case "$1" in
 		;;
 	"ecb")
 		install "cedet"
+		install "$1"
+		;;
+	"geben")
 		install "$1"
 		;;
 	"highlight-symbol")
@@ -213,4 +179,3 @@ case "$1" in
 		usage
 		;;
 esac
-
