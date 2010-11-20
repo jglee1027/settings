@@ -135,13 +135,21 @@ install() {
 	eval download=\$${pkg_name}_download
 	if [ -n "$download" ]; then
 		echo "---> $download"
-		ret=$($download)
+		$($download)
+		if [ $? -ne 0 ]; then
+			echo "---> ERROR: failed to download $pkg_name"
+			exit
+		fi
 	fi
 	
 	eval install=\$${pkg_name}_install
 	if [ -n "$install" ]; then
 		echo "---> $install"
-		ret=$($install)
+		$($install)
+		if [ $? -ne 0 ]; then
+			echo "---> ERROR: failed to install $pkg_name"
+			exit
+		fi
 	fi
 
 	echo "---> $1 successfully installed."
