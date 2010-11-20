@@ -323,10 +323,10 @@
 (condition-case nil
 	(progn
 	  (require 'geben)
-	  (global-set-key [f5] 'geben-step-into)
-	  (global-set-key [f6] 'geben-step-over)
-	  (global-set-key [f7] 'geben-step-out)
-	  (global-set-key [f8] 'geben-run))
+	  (define-key geben-mode-map [f5] 'geben-step-into)
+	  (define-key geben-mode-map [f6] 'geben-step-over)
+	  (define-key geben-mode-map [f7] 'geben-step-out)
+	  (define-key geben-mode-map [f8] 'geben-run))
   (error nil))
 ;; ======================================================================
 ;; Cscope
