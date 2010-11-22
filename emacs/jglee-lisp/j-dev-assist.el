@@ -908,7 +908,40 @@ ex) make -C project/root/directory"
 		 (j-xcode-doc))
 		((equal mode-name "JDE")
 		 (j-android-doc))))
-			   
+
+(defun j-objc-end-tag()
+  (interactive)
+  (insert "]")
+  (let ((depth 0)
+		(is-exist-end-tag nil)
+		(current-point (point)))
+
+	(backward-char 1)
+	(catch 'while-exit
+	  (while (not (bobp))
+		(backward-char 1)
+		(point)
+		(cond ((looking-at "\\[")
+			   (cond ((equal depth 0)
+					  (throw 'while-exit is-exist-end-tag))
+					 (t
+					  (setq depth (1+ depth)))))
+			  ((looking-at "\\]")
+			   (setq is-exist-end-tag t)
+			   (setq depth (1- depth))))
+		(if (and (equal depth 0)
+				 is-exist-end-tag)
+			(throw 'while-exit is-exist-end-tag))))
+
+	(cond (is-exist-end-tag
+		   (insert "[")
+		   (setq current-point (1+ current-point))))
+
+	(goto-char current-point)))
+
+(add-hook 'objc-mode-hook (lambda()
+							(define-key objc-mode-map (kbd "C-c ]") 'j-objc-end-tag)))
+
 ;; ======================================================================
 ;; Key definition
 ;; ======================================================================
