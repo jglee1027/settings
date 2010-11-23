@@ -328,6 +328,12 @@
 	  (define-key geben-mode-map [f7] 'geben-step-out)
 	  (define-key geben-mode-map [f8] 'geben-run))
   (error nil))
+
+;; javascript
+(condition-case nil
+	(require 'javascript)
+  (error nil))
+
 ;; ======================================================================
 ;; Cscope
 ;; ======================================================================

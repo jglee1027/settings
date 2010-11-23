@@ -29,6 +29,10 @@ highlight_symbol_path="$site_lisp_path/highlight-symbol.el"
 highlight_symbol_download="wget http://nschum.de/src/emacs/highlight-symbol/highlight-symbol.el"
 highlight_symbol_install=""
 
+javascript_path="$site_lisp_path/javascript.el"
+javascript_download="wget http://www.brgeight.se/downloads/emacs/javascript.el"
+javascript_install=""
+
 jdee_path="$site_lisp_path/jdee/"
 jdee_download="svn co https://jdee.svn.sourceforge.net/svnroot/jdee/trunk/jdee/lisp jdee"
 jdee_install=""
@@ -57,7 +61,7 @@ xcscope_path="$site_lisp_path/xcscope.el"
 xcscope_download="wget http://cscope.cvs.sourceforge.net/viewvc/cscope/cscope/contrib/xcscope/xcscope.el"
 xcscope_install=""
 
-all="android anything auto-complete ecb highlight-symbol jdee ruby-debug ruby-mode w3m xcode-document xcscope"
+all="android anything auto-complete ecb highlight-symbol javascript jdee nxhtml ruby-debug ruby-mode w3m xcode-document xcscope"
 
 usage() {
 	echo Emacs Lisp Installation Tool
@@ -72,6 +76,7 @@ usage() {
 	echo "  ecb"
 	echo "  geben"
 	echo "  highlight-symbol"
+	echo "  javascript"
 	echo "  jdee"
 	echo "  nxhtml"
 	echo "  ruby-debug"
@@ -149,6 +154,9 @@ case "$1" in
 		install "$1"
 		;;
 	"highlight-symbol")
+		install "$1"
+		;;
+	"javascript")
 		install "$1"
 		;;
 	"jdee")
