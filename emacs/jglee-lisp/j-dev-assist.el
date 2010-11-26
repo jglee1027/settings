@@ -94,6 +94,36 @@
 								  ,var
 								  ,var-history)))))
 
+(defvar j-register 0)
+(defvar j-register-iterator 0)
+
+(defun j-register-to-point()
+  (interactive)
+  (let* ((prev-register (mod (1- j-register) 10))
+		 (prev-mark (get-register (+ ?0 prev-register))))
+	(cond ((not (equal (point-marker) prev-mark))
+		   (point-to-register (+ ?0 j-register))
+		   (setq j-register (mod (1+ j-register) 10))
+		   (setq j-register-iterator j-register)))))
+
+(defun j-jump-prev-register()
+  (interactive)
+  (condition-case nil
+	  (progn
+		(let ((prev-register (mod (1- j-register-iterator) 10)))
+		  (jump-to-register (+ ?0 prev-register))
+		  (setq j-register-iterator prev-register)))
+	(error nil)))
+
+(defun j-jump-next-register()
+  (interactive)
+  (condition-case nil
+	  (progn
+		(let ((next-register (mod (1+ j-register-iterator) 10)))
+		  (jump-to-register (+ ?0 next-register))
+		  (setq j-register-iterator next-register)))
+	(error nil)))
+
 ;; ======================================================================
 ;; utility functions
 ;; ======================================================================
@@ -778,6 +808,12 @@ ex) make -C project/root/directory"
 		  (add-to-list 'symbol-names name)
 		  (add-to-list 'name-and-pos (cons name position))))))))
 
+(defun j-goto-symbol()
+  (interactive)
+  (j-register-to-point)
+  (j-ido-goto-symbol)
+  (j-register-to-point))
+
 (defvar j-ido-find-file-files-alist nil)
 (defvar j-ido-find-file-files-alist-root nil)
 
@@ -955,8 +991,8 @@ ex) make -C project/root/directory"
 (define-key global-map (kbd "C-c j %") 'j-gf-find-query-replace)
 (define-key global-map (kbd "C-c j i") 'j-ido-find-file)
 (define-key global-map (kbd "C-c i") 'j-ido-find-file)
-(define-key global-map (kbd "C-c j m") 'j-ido-goto-symbol)
-(define-key global-map (kbd "C-c m") 'j-ido-goto-symbol)
+(define-key global-map (kbd "C-c j m") 'j-goto-symbol)
+(define-key global-map (kbd "C-c m") 'j-goto-symbol)
 (define-key global-map (kbd "C-c j r") 'j-gf-set-project-root)
 (define-key global-map (kbd "C-c j e") 'j-gf-set-exclusive-path)
 (define-key global-map (kbd "C-c j t") 'j-create-tags)
@@ -967,6 +1003,8 @@ ex) make -C project/root/directory"
 (define-key global-map (kbd "C-c x b") 'j-xcode-build)
 (define-key global-map (kbd "C-c |") 'align)
 (define-key global-map (kbd "C-c M-|") 'align-regexp)
+(define-key global-map (kbd "C-x <left>") 'j-jump-prev-register)
+(define-key global-map (kbd "C-x <right>") 'j-jump-next-register)
 
 (provide 'j-dev-assist)
 ;;; j-dev-assist.el ends here
