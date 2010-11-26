@@ -1005,6 +1005,7 @@ ex) make -C project/root/directory"
 (define-key global-map (kbd "C-c M-|") 'align-regexp)
 (define-key global-map (kbd "C-x <left>") 'j-jump-prev-register)
 (define-key global-map (kbd "C-x <right>") 'j-jump-next-register)
+(define-key global-map (kbd "C-x <down>") 'j-register-to-point)
 
 (provide 'j-dev-assist)
 ;;; j-dev-assist.el ends here
