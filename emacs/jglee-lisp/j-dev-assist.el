@@ -110,7 +110,11 @@
   (interactive)
   (condition-case nil
 	  (progn
-		(let ((prev-register (mod (1- j-register-iterator) 10)))
+		(let* ((prev-register (mod (1- j-register-iterator) 10))
+			   (prev-marker (get-register (+ ?0 prev-register))))
+		  (while (equal (point-marker) prev-marker)
+			(setq prev-register (mod (1- prev-register) 10))
+			(setq prev-marker (get-register (+ ?0 prev-register))))
 		  (jump-to-register (+ ?0 prev-register))
 		  (setq j-register-iterator prev-register)))
 	(error nil)))
@@ -119,7 +123,11 @@
   (interactive)
   (condition-case nil
 	  (progn
-		(let ((next-register (mod (1+ j-register-iterator) 10)))
+		(let* ((next-register (mod (1+ j-register-iterator) 10))
+			   (next-marker (get-register (+ ?0 next-register))))
+		  (while (equal (point-marker) next-marker)
+			(setq next-register (mod (1+ next-register) 10))
+			(setq next-marker (get-register (+ ?0 next-register))))
 		  (jump-to-register (+ ?0 next-register))
 		  (setq j-register-iterator next-register)))
 	(error nil)))
