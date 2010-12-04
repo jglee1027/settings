@@ -94,42 +94,71 @@
 								  ,var
 								  ,var-history)))))
 
-(defvar j-register 0)
-(defvar j-register-iterator 0)
+(defvar j-mark-ring-max 20)
+(defvar j-mark-ring (make-ring j-mark-ring-max))
+(defvar j-mark-ring-iterator -1)
 
-(defun j-register-to-point()
-  (interactive)
-  (let* ((prev-register (mod (1- j-register) 10))
-		 (prev-mark (get-register (+ ?0 prev-register))))
-	(cond ((not (equal (point-marker) prev-mark))
-		   (point-to-register (+ ?0 j-register))
-		   (setq j-register (mod (1+ j-register) 10))
-		   (setq j-register-iterator j-register)))))
+;; jump-to-register in register.el
+(defun j-mark-jump(marker)
+  (cond
+   ((and (consp marker) (frame-configuration-p (car marker)))
+	(set-frame-configuration (car marker) (not delete))
+	(goto-char (cadr marker)))
+   ((and (consp marker) (window-configuration-p (car marker)))
+	(set-window-configuration (car marker))
+	(goto-char (cadr marker)))
+   ((markerp marker)
+	(or (marker-buffer marker)
+		(error "That marker's buffer no longer exists"))
+	(switch-to-buffer (marker-buffer marker))
+	(goto-char marker))
+   ((and (consp marker) (eq (car marker) 'file))
+	(find-file (cdr marker)))
+   ((and (consp marker) (eq (car marker) 'file-query))
+	(or (find-buffer-visiting (nth 1 marker))
+		(y-or-n-p (format "Visit file %s again? " (nth 1 marker)))
+		(error "marker access aborted"))
+	(find-file (nth 1 marker))
+	(goto-char (nth 2 marker)))
+   (t
+	(error "marker doesn't contain a buffer position or configuration"))))
 
-(defun j-jump-prev-register()
+(defun j-mark-push-marker()
   (interactive)
+  (setq j-mark-ring-iterator -1)
   (condition-case nil
-	  (progn
-		(let* ((prev-register (mod (1- j-register-iterator) 10))
-			   (prev-marker (get-register (+ ?0 prev-register))))
-		  (while (equal (point-marker) prev-marker)
-			(setq prev-register (mod (1- prev-register) 10))
-			(setq prev-marker (get-register (+ ?0 prev-register))))
-		  (jump-to-register (+ ?0 prev-register))
-		  (setq j-register-iterator prev-register)))
+	  (if (ring-empty-p j-mark-ring)
+		  (ring-insert j-mark-ring (point-marker))
+		(let ((last-marker (ring-ref j-mark-ring (car j-mark-ring)))
+			  (curr-marker (point-marker)))
+		  (cond ((not (equal last-marker curr-marker))
+				 (ring-insert j-mark-ring curr-marker)))))
 	(error nil)))
 
-(defun j-jump-next-register()
+(defun j-mark-prev()
   (interactive)
   (condition-case nil
-	  (progn
-		(let* ((next-register (mod (1+ j-register-iterator) 10))
-			   (next-marker (get-register (+ ?0 next-register))))
-		  (while (equal (point-marker) next-marker)
-			(setq next-register (mod (1+ next-register) 10))
-			(setq next-marker (get-register (+ ?0 next-register))))
-		  (jump-to-register (+ ?0 next-register))
-		  (setq j-register-iterator next-register)))
+	  (let* ((prev-iterator (mod (1+ j-mark-ring-iterator)
+								 (ring-length j-mark-ring)))
+			 (prev-marker (ring-ref j-mark-ring prev-iterator)))
+		(j-mark-jump prev-marker)
+		(setq j-mark-ring-iterator prev-iterator)
+		(message "jumped (%d/%d)"
+				 (- j-mark-ring-max j-mark-ring-iterator)
+				 j-mark-ring-max))
+	(error nil)))
+
+(defun j-mark-next()
+  (interactive)
+  (condition-case nil
+	  (let* ((next-iterator (mod (1- j-mark-ring-iterator)
+			  					 (ring-length j-mark-ring)))
+			 (next-marker (ring-ref j-mark-ring next-iterator)))
+		(j-mark-jump next-marker)
+		(setq j-mark-ring-iterator next-iterator)
+		(message "jumped (%d/%d)"
+				 (- j-mark-ring-max j-mark-ring-iterator)
+				 j-mark-ring-max))
 	(error nil)))
 
 ;; ======================================================================
@@ -818,9 +847,9 @@ ex) make -C project/root/directory"
 
 (defun j-goto-symbol()
   (interactive)
-  (j-register-to-point)
+  (j-mark-push-marker)
   (j-ido-goto-symbol)
-  (j-register-to-point))
+  (j-mark-push-marker))
 
 (defvar j-ido-find-file-files-alist nil)
 (defvar j-ido-find-file-files-alist-root nil)
@@ -983,8 +1012,15 @@ ex) make -C project/root/directory"
 
 	(goto-char current-point)))
 
-(add-hook 'objc-mode-hook (lambda()
-							(define-key objc-mode-map (kbd "C-c ]") 'j-objc-end-tag)))
+(add-hook 'objc-mode-hook
+		  (lambda()
+			(define-key objc-mode-map (kbd "C-c ]") 'j-objc-end-tag)))
+
+(add-hook 'isearch-mode-hook
+		  'j-mark-push-marker)
+
+(add-hook 'isearch-mode-end-hook
+		  'j-mark-push-marker)
 
 ;; ======================================================================
 ;; Key definition
@@ -1011,9 +1047,9 @@ ex) make -C project/root/directory"
 (define-key global-map (kbd "C-c x b") 'j-xcode-build)
 (define-key global-map (kbd "C-c |") 'align)
 (define-key global-map (kbd "C-c M-|") 'align-regexp)
-(define-key global-map (kbd "C-x ,") 'j-jump-prev-register)
-(define-key global-map (kbd "C-x .") 'j-jump-next-register)
-(define-key global-map (kbd "C-x <down>") 'j-register-to-point)
+(define-key global-map (kbd "C-x ,") 'j-mark-prev)
+(define-key global-map (kbd "C-x .") 'j-mark-next)
+(define-key global-map (kbd "C-x <down>") 'j-mark-push-marker)
 
 (provide 'j-dev-assist)
 ;;; j-dev-assist.el ends here
