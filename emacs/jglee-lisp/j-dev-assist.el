@@ -137,6 +137,9 @@
 
 (defun j-mark-prev()
   (interactive)
+  (cond ((equal j-mark-ring-iterator -1)
+		 (j-mark-push-marker)
+		 (setq j-mark-ring-iterator 0)))
   (condition-case nil
 	  (let* ((prev-iterator (mod (1+ j-mark-ring-iterator)
 								 (ring-length j-mark-ring)))
