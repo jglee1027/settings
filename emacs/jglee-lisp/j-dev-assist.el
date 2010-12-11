@@ -514,6 +514,7 @@ ex) make -C project/root/directory"
 (defun j-gf-symbol-at-point()
   "grep-find with symbol at current point."
   (interactive)
+  (j-mark-push-marker)
   (let (symbol)
 	(j-gf-set-project-root)
 	(setq symbol (symbol-at-point))
@@ -631,6 +632,7 @@ ex) make -C project/root/directory"
 		   "Query replace regexp in files" t t)))
      (list (nth 0 common) (nth 1 common) (nth 2 common))))
   
+  (j-mark-push-marker)
   (j-gf-set-project-root)
   (let (name-option
 		command
@@ -665,6 +667,7 @@ ex) make -C project/root/directory"
 (defun j-gf-find-file()
   "search a file."
   (interactive)
+  (j-mark-push-marker)
   (let (files)
 	(j-gf-set-project-root)
 	(setq files (read-from-minibuffer "Find file: "
@@ -704,6 +707,7 @@ ex) make -C project/root/directory"
 		  (query-replace-read-args
 		   "Query replace regexp in files" t t)))
      (list (nth 0 common) (nth 1 common) (nth 2 common))))
+  (j-mark-push-marker)
   (let (files)
 	(j-gf-set-project-root)
 	
@@ -859,6 +863,7 @@ ex) make -C project/root/directory"
 
 (defun j-ido-find-file()
   (interactive)
+  (j-mark-push-marker)
   (let (chosen-name
 		find-command
 		same-name-files-list
