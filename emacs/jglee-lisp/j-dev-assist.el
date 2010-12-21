@@ -995,7 +995,6 @@ ex) make -C project/root/directory"
   (let ((depth 0)
 		(is-exist-left-bracket nil)
 		(is-exist-right-bracket nil)
-		(is-continue-looking nil)
 		(current-point (point))
 		(beginning-of-defun-point nil)
 		(should-insert-brakets nil))	; (left right)
@@ -1009,39 +1008,26 @@ ex) make -C project/root/directory"
 	;; search parentheses and move the position
 	(setq should-insert-brakets
 		  (catch 'while-exit
-			(while (< beginning-of-defun-point
-					  (point))
+			(while t
 			  (backward-char 1)
-			  (cond ((looking-at "\\[")
-					 (cond ((and (looking-back ":[ \t\n]*"))
-							(setq is-continue-looking t)))
+			  (cond ((>= beginning-of-defun-point
+						 (point))
+					 (throw 'while-exit '(nil nil)))
+					((looking-at "\\[")
 					 (setq depth (1+ depth))
 					 (setq is-exist-left-bracket t))
 					((looking-at "\\]")
-					 (if (equal depth 0)
-						 (setq is-continue-looking nil))
 					 (setq depth (1- depth))))
 
 			  (cond ((and (equal depth 0)
-						  (null is-continue-looking))
-					 (cond ((looking-back "=[ \t\n]*")
-							(if (and is-exist-left-bracket
-									 is-exist-right-bracket)
-								(throw 'while-exit '(nil nil))
-							  (throw 'while-exit '(t t))))
-						   ((looking-back "\n[ \t\n]*")
-							(if (and is-exist-left-bracket
-									 is-exist-right-bracket)
-								(throw 'while-exit '(nil nil))
-							  (throw 'while-exit '(t t))))
-						   (is-exist-left-bracket
-							(if is-exist-right-bracket
-								(throw 'while-exit '(nil nil))
-							  (throw 'while-exit '(nil t))))))
-					((and (> depth 0)
-						  (looking-back "\n[ \t\n]*"))
+						  (looking-back "[={};][ \t\n]*"))
+					 (if (and is-exist-left-bracket
+							  is-exist-right-bracket)
+						 (throw 'while-exit '(nil nil))
+					   (throw 'while-exit '(t t))))
+					((equal depth 1)
 					 (throw 'while-exit '(nil t)))))))
-
+	
 	;; insert "["
 	(cond ((and (equal depth 0)
 				(< beginning-of-defun-point
