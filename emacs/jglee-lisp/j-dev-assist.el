@@ -990,39 +990,74 @@ ex) make -C project/root/directory"
 		((equal mode-name "JDE")
 		 (j-android-doc))))
 
-(defun j-objc-end-tag()
+(defun j-insert-objc-parenthesis()
   (interactive)
-  (insert "]")
   (let ((depth 0)
-		(is-exist-end-tag nil)
-		(current-point (point)))
+		(is-exist-left-bracket nil)
+		(is-exist-right-bracket nil)
+		(is-continue-looking nil)
+		(current-point (point))
+		(beginning-of-defun-point nil)
+		(should-insert-brakets nil))	; (left right)
 
-	(backward-char 1)
-	(catch 'while-exit
-	  (while (not (bobp))
-		(backward-char 1)
-		(point)
-		(cond ((looking-at "\\[")
-			   (cond ((equal depth 0)
-					  (throw 'while-exit is-exist-end-tag))
-					 (t
-					  (setq depth (1+ depth)))))
-			  ((looking-at "\\]")
-			   (setq is-exist-end-tag t)
-			   (setq depth (1- depth))))
-		(if (and (equal depth 0)
-				 is-exist-end-tag)
-			(throw 'while-exit is-exist-end-tag))))
+	(c-beginning-of-defun)
+	(setq beginning-of-defun-point (point))
+	(goto-char current-point)
+	
+	(setq is-exist-right-bracket (looking-back "\\][ \t\n]*"))
+	
+	;; search parentheses and move the position
+	(setq should-insert-brakets
+		  (catch 'while-exit
+			(while (< beginning-of-defun-point
+					  (point))
+			  (backward-char 1)
+			  (cond ((looking-at "\\[")
+					 (cond ((and (looking-back ":[ \t\n]*"))
+							(setq is-continue-looking t)))
+					 (setq depth (1+ depth))
+					 (setq is-exist-left-bracket t))
+					((looking-at "\\]")
+					 (if (equal depth 0)
+						 (setq is-continue-looking nil))
+					 (setq depth (1- depth))))
 
-	(cond (is-exist-end-tag
+			  (cond ((and (equal depth 0)
+						  (null is-continue-looking))
+					 (cond ((looking-back "=[ \t\n]*")
+							(if (and is-exist-left-bracket
+									 is-exist-right-bracket)
+								(throw 'while-exit '(nil nil))
+							  (throw 'while-exit '(t t))))
+						   ((looking-back "\n[ \t\n]*")
+							(if (and is-exist-left-bracket
+									 is-exist-right-bracket)
+								(throw 'while-exit '(nil nil))
+							  (throw 'while-exit '(t t))))
+						   (is-exist-left-bracket
+							(if is-exist-right-bracket
+								(throw 'while-exit '(nil nil))
+							  (throw 'while-exit '(nil t))))))
+					((and (> depth 0)
+						  (looking-back "\n[ \t\n]*"))
+					 (throw 'while-exit '(nil t)))))))
+
+	;; insert "["
+	(cond ((and (equal depth 0)
+				(< beginning-of-defun-point
+				   (point))
+				(not (looking-back "\\[[ \t\n]*"))
+				(car should-insert-brakets))
 		   (insert "[")
 		   (setq current-point (1+ current-point))))
 
-	(goto-char current-point)))
+	(goto-char current-point)
+	(if (nth 1 should-insert-brakets)
+		(insert "]"))))
 
 (add-hook 'objc-mode-hook
 		  (lambda()
-			(define-key objc-mode-map (kbd "C-c ]") 'j-objc-end-tag)))
+			(define-key objc-mode-map (kbd "C-c ]") 'j-insert-objc-parenthesis)))
 
 (add-hook 'isearch-mode-hook
 		  'j-mark-push-marker)
