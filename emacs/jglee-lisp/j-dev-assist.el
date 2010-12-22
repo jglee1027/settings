@@ -1041,8 +1041,26 @@ ex) make -C project/root/directory"
 	(if (nth 1 should-insert-brakets)
 		(insert "]"))))
 
+(defun j-delete-objc-parenthesis()
+  (interactive)
+  (cond ((looking-back "\\][ \t\n]*")
+		 (let ((left-bracket-pos nil)
+			   (right-bracket-pos nil))
+		   (backward-list)
+		   (setq left-bracket-pos (point))
+		   (forward-list)
+		   (setq right-bracket-pos (point))
+		   
+		   (goto-char left-bracket-pos)
+		   (delete-char 1)
+		   
+		   (goto-char right-bracket-pos)
+		   (backward-char 2)
+		   (delete-char 1)))))
+		   
 (add-hook 'objc-mode-hook
 		  (lambda()
+			(define-key objc-mode-map (kbd "C-c [") 'j-delete-objc-parenthesis)
 			(define-key objc-mode-map (kbd "C-c ]") 'j-insert-objc-parenthesis)))
 
 (add-hook 'isearch-mode-hook
