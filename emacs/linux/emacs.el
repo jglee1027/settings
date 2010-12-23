@@ -4,13 +4,18 @@
 (when window-system
   (set-background-color "#102040")
   (set-foreground-color "white")
-  (set-face-font 'default
-  				 (font-spec :family "NanumGothic_AndaleMono"
-  							:size 10.0))
-  (set-fontset-font nil
-  					'korean-ksc5601
-  					(font-spec :family "NanumGothic_AndaleMono"
-  							   :size 10.0))
+  (cond ((equal system-type 'darwin)
+		 (set-face-font 'default
+						(font-spec :family "Menlo"
+								   :size 11.0)))
+		(t
+		 (set-face-font 'default
+						(font-spec :family "NanumGothic_AndaleMono"
+								   :size 10.0))
+		 (set-fontset-font nil
+						   'korean-ksc5601
+						   (font-spec :family "NanumGothic_AndaleMono"
+									  :size 10.0))))
   (custom-set-variables
    '(scroll-bar-mode (quote right)))
   (custom-set-faces
