@@ -1,9 +1,16 @@
 ;; ======================================================================
 ;; Custom variables and faces
 ;; ======================================================================
-(when window-system
+(defun set-default-frame-color()
   (set-background-color "#102040")
-  (set-foreground-color "white")
+  (set-foreground-color "white"))
+
+(when window-system
+  (set-default-frame-color)
+  (add-hook 'after-make-frame-functions
+			(lambda (frame)
+			  (select-frame frame)
+			  (set-default-frame-color)))
   (cond ((equal system-type 'darwin)
 		 (set-face-font 'default
 						(font-spec :family "Menlo"
