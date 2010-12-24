@@ -1020,7 +1020,8 @@ ex) make -C project/root/directory"
 					 (setq depth (1- depth))))
 
 			  (cond ((and (equal depth 0)
-						  (looking-back "[={};][ \t\n]*"))
+						  (or (looking-back "[={};&|][ \t\n]*")
+							  (looking-back "\\(if\\|switch\\|while\\)[ \t\n]*(")))
 					 (if (and is-exist-left-bracket
 							  is-exist-right-bracket)
 						 (throw 'while-exit '(nil nil))
