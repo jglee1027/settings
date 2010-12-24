@@ -49,6 +49,10 @@ ruby_mode_path="$site_lisp_path/ruby-mode/"
 ruby_mode_download="svn co http://svn.ruby-lang.org/repos/ruby/trunk/misc ruby-mode"
 ruby_mode_install=""
 
+dsvn_path="$site_lisp_path/dsvn.el"
+dsvn_download="wget http://svn.apache.org/repos/asf/subversion/trunk/contrib/client-side/emacs/dsvn.el"
+dsvn_install=""
+
 w3m_path="$site_lisp_path/emacs-w3m/"
 w3m_download="cvs -d :pserver:anonymous@cvs.namazu.org:/storage/cvsroot login"
 w3m_install="cvs -d :pserver:anonymous@cvs.namazu.org:/storage/cvsroot co emacs-w3m"
@@ -61,7 +65,7 @@ xcscope_path="$site_lisp_path/xcscope.el"
 xcscope_download="wget http://cscope.cvs.sourceforge.net/viewvc/cscope/cscope/contrib/xcscope/xcscope.el"
 xcscope_install=""
 
-all="android anything auto-complete ecb highlight-symbol javascript jdee nxhtml ruby-debug ruby-mode w3m xcode-document xcscope"
+all="android anything auto-complete ecb highlight-symbol javascript jdee nxhtml ruby-debug ruby-mode dsvn w3m xcode-document xcscope"
 
 usage() {
 	echo Emacs Lisp Installation Tool
@@ -81,6 +85,7 @@ usage() {
 	echo "  nxhtml"
 	echo "  ruby-debug"
 	echo "  ruby-mode"
+	echo "  dsvn"
 	echo "  w3m"
 	echo "  xcode-document"
 	echo "  xcscope"
@@ -170,6 +175,9 @@ case "$1" in
 		install "$1"
 		;;
 	"ruby-mode")
+		install "$1"
+		;;
+	"dsvn")
 		install "$1"
 		;;
 	"w3m")
