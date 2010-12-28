@@ -338,11 +338,13 @@
 ;; Cscope
 ;; ======================================================================
 (condition-case nil
-    (require 'xcscope)
+	(progn
+	  (require 'xcscope)
+	  (add-hook 'java-mode-hook (function cscope:hook))
+	  (add-hook 'asm-mode-hook (function cscope:hook))
+	  (add-hook 'c-mode-common-hook (function cscope:hook)))
   (error nil))
 
-(add-hook 'java-mode-hook (function cscope:hook))
-(add-hook 'asm-mode-hook (function cscope:hook))
 (autoload 'cflow-mode "cflow-mode")
 
 ;; Source Navigator
