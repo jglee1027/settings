@@ -374,7 +374,8 @@
 	(progn
 	  (require 'yasnippet)
 	  (yas/initialize)
-	  (yas/load-directory "~/settings/emacs/site-lisp/yasnippet/snippets"))
+	  (yas/load-directory "~/settings/emacs/site-lisp/yasnippet/snippets")
+	  (yas/load-directory "~/settings/emacs/snippets"))
   (error nil))
 
 ;; ======================================================================

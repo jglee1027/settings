@@ -67,7 +67,7 @@ xcscope_install=""
 
 yasnippet_path="$site_lisp_path/yasnippet"
 yasnippet_download="svn checkout http://yasnippet.googlecode.com/svn/trunk/ yasnippet"
-yasnippet_install="patch -p0 -d $site_lisp_path/yasnippet -i $site_lisp_path/yasnippet.patch"
+yasnippet_install=""
 
 all="android anything auto-complete dsvn ecb highlight-symbol javascript jdee nxhtml ruby-debug ruby-mode w3m xcode-document xcscope yasnippet"
 
