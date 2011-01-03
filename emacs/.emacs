@@ -368,6 +368,16 @@
 (autoload 'svn-update "dsvn" "Run 'svn update'." t)
 	  
 ;; ======================================================================
+;; yasnippet
+;; ======================================================================
+(condition-case nil
+	(progn
+	  (require 'yasnippet)
+	  (yas/initialize)
+	  (yas/load-directory "~/settings/emacs/site-lisp/yasnippet/snippets"))
+  (error nil))
+
+;; ======================================================================
 ;; Org-mode
 ;; ======================================================================
 (add-to-list 'auto-mode-alist '("\\.org$" . org-mode))

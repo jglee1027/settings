@@ -65,7 +65,11 @@ xcscope_path="$site_lisp_path/xcscope.el"
 xcscope_download="wget http://cscope.cvs.sourceforge.net/viewvc/cscope/cscope/contrib/xcscope/xcscope.el"
 xcscope_install=""
 
-all="android anything auto-complete dsvn ecb highlight-symbol javascript jdee nxhtml ruby-debug ruby-mode w3m xcode-document xcscope"
+yasnippet_path="$site_lisp_path/yasnippet"
+yasnippet_download="svn checkout http://yasnippet.googlecode.com/svn/trunk/ yasnippet"
+yasnippet_install="patch -p0 -d $site_lisp_path/yasnippet -i $site_lisp_path/yasnippet.patch"
+
+all="android anything auto-complete dsvn ecb highlight-symbol javascript jdee nxhtml ruby-debug ruby-mode w3m xcode-document xcscope yasnippet"
 
 usage() {
 	echo Emacs Lisp Installation Tool
@@ -89,6 +93,7 @@ usage() {
 	echo "  w3m"
 	echo "  xcode-document"
 	echo "  xcscope"
+	echo "  yasnippet"
 }
 
 install() {
@@ -189,6 +194,9 @@ case "$1" in
 		install "$1"
 		;;
 	"xcscope")
+		install "$1"
+		;;
+	"yasnippet")
 		install "$1"
 		;;
 	*)
