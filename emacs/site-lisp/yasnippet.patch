@@ -9,8 +9,9 @@ Index: snippets/makefile-mode/makefile
 ===================================================================
 --- snippets/makefile-mode/makefile	(리비전 0)
 +++ snippets/makefile-mode/makefile	(리비전 0)
-@@ -0,0 +1,26 @@
-+#name : Makefile template
+@@ -0,0 +1,27 @@
++# name : Makefile template
++# expand-env : ((yas/indent-line 'fixed) (yas/wrap-around-region 'nil))
 +# --
 +TARGET = ${1:target program name}
 +
