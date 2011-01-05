@@ -9,9 +9,9 @@ anything_path="$site_lisp_path/anything.el"
 anything_download="wget http://www.emacswiki.org/emacs/download/anything.el"
 anything_install=""
 
-auto_complete_path="$site_lisp_path/auto-complete-1.3/"
-auto_complete_download="wget http://cx4a.org/pub/auto-complete/auto-complete-1.3.tar.bz2"
-auto_complete_install="tar xjf auto-complete-1.3.tar.bz2"
+auto_complete_path="$site_lisp_path/auto-complete/"
+auto_complete_download="git clone http://cx4a.org/repo/auto-complete.git/"
+auto_complete_install=""
 
 cedet_path="$site_lisp_path/cedet-1.0/"
 cedet_download="wget http://sourceforge.net/projects/cedet/files/cedet/cedet-1.0.tar.gz/download"
