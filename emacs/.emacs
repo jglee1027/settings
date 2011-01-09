@@ -99,10 +99,10 @@
 					  (load "dired-x" nil)
 					  (setq dired-guess-shell-alist-user
 							(list
-							 '("\\.[aA][vV][iI]$" "smplayer")
-							 '("\\.[mM][kK][vV]$" "smplayer")
-							 '("\\.[mM][pP]4$" "smplayer")
-							 '("\\.[wW][mM][vV]$" "smplayer"))))))
+							 '("\\.[aA][vV][iI]$" "mplayer")
+							 '("\\.[mM][kK][vV]$" "mplayer")
+							 '("\\.[mM][pP]4$" "mplayer")
+							 '("\\.[wW][mM][vV]$" "mplayer"))))))
 
 ;; ======================================================================
 ;; Key definition

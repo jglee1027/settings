@@ -3,3 +3,4 @@ fontconfig=1
 font=NanumGothic_LucidaGrande
 unicode=1
 subcp=cp949
+msglevel=all=0
