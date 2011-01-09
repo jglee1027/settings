@@ -54,6 +54,12 @@ if [ -d ~/.moc ]; then
 	echo moc setting... OK
 fi
 
+if [ -d ~/.mplayer ]; then
+	echo mplayer setting...
+	diff_cp $settings_path/.mplayer/config ~/.mplayer/config
+	echo mplayer setting... OK
+fi
+
 echo conkeror setting...
 diff_cp $settings_path/.conkerorrc ~/.conkerorrc
 
