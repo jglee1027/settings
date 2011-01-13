@@ -1,0 +1,23 @@
+# name : Makefile template for snippety programs
+# expand-env : ((yas/indent-line 'fixed) (yas/wrap-around-region 'nil))
+# --
+CC = ${1:gcc}
+CFLAGS = ${2:-Wall -g}
+CXX = ${3:g++}
+CXXFLAGS = ${4:-Wall -g}
+
+SRCS = ${5:\$(wildcard *.cpp)}
+SRCS += ${6:\$(wildcard *.c)}
+PROGRAMS = ${7:\$(patsubst %.c, %, \$(patsubst %.cpp, %, \$(SRCS)))}
+
+all : $(PROGRAMS)
+
+% : %.cpp
+	$(CXX) $(CXXFLAGS) -o $@ $<
+
+% : %.c
+	$(CC) $(CFLAGS) -o $@ $<
+
+clean :
+	rm -f $(PROGRAMS) *.o
+$0

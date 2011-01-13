@@ -1,13 +1,12 @@
-# name : Makefile template
+# name : Makefile template for a project
 # expand-env : ((yas/indent-line 'fixed) (yas/wrap-around-region 'nil))
 # --
-TARGET = ${1:target program name}
+CXX = ${1:g++}
+CXXFLAGS = ${2:-Wall -g}
 
-SRCS = ${2:\$(wildcard *.cpp)}
-OBJS = ${3:\$(SRCS:.cpp=.o)}
-
-CXX = ${4:g++}
-CXXFLAGS = ${5:-Wall -g}
+TARGET = ${3:target program name}
+SRCS = ${4:\$(wildcard *.cpp)}
+OBJS = ${5:\$(SRCS:.cpp=.o)}
 
 $(TARGET) : $(OBJS)
 	$(CXX) $(CXXFLAGS) -o $@ $^
@@ -18,7 +17,7 @@ dep :
 %.o : %.cpp
 	$(CXX) $(CXXFLAGS) -c $<
 
-clean:
+clean :
 	rm -f $(TARGET) $(OBJS) .depend
 
 ifeq (.depend,$(wildcard .depend))

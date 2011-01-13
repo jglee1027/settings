@@ -1,0 +1,5 @@
+# name : #pragma mark -; #pragma mark ...
+# --
+#pragma mark -
+#pragma mark $1
+$0
