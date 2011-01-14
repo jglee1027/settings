@@ -225,13 +225,17 @@
   (define-key map [C-f9]  'rdebug-toggle-source-breakpoint-enabled))
 (setq rdebug-populate-common-keys-function 'rdebug-keys)
 
-(setq auto-mode-alist (append '(("\\.cs$" . java-mode)
-								("\\.h$" . c++-mode)
-								("\\.m$" . objc-mode)
-								("\\.mm$" . objc-mode)
-								("\\.rb$" . ruby-mode)
-								("\\.cflow$" . cflow-mode))
-							  auto-mode-alist))
+;; auto-mode-alist
+(setq magic-mode-alist nil)				; to use eruby-nxhtml-mumamo-mode
+
+(add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
+(add-to-list 'auto-mode-alist '("\\.cs$" . java-mode))
+(add-to-list 'auto-mode-alist '("\\.h$" . c++-mode))
+(add-to-list 'auto-mode-alist '("\\.m$" . objc-mode))
+(add-to-list 'auto-mode-alist '("\\.mm$" . objc-mode))
+(add-to-list 'auto-mode-alist '("\\.rb$" . ruby-mode))
+(add-to-list 'auto-mode-alist '("\\.cflow$" . cflow-mode))
+(add-to-list 'auto-mode-alist '("\\.html\\.erb\\'" . eruby-nxhtml-mumamo-mode))
 
 ;; choose header file mode
 (defun header-file-mode-hook()
@@ -316,7 +320,7 @@
 
 ;; nxhtml
 (condition-case nil
- 	(require 'autostart)
+	(require 'autostart)
   (error nil))
 
 ;; geben
@@ -381,8 +385,6 @@
 ;; ======================================================================
 ;; Org-mode
 ;; ======================================================================
-(add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
-
 (define-key global-map "\C-cl" 'org-store-link)
 (define-key global-map "\C-ca" 'org-agenda)
 
