@@ -366,6 +366,16 @@
   (error nil))
 
 ;; ======================================================================
+;; doxymacs
+;; ======================================================================
+(condition-case nil
+	(progn
+	  (require 'doxymacs)
+	  (add-hook 'c-mode-common-hook 'doxymacs)
+	  (add-hook 'java-mode-hook 'doxymacs))
+  (error nil))
+
+;; ======================================================================
 ;; dsvn
 ;; ======================================================================
 (autoload 'svn-status "dsvn" "Run 'svn status'." t)

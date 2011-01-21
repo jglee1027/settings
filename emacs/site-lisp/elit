@@ -17,6 +17,10 @@ cedet_path="$site_lisp_path/cedet-1.0/"
 cedet_download="wget http://sourceforge.net/projects/cedet/files/cedet/cedet-1.0.tar.gz/download"
 cedet_install="tar xzf cedet-1.0.tar.gz"
 
+doxymacs_path="$site_lisp_path/doxymacs"
+doxymacs_download="git clone git://doxymacs.git.sourceforge.net/gitroot/doxymacs/doxymacs "
+doxymacs_install="cd doxymacs && ./bootstrap && ./configure"
+
 dsvn_path="$site_lisp_path/dsvn.el"
 dsvn_download="wget http://svn.apache.org/repos/asf/subversion/trunk/contrib/client-side/emacs/dsvn.el"
 dsvn_install=""
@@ -69,7 +73,23 @@ yasnippet_path="$site_lisp_path/yasnippet"
 yasnippet_download="svn checkout http://yasnippet.googlecode.com/svn/trunk/ yasnippet"
 yasnippet_install=""
 
-all="android anything auto-complete dsvn ecb highlight-symbol javascript jdee nxhtml ruby-debug ruby-mode w3m xcode-document xcscope yasnippet"
+all="android \
+anything \
+auto-complete \
+doxymacs \
+dsvn \
+ecb \
+geben \
+highlight-symbol \
+javascript \
+jdee \
+nxhtml \
+ruby-debug \
+ruby-mode \
+w3m \
+xcode-document \
+xcscope \
+yasnippet"
 
 usage() {
 	echo Emacs Lisp Installation Tool
@@ -78,22 +98,9 @@ usage() {
 	echo
 	echo Packages:
 	echo "  all(all packages)"
-	echo "  android"
-	echo "  anything"
-	echo "  auto-complete"
-	echo "  dsvn"
-	echo "  ecb"
-	echo "  geben"
-	echo "  highlight-symbol"
-	echo "  javascript"
-	echo "  jdee"
-	echo "  nxhtml"
-	echo "  ruby-debug"
-	echo "  ruby-mode"
-	echo "  w3m"
-	echo "  xcode-document"
-	echo "  xcscope"
-	echo "  yasnippet"
+	for pkg in $all; do
+		echo "  $pkg"
+	done
 }
 
 install() {
@@ -114,7 +121,7 @@ install() {
 	eval download=\$${pkg_name}_download
 	if [ -n "$download" ]; then
 		echo "---> $download"
-		ret=$($download)
+		ret=$(eval $download)
 		if [ $? -ne 0 ]; then
 			echo "---> ERROR: failed to download $pkg_name"
 			exit
@@ -124,7 +131,7 @@ install() {
 	eval install=\$${pkg_name}_install
 	if [ -n "$install" ]; then
 		echo "---> $install"
-		ret=$($install)
+		ret=$(eval $install)
 		if [ $? -ne 0 ]; then
 			echo "---> ERROR: failed to install $pkg_name"
 			exit
@@ -139,6 +146,7 @@ if [ $# -eq 0 ]; then
 	usage
 	exit
 fi
+
 cd $site_lisp_path
 
 case "$1" in
@@ -154,6 +162,9 @@ case "$1" in
 		install "$1"
 		;;
 	"auto-complete")
+		install "$1"
+		;;
+	"doxymacs")
 		install "$1"
 		;;
 	"dsvn")
