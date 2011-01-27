@@ -49,6 +49,10 @@ nxhtml_path="$site_lisp_path/nxhtml/"
 nxhtml_download="wget http://ourcomments.org/Emacs/DL/elisp/nxhtml/zip/nxhtml-2.08-100425.zip"
 nxhtml_install="unzip nxhtml-2.08-100425.zip"
 
+ri_emacs_path="$site_lisp_path/ri-emacs/"
+ri_emacs_download="cvs -d :pserver:anonymous@rubyforge.org:/var/cvs/ri-emacs login"
+ri_emacs_install="cvs -d :pserver:anonymous@rubyforge.org:/var/cvs/ri-emacs co ri-emacs"
+
 ruby_debug_path="$site_lisp_path/ruby-debug/"
 ruby_debug_download="svn co http://ruby-debug.rubyforge.org/svn/trunk/emacs ruby-debug"
 ruby_debug_install=""
@@ -84,6 +88,7 @@ highlight-symbol \
 javascript \
 jdee \
 nxhtml \
+ri-emacs \
 ruby-debug \
 ruby-mode \
 w3m \
@@ -197,6 +202,9 @@ case "$1" in
 		install "$1"
 		;;
 	"nxhtml")
+		install "$1"
+		;;
+	"ri-emacs")
 		install "$1"
 		;;
 	"ruby-debug")
