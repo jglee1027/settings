@@ -98,8 +98,17 @@ usage() {
 	echo
 	echo Packages:
 	echo "  all(all packages)"
+	echo
+
 	for pkg in $all; do
-		echo "  $pkg"
+		installed=" "
+		pkg_name=${pkg/-/_}
+		eval path=\$${pkg_name}_path
+		
+		if [ -e $path ]; then
+			installed="i"
+		fi
+		echo "$installed $pkg"
 	done
 }
 
