@@ -1,6 +1,6 @@
 #!/bin/bash
 
-site_lisp_path=$(cd $(dirname $0); pwd)
+elit_path=$(cd $(dirname $0); pwd)
 
 all="android \
 anything \
@@ -14,6 +14,7 @@ javascript \
 jdee \
 nxhtml \
 ri-emacs \
+rinari \
 ruby-debug \
 ruby-mode \
 w3m \
@@ -21,96 +22,101 @@ xcode-document \
 xcscope \
 yasnippet"
 
-android_path="$site_lisp_path/android.el"
+android_path="$elit_path/android.el"
 android_download=""
 android_install=""
 android_depend=""
 
-anything_path="$site_lisp_path/anything.el"
+anything_path="$elit_path/anything.el"
 anything_download="wget http://www.emacswiki.org/emacs/download/anything.el"
 anything_install=""
 anything_depend=""
 
-auto_complete_path="$site_lisp_path/auto-complete/"
+auto_complete_path="$elit_path/auto-complete/"
 auto_complete_download="git clone http://cx4a.org/repo/auto-complete.git/"
 auto_complete_install=""
 auto_complete_depend=""
 
-cedet_path="$site_lisp_path/cedet-1.0/"
+cedet_path="$elit_path/cedet-1.0/"
 cedet_download="wget http://sourceforge.net/projects/cedet/files/cedet/cedet-1.0.tar.gz"
 cedet_install="tar xzf cedet-1.0.tar.gz"
 cedet_depend=""
 
-doxymacs_path="$site_lisp_path/doxymacs"
+doxymacs_path="$elit_path/doxymacs"
 doxymacs_download="git clone git://doxymacs.git.sourceforge.net/gitroot/doxymacs/doxymacs "
 doxymacs_install="cd doxymacs && ./bootstrap && ./configure"
 doxymacs_depend=""
 
-dsvn_path="$site_lisp_path/dsvn.el"
+dsvn_path="$elit_path/dsvn.el"
 dsvn_download="wget http://svn.apache.org/repos/asf/subversion/trunk/contrib/client-side/emacs/dsvn.el"
 dsvn_install=""
 dsvn_depend=""
 
-ecb_path="$site_lisp_path/ecb-snap/"
+ecb_path="$elit_path/ecb-snap/"
 ecb_download="wget http://ecb.sourceforge.net/cvs_snapshots/ecb.tar.gz"
 ecb_install="tar xzf ecb.tar.gz"
 ecb_depend="cedet"
 
-geben_path="$site_lisp_path/geben/"
+geben_path="$elit_path/geben/"
 geben_download="svn co http://geben-on-emacs.googlecode.com/svn/trunk/ geben"
 geben_install=""
 geben_depend=""
 
-highlight_symbol_path="$site_lisp_path/highlight-symbol.el"
+highlight_symbol_path="$elit_path/highlight-symbol.el"
 highlight_symbol_download="wget http://nschum.de/src/emacs/highlight-symbol/highlight-symbol.el"
 highlight_symbol_install=""
 highlight_symbol_depend=""
 
-javascript_path="$site_lisp_path/javascript.el"
+javascript_path="$elit_path/javascript.el"
 javascript_download="wget http://www.brgeight.se/downloads/emacs/javascript.el"
 javascript_install=""
 javascript_depend=""
 
-jdee_path="$site_lisp_path/jdee/"
+jdee_path="$elit_path/jdee/"
 jdee_download="svn co https://jdee.svn.sourceforge.net/svnroot/jdee/trunk/jdee/lisp jdee"
 jdee_install=""
 jdee_depend="ecb"
 
-nxhtml_path="$site_lisp_path/nxhtml/"
+nxhtml_path="$elit_path/nxhtml/"
 nxhtml_download="wget http://ourcomments.org/Emacs/DL/elisp/nxhtml/zip/nxhtml-2.08-100425.zip"
 nxhtml_install="unzip nxhtml-2.08-100425.zip"
 nxhtml_depend=""
 
-ri_emacs_path="$site_lisp_path/ri-emacs/"
+ri_emacs_path="$elit_path/ri-emacs/"
 ri_emacs_download="cvs -d :pserver:anonymous@rubyforge.org:/var/cvs/ri-emacs login"
 ri_emacs_install="cvs -d :pserver:anonymous@rubyforge.org:/var/cvs/ri-emacs co ri-emacs"
 ri_emacs_depend=""
 
-ruby_debug_path="$site_lisp_path/ruby-debug/"
+rinari_path="$elit_path/rinari/"
+rinari_download="git clone git://github.com/eschulte/rinari.git"
+rinari_install="cd rinari && git submodule init && git submodule update"
+rinari_depend=""
+
+ruby_debug_path="$elit_path/ruby-debug/"
 ruby_debug_download="svn co http://ruby-debug.rubyforge.org/svn/trunk/emacs ruby-debug"
 ruby_debug_install=""
 ruby_debug_depend=""
 
-ruby_mode_path="$site_lisp_path/ruby-mode/"
+ruby_mode_path="$elit_path/ruby-mode/"
 ruby_mode_download="svn co http://svn.ruby-lang.org/repos/ruby/trunk/misc ruby-mode"
 ruby_mode_install=""
 
-w3m_path="$site_lisp_path/emacs-w3m/"
+w3m_path="$elit_path/emacs-w3m/"
 w3m_download="cvs -d :pserver:anonymous@cvs.namazu.org:/storage/cvsroot login"
 w3m_install="cvs -d :pserver:anonymous@cvs.namazu.org:/storage/cvsroot co emacs-w3m"
 w3m_depend=""
 
-xcode_document_path="$site_lisp_path/emacs-xcode-document-viewer/"
+xcode_document_path="$elit_path/emacs-xcode-document-viewer/"
 xcode_document_download="git clone http://github.com/imakado/emacs-xcode-document-viewer.git"
-xcode_document_install="patch -p1 -d $site_lisp_path/emacs-xcode-document-viewer -i $site_lisp_path/xcode-document-viewer.patch"
+xcode_document_install="patch -p1 -d $elit_path/emacs-xcode-document-viewer -i $elit_path/xcode-document-viewer.patch"
 xcode_depend="w3m anything"
 
-xcscope_path="$site_lisp_path/xcscope.el"
+xcscope_path="$elit_path/xcscope.el"
 xcscope_download="wget http://cscope.cvs.sourceforge.net/viewvc/cscope/cscope/contrib/xcscope/xcscope.el"
 xcscope_install=""
 xcscope_depend=""
 
-yasnippet_path="$site_lisp_path/yasnippet"
+yasnippet_path="$elit_path/yasnippet"
 yasnippet_download="svn checkout http://yasnippet.googlecode.com/svn/trunk/ yasnippet"
 yasnippet_install=""
 yasnippet_depend=""
@@ -161,7 +167,7 @@ install_dependency_package() {
 	local download=
 	eval download=\$${pkg_name}_download
 	if [ -n "$download" ]; then
-		echo "---> $download"
+		echo " --> $download"
 		ret=$(eval $download)
 		if [ $? -ne 0 ]; then
 			echo "---> ERROR: failed to download $pkg_name"
@@ -172,7 +178,7 @@ install_dependency_package() {
 	local install=
 	eval install=\$${pkg_name}_install
 	if [ -n "$install" ]; then
-		echo "---> $install"
+		echo " --> $install"
 		ret=$(eval $install)
 		if [ $? -ne 0 ]; then
 			echo "---> ERROR: failed to install $pkg_name"
@@ -216,7 +222,7 @@ install_package() {
 	local download=
 	eval download=\$${pkg_name}_download
 	if [ -n "$download" ]; then
-		echo "---> $download"
+		echo " --> $download"
 		ret=$(eval $download)
 		if [ $? -ne 0 ]; then
 			echo "---> ERROR: failed to download $pkg_name"
@@ -227,7 +233,7 @@ install_package() {
 	local install=
 	eval install=\$${pkg_name}_install
 	if [ -n "$install" ]; then
-		echo "---> $install"
+		echo " --> $install"
 		ret=$(eval $install)
 		if [ $? -ne 0 ]; then
 			echo "---> ERROR: failed to install $pkg_name"
@@ -244,7 +250,7 @@ if [ $# -eq 0 ]; then
 	exit
 fi
 
-cd $site_lisp_path
+cd $elit_path
 
 case "$1" in
 	"all")

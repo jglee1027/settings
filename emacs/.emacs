@@ -385,6 +385,11 @@
 			 (define-key ruby-mode-map (kbd "C-c /") 'rct-complete-symbol)))
 	(error nil)))
 
+;; rinari
+(condition-case nil
+	(require 'rinari)
+  (error nil))
+
 ;; ======================================================================
 ;; Cscope
 ;; ======================================================================
