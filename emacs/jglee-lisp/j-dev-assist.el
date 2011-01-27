@@ -164,6 +164,33 @@
 				 j-mark-ring-max))
 	(error nil)))
 
+(defun which-gem-package(package)
+  (let (start end path version)
+	(catch 'which-gem-exception
+	  (shell-command (format "gem list -d %s" package) "*which-gem-package*")
+	  (with-current-buffer "*which-gem-package*"
+		(goto-char (point-min))
+		(if (null (re-search-forward "Installed at: " nil t))
+			(throw 'which-gem-exception nil))
+		(setq start (point))
+		(if (null (re-search-forward "$" nil t))
+			(throw 'which-gem-exception nil))
+		(setq end (point))
+		(setq path (buffer-substring start end))
+
+		(goto-char (point-min))
+		(if (null (re-search-forward (format "%s \(" package) nil t))
+			(throw 'which-gem-exception nil))
+		(setq start (point))
+		(if (null (re-search-forward "\)$" nil t))
+			(throw 'which-gem-exception nil))
+		(setq end (1- (point)))
+		(setq version (buffer-substring start end))
+
+		(setq path (format "%s/gems/%s-%s" path package version))))
+	(kill-buffer "*which-gem-package*")
+	path))
+
 ;; ======================================================================
 ;; utility functions
 ;; ======================================================================
@@ -990,6 +1017,7 @@ ex) make -C project/root/directory"
 		((equal mode-name "JDE")
 		 (j-android-doc))))
 
+;; objc
 (defun j-insert-objc-parenthesis()
   (interactive)
   (let ((depth 0)
@@ -1064,6 +1092,15 @@ ex) make -C project/root/directory"
 			(define-key objc-mode-map (kbd "C-c [") 'j-delete-objc-parenthesis)
 			(define-key objc-mode-map (kbd "C-c ]") 'j-insert-objc-parenthesis)))
 
+;; ruby
+(let ((rcodetools-path (which-gem-package "rcodetools")))
+  (condition-case nil
+	  (cond ((not (null rcodetools-path))
+			 (add-to-list 'load-path rcodetools-path)
+			 (require 'anything-rcodetools)
+			 (define-key ruby-mode-map (kbd "C-c /") 'rct-complete-symbol)))
+	(error nil)))
+		 
 (add-hook 'isearch-mode-hook
 		  'j-mark-push-marker)
 
