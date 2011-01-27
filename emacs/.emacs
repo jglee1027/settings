@@ -530,6 +530,20 @@
 ;; ======================================================================
 ;; Misc. Customization
 ;; ======================================================================
+(defun install-elpa()
+  (interactive)
+  (cond ((not (file-exists-p "~/.emacs.d/elpa/package.el"))
+		 (let ((buffer (url-retrieve-synchronously
+						"http://tromey.com/elpa/package-install.el")))
+		   (save-excursion
+			 (set-buffer buffer)
+			 (goto-char (point-min))
+			 (re-search-forward "^$" nil 'move)
+			 (eval-region (point) (point-max))
+			 (kill-buffer (current-buffer)))))
+		(t
+		 (message "ELPA is already installed."))))
+
 (load-library "j-dev-assist")
 (load-library "j-highlight")
 

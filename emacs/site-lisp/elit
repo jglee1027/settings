@@ -199,7 +199,7 @@ install_package() {
 	local path=
 	eval path=\$${pkg_name}_path
 	if [ -e $path ]; then
-		echo "$1 already installed!!!"
+		echo "$1 is already installed!!!"
 		return 2
 	fi
 	
