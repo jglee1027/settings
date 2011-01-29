@@ -240,7 +240,7 @@
 ;; choose header file mode
 (defun header-file-mode-hook()
   (if (and (file-name-extension buffer-file-name)
-		   (string-match "\\.[hH]$"(file-name-extension buffer-file-name)))
+		   (string-match "\\.[hH]$" buffer-file-name))
 	  (let ((filename (file-name-sans-extension buffer-file-name))
 			(mode-alist '((".c" . c-mode)
 						  (".C" . c-mode)
