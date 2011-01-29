@@ -240,7 +240,7 @@
 ;; choose header file mode
 (defun header-file-mode-hook()
   (if (and (file-name-extension buffer-file-name)
-		   (string-match "[hH]"(file-name-extension buffer-file-name)))
+		   (string-match "\\.[hH]$"(file-name-extension buffer-file-name)))
 	  (let ((filename (file-name-sans-extension buffer-file-name))
 			(mode-alist '((".c" . c-mode)
 						  (".C" . c-mode)
@@ -254,10 +254,9 @@
 		(dolist (ext-mode mode-alist)
 		  (if (file-exists-p (concat filename (car ext-mode)))
 			  (setq mode ext-mode)))
-		  
+		
 		(if mode
-			(funcall (cdr mode)))
-  )))
+			(funcall (cdr mode))))))
 	
 (add-hook 'find-file-hook 'header-file-mode-hook)
 
@@ -440,8 +439,9 @@
 	(progn
 	  (require 'yasnippet)
 	  (yas/initialize)
-	  (yas/load-directory "~/settings/emacs/site-lisp/yasnippet/snippets")
-	  (yas/load-directory "~/settings/emacs/snippets"))
+	  (setq yas/root-directory '("~/settings/emacs/site-lisp/yasnippet/snippets"
+								 "~/settings/emacs/snippets"))
+	  (mapc 'yas/load-directory yas/root-directory))
   (error nil))
 
 ;; ======================================================================
