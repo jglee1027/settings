@@ -53,6 +53,7 @@
  '(highlight ((t (:background "black" :foreground "white"))))
  '(isearch ((t (:background "green" :foreground "black"))))
  '(lazy-highlight ((t (:background "yellow" :foreground "black"))))
+ '(minibuffer-prompt ((t (:foreground "cyan"))))
  '(mode-line ((t (:background "gray" :foreground "black"))))
  '(mouse ((t nil)))
  '(mumamo-background-chunk-major ((t nil)))
