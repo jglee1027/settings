@@ -106,8 +106,6 @@
 		<string>cut:</string>
 		<key>@y</key>
 		<string>buildAndGoBreakpointsOn:</string>
-		<key>@z</key>
-		<string>undo:</string>
 		<key>@{</key>
 		<string>alignLeft:</string>
 		<key>@|</key>
@@ -127,7 +125,7 @@
 		<key>^.</key>
 		<string>nextCompletion:</string>
 		<key>^/</key>
-		<string>completionPlaceholderSelect:</string>
+		<string>undo:</string>
 		<key>^@+</key>
 		<string>zoomIn:</string>
 		<key>^@-</key>
@@ -371,8 +369,6 @@
 		<string>moveSubWordForwardAndModifySelection:</string>
 		<key>^'</key>
 		<string>insertSingleQuoteIgnoringSubstitution:</string>
-		<key>^/</key>
-		<string>insertRightToLeftSlash:</string>
 		<key>^1</key>
 		<string>popLoadedFilesPopUp:</string>
 		<key>^2</key>
