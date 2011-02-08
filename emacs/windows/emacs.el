@@ -1,6 +1,9 @@
 ;; ======================================================================
 ;; Custom variables and faces
 ;; ======================================================================
+(custom-set-variables
+ '(scroll-bar-mode nil))
+
 (custom-set-faces
  '(default ((t (:inherit nil
 			    :stipple nil

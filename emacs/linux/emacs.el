@@ -24,7 +24,8 @@
 						   (font-spec :family "NanumGothic_AndaleMono"
 									  :size 10.0))))
   (custom-set-variables
-   '(scroll-bar-mode (quote right)))
+   '(scroll-bar-mode nil))
+  
   (custom-set-faces
    '(compilation-info ((t (:foreground "DodgerBlue"))))
    '(compilation-warning ((t (:foreground "Orange"))))
