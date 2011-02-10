@@ -13,8 +13,8 @@
 			  (set-default-frame-color)))
   (cond ((equal system-type 'darwin)
 		 (set-face-font 'default
-						(font-spec :family "Menlo"
-								   :size 11.0)))
+						(font-spec :family "Andale Mono"
+								   :size 12.0)))
 		(t
 		 (set-face-font 'default
 						(font-spec :family "NanumGothic_AndaleMono"
