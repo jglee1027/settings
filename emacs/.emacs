@@ -526,6 +526,9 @@
 ;; ======================================================================
 ;; Misc. Customization
 ;; ======================================================================
+(custom-set-variables
+ '(align-c++-modes (quote (c++-mode c-mode java-mode objc-mode))))
+
 (defun install-elpa()
   (interactive)
   (cond ((not (file-exists-p "~/.emacs.d/elpa/package.el"))
