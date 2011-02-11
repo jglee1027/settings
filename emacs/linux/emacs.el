@@ -14,7 +14,7 @@
   (cond ((equal system-type 'darwin)
 		 (set-face-font 'default
 						(font-spec :family "Andale Mono"
-								   :size 12.0)))
+								   :size 11.0)))
 		(t
 		 (set-face-font 'default
 						(font-spec :family "NanumGothic_AndaleMono"
