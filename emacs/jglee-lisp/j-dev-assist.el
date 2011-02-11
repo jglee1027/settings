@@ -132,7 +132,8 @@
 		(let ((last-marker (ring-ref j-mark-ring (car j-mark-ring)))
 			  (curr-marker (point-marker)))
 		  (cond ((not (equal last-marker curr-marker))
-				 (ring-insert j-mark-ring curr-marker)))))
+				 (ring-insert j-mark-ring curr-marker)
+				 (message "The current marker was saved")))))
 	(error nil)))
 
 (defun j-mark-prev()
@@ -146,9 +147,7 @@
 			 (prev-marker (ring-ref j-mark-ring prev-iterator)))
 		(j-mark-jump prev-marker)
 		(setq j-mark-ring-iterator prev-iterator)
-		(message "jumped (%d/%d)"
-				 (- j-mark-ring-max j-mark-ring-iterator)
-				 j-mark-ring-max))
+		(message "jumped to previous marker"))
 	(error nil)))
 
 (defun j-mark-next()
@@ -159,9 +158,7 @@
 			 (next-marker (ring-ref j-mark-ring next-iterator)))
 		(j-mark-jump next-marker)
 		(setq j-mark-ring-iterator next-iterator)
-		(message "jumped (%d/%d)"
-				 (- j-mark-ring-max j-mark-ring-iterator)
-				 j-mark-ring-max))
+		(message "jumped to next marker"))
 	(error nil)))
 
 ;; ======================================================================
