@@ -14,7 +14,11 @@
   (cond ((equal system-type 'darwin)
 		 (set-face-font 'default
 						(font-spec :family "Andale Mono"
-								   :size 11.0)))
+								   :size 11.0))
+		 (set-fontset-font nil
+						   'korean-ksc5601
+						   (font-spec :family "NanumGothic_AndaleMono"
+									  :size 10.0)))
 		(t
 		 (set-face-font 'default
 						(font-spec :family "NanumGothic_AndaleMono"
