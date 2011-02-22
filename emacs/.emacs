@@ -50,7 +50,10 @@
 	(if (null lang)
 		(setq lang ""))
 	(cond ((eq system-type 'darwin)
-		   'utf-8-nfd)
+		   (cond ((>= emacs-major-version 23)
+				  'utf-8-nfd)
+				 (t
+				  'utf-8)))
 		  ((string-match "UTF-8" lang)
 		   'utf-8)
 		  ((string-match "EUC-KR" lang)
