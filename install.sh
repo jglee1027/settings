@@ -48,6 +48,10 @@ echo git setting...
 diff_cp $settings_path/.gitconfig ~/.gitconfig
 echo git setting... OK
 
+echo gdb setting...
+diff_cp $settings_path/.gdbinit ~/.gdbinit
+echo gdb setting... OK
+
 if [ -d ~/.moc ]; then
 	echo moc setting...
 	diff_cp $settings_path/.moc/config ~/.moc/config
