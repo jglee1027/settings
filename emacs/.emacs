@@ -17,6 +17,7 @@
 	  '(4 8 12 16 20 24 28 32 36 40 44 48 52 56 60 64 68 72 76  80 84 88 92 96 100 104 108 112 116 120))
 (setq scalable-fonts-allowed t)
 (setq compilation-scroll-output t)
+(setq ns-pop-up-frames 'nil)
 
 (setq-default transient-mark-mode t)
 (show-paren-mode t)
@@ -292,6 +293,11 @@
 (add-hook 'c++-mode-hook
 		  (function (lambda ()
 					  (c-set-style "stroustrup"))))
+
+(add-hook 'objc-mode-hook
+		  (lambda ()
+			(hi-lock-face-buffer "\\<\\(@property\\|@synthesize\\)\\>"
+								 font-lock-keyword-face)))
 
 (add-hook 'idl-mode-hook
 		  (function (lambda ()
