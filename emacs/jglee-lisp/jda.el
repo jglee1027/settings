@@ -980,7 +980,7 @@ ex) make -C project/root/directory"
 		"----"
 		["Set Project Root Directory..." jda-gf-set-project-root
 		 :help "Set a project root directory"]
-		["Set Exclusive Path..." jda-gf-exclusive-path
+		["Set Exclusive Path..." jda-gf-set-exclusive-path
 		 :help "set exclusive paths"]
 		["Find Symbol in project..." jda-gf-symbol-at-point
 		 :help "Find a symbol in the project"]
