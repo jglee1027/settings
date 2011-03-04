@@ -1,4 +1,4 @@
-;;; j-dev-assist.el --- Development Asisstant for Emacs developed by Jong-Gyu
+;;; jda.el --- Jong-Gyu Development Asisstant for Emacs
 ;;
 ;; Copyright (C) 2010 Lee Jong-Gyu<jglee1027@gmail.com>
 ;;
@@ -26,44 +26,82 @@
 ;; 
 ;; * Installation
 ;;   Edit your ~/.emacs file to add the line:
-;;     (add-to-list 'load-path "/path/to/j-dev-assist.el")
-;;     (require 'j-dev-assist)
+;;     (add-to-list 'load-path "/path/to/jda.el")
+;;     (require 'jda)
 ;; 
 ;; * Major commands:
-;;	 C-c c `j-make'
-;;	 C-c j t `j-create-tags'
-;;	 C-c j g `j-modify-header-file-for-g++'
-;;	 C-c j p `j-open-counterpart-file'
-;;	 C-c j s `j-gf-symbol-at-point'
-;;	 C-c j f `j-gf-find-file'
-;;	 C-c j r `j-gf-set-project-root'
-;;	 C-c j e `j-gf-set-exclusive-path'
-;;	 C-c j i `j-ido-find-file'
-;;	 C-c j m `j-ido-goto-symbol'
-;;
+;;   See `jda-minor-keymap'
 
 ;;; Code:
 
+(require 'cl)
 (require 'imenu)
+(require 'ido)
 
-(ido-mode t)
-(if (boundp 'ffap-bindings)
-	(ffap-bindings))
+(defgroup jda nil
+  "Jong-Gyu Development Assistant"
+  :group 'applications
+  :prefix "jda-")
 
-(defgroup j-dev-assist nil
-  "Jong-Gyu Development Assist."
-  :group 'appications)
+(defvar jda-create-tags-command nil)
+(defvar jda-create-tags-command-history nil)
+(defvar jda-create-tags-directory nil)
+(defvar jda-create-tags-directory-history nil)
+(defvar jda-etags-tag-info-alist nil)
+(defvar jda-get-extensions-alist '(("c"		. ("h"))
+								   ("cpp"	. ("h"))
+								   ("m"		. ("h"))
+								   ("mm"	. ("h"))
+								   ("h"		. ("c" "cpp" "m" "mm"))))
+(defvar jda-gf-symbol-history nil)
+(defvar jda-gf-symbol-command-history nil)
+(defvar jda-gf-find-file-history nil)
+(defvar jda-gf-find-file-command-history nil)
+(defvar jda-gf-replace-file-history nil)
+(defvar jda-gf-replace-file-command-history nil)
+(defvar jda-gf-project-root nil)
+(defvar jda-gf-project-root-history nil)
+(defvar jda-gf-grep-query-command-history nil)
+(defvar jda-gf-exclusive-path-history nil)
+(defvar jda-gf-grep-query-replace-buffers-alist nil)
+(defvar jda-ido-find-file-files-alist nil)
+(defvar jda-ido-find-file-files-alist-root nil)
+(defvar jda-mark-ring-max 20)
+(defvar jda-mark-ring (make-ring jda-mark-ring-max))
+(defvar jda-mark-ring-iterator -1)
+(defvar jda-make-command-history nil)
+(defvar jda-xcode-doc-text-history nil)
+
+(defcustom jda-gf-assoc-extension-alist
+  '(("c"		. "*.[cChH] *.[cC][pP][pP] *.[mM] *.[mM][mM]")
+	("cpp"		. "*.[cChH] *.[cC][pP][pP] *.[mM] *.[mM][mM]")
+	("h"		. "*.[cChH] *.[cC][pP][pP] *.[mM] *.[mM][mM]")
+	("m"		. "*.[cChH] *.[cC][pP][pP] *.[mM] *.[mM][mM]")
+	("mm"		. "*.[cChH] *.[cC][pP][pP] *.[mM] *.[mM][mM]")
+	("java"		. "*.java")
+	("el"		. "*.el")
+	("rb"		. "*.rb"))
+  "Counterpart extensions"
+  :type 'alist
+  :group 'jda)
+
+(defcustom jda-gf-exclusive-path
+  "*.git* *.svn* *.cvs* *.class *.obj *.o *.a *.so *~ *# *.cache *TAGS *cscope.out"
+  "Paths to exclude while find command runs"
+  :type 'string
+  :group 'jda)
 
 ;; ======================================================================
 ;; common functions
 ;; ======================================================================
-(defun j-icompleting-read (prompt choices)
+
+(defun jda-icompleting-read (prompt choices)
   (let ((iswitchb-make-buflist-hook
          (lambda ()
            (setq iswitchb-temp-buflist choices))))
     (iswitchb-read-buffer prompt)))
 
-(defun j-read-shell-command (prompt initial-contents &optional history)
+(defun jda-read-shell-command (prompt initial-contents &optional history)
   (if (functionp 'read-shell-command)
 	  (read-shell-command prompt
 						  initial-contents
@@ -74,15 +112,15 @@
 						  nil
 						  history)))
 
-(defun j-is-directory(path)
+(defun jda-is-directory(path)
   (equal (car (file-attributes path)) t))
 
-(defun j-get-super-directory(path)
+(defun jda-get-super-directory(path)
   (replace-regexp-in-string "/[^/]*$"
 							""
 							path))
 
-(defmacro j-set-default-directory(prompt var var-history)
+(defmacro jda-set-default-directory(prompt var var-history)
   `(progn (if (null ,var)
 			  (setq ,var default-directory))
 		  (setq ,var
@@ -94,12 +132,8 @@
 								  ,var
 								  ,var-history)))))
 
-(defvar j-mark-ring-max 20)
-(defvar j-mark-ring (make-ring j-mark-ring-max))
-(defvar j-mark-ring-iterator -1)
-
 ;; jump-to-register in register.el
-(defun j-mark-jump(marker)
+(defun jda-mark-jump(marker)
   (cond
    ((and (consp marker) (frame-configuration-p (car marker)))
 	(set-frame-configuration (car marker) (not delete))
@@ -123,160 +157,70 @@
    (t
 	(error "marker doesn't contain a buffer position or configuration"))))
 
-(defun j-mark-push-marker()
+(defun jda-mark-push-marker()
   (interactive)
-  (setq j-mark-ring-iterator -1)
+  (setq jda-mark-ring-iterator -1)
   (condition-case nil
-	  (if (ring-empty-p j-mark-ring)
-		  (ring-insert j-mark-ring (point-marker))
-		(let ((last-marker (ring-ref j-mark-ring (car j-mark-ring)))
+	  (if (ring-empty-p jda-mark-ring)
+		  (ring-insert jda-mark-ring (point-marker))
+		(let ((last-marker (ring-ref jda-mark-ring (car jda-mark-ring)))
 			  (curr-marker (point-marker)))
 		  (cond ((not (equal last-marker curr-marker))
-				 (ring-insert j-mark-ring curr-marker)
+				 (ring-insert jda-mark-ring curr-marker)
 				 (message "The current marker was saved")))))
 	(error nil)))
 
-(defun j-mark-prev()
+(defun jda-mark-prev()
   (interactive)
-  (cond ((equal j-mark-ring-iterator -1)
-		 (j-mark-push-marker)
-		 (setq j-mark-ring-iterator 0)))
+  (cond ((equal jda-mark-ring-iterator -1)
+		 (jda-mark-push-marker)
+		 (setq jda-mark-ring-iterator 0)))
   (condition-case nil
-	  (let* ((prev-iterator (mod (1+ j-mark-ring-iterator)
-								 (ring-length j-mark-ring)))
-			 (prev-marker (ring-ref j-mark-ring prev-iterator)))
-		(j-mark-jump prev-marker)
-		(setq j-mark-ring-iterator prev-iterator)
+	  (let* ((prev-iterator (mod (1+ jda-mark-ring-iterator)
+								 (ring-length jda-mark-ring)))
+			 (prev-marker (ring-ref jda-mark-ring prev-iterator)))
+		(jda-mark-jump prev-marker)
+		(setq jda-mark-ring-iterator prev-iterator)
 		(message "jumped to previous marker"))
 	(error nil)))
 
-(defun j-mark-next()
+(defun jda-mark-next()
   (interactive)
   (condition-case nil
-	  (let* ((next-iterator (mod (1- j-mark-ring-iterator)
-			  					 (ring-length j-mark-ring)))
-			 (next-marker (ring-ref j-mark-ring next-iterator)))
-		(j-mark-jump next-marker)
-		(setq j-mark-ring-iterator next-iterator)
+	  (let* ((next-iterator (mod (1- jda-mark-ring-iterator)
+			  					 (ring-length jda-mark-ring)))
+			 (next-marker (ring-ref jda-mark-ring next-iterator)))
+		(jda-mark-jump next-marker)
+		(setq jda-mark-ring-iterator next-iterator)
 		(message "jumped to next marker"))
 	(error nil)))
 
 ;; ======================================================================
 ;; utility functions
 ;; ======================================================================
-(defun j-add-new-line-to-eof()
-  "insert newline if the end of buferr is not newline."
-  (interactive)
-  (save-excursion
-	(goto-char (point-max))
-	(if (equal (looking-back "\n") nil)
-		(insert "\n"))))
 
-(defun j-is-already-exist-if-def-pragma-once()
-  "check if current point is between '#ifdef OS_WIN' and '#endif' preprocessor condition or not."
-  (save-excursion
-	(c-up-conditional 1)
-	(looking-at "#[ \t\n]*ifdef[ \t\n]*OS_WIN")))
-
-(defun j-add-if-def-pragma-once()
-  "move '#pragma' between '#ifdef OS_WIN' and '#endif'."
-  (interactive)
-  (save-excursion
-	(goto-char (point-min))
-	(while (re-search-forward "^[ \t]*#[ \t\n]*pragma[ \t\n]+once" nil t)
-	  (beginning-of-line)
-	  (kill-line)
-	  (insert "#ifdef OS_WIN\n#\tpragma once\n#endif"))))
-
-(defvar j-once-header-project-root-directory  nil)
-(defvar j-once-header-project-root-directory-history nil)
-
-(defun j-get-header-define-string()
-  "return header definition string for include guard."
-  (interactive)
-  (let (define-string)
-	(setq define-string (buffer-file-name (current-buffer)))
-	(j-set-default-directory "Project root directory: "
-							 j-once-header-project-root-directory
-							 'j-once-header-project-root-directory-history)
-	(setq define-string
-		  (replace-regexp-in-string j-once-header-project-root-directory
-									""
-									define-string))
-	(setq define-string
-		  (upcase (replace-regexp-in-string "[/\\.]"
-											"_"
-											define-string)))))
-
-(defun j-is-already-exist-if-def-header(header-define-name)
-  "check if header definition string already exists or not."
-  (interactive)
-  (save-excursion
-	(let (define-header-name-regexp)
-	  (goto-char (point-min))
-	  (setq define-header-name-regexp (format "^[ \t]*#[ \t\n]*define[ \t\n]+%s"
-											  header-define-name))
-	  (re-search-forward  define-header-name-regexp nil t))))
-
-(defun j-add-ifndef-header-define-name()
-  "if include guards don't exist, insert include guards."
-  (interactive)
-  (save-excursion
-	(let (header-define-name new-line count-of-new-line) 
-	  (setq header-define-name (j-get-header-define-string))
-	  (if (equal (j-is-already-exist-if-def-header header-define-name) nil)
-		  (progn
-			(goto-char (point-min))
-			(insert (format "#ifndef %s\n#define %s\n\n"
-							header-define-name
-							header-define-name))
-			(goto-char (point-max))
-			(setq count-of-new-line 0)
-			(while (and (looking-back "\n") (not (bobp)))
-			  (setq count-of-new-line (1+ count-of-new-line))
-			  (forward-char -1))
-			(cond ((>= count-of-new-line 2)
-				   ;; delete useless newline
-				   (delete-char (- count-of-new-line 2))
-				   (setq new-line ""))
-				  ((equal count-of-new-line 1)
-				   (setq new-line "\n"))
-				  (t
-				   (setq new-line "\n\n")))
-			(goto-char (point-max))
-			(insert new-line)
-			(insert (format "#endif // %s\n" header-define-name)))))))
-
-(defun j-modify-header-file-for-g++()
-  "to supress g++ warning, insert newline at the end of buffer.
-use include guards."
-  (interactive)
-  (j-add-ifndef-header-define-name)
-  (j-add-if-def-pragma-once))
-
-(defun j-get-makefile-dir()
+(defun jda-get-makefile-dir()
   "return the directory(project root directory) where Makefile exist."
   (interactive)
   (let (makefile-dir)
 	(setq makefile-dir (buffer-file-name))
 	(if (equal makefile-dir nil)
 		(setq makefile-dir default-directory) ; not filebuffer
-	  (setq makefile-dir (j-get-super-directory makefile-dir)))
+	  (setq makefile-dir (jda-get-super-directory makefile-dir)))
 	(catch 'while-exit
 	  (while (not (or (equal makefile-dir "")
 					  (equal makefile-dir "~")))
 		(cond ((file-exists-p (concat makefile-dir "/Makefile"))
 			   (throw 'while-exit makefile-dir)))
-		(setq makefile-dir (j-get-super-directory makefile-dir)))
+		(setq makefile-dir (jda-get-super-directory makefile-dir)))
 	  (throw 'while-exit ""))))
 
-(defvar j-make-command-history nil)
-(defun j-make ()
+(defun jda-make ()
   "make compile-string like following if the directory in which Makefile exist is found.
 ex) make -C project/root/directory"
   (interactive)
   (let (compile-string makefile-dir)
-	(setq makefile-dir (j-get-makefile-dir))
+	(setq makefile-dir (jda-get-makefile-dir))
 	(if (equal makefile-dir "")
 		(setq compile-string "make ")
 	  (setq compile-string (format "make -C %s " makefile-dir)))
@@ -284,32 +228,26 @@ ex) make -C project/root/directory"
 											   compile-string
 											   nil
 											   nil
-											   'j-make-command-history))
+											   'jda-make-command-history))
 	(compile compile-string)))
 
-(defun j-get-sub-directory-list(dir)
+(defun jda-get-sub-directory-list(dir)
   (let ((entries (directory-files dir t))
 		(sub-dirs '()))
-	(mapcar (lambda (entry) (if (j-is-directory entry)
+	(mapcar (lambda (entry) (if (jda-is-directory entry)
 								(add-to-list 'sub-dirs entry t)))
 			entries)
 	sub-dirs))
 
-(defvar j-get-extensions-alist '(("c"		. ("h"))
-								 ("cpp"		. ("h"))
-								 ("m"		. ("h"))
-								 ("mm"		. ("h"))
-								 ("h"		. ("c" "cpp" "m" "mm"))))
-
-(defun j-get-extensions-to-visit()
+(defun jda-get-extensions-to-visit()
   (let (extension extensions-to-visit)
 	(cond ((null (buffer-file-name))
 		   (setq extensions-to-visit nil))
 		  (t
 		   (setq extension (downcase (file-name-extension (buffer-file-name))))
-		   (setq extensions-to-visit (cdr (assoc extension j-get-extensions-alist)))))))
+		   (setq extensions-to-visit (cdr (assoc extension jda-get-extensions-alist)))))))
 
-(defun j-visit-file(file-name-sans-ext extensions)
+(defun jda-visit-file(file-name-sans-ext extensions)
   (let (file-name file-ext)
 	(while (not (equal (setq file-ext (pop extensions)) nil))
 	  (setq file-name (concat file-name-sans-ext "." file-ext))
@@ -318,15 +256,15 @@ ex) make -C project/root/directory"
 			(find-file file-name)
 			(throw 'visit-file-exception file-name))))))
 
-(defun j-visit-file-in-sub-dirs(sub-dir-list file-name-non-dir extensions)
+(defun jda-visit-file-in-sub-dirs(sub-dir-list file-name-non-dir extensions)
   (let (file-name-sans-ext)
 	(mapcar (lambda (entry)
 			  (setq file-name-sans-ext (concat entry "/" file-name-non-dir))
-			  (j-visit-file file-name-sans-ext extensions))
+			  (jda-visit-file file-name-sans-ext extensions))
 			sub-dir-list)))
 
-(defun j-visit-file-in-dirs(super-dir-depth sub-dir-depth)
-  (let ((extensions-to-visit (j-get-extensions-to-visit))
+(defun jda-visit-file-in-dirs(super-dir-depth sub-dir-depth)
+  (let ((extensions-to-visit (jda-get-extensions-to-visit))
 		file-name-sans-ext
 		file-name-non-dir
 		current-dir
@@ -344,24 +282,24 @@ ex) make -C project/root/directory"
 	;; in sub-dir of super-dir
 	;; ...
 	(setq current-dir (file-name-directory file-name-sans-ext))
-	(setq sub-dir-list (j-get-sub-directory-list current-dir))
+	(setq sub-dir-list (jda-get-sub-directory-list current-dir))
 	(dotimes (i super-dir-depth)
-	  (setq current-dir (j-get-super-directory current-dir))
+	  (setq current-dir (jda-get-super-directory current-dir))
 	  (if (equal current-dir "")
 		  (return))
-	  (setq sub-dir-list (j-get-sub-directory-list current-dir))
-	  (j-visit-file-in-sub-dirs sub-dir-list
-								file-name-non-dir
-								extensions-to-visit))
+	  (setq sub-dir-list (jda-get-sub-directory-list current-dir))
+	  (jda-visit-file-in-sub-dirs sub-dir-list
+								  file-name-non-dir
+								  extensions-to-visit))
 	
 	;; in sub-dir of sub-dir
 	;; ...
 	(setq current-dir (file-name-directory file-name-sans-ext))
-	(setq sub-dir-list (j-get-sub-directory-list current-dir))
+	(setq sub-dir-list (jda-get-sub-directory-list current-dir))
 	(let ((sub-dir-all-list nil))
 	  (dotimes (i sub-dir-depth)
 		(mapcar (lambda (entry)
-				  (let ((dirs (j-get-sub-directory-list entry)))
+				  (let ((dirs (jda-get-sub-directory-list entry)))
 					(mapcar (lambda (x)
 							  (delq x sub-dir-all-list)
 							  (add-to-list 'sub-dir-all-list x t))
@@ -369,32 +307,32 @@ ex) make -C project/root/directory"
 				  entry)
 				sub-dir-list)
 		(setq sub-dir-list sub-dir-all-list))
-	  (j-visit-file-in-sub-dirs sub-dir-all-list
-								file-name-non-dir
-								extensions-to-visit))))
+	  (jda-visit-file-in-sub-dirs sub-dir-all-list
+								  file-name-non-dir
+								  extensions-to-visit))))
 
-(defun j-visit-file-in-project()
+(defun jda-visit-file-in-project()
   (interactive)
   (let ((file-name-sans-ext (file-name-sans-extension (buffer-name)))
 		(same-name-files-list nil)
-		(extensions-to-visit (j-get-extensions-to-visit))
+		(extensions-to-visit (jda-get-extensions-to-visit))
 		(same-name-files-count 0)
 		file-name
 		file-ext)
 	
-	(if (null j-ido-find-file-files-alist)
+	(if (null jda-ido-find-file-files-alist)
 		(throw 'visit-file-exception "Not found! Set project root directory"))
 
 	(while (not (null (setq file-ext (pop extensions-to-visit))))
 	  (setq file-name (concat file-name-sans-ext "." file-ext))
-	  (cond ((not (null (assoc file-name j-ido-find-file-files-alist)))
+	  (cond ((not (null (assoc file-name jda-ido-find-file-files-alist)))
 			 (mapcar (lambda (x)
 					   (cond ((equal file-name (car x))
 							  (add-to-list 'same-name-files-list
 										   (car (cdr x)))
 							  (setq same-name-files-count
 									(1+ same-name-files-count)))))
-					 j-ido-find-file-files-alist)
+					 jda-ido-find-file-files-alist)
 			 (cond ((equal same-name-files-count 1)
 					(throw 'visit-file-exception
 						   (buffer-file-name
@@ -406,55 +344,27 @@ ex) make -C project/root/directory"
 							 (ido-completing-read "Find file: "
 												  same-name-files-list)))))))))))
 
-(defun j-open-counterpart-file()
+(defun jda-open-counterpart-file()
   "open the header or source file related with the current file."
   (interactive)
   (message (catch 'visit-file-exception
-			 (j-visit-file-in-dirs 2 2)
-			 (j-visit-file-in-project)
+			 (jda-visit-file-in-dirs 2 2)
+			 (jda-visit-file-in-project)
 			 (throw 'visit-file-exception "Not found!"))))
 
-(defvar j-gf-symbol-history nil)
-(defvar j-gf-symbol-command-history nil)
-(defvar j-gf-find-file-history nil)
-(defvar j-gf-find-file-command-history nil)
-(defvar j-gf-replace-file-history nil)
-(defvar j-gf-replace-file-command-history nil)
-(defvar j-gf-project-root nil)
-(defvar j-gf-project-root-history nil)
-(defvar j-gf-grep-query-command-history nil)
-(defcustom j-gf-exclusive-path
-  "*.git* *.svn* *.cvs* *.class *.obj *.o *.a *.so *~ *# *.cache *TAGS *cscope.out"
-  "Paths to exclude while find command runs"
-  :type 'string
-  :group 'j-dev-assist)
-(defvar j-gf-exclusive-path-history nil)
-(defcustom j-gf-assoc-extension-alist
-  '(("c"		. "*.[cChH] *.[cC][pP][pP] *.[mM] *.[mM][mM]")
-	("cpp"		. "*.[cChH] *.[cC][pP][pP] *.[mM] *.[mM][mM]")
-	("h"		. "*.[cChH] *.[cC][pP][pP] *.[mM] *.[mM][mM]")
-	("m"		. "*.[cChH] *.[cC][pP][pP] *.[mM] *.[mM][mM]")
-	("mm"		. "*.[cChH] *.[cC][pP][pP] *.[mM] *.[mM][mM]")
-	("java"		. "*.java")
-	("el"		. "*.el")
-	("rb"		. "*.rb"))
-  "Counterpart extensions"
-  :type 'alist
-  :group 'j-dev-assist)
-
-(defun j-gf-get-find-exclusive-path-options()
+(defun jda-gf-get-find-exclusive-path-options()
   (let (path-list path-option)
-	(if (equal j-gf-exclusive-path "")
+	(if (equal jda-gf-exclusive-path "")
 		(setq path-option "")
 	  (progn
 		(setq path-list (mapcar (lambda (x) (format "-path '%s'" x))
-								(split-string j-gf-exclusive-path)))
+								(split-string jda-gf-exclusive-path)))
 		(setq path-option (pop path-list))
 		(while path-list
 		  (setq path-option (concat path-option " -o " (pop path-list))))
 		(setq path-option (concat "! \\( " path-option " \\)"))))))
 
-(defun j-gf-get-find-name-options(files)
+(defun jda-gf-get-find-name-options(files)
   (let (name-list name-option)
 	(if (equal files "")
 		(setq name-option "")
@@ -466,14 +376,14 @@ ex) make -C project/root/directory"
 		  (setq name-option (concat name-option " -o " (pop name-list))))
 		(setq name-option (concat "\\( " name-option " \\)"))))))
 
-(defun j-gf-get-assoc-find-name-options()
+(defun jda-gf-get-assoc-find-name-options()
   (let (name-option name-list extension assoc-extensions)
 	(cond ((null (buffer-file-name))
-		   (setq name-option (j-gf-get-find-name-options
+		   (setq name-option (jda-gf-get-find-name-options
 							  (read-from-minibuffer "Find file: "))))
 		  (t
 		   (setq extension (downcase (file-name-extension (buffer-file-name))))
-		   (setq assoc-extensions (cdr (assoc extension j-gf-assoc-extension-alist)))
+		   (setq assoc-extensions (cdr (assoc extension jda-gf-assoc-extension-alist)))
 		   (cond (assoc-extensions
 				  (setq name-list (mapcar (lambda (x) (format "-name '%s'" x))
 										  (split-string assoc-extensions)))
@@ -484,23 +394,23 @@ ex) make -C project/root/directory"
 				 (t
 				  (setq name-option "")))))))
 
-(defun j-gf-set-exclusive-path()
+(defun jda-gf-set-exclusive-path()
   (interactive)
-  (setq j-gf-exclusive-path
+  (setq jda-gf-exclusive-path
 		(read-from-minibuffer "Exclusive paths: "
-							  j-gf-exclusive-path
+							  jda-gf-exclusive-path
 							  nil
 							  nil
-							  'j-gf-exclusive-path-history)))
+							  'jda-gf-exclusive-path-history)))
 
-(defun j-gf-set-project-root()
+(defun jda-gf-set-project-root()
   "set a project root directory for grep-find"
   (interactive)
-  (j-set-default-directory "Project root: "
-						   j-gf-project-root
-						   'j-gf-project-root-history))
+  (jda-set-default-directory "Project root: "
+							 jda-gf-project-root
+							 'jda-gf-project-root-history))
 
-(defun j-gf-select-grep-buffer(current-buffer msg)
+(defun jda-gf-select-grep-buffer(current-buffer msg)
   (condition-case nil
 	  (progn
 		(select-window (get-buffer-window current-buffer))
@@ -508,12 +418,12 @@ ex) make -C project/root/directory"
 		(setq compilation-finish-function nil))
 	(error nil)))
 
-(defun j-gf-symbol-at-point()
+(defun jda-gf-symbol-at-point()
   "grep-find with symbol at current point."
   (interactive)
-  (j-mark-push-marker)
+  (jda-mark-push-marker)
   (let (symbol)
-	(j-gf-set-project-root)
+	(jda-gf-set-project-root)
 	(setq symbol (symbol-at-point))
 	(if (null symbol)
 		(setq symbol ""))
@@ -521,19 +431,17 @@ ex) make -C project/root/directory"
 									   (format "%s" symbol)
 									   nil
 									   nil
-									   'j-gf-symbol-history))
-	(setq compilation-finish-function 'j-gf-select-grep-buffer)
-	(grep-find (j-read-shell-command "Command: "
-									 (format "find -L %s -type f %s %s -print0 | xargs -0 grep -nH -e \"\\<%s\\>\""
-											 j-gf-project-root
-											 (j-gf-get-assoc-find-name-options)
-											 (j-gf-get-find-exclusive-path-options)
-											 symbol)
-									 'j-gf-symbol-command-history))))
+									   'jda-gf-symbol-history))
+	(setq compilation-finish-function 'jda-gf-select-grep-buffer)
+	(grep-find (jda-read-shell-command "Command: "
+									   (format "find -L %s -type f %s %s -print0 | xargs -0 grep -nH -e \"\\<%s\\>\""
+											   jda-gf-project-root
+											   (jda-gf-get-assoc-find-name-options)
+											   (jda-gf-get-find-exclusive-path-options)
+											   symbol)
+									   'jda-gf-symbol-command-history))))
 
-(defvar j-gf-grep-query-replace-buffers-alist nil)
-
-(defun j-gf-grep-query-replace-in-current-line(from to buffer)
+(defun jda-gf-grep-query-replace-in-current-line(from to buffer)
   (let (begin end)
 	(with-current-buffer buffer
 	  (save-excursion
@@ -543,7 +451,7 @@ ex) make -C project/root/directory"
 		(setq end (point)))
 	  (replace-regexp from to nil begin end))))
 
-(defun j-gf-grep-query-replace-ui(from to &optional delimited)
+(defun jda-gf-grep-query-replace-ui(from to &optional delimited)
   (interactive
    (let ((common
   		  (query-replace-read-args
@@ -572,10 +480,10 @@ ex) make -C project/root/directory"
 						(car (nth 2 (car (compilation-next-error 0)))))))))
 
 	  (with-current-buffer buffer
-		(setq j-gf-grep-query-replace-buffers-alist
+		(setq jda-gf-grep-query-replace-buffers-alist
 			  (assq-delete-all buffer
-							   j-gf-grep-query-replace-buffers-alist))
-		(add-to-list 'j-gf-grep-query-replace-buffers-alist
+							   jda-gf-grep-query-replace-buffers-alist))
+		(add-to-list 'jda-gf-grep-query-replace-buffers-alist
 					 (list buffer from) t)
 		(hi-lock-face-buffer from 'query-replace))
 
@@ -584,7 +492,7 @@ ex) make -C project/root/directory"
 	  
 	  (cond ((equal key ?y)
 			 (setq count (+ 1 count))
-			 (j-gf-grep-query-replace-in-current-line from to buffer)
+			 (jda-gf-grep-query-replace-in-current-line from to buffer)
 			 (condition-case nil
 				 (next-error)
 			   (error
@@ -603,15 +511,15 @@ ex) make -C project/root/directory"
 	(setq done nil)
 	(cond (all
 		   (while (not done)
-			 (j-gf-grep-query-replace-in-current-line from to buffer)
+			 (jda-gf-grep-query-replace-in-current-line from to buffer)
 			 (setq count (+ 1 count))
 			 (condition-case nil
 				 (next-error)
 			   (error 
 				(setq done t))))))
 
-	(while j-gf-grep-query-replace-buffers-alist
-	  (let* ((entry (pop j-gf-grep-query-replace-buffers-alist))
+	(while jda-gf-grep-query-replace-buffers-alist
+	  (let* ((entry (pop jda-gf-grep-query-replace-buffers-alist))
 			 (buffer (pop entry))
 			 (symbol-regex (pop entry)))
 		(condition-case nil
@@ -622,15 +530,15 @@ ex) make -C project/root/directory"
 	
 	(message "Replaced %d occurrences" count)))
 
-(defun j-gf-grep-query-replace(from to &optional delimited)
+(defun jda-gf-grep-query-replace(from to &optional delimited)
   (interactive
    (let ((common
 		  (query-replace-read-args
 		   "Query replace regexp in files" t t)))
      (list (nth 0 common) (nth 1 common) (nth 2 common))))
   
-  (j-mark-push-marker)
-  (j-gf-set-project-root)
+  (jda-mark-push-marker)
+  (jda-gf-set-project-root)
   (let (name-option
 		command
 		extension)
@@ -641,47 +549,47 @@ ex) make -C project/root/directory"
 							(file-name-extension (buffer-file-name))))
 		   (setq name-option (cdr (assoc
 								   extension
-								   j-gf-assoc-extension-alist)))))
-	(setq name-option (j-gf-get-find-name-options
+								   jda-gf-assoc-extension-alist)))))
+	(setq name-option (jda-gf-get-find-name-options
 					   (read-from-minibuffer "Find file: "
 											 name-option)))
-	(setq command (j-read-shell-command
+	(setq command (jda-read-shell-command
 				   "Command: "
 				   (format "find -L %s -type f %s %s -print0 | xargs -0 grep -nH -e \"%s\""
-						   j-gf-project-root
+						   jda-gf-project-root
 						   name-option
-						   (j-gf-get-find-exclusive-path-options)
+						   (jda-gf-get-find-exclusive-path-options)
 						   from)
-				   'j-gf-grep-query-command-history))
+				   'jda-gf-grep-query-command-history))
 	
 	(shell-command command "*grep*")
 	(with-current-buffer "*grep*"
 	  (grep-mode)
 	  (hi-lock-face-buffer from
 						   'match))
-	(j-gf-grep-query-replace-ui from to)))
+	(jda-gf-grep-query-replace-ui from to)))
 
-(defun j-gf-find-file()
+(defun jda-gf-find-file()
   "search a file."
   (interactive)
-  (j-mark-push-marker)
+  (jda-mark-push-marker)
   (let (files)
-	(j-gf-set-project-root)
+	(jda-gf-set-project-root)
 	(setq files (read-from-minibuffer "Find file: "
 									  nil
 									  nil
 									  nil
-									  'j-gf-find-file-history))
-	(setq compilation-finish-function 'j-gf-select-grep-buffer)
-	(grep-find (j-read-shell-command "Command: "
-									 (format "find -L %s -type f %s "
-											 j-gf-project-root
-											 (j-gf-get-find-name-options files))
-									 'j-gf-find-file-command-history))))
+									  'jda-gf-find-file-history))
+	(setq compilation-finish-function 'jda-gf-select-grep-buffer)
+	(grep-find (jda-read-shell-command "Command: "
+									   (format "find -L %s -type f %s "
+											   jda-gf-project-root
+											   (jda-gf-get-find-name-options files))
+									   'jda-gf-find-file-command-history))))
 
-(defun j-gf-get-query-replace-files()
+(defun jda-gf-get-query-replace-files()
   (let ((files nil))
-	(with-current-buffer "*j-query-replace*"
+	(with-current-buffer "*jda-query-replace*"
 	  (let (start end)
 		(goto-char (point-min))
 		(while (not (eobp))
@@ -698,63 +606,56 @@ ex) make -C project/root/directory"
 			(error "File `%s' is visited read-only" file))))
 	files))
 
-(defun j-gf-find-query-replace(from to &optional delimited)
+(defun jda-gf-find-query-replace(from to &optional delimited)
   (interactive
    (let ((common
 		  (query-replace-read-args
 		   "Query replace regexp in files" t t)))
      (list (nth 0 common) (nth 1 common) (nth 2 common))))
-  (j-mark-push-marker)
+  (jda-mark-push-marker)
   (let (files)
-	(j-gf-set-project-root)
+	(jda-gf-set-project-root)
 	
 	(cond ((null (buffer-file-name))
 		   (setq files ""))
 		  (t
 		   (setq files (cdr (assoc (downcase (file-name-extension (buffer-file-name)))
-								   j-gf-assoc-extension-alist)))))
+								   jda-gf-assoc-extension-alist)))))
 
 	(setq files (read-from-minibuffer "Query replace file: "
 									  files
 									  nil
 									  nil
-									  'j-gf-replace-file-history))
-	(shell-command (j-read-shell-command "Command: "
-										 (format "find -L %s -type f %s "
-												 j-gf-project-root
-												 (j-gf-get-find-name-options files))
-										 'j-gf-replace-file-command-history)
-				   "*j-query-replace*")
+									  'jda-gf-replace-file-history))
+	(shell-command (jda-read-shell-command "Command: "
+										   (format "find -L %s -type f %s "
+												   jda-gf-project-root
+												   (jda-gf-get-find-name-options files))
+										   'jda-gf-replace-file-command-history)
+				   "*jda-query-replace*")
 	(delete-other-windows)
 	(condition-case err
-		(tags-query-replace from to delimited '(j-gf-get-query-replace-files))
+		(tags-query-replace from to delimited '(jda-gf-get-query-replace-files))
 	  (error 
-	   (kill-buffer "*j-query-replace*")
+	   (kill-buffer "*jda-query-replace*")
 	   (message "%s" (error-message-string err))))))
 
-(defvar j-create-tags-command nil)
-(defvar j-create-tags-command-history nil)
-(defvar j-create-tags-directory nil)
-(defvar j-create-tags-directory-history nil)
-
-(defun j-create-tags()
+(defun jda-create-tags()
   "create TAG file."
   (interactive)
-  (j-set-default-directory "Create tags: "
-						   j-create-tags-directory
-						   'j-create-tags-directory-history)
-  (shell-command (j-read-shell-command "Command: "
-									   (format "find -L %s -type f %s %s -print | etags - -o %sTAGS"
-											   j-create-tags-directory
-											   (j-gf-get-assoc-find-name-options)
-											   (j-gf-get-find-exclusive-path-options)
-											   j-create-tags-directory)
-									   'j-create-tags-command-history)
-				 "*j-create-tag*"))
+  (jda-set-default-directory "Create tags: "
+							 jda-create-tags-directory
+							 'jda-create-tags-directory-history)
+  (shell-command (jda-read-shell-command "Command: "
+										 (format "find -L %s -type f %s %s -print | etags - -o %sTAGS"
+												 jda-create-tags-directory
+												 (jda-gf-get-assoc-find-name-options)
+												 (jda-gf-get-find-exclusive-path-options)
+												 jda-create-tags-directory)
+										 'jda-create-tags-command-history)
+				 "*jda-create-tag*"))
 
-(defvar j-etags-tag-info-alist nil)
-
-(defun j-etags-make-tag-info-alist(file)
+(defun jda-etags-make-tag-info-alist(file)
   (goto-char (point-min))
   (when (re-search-forward (concat "\f\n" "\\(" file "\\)" ",") nil t)
     (let ((path (save-excursion (forward-line 1) (file-of-tag)))
@@ -762,35 +663,35 @@ ex) make -C project/root/directory"
 	  (forward-line 1)
 	  (while (not (or (eobp) (looking-at "\f")))
 		(setq tag-info (save-excursion (etags-snarf-tag t)))
-		(add-to-list 'j-etags-tag-info-alist tag-info t)
+		(add-to-list 'jda-etags-tag-info-alist tag-info t)
 		(forward-line 1))
 	  t)))
 
-(defun j-etags-goto-tag-in-file()
+(defun jda-etags-goto-tag-in-file()
   (interactive)
-  (setq j-etags-tag-info-alist nil)
+  (setq jda-etags-tag-info-alist nil)
   (let ((file (buffer-file-name)))
 	(save-excursion
 	  (let ((first-time t)
 			(gotany nil))
 		(while (visit-tags-table-buffer (not first-time))
 		  (setq first-time nil)
-		  (if (j-etags-make-tag-info-alist file)
+		  (if (jda-etags-make-tag-info-alist file)
 			  (setq gotany t)))
 		(or gotany
 			(error "File %s not in current tags tables" file))))
 	(let ((tags (mapcar (lambda (x) (car x))
-						j-etags-tag-info-alist))
+						jda-etags-tag-info-alist))
 		  line
 		  tag-info)
-	  (setq tag-info (assoc (j-icompleting-read "Goto tag in file: "
-												tags)
-							j-etags-tag-info-alist))
+	  (setq tag-info (assoc (jda-icompleting-read "Goto tag in file: "
+												  tags)
+							jda-etags-tag-info-alist))
 	  (setq line (car (cdr tag-info)))
 	  (goto-line line))))
 
 ;; http://www.emacswiki.org/emacs/InteractivelyDoThings
-(defun j-ido-find-file-in-tag-files ()
+(defun jda-ido-find-file-in-tag-files ()
   (interactive)
   (save-excursion
 	(let ((enable-recursive-minibuffers t))
@@ -801,7 +702,7 @@ ex) make -C project/root/directory"
 	   "Project file: " (tags-table-files) nil t)))))
 
 ;; http://www.emacswiki.org/cgi-bin/wiki/ImenuMode
-(defun j-ido-goto-symbol (&optional symbol-list)
+(defun jda-ido-goto-symbol (&optional symbol-list)
   "Refresh imenu and jump to a place in the current buffer using Ido."
   (interactive)
   (unless (featurep 'imenu)
@@ -819,7 +720,7 @@ ex) make -C project/root/directory"
 	  (while (progn
 			   (imenu--cleanup)
 			   (setq imenu--index-alist nil)
-			   (j-ido-goto-symbol (imenu--make-index-alist))
+			   (jda-ido-goto-symbol (imenu--make-index-alist))
 			   (setq selected-symbol
 					 (ido-completing-read "Symbol? " symbol-names))
 			   (string= (car imenu--rescan-item) selected-symbol)))
@@ -836,7 +737,7 @@ ex) make -C project/root/directory"
 	  (let (name position)
 		(cond
 		 ((and (listp symbol) (imenu--subalist-p symbol))
-		  (j-ido-goto-symbol symbol))
+		  (jda-ido-goto-symbol symbol))
 		 ((listp symbol)
 		  (setq name (car symbol))
 		  (setq position (cdr symbol)))
@@ -849,75 +750,73 @@ ex) make -C project/root/directory"
 		  (add-to-list 'symbol-names name)
 		  (add-to-list 'name-and-pos (cons name position))))))))
 
-(defun j-goto-symbol()
+(defun jda-goto-symbol()
   (interactive)
-  (j-mark-push-marker)
-  (j-ido-goto-symbol)
-  (j-mark-push-marker))
+  (jda-mark-push-marker)
+  (jda-ido-goto-symbol)
+  (jda-mark-push-marker))
 
-(defvar j-ido-find-file-files-alist nil)
-(defvar j-ido-find-file-files-alist-root nil)
-
-(defun j-ido-find-file()
+(defun jda-ido-find-file()
   (interactive)
-  (j-mark-push-marker)
+  (jda-mark-push-marker)
   (let (chosen-name
 		find-command
 		same-name-files-list
 		(same-name-files-count 0))
-	(j-gf-set-project-root)
+	(jda-gf-set-project-root)
 	(setq find-command
 		  (format "find -L %s -type f %s"
-				  j-gf-project-root
-				  (j-gf-get-find-exclusive-path-options)))
+				  jda-gf-project-root
+				  (jda-gf-get-find-exclusive-path-options)))
 	(message "Finding...")
 	;; if the previous project root directory equals to the current one,
-	;; use the previous j-ido-find-file-files-alist to improve speed.
-	(cond ((not (equal j-gf-project-root
-					   j-ido-find-file-files-alist-root))
-		   (setq j-ido-find-file-files-alist
+	;; use the previous jda-ido-find-file-files-alist to improve speed.
+	(cond ((not (equal jda-gf-project-root
+					   jda-ido-find-file-files-alist-root))
+		   (setq jda-ido-find-file-files-alist
 				 (mapcar (lambda (x)
 						   (list (file-name-nondirectory x) x))
 						 (split-string
 						  (shell-command-to-string find-command))))
-		   (setq j-ido-find-file-files-alist-root j-gf-project-root)))
+		   (setq jda-ido-find-file-files-alist-root jda-gf-project-root)))
 	(setq chosen-name
 		  (ido-completing-read "Project file: "
 							   (mapcar (lambda (x)
 										 (car x))
-									   j-ido-find-file-files-alist)))
+									   jda-ido-find-file-files-alist)))
 	(mapcar (lambda (x)
 			  (cond ((equal chosen-name (car x))
 					 (add-to-list 'same-name-files-list
 								  (car (cdr x)))
 					 (setq same-name-files-count
 						   (1+ same-name-files-count)))))
-			j-ido-find-file-files-alist)
+			jda-ido-find-file-files-alist)
 	(cond ((equal same-name-files-count 1)
 		   (find-file (car same-name-files-list)))
 		  ((> same-name-files-count 1)
 		   (find-file (ido-completing-read "Find file: "
 										   same-name-files-list))))))
 
-(defun j-svn-log-report()
+(defun jda-svn-log-report()
   (interactive)
   (let (command
 		id
 		start-date
 		end-date)
-	(j-gf-set-project-root)
+	(jda-gf-set-project-root)
 	(setq id (read-from-minibuffer "Id: "))
 	(setq start-date (read-from-minibuffer "Start date: "))
 	(setq end-date (read-from-minibuffer "End date: "))
-	(setq command (j-read-shell-command
+	(setq command (jda-read-shell-command
 				   "Command: "
 				   (format "cd %s; svn log | ~/settings/emacs/svnlr.rb -id %s -sd %s -ed %s"
-						   j-gf-project-root
+						   jda-gf-project-root
 						   id
 						   start-date
 						   end-date)))
 	(shell-command command "*svn-log-report*")))
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; xcode-document-viewer
 (condition-case nil
 	(progn
@@ -926,12 +825,11 @@ ex) make -C project/root/directory"
 	  (setq xcdoc:document-path "/Developer/Platforms/iPhoneOS.platform/Developer/Documentation/DocSets/com.apple.adc.documentation.AppleiPhone4_0.iPhoneLibrary.docset"))
   (error nil))
 
-(defun j-xcode-build()
+(defun jda-xcode-build()
   (interactive)
   (shell-command "~/settings/emacs/xcode-build"))
 
-(defvar j-xcode-doc-text-history nil)
-(defun j-xcode-doc()
+(defun jda-xcode-doc()
   (interactive)
   (let ((text (symbol-at-point))
 		command)
@@ -941,54 +839,56 @@ ex) make -C project/root/directory"
 									 (format "%s" text)
 									 nil
 									 nil
-									 'j-xcode-doc-text-history))
+									 'jda-xcode-doc-text-history))
 	(setq command (format "~/settings/emacs/xcode-doc %s" text))
 	(shell-command command)))
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; android-doc
-(defcustom j-android-sdk-dir
+(defcustom jda-android-sdk-dir
   "~/android/android-sdk-linux_86"
   "Android SDK directory"
   :type 'directory
-  :group 'j-dev-assist)
+  :group 'jda)
 
-(defun* j-android-doc-source-candidates(&key class-name sdk-dir)
+(defun* jda-android-doc-source-candidates(&key class-name sdk-dir)
   (split-string
    (shell-command-to-string
 	(format "find %s/docs/reference -name '*%s*'"
 			sdk-dir
 			class-name))))
 
-(defun j-android-doc-source()
-  `((name . ,j-android-sdk-dir)
+(defun jda-android-doc-source()
+  `((name . ,jda-android-sdk-dir)
 	(candidates . (lambda ()
-					(j-android-doc-source-candidates
+					(jda-android-doc-source-candidates
 					 :class-name anything-pattern
-					 :sdk-dir j-android-sdk-dir)))
+					 :sdk-dir jda-android-sdk-dir)))
 	(volatile)
 	(delayed)
 	(requires-pattern . 2)
 	(action . browse-url)))
 
-(defun j-android-doc()
+(defun jda-android-doc()
   (interactive)
   (let ((symbol (symbol-at-point)))
 	(if (null symbol)
 		(setq symbol "")
 	  (setq symbol (symbol-name symbol)))
-	(anything (list (j-android-doc-source)) symbol)))
+	(anything (list (jda-android-doc-source)) symbol)))
 
-(defun j-doc()
+(defun jda-doc()
   (interactive)
   (unless (featurep 'anything)
 	(require 'anything))
   (cond ((equal mode-name "ObjC/l")
-		 (j-xcode-doc))
+		 (jda-xcode-doc))
 		((equal mode-name "JDE")
-		 (j-android-doc))))
+		 (jda-android-doc))))
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; objc
-(defun j-insert-objc-parenthesis()
+(defun jda-insert-objc-parenthesis()
   (interactive)
   (let ((depth 0)
 		(is-exist-left-bracket nil)
@@ -1040,7 +940,7 @@ ex) make -C project/root/directory"
 	(if (nth 1 should-insert-brakets)
 		(insert "]"))))
 
-(defun j-delete-objc-parenthesis()
+(defun jda-delete-objc-parenthesis()
   (interactive)
   (cond ((looking-back "\\][ \t\n]*")
 		 (let ((left-bracket-pos nil)
@@ -1056,46 +956,142 @@ ex) make -C project/root/directory"
 		   (goto-char right-bracket-pos)
 		   (backward-char 2)
 		   (delete-char 1)))))
-		   
-(add-hook 'objc-mode-hook
-		  (lambda()
-			(define-key objc-mode-map (kbd "C-c [") 'j-delete-objc-parenthesis)
-			(define-key objc-mode-map (kbd "C-c ]") 'j-insert-objc-parenthesis)))
 
-(add-hook 'isearch-mode-hook
-		  'j-mark-push-marker)
-
-(add-hook 'isearch-mode-end-hook
-		  'j-mark-push-marker)
-
+(defun jda-objc-keymap()
+  (define-key objc-mode-map (kbd "C-c [") 'jda-delete-objc-parenthesis)
+  (define-key objc-mode-map (kbd "C-c ]") 'jda-insert-objc-parenthesis))
+  
 ;; ======================================================================
-;; Key definition
+;; jda-minor mode functions
 ;; ======================================================================
-(define-key global-map (kbd "C-c c") 'j-make)
-(define-key global-map (kbd "C-c h") 'j-doc)
-(define-key global-map (kbd "C-c j g") 'j-modify-header-file-for-g++)
-(define-key global-map (kbd "C-c j p") 'j-open-counterpart-file)
-(define-key global-map (kbd "C-c j s") 'j-gf-symbol-at-point)
-(define-key global-map (kbd "C-c j f") 'j-gf-find-file)
-(define-key global-map (kbd "C-c j 5") 'j-gf-grep-query-replace)
-(define-key global-map (kbd "C-c j %") 'j-gf-find-query-replace)
-(define-key global-map (kbd "C-c j i") 'j-ido-find-file)
-(define-key global-map (kbd "C-c i") 'j-ido-find-file)
-(define-key global-map (kbd "C-c j m") 'j-goto-symbol)
-(define-key global-map (kbd "C-c m") 'j-goto-symbol)
-(define-key global-map (kbd "C-c j r") 'j-gf-set-project-root)
-(define-key global-map (kbd "C-c j e") 'j-gf-set-exclusive-path)
-(define-key global-map (kbd "C-c j t") 'j-create-tags)
-(define-key global-map (kbd "C-c j v") 'visit-tags-table)
-(define-key global-map (kbd "C-c j .") 'tags-apropos)
-(define-key global-map (kbd "C-c j [") 'hs-minor-mode)
-(define-key global-map (kbd "C-x v #") 'j-svn-log-report)
-(define-key global-map (kbd "C-c x b") 'j-xcode-build)
-(define-key global-map (kbd "C-c |") 'align)
-(define-key global-map (kbd "C-c M-|") 'align-regexp)
-(define-key global-map (kbd "C-x ,") 'j-mark-prev)
-(define-key global-map (kbd "C-x .") 'j-mark-next)
-(define-key global-map (kbd "C-x <down>") 'j-mark-push-marker)
 
-(provide 'j-dev-assist)
-;;; j-dev-assist.el ends here
+(defun jda-minor-keymap()
+  (let ((map (make-sparse-keymap)))
+	(easy-menu-define jda-minor-mode-menu
+	  map
+	  "Menu used when jda-minor-mode is ative."
+	  '("JDA"
+		["Make..." jda-make
+		 :help "run make command"]
+		["Find Doc.." jda-doc
+		 :help "Find documentation for a symbol"]
+		["Open counterpart file" jda-open-counterpart-file
+		 :help "Open a counterpart file(.h .c .cpp .m .mm)"]
+		"----"
+		["Set Project Root Directory..." jda-gf-set-project-root
+		 :help "Set a project root directory"]
+		["Set Exclusive Path..." jda-gf-exclusive-path
+		 :help "set exclusive paths"]
+		["Find Symbol in project..." jda-gf-symbol-at-point
+		 :help "Find a symbol in the project"]
+		["Find File in project..." jda-gf-find-file
+		 :help "Find a file in the proejct"]
+		["Find Project File..." jda-ido-find-file
+		 :help "Find a file in the proejct using incremental search"]
+		["Goto Symbol in current buffer..." jda-goto-symbol
+		 :help "Goto a symbol in the current buffer"]
+		["Query Replace in the proejct..." jda-gf-grep-query-replace
+		 :help "Query replace in the project using *grep* buffer"]
+		["Query Replace in the project(Built-In)..." jda-gf-find-query-replace
+		 :help "Query replace in the proejct using built-in query replace"]
+		"----"
+		["Create TAGS..." jda-create-tags
+		 :help "Create TAGS file"]
+		["Visit TAGS..." visit-tags-table
+		 :help "visit a TAGS table file"]
+		["Display All tags regexp matches..." tags-apropos
+		 :help ""]
+		"----"
+		["Goto Previous Marker" jda-mark-prev
+		 :help "Goto the previous marker"]
+		["Goto Next Marker" jda-mark-next
+		 :help "Goto the next marker"]
+		["Push Current Marker" jda-mark-push-marker
+		 :help "Push the current marker"]
+		"---"
+		["Align" align
+		 :help "Align a region"]
+		["Align Regexp..." align-regexp
+		 :help "Align the current region using an ad-hoc rule"]
+		["Report svn log..." jda-svn-log-report
+		 :help "Report svn log using a condition"]
+		["Xcode Build" jda-xcode-build
+		 :help "Build the active target in Xcode"]
+		["hs-minor-mode" hs-minor-mode
+		 :help "hs-minor-mode on/off"]
+		"----"
+		["Customize JDA" jda-customize
+		 :help"Customize jda-minor-mode"]))
+	
+	;; key map
+	(define-key map (kbd "C-c c")		'jda-make)
+	(define-key map (kbd "C-c h")		'jda-doc)
+	(define-key map (kbd "C-c j p")		'jda-open-counterpart-file)
+	(define-key map (kbd "C-c j r")		'jda-gf-set-project-root)
+	(define-key map (kbd "C-c j e")		'jda-gf-set-exclusive-path)
+	(define-key map (kbd "C-c j s")		'jda-gf-symbol-at-point)
+	(define-key map (kbd "C-c j f")		'jda-gf-find-file)
+	(define-key map (kbd "C-c j i")		'jda-ido-find-file)
+	(define-key map (kbd "C-c i")		'jda-ido-find-file)
+	(define-key map (kbd "C-c j m")		'jda-goto-symbol)
+	(define-key map (kbd "C-c m")		'jda-goto-symbol)
+	(define-key map (kbd "C-c j 5")		'jda-gf-grep-query-replace)
+	(define-key map (kbd "C-c j %")		'jda-gf-find-query-replace)
+	(define-key map (kbd "C-c j t")		'jda-create-tags)
+	(define-key map (kbd "C-c j v")		'visit-tags-table)
+	(define-key map (kbd "C-c j .")		'tags-apropos)
+	(define-key map (kbd "C-x ,")		'jda-mark-prev)
+	(define-key map (kbd "C-x .")		'jda-mark-next)
+	(define-key map (kbd "C-x <down>")	'jda-mark-push-marker)
+	(define-key map (kbd "C-c |")		'align)
+	(define-key map (kbd "C-c M-|")		'align-regexp)
+	(define-key map (kbd "C-x v #")		'jda-svn-log-report)
+	(define-key map (kbd "C-c x b")		'jda-xcode-build)
+	(define-key map (kbd "C-c j [")		'hs-minor-mode)
+	map))
+		
+(defvar jda-minor-mode-map (jda-minor-keymap))
+
+(define-minor-mode jda-minor-mode
+  "Toggle Jong-Gyu Development Assistant mode.
+
+With no argument, this command toggles the mode.
+Non-null prefix argument turns on the mode.
+Null prefix arugment turns off the mode.
+
+Key bindings:
+\\{jda-minor-mode-map}."
+  ;; init-value
+  :init-value nil
+  ;; The indicator for the mode line.
+  :lighter " jda"
+  ;; The minor mode bindings.
+  :keymap jda-minor-mode-map
+  :group 'jda
+  :global t
+  (cond (jda-minor-mode
+		 ;; initialize
+		 (ido-mode t)
+		 (if (boundp 'ffap-bindings)
+			 (ffap-bindings))
+         (add-hook 'emulation-mode-map-alists 'yas/direct-keymaps)
+		 (add-hook 'objc-mode-hook 'jda-objc-keymap)
+		 (add-hook 'isearch-mode-hook 'jda-mark-push-marker)
+		 (add-hook 'isearch-mode-end-hook 'jda-mark-push-marker)
+		 (message "jda minor mode enabled"))
+		(t
+		 ;; finalize
+		 (remove-hook 'objc-mode-hook 'jda-objc-keymap)
+		 (remove-hook 'isearch-mode-hook 'jda-mark-push-marker)
+		 (remove-hook 'isearch-mode-end-hook 'jda-mark-push-marker)
+		 (remove-hook 'emulation-mode-map-alists 'yas/direct-keymaps)
+		 (message "jda minor mode disabled"))))
+
+(defun jda-customize()
+  "Customize jda"
+  (interactive)
+  (customize-group 'jda))
+
+(provide 'jda)
+
+;;; jda.el ends here
