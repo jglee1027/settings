@@ -548,7 +548,9 @@
 		(t
 		 (message "ELPA is already installed."))))
 
-(load-library "j-dev-assist")
+(require 'jda)
+(jda-minor-mode)
+
 (load-library "j-highlight")
 
 (if (eq system-type 'windows-nt)
