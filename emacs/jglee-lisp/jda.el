@@ -1009,19 +1009,29 @@ ex) make -C project/root/directory"
 		["Push Current Marker" jda-mark-push-marker
 		 :help "Push the current marker"]
 		"---"
+		("Objective-C"
+		 ["Insert ']'" jda-insert-objc-parenthesis
+		  :help "Insert ']' bracket parenthetically"
+		  :active (equal mode-name "ObjC/l")]
+		 ["Delete '['" jda-delete-objc-parenthesis
+		  :help "Delete '[' bracket parenthetically"
+		  :active (equal mode-name "ObjC/l")]
+		 ["Xcode Build" jda-xcode-build
+		  :help "Build the active target in Xcode"
+		  :active (equal mode-name "ObjC/l")])
 		["Align" align
 		 :help "Align a region"]
 		["Align Regexp..." align-regexp
 		 :help "Align the current region using an ad-hoc rule"]
 		["Report svn log..." jda-svn-log-report
 		 :help "Report svn log using a condition"]
-		["Xcode Build" jda-xcode-build
-		 :help "Build the active target in Xcode"]
 		["hs-minor-mode" hs-minor-mode
 		 :help "hs-minor-mode on/off"]
 		"----"
 		["Customize JDA" jda-customize
-		 :help"Customize jda-minor-mode"]))
+		 :help "Customize jda-minor-mode"]
+		["About JDA" jda-about
+		 :help "Display some information about JDA"]))
 	
 	;; key map
 	(define-key map (kbd "C-c c")		'jda-make)
@@ -1091,6 +1101,11 @@ Key bindings:
   "Customize jda"
   (interactive)
   (customize-group 'jda))
+
+(defun jda-about()
+  "About JDA"
+  (interactive)
+  (message "jda-minor-mode(version 0.1.0) Jong-Gyu <jglee1027@gmail.com>"))
 
 (provide 'jda)
 

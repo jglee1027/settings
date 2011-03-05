@@ -529,6 +529,31 @@
 	  erc-prompt-for-password t)
 
 ;; ======================================================================
+;; Using ThingAtPoint and the Existing C-s C-w
+;; 
+;; http://www.emacswiki.org/emacs/SearchAtPoint
+;; ======================================================================
+(defun isearch-yank-symbol-from-beginning ()
+  "Move to beginning of word before yanking word in isearch-mode."
+  (interactive)
+  ;; Making this work after a search string is entered by user
+  ;; is too hard to do, so work only when search string is empty.
+  (if (= 0 (length isearch-string))
+      (beginning-of-thing 'symbol))
+  (isearch-yank-char (- (end-of-thing 'symbol) (beginning-of-thing 'symbol)))
+  ;; Revert to 'isearch-yank-word-or-char for subsequent calls
+  (substitute-key-definition 'isearch-yank-symbol-from-beginning 
+							 'isearch-yank-word-or-char
+							 isearch-mode-map))
+
+(add-hook 'isearch-mode-hook
+		  (lambda ()
+			"Activate my customized Isearch word yank command."
+			(substitute-key-definition 'isearch-yank-word-or-char 
+									   'isearch-yank-symbol-from-beginning
+									   isearch-mode-map)))
+
+;; ======================================================================
 ;; Misc. Customization
 ;; ======================================================================
 (custom-set-variables
