@@ -972,7 +972,7 @@ ex) make -C project/root/directory"
 	  "Menu used when jda-minor-mode is ative."
 	  '("JDA"
 		["Make..." jda-make
-		 :help "run make command"]
+		 :help "Run make command"]
 		["Find Doc.." jda-doc
 		 :help "Find documentation for a symbol"]
 		["Open counterpart file" jda-open-counterpart-file
@@ -998,9 +998,9 @@ ex) make -C project/root/directory"
 		["Create TAGS..." jda-create-tags
 		 :help "Create TAGS file"]
 		["Visit TAGS..." visit-tags-table
-		 :help "visit a TAGS table file"]
+		 :help "Visit a TAGS table file"]
 		["Display All tags regexp matches..." tags-apropos
-		 :help ""]
+		 :help "Display list of all tags in tags table REGEXP magtches"]
 		"----"
 		["Goto Previous Marker" jda-mark-prev
 		 :help "Goto the previous marker"]
