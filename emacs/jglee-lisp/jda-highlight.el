@@ -1,4 +1,4 @@
-;;; j-highlight.el --- highlight symbol
+;;; jda-highlight.el --- highlight symbol
 ;;
 ;; Copyright (C) 2010 Lee Jong-Gyu<jglee1027@gmail.com>
 ;;
@@ -26,8 +26,8 @@
 ;; 
 ;; * Installation
 ;;   Edit your ~/.emacs file to add the line:
-;;     (add-to-list 'load-path "/path/to/j-highlight.el")
-;;     (require 'j-highlight)
+;;     (add-to-list 'load-path "/path/to/jda-highlight.el")
+;;     (require 'jda-highlight)
 ;; 
 ;; * Major commands:
 ;;
@@ -39,16 +39,16 @@
 ;; ======================================================================
 ;; highlight the symbol at current point with a idle timer
 ;; ======================================================================
-(defvar j-highlight-symbol-color 'isearch)
-(defvar j-highlight-symbol-timer-interval 0.7)
+(defvar jda-highlight-symbol-color 'isearch)
+(defvar jda-highlight-symbol-timer-interval 0.7)
 
-(defvar j-highlight-symbol-timer nil)
-(defvar j-highlight-symbol-buffers-alist nil)
-(defvar j-highlight-symbol-symbol-regex nil)
-(make-variable-buffer-local 'j-highlight-symbol-symbol-regex)
+(defvar jda-highlight-symbol-timer nil)
+(defvar jda-highlight-symbol-buffers-alist nil)
+(defvar jda-highlight-symbol-symbol-regex nil)
+(make-variable-buffer-local 'jda-highlight-symbol-symbol-regex)
 
 ;; callback function 
-(defun j-highlight-symbol-callback ()
+(defun jda-highlight-symbol-callback ()
   (save-excursion
 	(let* ((symbol (symbol-at-point))
 		   (symbol-regex (cond ((and symbol)
@@ -58,40 +58,40 @@
 							   (t
 								nil))))
 	  (cond ((and symbol-regex
-				  (not (string= symbol-regex j-highlight-symbol-symbol-regex))
+				  (not (string= symbol-regex jda-highlight-symbol-symbol-regex))
 				  (buffer-file-name))
-			 (hi-lock-unface-buffer j-highlight-symbol-symbol-regex)
+			 (hi-lock-unface-buffer jda-highlight-symbol-symbol-regex)
 			 (hi-lock-face-buffer symbol-regex
-								  j-highlight-symbol-color)
-			 (setq j-highlight-symbol-buffers-alist
+								  jda-highlight-symbol-color)
+			 (setq jda-highlight-symbol-buffers-alist
 				   (assq-delete-all (current-buffer)
-									j-highlight-symbol-buffers-alist))
-			 (add-to-list 'j-highlight-symbol-buffers-alist
+									jda-highlight-symbol-buffers-alist))
+			 (add-to-list 'jda-highlight-symbol-buffers-alist
 						  (list (current-buffer) symbol-regex) t)
-			 (setq j-highlight-symbol-symbol-regex symbol-regex))))))
+			 (setq jda-highlight-symbol-symbol-regex symbol-regex))))))
 
 ;; start function
-(defun j-highlight-symbol-run-toggle ()
+(defun jda-highlight-symbol-run-toggle ()
   (interactive)
-  (cond ((timerp j-highlight-symbol-timer)
-		 (cancel-timer j-highlight-symbol-timer)
-		 (while j-highlight-symbol-buffers-alist
-		   (let* ((entry (pop j-highlight-symbol-buffers-alist))
+  (cond ((timerp jda-highlight-symbol-timer)
+		 (cancel-timer jda-highlight-symbol-timer)
+		 (while jda-highlight-symbol-buffers-alist
+		   (let* ((entry (pop jda-highlight-symbol-buffers-alist))
 				  (buffer (pop entry))
 				  (symbol-regex (pop entry)))
 			 (condition-case nil
 				 (progn
 				   (set-buffer buffer)
-				   (hi-lock-unface-buffer j-highlight-symbol-symbol-regex))
+				   (hi-lock-unface-buffer jda-highlight-symbol-symbol-regex))
 			   (error nil))))
-		 (message "j-highlight-symbol off.")
-		 (setq j-highlight-symbol-timer nil))
+		 (message "jda-highlight-symbol off.")
+		 (setq jda-highlight-symbol-timer nil))
 		(t
 		 (unless hi-lock-mode (hi-lock-mode 1))
-		 (setq j-highlight-symbol-timer
-			   (run-with-idle-timer j-highlight-symbol-timer-interval t 'j-highlight-symbol-callback))
-		 (message "j-highlight-symbol on."))))
+		 (setq jda-highlight-symbol-timer
+			   (run-with-idle-timer jda-highlight-symbol-timer-interval t 'jda-highlight-symbol-callback))
+		 (message "jda-highlight-symbol on."))))
 
-(define-key global-map (kbd "C-c j h") 'j-highlight-symbol-run-toggle)
+(provide 'jda-highlight)
 
-;;; j-highligt.el ends here
+;;; jda-highligt.el ends here

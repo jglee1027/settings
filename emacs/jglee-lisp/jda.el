@@ -37,6 +37,7 @@
 (require 'cl)
 (require 'imenu)
 (require 'ido)
+(require 'jda-highlight)
 
 (defgroup jda nil
   "Jong-Gyu Development Assistant"
@@ -975,31 +976,31 @@ ex) make -C project/root/directory"
 		 :help "Run make command"]
 		["Find Doc.." jda-doc
 		 :help "Find documentation for a symbol"]
-		["Open counterpart file" jda-open-counterpart-file
+		["Open Counterpart File" jda-open-counterpart-file
 		 :help "Open a counterpart file(.h .c .cpp .m .mm)"]
 		"----"
 		["Set Project Root Directory..." jda-gf-set-project-root
 		 :help "Set a project root directory"]
 		["Set Exclusive Path..." jda-gf-set-exclusive-path
-		 :help "set exclusive paths"]
-		["Find Symbol in project..." jda-gf-symbol-at-point
-		 :help "Find a symbol in the project"]
-		["Find File in project..." jda-gf-find-file
+		 :help "Set exclusive paths in find command"]
+		["Find File in Project..." jda-gf-find-file
 		 :help "Find a file in the proejct"]
-		["Find Project File..." jda-ido-find-file
+		["Find File in Project (Incremental Search)..." jda-ido-find-file
 		 :help "Find a file in the proejct using incremental search"]
-		["Goto Symbol in current buffer..." jda-goto-symbol
+		["Find Symbol in Project..." jda-gf-symbol-at-point
+		 :help "Find a symbol in the project"]
+		["Goto Symbol in Current Buffer..." jda-goto-symbol
 		 :help "Goto a symbol in the current buffer"]
-		["Query Replace in the proejct..." jda-gf-grep-query-replace
+		["Query Replace in Proejct..." jda-gf-grep-query-replace
 		 :help "Query replace in the project using *grep* buffer"]
-		["Query Replace in the project(Built-In)..." jda-gf-find-query-replace
+		["Query Replace in Project (Built-In)..." jda-gf-find-query-replace
 		 :help "Query replace in the proejct using built-in query replace"]
 		"----"
 		["Create TAGS..." jda-create-tags
 		 :help "Create TAGS file"]
 		["Visit TAGS..." visit-tags-table
 		 :help "Visit a TAGS table file"]
-		["Display All tags regexp matches..." tags-apropos
+		["Display All Tags Regexp Matches..." tags-apropos
 		 :help "Display list of all tags in tags table REGEXP magtches"]
 		"----"
 		["Goto Previous Marker" jda-mark-prev
@@ -1023,15 +1024,19 @@ ex) make -C project/root/directory"
 		 :help "Align a region"]
 		["Align Regexp..." align-regexp
 		 :help "Align the current region using an ad-hoc rule"]
-		["Report svn log..." jda-svn-log-report
+		["Report SVN Log..." jda-svn-log-report
 		 :help "Report svn log using a condition"]
 		["hs-minor-mode" hs-minor-mode
 		 :help "hs-minor-mode on/off"]
+		["Highlight Symbol" jda-highlight-symbol-run-toggle
+		 :help "Highlight the symbol at current point with a idle timer"
+		 :style toggle
+		 :selected (timerp jda-highlight-symbol-timer)]
 		"----"
 		["Customize JDA" jda-customize
 		 :help "Customize jda-minor-mode"]
 		["About JDA" jda-about
-		 :help "Display some information about JDA"]))
+		 :help "Display brief information about JDA"]))
 	
 	;; key map
 	(define-key map (kbd "C-c c")		'jda-make)
@@ -1058,6 +1063,7 @@ ex) make -C project/root/directory"
 	(define-key map (kbd "C-x v #")		'jda-svn-log-report)
 	(define-key map (kbd "C-c x b")		'jda-xcode-build)
 	(define-key map (kbd "C-c j [")		'hs-minor-mode)
+	(define-key map (kbd "C-c j h")		'jda-highlight-symbol-run-toggle)
 	map))
 		
 (defvar jda-minor-mode-map (jda-minor-keymap))
