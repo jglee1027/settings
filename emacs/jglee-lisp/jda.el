@@ -81,7 +81,8 @@
 	("mm"		. "*.[cChH] *.[cC][pP][pP] *.[mM] *.[mM][mM]")
 	("java"		. "*.java")
 	("el"		. "*.el")
-	("rb"		. "*.rb"))
+	("rb"		. "*.rb")
+	(nil		. "*.*"))
   "Counterpart extensions"
   :type 'alist
   :group 'jda)
@@ -240,13 +241,21 @@ ex) make -C project/root/directory"
 			entries)
 	sub-dirs))
 
-(defun jda-get-extensions-to-visit()
-  (let (extension extensions-to-visit)
+(defun jda-current-file-name-extension()
+  (let (extension)
 	(cond ((null (buffer-file-name))
-		   (setq extensions-to-visit nil))
+		   nil)
+		  ((null (setq extension (file-name-extension (buffer-file-name))))
+		   nil)
 		  (t
-		   (setq extension (downcase (file-name-extension (buffer-file-name))))
-		   (setq extensions-to-visit (cdr (assoc extension jda-get-extensions-alist)))))))
+		   (setq extension (downcase extension))))))
+				
+(defun jda-get-extensions-to-visit()
+  (let ((extension (jda-current-file-name-extension)))
+	(cond ((null extension)
+		   nil)
+		  (t
+		   (cdr (assoc extension jda-get-extensions-alist))))))
 
 (defun jda-visit-file(file-name-sans-ext extensions)
   (let (file-name file-ext)
@@ -383,7 +392,7 @@ ex) make -C project/root/directory"
 		   (setq name-option (jda-gf-get-find-name-options
 							  (read-from-minibuffer "Find file: "))))
 		  (t
-		   (setq extension (downcase (file-name-extension (buffer-file-name))))
+		   (setq extension (jda-current-file-name-extension))
 		   (setq assoc-extensions (cdr (assoc extension jda-gf-assoc-extension-alist)))
 		   (cond (assoc-extensions
 				  (setq name-list (mapcar (lambda (x) (format "-name '%s'" x))
@@ -546,8 +555,7 @@ ex) make -C project/root/directory"
 	(cond ((null (buffer-file-name))
 		   (setq name-option ""))
 		  (t
-		   (setq extension (downcase
-							(file-name-extension (buffer-file-name))))
+		   (setq extension (jda-current-file-name-extension))
 		   (setq name-option (cdr (assoc
 								   extension
 								   jda-gf-assoc-extension-alist)))))
@@ -620,7 +628,7 @@ ex) make -C project/root/directory"
 	(cond ((null (buffer-file-name))
 		   (setq files ""))
 		  (t
-		   (setq files (cdr (assoc (downcase (file-name-extension (buffer-file-name)))
+		   (setq files (cdr (assoc (jda-current-file-name-extension)
 								   jda-gf-assoc-extension-alist)))))
 
 	(setq files (read-from-minibuffer "Query replace file: "
