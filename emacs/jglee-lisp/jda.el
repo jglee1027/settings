@@ -114,9 +114,7 @@
   :type 'string
   :group 'jda)
 
-;; ======================================================================
-;; common functions
-;; ======================================================================
+;;;; common functions
 
 (defun jda-icompleting-read (prompt choices)
   (let ((iswitchb-make-buflist-hook
@@ -154,6 +152,8 @@
 								  nil
 								  ,initial-input
 								  ,history)))))
+
+;;;; jda-mark
 
 ;; jump-to-register in register.el
 (defun jda-mark-jump (marker)
@@ -218,9 +218,7 @@
 		(message "jumped to next marker"))
 	(error nil)))
 
-;; ======================================================================
-;; utility functions
-;; ======================================================================
+;;;; utility functions
 
 (defun jda-get-sub-directory-list (dir)
   (let ((entries (directory-files dir t))
@@ -814,19 +812,19 @@
 						   end-date)))
 	(shell-command command "*svn-log-report*")))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; xcode-document-viewer
-(condition-case nil
-	(progn
-	  (require 'w3m)
-	  (require 'xcode-document-viewer)
-	  (setq xcdoc:document-path "/Developer/Platforms/iPhoneOS.platform/Developer/Documentation/DocSets/com.apple.adc.documentation.AppleiPhone4_0.iPhoneLibrary.docset"))
-  (error nil))
+;;; xcode
 
 (defun jda-xcode-doc ()
   (interactive)
   (let ((text (symbol-at-point))
-		command)
+		(xcode-doc-fmt (concat
+						"tell application \"Xcode\" to activate \n"
+						"tell application \"System Events\"\n"
+						"	tell process \"Xcode\"\n"
+						"		keystroke \"?\" using {command down, option down}\n"
+						"		keystroke \"%s\"\n"
+						"	end tell\n"
+						"end tell\n")))
 	(if (null text)
 		(setq text ""))
 	(setq text (read-from-minibuffer "Find text in Xcode Doc: "
@@ -834,8 +832,7 @@
 									 nil
 									 nil
 									 'jda-xcode-doc-text-history))
-	(setq command (format "~/settings/emacs/xcode-doc %s" text))
-	(shell-command command)))
+	(do-applescript (format xcode-doc-fmt text))))
 
 (defun jda-xcode-set-available-sdks ()
   (setq jda-xcode-available-sdks nil)
@@ -892,6 +889,7 @@
 								   nil
 								   nil
 								   'jda-xcode-build-history))))
+;;;; make
 
 (defun jda-get-makefile-dir ()
   "return the directory(project root directory) where Makefile exist."
@@ -933,8 +931,8 @@ ex) make -C project/root/directory"
 		(t
 		 (jda-make))))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; android-doc
+;;;; android-doc
+
 (defun* jda-android-doc-source-candidates (&key class-name sdk-dir)
   (split-string
    (shell-command-to-string
@@ -970,8 +968,8 @@ ex) make -C project/root/directory"
 		((equal mode-name "JDE")
 		 (jda-android-doc))))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; objc
+;;;; objc
+
 (defun jda-insert-objc-parenthesis ()
   (interactive)
   (let ((depth 0)
@@ -1045,9 +1043,7 @@ ex) make -C project/root/directory"
   (define-key objc-mode-map (kbd "C-c [") 'jda-delete-objc-parenthesis)
   (define-key objc-mode-map (kbd "C-c ]") 'jda-insert-objc-parenthesis))
 
-;; ======================================================================
-;; jda-minor mode functions
-;; ======================================================================
+;;;; jda-minor mode functions
 
 (defun jda-minor-keymap ()
   (let ((map (make-sparse-keymap)))
