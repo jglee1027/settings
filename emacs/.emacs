@@ -59,8 +59,10 @@
 		   'utf-8)
 		  ((string-match "EUC-KR" lang)
 		   'euc-kr)
+		  ((string-match "CP949" lang)
+		   'cp949)
 		  ((eq system-type 'windows-nt)
-		   'euc-kr)
+		   'cp949)
 		  (t
 		   'utf-8))))
 
@@ -75,7 +77,9 @@
   (cond ((eq default-encoding 'utf-8)
 		 (setenv "LANG" "ko_KR.UTF-8"))
 		((eq default-encoding 'euc-kr)
-		 (setenv "LANG" "ko_KR.EUC-KR"))))
+		 (setenv "LANG" "ko_KR.EUC-KR"))
+		((eq default-encoding 'cp949)
+		 (setenv "LANG" "ko_KR.CP949"))))
 
 (unless (or enable-multibyte-characters window-system)
   (standard-display-european t)
