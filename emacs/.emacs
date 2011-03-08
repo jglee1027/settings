@@ -395,7 +395,7 @@
 	(progn
 	  (require 'w3m)
 	  (require 'xcode-document-viewer)
-	  (setq xcdoc:document-path "/Developer/Platforms/iPhoneOS.platform/Developer/Documentation/DocSets/com.apple.adc.documentation.AppleiPhone4_0.iPhoneLibrary.docset")
+	  (setq xcdoc:document-path "/Developer/Platforms/iPhoneOS.platform/Developer/Documentation/DocSets/com.apple.adc.documentation.AppleiPhone4_0.iPhoneLibrary.docset"))
 	  (error nil))
 
 ;; ======================================================================
