@@ -44,43 +44,6 @@
 (unless window-system
   (menu-bar-mode -1))
 
-;; Language setting
-(defvar default-encoding
-  (let (lang)
-	(setq lang (getenv "LANG"))
-	(if (null lang)
-		(setq lang ""))
-	(cond ((eq system-type 'darwin)
-		   (cond ((>= emacs-major-version 23)
-				  'utf-8-nfd)
-				 (t
-				  'utf-8)))
-		  ((string-match "UTF-8" lang)
-		   'utf-8)
-		  ((string-match "EUC-KR" lang)
-		   'euc-kr)
-		  ((string-match "CP949" lang)
-		   'cp949)
-		  ((eq system-type 'windows-nt)
-		   'cp949)
-		  (t
-		   'utf-8))))
-
-(when enable-multibyte-characters
-  (set-language-environment "Korean")
-  (setq default-korean-keyboard "2")
-  
-  ;; (set-default-coding-systems default-encoding)
-  (set-selection-coding-system default-encoding)
-  (setq-default sendmail-coding-system 'utf-8)
-  (prefer-coding-system default-encoding)
-  (cond ((eq default-encoding 'utf-8)
-		 (setenv "LANG" "ko_KR.UTF-8"))
-		((eq default-encoding 'euc-kr)
-		 (setenv "LANG" "ko_KR.EUC-KR"))
-		((eq default-encoding 'cp949)
-		 (setenv "LANG" "ko_KR.CP949"))))
-
 (unless (or enable-multibyte-characters window-system)
   (standard-display-european t)
   (set-input-mode (car (current-input-mode))
