@@ -417,7 +417,10 @@
 	  (yas/initialize)
 	  (setq yas/root-directory '("~/settings/emacs/site-lisp/yasnippet/snippets"
 								 "~/settings/emacs/snippets"))
-	  (mapc 'yas/load-directory yas/root-directory))
+	  (mapc 'yas/load-directory yas/root-directory)
+	  (setq yas/prompt-functions (cons 'yas/dropdown-prompt
+									   (remove 'yas/dropdown-prompt
+											   yas/prompt-functions))))
   (error nil))
 
 ;; ======================================================================
