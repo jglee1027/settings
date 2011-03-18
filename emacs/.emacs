@@ -1,7 +1,6 @@
 ;; ======================================================================
 ;; General setting
 ;; ======================================================================
-(add-to-list 'load-path "~/settings/emacs/jglee-lisp")
 (add-to-list 'load-path "~/settings/emacs/site-lisp")
 (let (old-default-directory)
   (setq old-default-directory default-directory)
