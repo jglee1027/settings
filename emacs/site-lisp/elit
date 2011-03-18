@@ -11,6 +11,7 @@ ecb \
 geben \
 highlight-symbol \
 javascript \
+jda \
 jdee \
 nxhtml \
 ri-emacs \
@@ -71,6 +72,11 @@ javascript_path="$elit_path/javascript.el"
 javascript_download="wget http://www.brgeight.se/downloads/emacs/javascript.el"
 javascript_install=""
 javascript_depend=""
+
+jda_path="$elit_path/jda-minor-mode/"
+jda_download="git clone git://github.com/jglee1027/jda-minor-mode.git"
+jda_install=""
+jda_depend=""
 
 jdee_path="$elit_path/jdee/"
 jdee_download="svn co https://jdee.svn.sourceforge.net/svnroot/jdee/trunk/jdee/lisp jdee"

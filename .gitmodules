@@ -1,3 +1,0 @@
-[submodule "emacs/site-lisp/jda-minor-mode"]
-	path = emacs/site-lisp/jda-minor-mode
-	url = git@github.com:jglee1027/jda-minor-mode.git
