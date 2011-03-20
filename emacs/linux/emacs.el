@@ -23,11 +23,17 @@
 								 (font-spec :family "NanumGothic_AndaleMono"
 											:size 10.0))))
 		  (t							; unix or linux
-		   (if (null (find-font mono-font))
-			   (setq mono-font (font-spec :family "Monospace"
-										  :size 10.0)))
-		   (set-face-font 'default mono-font)
-		   (set-fontset-font nil 'korean-ksc5601 mono-font))))
+		   (cond ((find-font mono-font)
+				  (set-face-font 'default mono-font)
+				  (set-fontset-font nil 'korean-ksc5601 mono-font))
+				 (t
+				  (set-face-font 'default (font-spec :family "Monospace"
+													 :size 10.0))
+				  (set-fontset-font nil
+									'korean-ksc5601
+									(font-spec :family "UnDotum"
+											   :size 10.0)))))))
+  
   (custom-set-variables
    '(scroll-bar-mode nil))
   
