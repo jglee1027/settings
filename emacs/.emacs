@@ -409,6 +409,32 @@
 (autoload 'svn-update "dsvn" "Run 'svn update'." t)
 	  
 ;; ======================================================================
+;; svn
+;; ======================================================================
+(defun jda-svn-log-report ()
+  (interactive)
+  (let (command
+		id
+		start-date
+		end-date)
+	(jda-gf-set-project-root)
+	(setq id (read-from-minibuffer "Id: "))
+	(setq start-date (read-from-minibuffer "Start date: "))
+	(setq end-date (read-from-minibuffer "End date: "))
+	(setq svnlr-rb (expand-file-name "svnlr.rb"
+									 (file-name-directory (symbol-file 'jda-svn-log-report))))
+	(setq command (jda-read-shell-command
+				   "Command: "
+				   (format "cd %s; svn log | ~/settings/emacs/svnlr.rb -id %s -sd %s -ed %s"
+						   jda-gf-project-root
+						   id
+						   start-date
+						   end-date)))
+	(shell-command command "*svn-log-report*")))
+
+(define-key global-map (kbd "C-x v #") 'jda-svn-log-report)
+
+;; ======================================================================
 ;; yasnippet
 ;; ======================================================================
 (condition-case nil
