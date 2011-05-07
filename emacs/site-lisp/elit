@@ -86,7 +86,7 @@ jdee_depend="ecb"
 nxhtml_path="$elit_path/nxhtml/"
 nxhtml_download="wget http://ourcomments.org/Emacs/DL/elisp/nxhtml/zip/nxhtml-2.08-100425.zip"
 nxhtml_install="unzip nxhtml-2.08-100425.zip"
-nxhtml_depend=""
+nxhtml_depend="javascript"
 
 ri_emacs_path="$elit_path/ri-emacs/"
 ri_emacs_download="cvs -d :pserver:anonymous@rubyforge.org:/var/cvs/ri-emacs login"
