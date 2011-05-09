@@ -5,6 +5,7 @@ elit_path=$(cd $(dirname $0); pwd)
 all="android \
 anything \
 auto-complete \
+cedet \
 doxymacs \
 dsvn \
 ecb \
@@ -38,9 +39,9 @@ auto_complete_download="git clone http://cx4a.org/repo/auto-complete.git/"
 auto_complete_install=""
 auto_complete_depend=""
 
-cedet_path="$elit_path/cedet-1.0/"
-cedet_download="wget http://sourceforge.net/projects/cedet/files/cedet/cedet-1.0.tar.gz"
-cedet_install="tar xzf cedet-1.0.tar.gz"
+cedet_path="$elit_path/cedet-1.0pre7/"
+cedet_download="wget http://sourceforge.net/projects/cedet/files/cedet/1.0pre7/cedet-1.0pre7.tar.gz"
+cedet_install="tar xzf cedet-1.0pre7.tar.gz"
 cedet_depend=""
 
 doxymacs_path="$elit_path/doxymacs"
