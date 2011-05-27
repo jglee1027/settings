@@ -79,9 +79,9 @@ jda_download="git clone git://github.com/jglee1027/jda-minor-mode.git"
 jda_install=""
 jda_depend=""
 
-jdee_path="$elit_path/jdee/"
-jdee_download="svn co https://jdee.svn.sourceforge.net/svnroot/jdee/trunk/jdee/lisp jdee"
-jdee_install=""
+jdee_path="$elit_path/jdee-2.4.0.1/"
+jdee_download="wget http://sourceforge.net/projects/jdee/files/jdee/2.4.0.1/jdee-bin-2.4.0.1.zip"
+jdee_install="unzip jdee-bin-2.4.0.1.zip"
 jdee_depend="ecb"
 
 nxhtml_path="$elit_path/nxhtml/"
