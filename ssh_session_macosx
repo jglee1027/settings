@@ -1,0 +1,11 @@
+#!/bin/bash
+export SSH_SESSION=1
+if [ -z "$SSH_ORIGINAL_COMMAND" ] ; then
+    export SSH_LOGIN=1
+    exec login -fp "$USER"
+else
+    export SSH_LOGIN=
+    [ -r /etc/profile ] && source /etc/profile
+    [ -r ~/.profile ] && source ~/.profile
+    eval exec "$SSH_ORIGINAL_COMMAND"
+fi
