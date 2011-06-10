@@ -19,3 +19,17 @@ end
 document pr
 Ask an objective-C object to print its retainCount
 end
+
+define prpv
+  if $argc == 1
+	set $view = $arg0
+	while $view != 0
+	  po $view
+	  set $view = [$view superview]
+	end
+  end
+end
+
+document prpv
+Ask an UIView object to print its parent view stack
+end
