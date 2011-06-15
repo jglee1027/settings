@@ -132,11 +132,24 @@
   (error nil))
 
 ;; winmove
-(condition-case nil
-	(progn
-	  (require 'windmove)
-	  (windmove-default-keybindings))
-  (error nil))
+(ignore-errors
+  (require 'windmove)
+  (global-set-key (kbd "S-<left>") '(lambda ()
+									  (interactive)
+									  (ignore-errors
+										(windmove-left))))
+  (global-set-key (kbd "S-<right>") '(lambda ()
+									   (interactive)
+									   (ignore-errors
+										 (windmove-right))))
+  (global-set-key (kbd "S-<up>") '(lambda ()
+									(interactive)
+									(ignore-errors
+									  (windmove-up))))
+  (global-set-key (kbd "S-<down>") '(lambda ()
+									  (interactive)
+									  (ignore-errors
+										(windmove-down)))))
 
 ;; ======================================================================
 ;; Mode line and minibuffer
