@@ -1,3 +1,5 @@
+set disassembly-flavor intel
+
 define pr
   if $argc == 1
   	print (int)[$arg0 retainCount]
