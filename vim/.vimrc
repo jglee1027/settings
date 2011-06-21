@@ -72,10 +72,12 @@ set csto=0
 set cst
 set nocsverb
 
-if filereadable("./cscope.out")
-	cs add ./cscope.out
-else
-	cs add /usr/src/linux/cscope.out
+if $cscope_path != ""
+	if filereadable("./cscope.out")
+		cs add ./cscope.out
+	else
+		cs add /usr/src/linux/cscope.out
+	endif
 endif
 
 set csverb
