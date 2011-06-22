@@ -69,6 +69,10 @@
 							 '("\\.[mM][kK][vV]$" "mplayer")
 							 '("\\.[mM][pP]4$" "mplayer")
 							 '("\\.[wW][mM][vV]$" "mplayer"))))))
+;; uniquify
+(ignore-errors
+  (require 'uniquify)
+  (setq uniquify-buffer-name-style 'forward))
 
 ;; ======================================================================
 ;; Key definition
