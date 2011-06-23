@@ -9,6 +9,13 @@
 	  (normal-top-level-add-subdirs-to-load-path))
   (setq default-directory old-default-directory))
 
+;; define ignore-errors macro
+(if (not (symbolp 'ignore-errors))
+	(defmacro ignore-errors (&rest body)
+	  "Execute BODY; if an error occurs, return nil.
+Otherwise, return result of last form in BODY."
+	  `(condition-case nil (progn ,@body) (error nil))))
+
 ;; tab
 (setq c-basic-offset 4)
 (setq default-tab-width 4)
@@ -27,13 +34,11 @@
 (iswitchb-mode)
 (ido-mode t)
 
-(condition-case nil
-	(progn
-	  (require 'auto-complete)
-	  (add-to-list 'ac-modes 'jde-mode)
-	  (add-to-list 'ac-modes 'objc-mode)
-	  (global-auto-complete-mode t))
-  (error nil))
+(ignore-errors
+  (require 'auto-complete)
+  (add-to-list 'ac-modes 'jde-mode)
+  (add-to-list 'ac-modes 'objc-mode)
+  (global-auto-complete-mode t))
 
 (setq semantic-load-turn-everything-on t)
 (setq vc-make-backup-files t)
@@ -126,14 +131,12 @@
 			(local-set-key (kbd "C-c h l") 'hs-show-all)))
 
 ;; highlight-symbol
-(condition-case nil
-	(progn
-	  (require 'highlight-symbol)
-	  (global-set-key (kbd "C-c j 8") 'highlight-symbol-mode)
-	  (global-set-key (kbd "C-c 8") 'highlight-symbol-at-point)
-	  (global-set-key (kbd "M-p") 'highlight-symbol-prev)
-	  (global-set-key (kbd "M-n") 'highlight-symbol-next))
-  (error nil))
+(ignore-errors
+  (require 'highlight-symbol)
+  (global-set-key (kbd "C-c j 8") 'highlight-symbol-mode)
+  (global-set-key (kbd "C-c 8") 'highlight-symbol-at-point)
+  (global-set-key (kbd "M-p") 'highlight-symbol-prev)
+  (global-set-key (kbd "M-n") 'highlight-symbol-next))
 
 ;; winmove
 (ignore-errors
@@ -180,14 +183,12 @@
 ;; ======================================================================
 ;; Programming modes
 ;; ======================================================================
-(condition-case nil
-	(progn
-	  (require 'ruby-mode)
-	  (require 'rdebug)
-	  (require 'rubydb)
-	  (require 'inf-ruby)
-	  (require 'ruby-electric))
-  (error nil))
+(ignore-errors
+  (require 'ruby-mode)
+  (require 'rdebug)
+  (require 'rubydb)
+  (require 'inf-ruby)
+  (require 'ruby-electric))
 
 ;; rdebug keys
 (defun rdebug-keys (map)
@@ -289,38 +290,30 @@
 
 ;; JDE
 ;; Copy `/usr/local/share/emacs/20.3/site-lisp/jde-2.1.3/jtags*'to `/usr/local/bin/'
-(condition-case nil
-	(progn
-	  (require 'jde)
-	  (add-hook 'jde-mode-hook
-				(lambda()
-				  (local-set-key (kbd "C-c C-v .") 'jde-complete-minibuf))))
-  (error nil))
+(ignore-errors
+  (require 'jde)
+  (add-hook 'jde-mode-hook
+			(lambda()
+			  (local-set-key (kbd "C-c C-v .") 'jde-complete-minibuf))))
 
 ;; Android
-(condition-case nil
- 	(require 'android)
-  (error nil))
+(ignore-errors
+  (require 'android))
 
 ;; nxhtml
-(condition-case nil
-	(require 'autostart)
-  (error nil))
+(ignore-errors
+	(require 'autostart))
 
 ;; geben
-(condition-case nil
-	(progn
-	  (require 'geben)
-	  (define-key geben-mode-map [f5] 'geben-step-into)
-	  (define-key geben-mode-map [f6] 'geben-step-over)
-	  (define-key geben-mode-map [f7] 'geben-step-out)
-	  (define-key geben-mode-map [f8] 'geben-run))
-  (error nil))
+(ignore-errors
+  (define-key geben-mode-map [f5] 'geben-step-into)
+  (define-key geben-mode-map [f6] 'geben-step-over)
+  (define-key geben-mode-map [f7] 'geben-step-out)
+  (define-key geben-mode-map [f8] 'geben-run))
 
 ;; javascript
-(condition-case nil
-	(require 'javascript)
-  (error nil))
+(ignore-errors
+  (require 'javascript))
 
 ;; ruby
 (defun which-gem-package(package)
@@ -350,74 +343,61 @@
 	(kill-buffer "*which-gem-package*")
 	path))
 
-(condition-case nil
-	(progn
-	  (setq ri-ruby-script
-			(expand-file-name "~/settings/emacs/site-lisp/ri-emacs/ri-emacs.rb"))
-	  (load-library "~/settings/emacs/site-lisp/ri-emacs/ri-ruby.el")
-	  (add-hook 'ruby-mode-hook
-				(lambda()
-				  (local-set-key (kbd "C-c h") 'ri)
-				  (local-set-key (kbd "C-c @") 'ri-ruby-show-args))))
-  (error nil))
+(ignore-errors
+  (setq ri-ruby-script
+		(expand-file-name "~/settings/emacs/site-lisp/ri-emacs/ri-emacs.rb"))
+  (load-library "~/settings/emacs/site-lisp/ri-emacs/ri-ruby.el")
+  (add-hook 'ruby-mode-hook
+			(lambda()
+			  (local-set-key (kbd "C-c h") 'ri)
+			  (local-set-key (kbd "C-c @") 'ri-ruby-show-args))))
 
 (let ((rcodetools-path (which-gem-package "rcodetools")))
-  (condition-case nil
+  (ignore-errors
 	  (cond ((not (null rcodetools-path))
 			 (add-to-list 'load-path rcodetools-path)
 			 (require 'anything-rcodetools)
-			 (define-key ruby-mode-map (kbd "C-c /") 'rct-complete-symbol)))
-	(error nil)))
+			 (define-key ruby-mode-map (kbd "C-c /") 'rct-complete-symbol)))))
 
 ;; rinari
-(condition-case nil
-	(require 'rinari)
-  (error nil))
+(ignore-errors
+  (require 'rinari))
 
 ;; xcode-document-viewer
-(condition-case nil
-	(progn
-	  (require 'w3m)
-	  (require 'xcode-document-viewer)
-	  (setq xcdoc:document-path "/Developer/Platforms/iPhoneOS.platform/Developer/Documentation/DocSets/com.apple.adc.documentation.AppleiPhone4_0.iPhoneLibrary.docset"))
-	  (error nil))
+(ignore-errors
+  (require 'w3m)
+  (require 'xcode-document-viewer)
+  (setq xcdoc:document-path "/Developer/Platforms/iPhoneOS.platform/Developer/Documentation/DocSets/com.apple.adc.documentation.AppleiPhone4_0.iPhoneLibrary.docset"))
 
 ;; ======================================================================
 ;; Cscope
 ;; ======================================================================
-(condition-case nil
-	(progn
-	  (require 'xcscope)
-	  (add-hook 'java-mode-hook (function cscope:hook))
-	  (add-hook 'asm-mode-hook (function cscope:hook))
-	  (add-hook 'c-mode-common-hook (function cscope:hook)))
-  (error nil))
+(ignore-errors
+  (require 'xcscope)
+  (add-hook 'java-mode-hook (function cscope:hook))
+  (add-hook 'asm-mode-hook (function cscope:hook))
+  (add-hook 'c-mode-common-hook (function cscope:hook)))
 
 (autoload 'cflow-mode "cflow-mode")
 
 ;; Source Navigator
-(condition-case nil
-    (require 'sn)
-  (error nil))
+(ignore-errors
+  (require 'sn))
 
 ;; ======================================================================
 ;; CEDET and ECB
 ;; ======================================================================
-(condition-case nil
-	(progn
-	  (require 'cedet)
-	  (require 'ecb))
-  (error nil))
+(ignore-errors
+  (require 'cedet)
+  (require 'ecb))
 
 ;; ======================================================================
 ;; doxymacs
 ;; ======================================================================
-(condition-case nil
-	(progn
-	  (require 'doxymacs)
-	  (add-hook 'c-mode-common-hook 'doxymacs)
-	  (add-hook 'java-mode-hook 'doxymacs))
-  (error nil))
+(ignore-errors
+  (require 'doxymacs)
+  (add-hook 'c-mode-common-hook 'doxymacs)
+  (add-hook 'java-mode-hook 'doxymacs))
 
 ;; ======================================================================
 ;; dsvn
@@ -454,17 +434,15 @@
 ;; ======================================================================
 ;; yasnippet
 ;; ======================================================================
-(condition-case nil
-	(progn
-	  (require 'yasnippet)
-	  (yas/initialize)
-	  (setq yas/root-directory '("~/settings/emacs/site-lisp/yasnippet/snippets"
-								 "~/settings/emacs/snippets"))
-	  (mapc 'yas/load-directory yas/root-directory)
-	  (setq yas/prompt-functions (cons 'yas/dropdown-prompt
-									   (remove 'yas/dropdown-prompt
-											   yas/prompt-functions))))
-  (error nil))
+(ignore-errors
+  (require 'yasnippet)
+  (yas/initialize)
+  (setq yas/root-directory '("~/settings/emacs/site-lisp/yasnippet/snippets"
+							 "~/settings/emacs/snippets"))
+  (mapc 'yas/load-directory yas/root-directory)
+  (setq yas/prompt-functions (cons 'yas/dropdown-prompt
+								   (remove 'yas/dropdown-prompt
+										   yas/prompt-functions))))
 
 ;; ======================================================================
 ;; Org-mode
