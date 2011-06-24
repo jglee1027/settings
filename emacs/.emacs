@@ -2,21 +2,20 @@
 ;; General setting
 ;; ======================================================================
 (add-to-list 'load-path "~/settings/emacs/site-lisp")
-(let (old-default-directory)
-  (setq old-default-directory default-directory)
+(let ((old-default-directory default-directory))
   (setq default-directory "~/settings/emacs/site-lisp")
   (if (fboundp 'normal-top-level-add-subdirs-to-load-path)
 	  (normal-top-level-add-subdirs-to-load-path))
   (setq default-directory old-default-directory))
 
 ;; define ignore-errors macro
-(if (not (symbolp 'ignore-errors))
-	(defmacro ignore-errors (&rest body)
-	  "Execute BODY; if an error occurs, return nil.
+(unless (symbolp 'ignore-errors)
+  (defmacro ignore-errors (&rest body)
+	"Execute BODY; if an error occurs, return nil.
 Otherwise, return result of last form in BODY."
-	  `(condition-case nil (progn ,@body) (error nil))))
+	`(condition-case nil (progn ,@body) (error nil))))
 
-;; tab
+;;;; tab
 (setq c-basic-offset 4)
 (setq default-tab-width 4)
 (setq tab-stop-list
@@ -32,13 +31,7 @@ Otherwise, return result of last form in BODY."
 (display-time-mode t)
 (ffap-bindings)
 (iswitchb-mode)
-(ido-mode t)
-
-(ignore-errors
-  (require 'auto-complete)
-  (add-to-list 'ac-modes 'jde-mode)
-  (add-to-list 'ac-modes 'objc-mode)
-  (global-auto-complete-mode t))
+;; (ido-mode t)
 
 (setq semantic-load-turn-everything-on t)
 (setq vc-make-backup-files t)
@@ -54,17 +47,17 @@ Otherwise, return result of last form in BODY."
                   (nth 1 (current-input-mode))
                   0))
 
-;; shell environment
+;;;; shell environment
 (setq-default shell-cd-regexp nil)
 (setq-default shell-pushd-regexp nil)
 (setq-default shell-popd-regexp nil)
 
-;; secure on shell mode
+;;;; secure on shell mode
 (add-hook 'comint-output-filter-functions 'comint-watch-for-password-prompt)
 (autoload 'ansi-color-for-comint-mode-on "ansi-color" nil t)
 (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
 
-;; dired
+;;;; dired
 (add-hook 'dired-load-hook
 		  (function (lambda()
 					  (load "dired-x" nil)
@@ -74,32 +67,39 @@ Otherwise, return result of last form in BODY."
 							 '("\\.[mM][kK][vV]$" "mplayer")
 							 '("\\.[mM][pP]4$" "mplayer")
 							 '("\\.[wW][mM][vV]$" "mplayer"))))))
-;; uniquify
-(ignore-errors
-  (require 'uniquify)
-  (setq uniquify-buffer-name-style 'forward))
+;;;; uniquify
+(eval-after-load "uniquify"
+  '(setq uniquify-buffer-name-style 'forward))
 
-;; ======================================================================
-;; Key definition
-;; ======================================================================
+;;;; auto-complete
+(eval-after-load "auto-complete"
+  '(progn
+	(add-to-list 'ac-modes 'jde-mode)
+	(add-to-list 'ac-modes 'objc-mode)
+	(global-auto-complete-mode t)))
+
+(ignore-errors
+  (require 'auto-complete))
+
+;;;; Key definition
 (global-set-key [C-kanji] 'set-mark-command)
 (global-set-key [?\S- ] 'toggle-input-method)
-(define-key global-map (kbd "C-x RET s") 'decode-coding-region)
-(define-key global-map (kbd "C-c C-s a") 'semantic-complete-analyze-inline)
-(define-key global-map (kbd "C-c /") 'semantic-ia-complete-symbol-menu)
-(define-key global-map (kbd "C-c c") 'compile)
-(define-key global-map (kbd "C-c r") 'recompile)
-(define-key global-map (kbd "C-c TAB") 'indent-relative)
-(define-key global-map (kbd "C-x p") 'previous-buffer)
-(define-key global-map (kbd "C-x n") 'next-buffer)
+(global-set-key (kbd "C-x RET s") 'decode-coding-region)
+(global-set-key (kbd "C-c C-s a") 'semantic-complete-analyze-inline)
+(global-set-key (kbd "C-c /") 'semantic-ia-complete-symbol-menu)
+(global-set-key (kbd "C-c c") 'compile)
+(global-set-key (kbd "C-c r") 'recompile)
+(global-set-key (kbd "C-c TAB") 'indent-relative)
+(global-set-key (kbd "C-x p") 'previous-buffer)
+(global-set-key (kbd "C-x n") 'next-buffer)
 
-;; tags
+;;;; tags
 (fset 'find-next-tag "\C-u\256")
 (fset 'find-prev-tag "\C-u-\256")
 (global-set-key (kbd "M-8") 'find-next-tag)
 (global-set-key (kbd "M-7") 'find-prev-tag)
 
-;; gud
+;;;; gud
 (defun gud-mode-common-keys()
   (message ">>> run gud-mode-common-keys")
   (global-set-key [f5] 'gud-step)
@@ -120,7 +120,7 @@ Otherwise, return result of last form in BODY."
 (add-hook 'pdb-mode-hook 'gud-mode-common-keys)
 (add-hook 'jdb-mode-hook 'gud-mode-common-keys)
 
-;; hs-minor-mode
+;;;; hs-minor-mode
 (add-hook 'hs-minor-mode-hook
 		  (lambda()
 			(local-set-key (kbd "C-c h '") 'hs-toggle-hiding)
@@ -130,37 +130,36 @@ Otherwise, return result of last form in BODY."
 			(local-set-key (kbd "C-c h k") 'hs-hide-all)
 			(local-set-key (kbd "C-c h l") 'hs-show-all)))
 
-;; highlight-symbol
-(ignore-errors
-  (require 'highlight-symbol)
-  (global-set-key (kbd "C-c j 8") 'highlight-symbol-mode)
-  (global-set-key (kbd "C-c 8") 'highlight-symbol-at-point)
-  (global-set-key (kbd "M-p") 'highlight-symbol-prev)
-  (global-set-key (kbd "M-n") 'highlight-symbol-next))
+;;;; highlight-symbol
+(global-set-key (kbd "C-c j 8") 'highlight-symbol-mode)
+(global-set-key (kbd "C-c 8") 'highlight-symbol-at-point)
+(global-set-key (kbd "M-p") 'highlight-symbol-prev)
+(global-set-key (kbd "M-n") 'highlight-symbol-next)
 
-;; winmove
-(ignore-errors
-  (require 'windmove)
-  (global-set-key (kbd "S-<left>") '(lambda ()
-									  (interactive)
-									  (ignore-errors
-										(windmove-left))))
-  (global-set-key (kbd "S-<right>") '(lambda ()
-									   (interactive)
-									   (ignore-errors
-										 (windmove-right))))
-  (global-set-key (kbd "S-<up>") '(lambda ()
+(autoload 'highlight-symbol-mode "highlight-symbol" nil t)
+(autoload 'highlight-symbol-at-point "highlight-symbol" nil t)
+(autoload 'highlight-symbol-prev "highlight-symbol" nil t)
+(autoload 'highlight-symbol-next "highlight-symbol" nil t)
+
+;;;; winmove
+(global-set-key (kbd "S-<left>") '(lambda ()
 									(interactive)
 									(ignore-errors
-									  (windmove-up))))
-  (global-set-key (kbd "S-<down>") '(lambda ()
-									  (interactive)
-									  (ignore-errors
-										(windmove-down)))))
+									  (windmove-left))))
+(global-set-key (kbd "S-<right>") '(lambda ()
+									 (interactive)
+									 (ignore-errors
+									   (windmove-right))))
+(global-set-key (kbd "S-<up>") '(lambda ()
+								  (interactive)
+								  (ignore-errors
+									(windmove-up))))
+(global-set-key (kbd "S-<down>") '(lambda ()
+									(interactive)
+									(ignore-errors
+									  (windmove-down))))
 
-;; ======================================================================
-;; Mode line and minibuffer
-;; ======================================================================
+;;;; Mode line and minibuffer
 (setq display-time-string-forms
 	  '((if	(and
 			 (not display-time-format)
@@ -183,29 +182,7 @@ Otherwise, return result of last form in BODY."
 ;; ======================================================================
 ;; Programming modes
 ;; ======================================================================
-(ignore-errors
-  (require 'ruby-mode)
-  (require 'rdebug)
-  (require 'rubydb)
-  (require 'inf-ruby)
-  (require 'ruby-electric))
-
-;; rdebug keys
-(defun rdebug-keys (map)
-  (define-key map [f5] 'rdebug-step)
-  (define-key map (kbd "C-<f5>") 'gud-stepi)
-  (define-key map [f6] 'rdebug-next)
-  (define-key map (kbd "C-<f6>") 'gud-nexti)
-  (define-key map [f7] 'gud-finish)
-  (define-key map [f8] 'gud-cont)
-  (define-key map [f12] 'rdebug-restore-debugger-window-layout)
-  (define-key map (kbd "M-<up>") 'gud-up)
-  (define-key map (kbd "M-<down>") 'gud-down)
-  (define-key map [f9]    'rdebug-toggle-source-breakpoint)
-  (define-key map [C-f9]  'rdebug-toggle-source-breakpoint-enabled))
-(setq rdebug-populate-common-keys-function 'rdebug-keys)
-
-;; auto-mode-alist
+;;;; auto-mode-alist
 (setq magic-mode-alist nil)				; to use eruby-nxhtml-mumamo-mode
 
 (add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
@@ -216,9 +193,10 @@ Otherwise, return result of last form in BODY."
 (add-to-list 'auto-mode-alist '("\\.j$" . objc-mode))
 (add-to-list 'auto-mode-alist '("\\.rb$" . ruby-mode))
 (add-to-list 'auto-mode-alist '("\\.cflow$" . cflow-mode))
+(add-to-list 'auto-mode-alist '("\\.js$" . javascript-mode))
 (add-to-list 'auto-mode-alist '("\\.html\\.erb\\'" . eruby-nxhtml-mumamo-mode))
 
-;; choose header file mode
+;;;; choose header file mode
 (defun header-file-mode-hook()
   (if (and (file-name-extension buffer-file-name)
 		   (string-match "\\.[hH]$" buffer-file-name))
@@ -271,6 +249,10 @@ Otherwise, return result of last form in BODY."
 		  (function (lambda ()
 					  (c-set-style "java"))))
 
+(add-hook 'jde-mode-hook
+		  (lambda()
+			(local-set-key (kbd "C-c C-v .") 'jde-complete-minibuf)))
+
 (add-hook 'c-mode-hook
 		  (function (lambda ()
 					  (c-set-style "stroustrup"))))
@@ -288,34 +270,41 @@ Otherwise, return result of last form in BODY."
 		  (function (lambda ()
 					  (c-set-style "stroustrup"))))
 
-;; JDE
-;; Copy `/usr/local/share/emacs/20.3/site-lisp/jde-2.1.3/jtags*'to `/usr/local/bin/'
-(ignore-errors
-  (require 'jde)
-  (add-hook 'jde-mode-hook
-			(lambda()
-			  (local-set-key (kbd "C-c C-v .") 'jde-complete-minibuf))))
+;;;; JDE
+(defun jde-activate ()
+"Activates JDEE"
+  (interactive)
+  (require 'ecb)
+  (require 'jde))
 
-;; Android
-(ignore-errors
-  (require 'android))
+;;;; Android
+(autoload 'android-jdb "android" nil t)
+(autoload 'android-emulate "android" nil t)
+(autoload 'android-install-app "android" nil t)
+(autoload 'android-uninstall-app "android" nil t)
+(autoload 'android-start-activity "android" nil t)
+(autoload 'android-debug-activity "android" nil t)
 
-;; nxhtml
-(ignore-errors
-	(require 'autostart))
+;;;; nxhtml
+(defun nxhtml-activate ()
+  "Activates nXhtml"
+  (ignore-errors
+	(require 'autostart)))
 
-;; geben
-(ignore-errors
-  (define-key geben-mode-map [f5] 'geben-step-into)
-  (define-key geben-mode-map [f6] 'geben-step-over)
-  (define-key geben-mode-map [f7] 'geben-step-out)
-  (define-key geben-mode-map [f8] 'geben-run))
+;;;; geben
+(eval-after-load "geben"
+  '(progn
+	 (define-key geben-mode-map [f5] 'geben-step-into)
+	 (define-key geben-mode-map [f6] 'geben-step-over)
+	 (define-key geben-mode-map [f7] 'geben-step-out)
+	 (define-key geben-mode-map [f8] 'geben-run)))
 
-;; javascript
-(ignore-errors
-  (require 'javascript))
+(autoload 'geben "geben" "DBGp protocol front-end" t)
 
-;; ruby
+;;;; javascript
+(autoload 'javascript-mode "javascript")
+
+;;;; ruby
 (defun which-gem-package(package)
   (let (start end path version)
 	(catch 'which-gem-exception
@@ -343,71 +332,85 @@ Otherwise, return result of last form in BODY."
 	(kill-buffer "*which-gem-package*")
 	path))
 
-(ignore-errors
-  (setq ri-ruby-script
-		(expand-file-name "~/settings/emacs/site-lisp/ri-emacs/ri-emacs.rb"))
-  (load-library "~/settings/emacs/site-lisp/ri-emacs/ri-ruby.el")
-  (add-hook 'ruby-mode-hook
-			(lambda()
-			  (local-set-key (kbd "C-c h") 'ri)
-			  (local-set-key (kbd "C-c @") 'ri-ruby-show-args))))
+(eval-after-load "ruby-mode"
+  '(progn
+	 (ignore-errors
+	   (setq ri-ruby-script
+			 (locate-library "ri-emacs"))
+	   (load-library "ri-ruby")
+	   (add-hook 'ruby-mode-hook
+				 (lambda()
+				   (local-set-key (kbd "C-c h") 'ri)
+				   (local-set-key (kbd "C-c @") 'ri-ruby-show-args))))
+	 (ignore-errors
+	   (let ((rcodetools-path (which-gem-package "rcodetools")))
+		 (cond ((not (null rcodetools-path))
+				(add-to-list 'load-path rcodetools-path)
+				(require 'anything-rcodetools)
+				(define-key ruby-mode-map (kbd "C-c /") 'rct-complete-symbol)))))
+	 (ignore-errors
+	   (require 'inf-ruby)
+	   (require 'ruby-electric)
+	   (require 'rdebug))))
 
-(let ((rcodetools-path (which-gem-package "rcodetools")))
-  (ignore-errors
-	  (cond ((not (null rcodetools-path))
-			 (add-to-list 'load-path rcodetools-path)
-			 (require 'anything-rcodetools)
-			 (define-key ruby-mode-map (kbd "C-c /") 'rct-complete-symbol)))))
+(autoload 'ruby-mode "ruby-mode" nil t)
+(autoload 'rdebug "rdebug" nil t)
+(autoload 'rubydb "rubydb" nil t)
+(autoload 'inf-ruby "inf-ruby" nil t)
+(autoload 'ruby-electric-brace "ruby-electric" nil t)
 
-;; rinari
-(ignore-errors
-  (require 'rinari))
+;;;; rdebug keys
+(defun rdebug-keys (map)
+  (define-key map [f5] 'rdebug-step)
+  (define-key map (kbd "C-<f5>") 'gud-stepi)
+  (define-key map [f6] 'rdebug-next)
+  (define-key map (kbd "C-<f6>") 'gud-nexti)
+  (define-key map [f7] 'gud-finish)
+  (define-key map [f8] 'gud-cont)
+  (define-key map [f12] 'rdebug-restore-debugger-window-layout)
+  (define-key map (kbd "M-<up>") 'gud-up)
+  (define-key map (kbd "M-<down>") 'gud-down)
+  (define-key map [f9]    'rdebug-toggle-source-breakpoint)
+  (define-key map [C-f9]  'rdebug-toggle-source-breakpoint-enabled))
+(setq rdebug-populate-common-keys-function 'rdebug-keys)
 
-;; xcode-document-viewer
-(ignore-errors
-  (require 'w3m)
-  (require 'xcode-document-viewer)
-  (setq xcdoc:document-path "/Developer/Platforms/iPhoneOS.platform/Developer/Documentation/DocSets/com.apple.adc.documentation.AppleiPhone4_0.iPhoneLibrary.docset"))
+;;;; rinari
+(autoload 'rinari-activate "rinari" nil t)
 
-;; ======================================================================
-;; Cscope
-;; ======================================================================
+;;;; xcode-document-viewer
+(eval-after-load "xcode-document-viewer"
+  '(setq xcdoc:document-path "/Developer/Platforms/iPhoneOS.platform/Developer/Documentation/DocSets/com.apple.adc.documentation.AppleiPhone4_0.iPhoneLibrary.docset"))
+  
+(autoload 'xcdoc:set-document-path "xcode-document-viewer" nil t)
+(autoload 'xcdoc:search "xcode-document-viewer" nil t)
+(autoload 'xcdoc:ask-search "xcode-document-viewer" nil t)
+(autoload 'xcdoc:search-at-point "xcode-document-viewer" nil t)
+
+;;;; w3m
+(autoload 'w3m "w3m" nil t)
+(autoload 'w3m-browse-url "w3m" nil t)
+
+;;;; cscope
 (ignore-errors
   (require 'xcscope)
   (add-hook 'java-mode-hook (function cscope:hook))
   (add-hook 'asm-mode-hook (function cscope:hook))
   (add-hook 'c-mode-common-hook (function cscope:hook)))
 
-(autoload 'cflow-mode "cflow-mode")
+;;;; ecb
+(autoload 'ecb-activate "ecb" nil t)
 
-;; Source Navigator
-(ignore-errors
-  (require 'sn))
-
-;; ======================================================================
-;; CEDET and ECB
-;; ======================================================================
-(ignore-errors
-  (require 'cedet)
-  (require 'ecb))
-
-;; ======================================================================
-;; doxymacs
-;; ======================================================================
+;;;; doxymacs
 (ignore-errors
   (require 'doxymacs)
   (add-hook 'c-mode-common-hook 'doxymacs)
   (add-hook 'java-mode-hook 'doxymacs))
 
-;; ======================================================================
-;; dsvn
-;; ======================================================================
+;;;; dsvn
 (autoload 'svn-status "dsvn" "Run 'svn status'." t)
 (autoload 'svn-update "dsvn" "Run 'svn update'." t)
 	  
-;; ======================================================================
-;; svn
-;; ======================================================================
+;;;; svn
 (defun jda-svn-log-report ()
   (interactive)
   (let (command
@@ -429,11 +432,9 @@ Otherwise, return result of last form in BODY."
 						   end-date)))
 	(shell-command command "*svn-log-report*")))
 
-(define-key global-map (kbd "C-x v #") 'jda-svn-log-report)
+(global-set-key (kbd "C-x v #") 'jda-svn-log-report)
 
-;; ======================================================================
-;; yasnippet
-;; ======================================================================
+;;;; yasnippet
 (ignore-errors
   (require 'yasnippet)
   (yas/initialize)
@@ -444,11 +445,16 @@ Otherwise, return result of last form in BODY."
 								   (remove 'yas/dropdown-prompt
 										   yas/prompt-functions))))
 
+;;;; jda-minor-mode
+(ignore-errors
+  (require 'jda)
+  (jda-minor-mode))
+
 ;; ======================================================================
 ;; Org-mode
 ;; ======================================================================
-(define-key global-map "\C-cl" 'org-store-link)
-(define-key global-map "\C-ca" 'org-agenda)
+(global-set-key "\C-cl" 'org-store-link)
+(global-set-key "\C-ca" 'org-agenda)
 
 (setq org-log-done t)
 (setq org-todo-keywords
@@ -483,7 +489,6 @@ Otherwise, return result of last form in BODY."
 ;; ======================================================================
 ;; IRC
 ;; ======================================================================
-
 (custom-set-variables
  ;; auto join
  '(erc-autojoin-channels-alist
@@ -571,9 +576,6 @@ Otherwise, return result of last form in BODY."
 			 (kill-buffer (current-buffer)))))
 		(t
 		 (message "ELPA is already installed."))))
-
-(require 'jda)
-(jda-minor-mode)
 
 (if (eq system-type 'windows-nt)
  	(load-library "~/settings/emacs/windows/emacs")
