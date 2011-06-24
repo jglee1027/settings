@@ -34,6 +34,7 @@ diff_cp() {
 echo -ne "emacs setting...\r"
 diff_cp $settings_path/emacs/.emacs ~/.emacs
 diff_cp $settings_path/emacs/linux/.Xresources ~/.Xresources
+emacs --batch -f batch-byte-compile ~/.emacs 2> ~/.emacs.elc.log
 echo emacs setting... OK
 
 echo -ne "vim setting...\r"
