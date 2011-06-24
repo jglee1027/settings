@@ -288,6 +288,7 @@ Otherwise, return result of last form in BODY."
 ;;;; nxhtml
 (defun nxhtml-activate ()
   "Activates nXhtml"
+  (interactive)
   (ignore-errors
 	(require 'autostart)))
 
