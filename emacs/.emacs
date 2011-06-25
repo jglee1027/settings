@@ -9,7 +9,7 @@
   (setq default-directory old-default-directory))
 
 ;; define ignore-errors macro
-(unless (symbolp 'ignore-errors)
+(eval-when-compile
   (defmacro ignore-errors (&rest body)
 	"Execute BODY; if an error occurs, return nil.
 Otherwise, return result of last form in BODY."
