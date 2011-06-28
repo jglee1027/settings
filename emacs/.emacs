@@ -1,12 +1,11 @@
 ;; ======================================================================
 ;; General setting
 ;; ======================================================================
-(add-to-list 'load-path "~/settings/emacs/site-lisp")
-(let ((old-default-directory default-directory))
-  (setq default-directory "~/settings/emacs/site-lisp")
-  (if (fboundp 'normal-top-level-add-subdirs-to-load-path)
-	  (normal-top-level-add-subdirs-to-load-path))
-  (setq default-directory old-default-directory))
+(let ((entries (directory-files "~/settings/emacs/site-lisp" t)))
+  (mapcar (lambda (entry)
+			(if (equal (car (file-attributes entry)) t)
+				(add-to-list 'load-path entry)))
+		  entries))
 
 ;; define ignore-errors macro
 (eval-when-compile
