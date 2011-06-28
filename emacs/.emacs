@@ -563,7 +563,8 @@ Otherwise, return result of last form in BODY."
 (custom-set-variables
  '(align-c++-modes (quote (c++-mode c-mode java-mode objc-mode))))
 
-(defun install-elpa()
+;;;; elpa
+(defun install-elpa ()
   (interactive)
   (cond ((not (file-exists-p "~/.emacs.d/elpa/package.el"))
 		 (let ((buffer (url-retrieve-synchronously
@@ -577,6 +578,23 @@ Otherwise, return result of last form in BODY."
 		(t
 		 (message "ELPA is already installed."))))
 
+;;;; el-get
+(cond ((file-exists-p "~/.emacs.d/el-get/el-get")
+	   (add-to-list 'load-path "~/.emacs.d/el-get/el-get")
+	   (require 'el-get nil t)))
+
+(defun install-el-get ()
+  (interactive)
+  (cond ((null (require 'el-get nil t))
+			  (url-retrieve
+			   "https://github.com/dimitri/el-get/raw/master/el-get-install.el"
+			   (lambda (s)
+				 (end-of-buffer)
+				 (eval-print-last-sexp))))
+		 (t
+		  (message "el-get alread installed."))))
+
+;;;; platform specific settings
 (if (eq system-type 'windows-nt)
  	(load-library "~/settings/emacs/windows/emacs")
   (load-library "~/settings/emacs/linux/emacs"))
