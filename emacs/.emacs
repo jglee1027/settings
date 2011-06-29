@@ -585,10 +585,9 @@ Otherwise, return result of last form in BODY."
 
 (defun install-el-get ()
   (interactive)
-  (setq el-get-git-install-url "http://github.com/jglee1027/el-get.git")
   (cond ((null (require 'el-get nil t))
 			  (url-retrieve
-			   "https://github.com/jglee1027/el-get/raw/master/el-get-install.el"
+			   "https://github.com/dimitri/el-get/raw/master/el-get-install.el"
 			   (lambda (s)
 				 (end-of-buffer)
 				 (eval-print-last-sexp))))
