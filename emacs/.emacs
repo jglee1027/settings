@@ -579,9 +579,10 @@ Otherwise, return result of last form in BODY."
 		 (message "ELPA is already installed."))))
 
 ;;;; el-get
-(cond ((file-exists-p "~/.emacs.d/el-get/el-get")
-	   (add-to-list 'load-path "~/.emacs.d/el-get/el-get")
-	   (require 'el-get nil t)))
+(if (file-exists-p "~/.emacs.d/el-get/el-get")
+	(add-to-list 'load-path "~/.emacs.d/el-get/el-get"))
+
+(require 'el-get nil t)
 
 (defun install-el-get ()
   (interactive)

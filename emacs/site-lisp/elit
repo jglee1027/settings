@@ -9,6 +9,7 @@ cedet \
 doxymacs \
 dsvn \
 ecb \
+el-get \
 geben \
 highlight-symbol \
 javascript \
@@ -58,6 +59,11 @@ ecb_path="$elit_path/ecb-snap/"
 ecb_download="wget http://ecb.sourceforge.net/cvs_snapshots/ecb.tar.gz"
 ecb_install="tar xzf ecb.tar.gz"
 ecb_depend="cedet"
+
+el_get_path="$elit_path/el-get"
+el_get_download="git clone git://github.com/dimitri/el-get.git"
+el_get_install=""
+el_get_depend=""
 
 geben_path="$elit_path/geben/"
 geben_download="svn co http://geben-on-emacs.googlecode.com/svn/trunk/ geben"
