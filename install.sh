@@ -41,6 +41,10 @@ echo -ne "vim setting...\r"
 diff_cp $settings_path/vim/.vimrc ~/.vimrc
 echo vim setting... OK
 
+echo -ne "xmodmap setting...\r"
+diff_cp $settings_path/.Xmodmap ~/.Xmodmap
+echo xmodmap setting... OK
+
 echo -ne "font setting...\r"
 diff_cp $settings_path/fonts/.fonts.conf ~/
 echo font setting... OK
