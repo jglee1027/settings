@@ -131,13 +131,13 @@ fi
 	# Ugly, inefficient, but it works.
 	for f in *
 	do
-	    echo "$DIR/$f"
+	    echo "\"$DIR/$f\""
 	done
     else
-	find $DIR \( -type f -o -type l \)
+	find $DIR \( -type f -o -type l \) -exec echo '"{}"' ';'
     fi
 ) | \
-    egrep -i '\.([chly](xx|pp)*|cc|hh)$' | \
+    egrep -i '\.([chly](xx|pp)*|cc|hh)"$' | \
     sed -e '/\/CVS\//d' -e '/\/RCS\//d' -e 's/^\.\///' | \
     sort > $LIST_FILE
 
