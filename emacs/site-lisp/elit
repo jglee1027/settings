@@ -20,6 +20,7 @@ ri-emacs \
 rinari \
 ruby-debug \
 ruby-mode \
+simplenote \
 w3m \
 xcode-document \
 xcscope \
@@ -113,6 +114,10 @@ ruby_debug_depend=""
 ruby_mode_path="$elit_path/ruby-mode/"
 ruby_mode_download="svn co http://svn.ruby-lang.org/repos/ruby/trunk/misc ruby-mode"
 ruby_mode_install=""
+
+simplenote_path="$elit_path/simplenote.el/"
+simplenote_download="git clone git://github.com/cefstat/simplenote.el.git"
+simplenote_install=""
 
 w3m_path="$elit_path/emacs-w3m/"
 w3m_download="cvs -d :pserver:anonymous@cvs.namazu.org:/storage/cvsroot login"
