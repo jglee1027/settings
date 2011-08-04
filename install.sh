@@ -33,7 +33,12 @@ diff_cp() {
 
 echo -ne "emacs setting...\r"
 diff_cp $settings_path/emacs/.emacs ~/.emacs
-diff_cp $settings_path/emacs/linux/.Xresources ~/.Xresources
+
+fc-list | grep NanumGothic_AndaleMono > /dev/null
+if [ $? -eq 0 ]; then
+	diff_cp $settings_path/emacs/linux/.Xresources ~/.Xresources
+fi
+
 emacs --batch -f batch-byte-compile ~/.emacs 2> ~/.emacs.elc.log
 echo emacs setting... OK
 
