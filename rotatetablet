@@ -2,7 +2,8 @@
 
 #STATUS_FILE=~/.rotate-status
 STATUS_FILE=/tmp/.rotate-status
-STYLUS=$(xsetwacom --list | grep 'STYLUS' | awk '{gsub(/ STYLUS/, ""); gsub(/[ \t]+$/, ""); print}')
+STYLUS=$(xsetwacom --list | grep 'STYLUS' | awk '{gsub(/[ \t]*id:.*$/, ""); print}')
+
 ################## Compiz Prevention
 function compiz_on {
 USER=`ps -ef |grep metacity |grep -v grep|awk -F" " '{print $1}'`
@@ -49,8 +50,8 @@ fi
 function rotate() {
 
 case "$1" in
-3|right) N=3; T=cw ; compiz_off ; keymap 0 ;;
-1|left) N=1; T=ccw ; compiz_off ; keymap 1 ;;
+3|right) N=3; T=ccw ; compiz_off ; keymap 0 ;;
+1|left) N=1; T=cw ; compiz_off ; keymap 1 ;;
 2|inverted) N=2; T=half ; compiz_off; keymap 0 ;;
 0|normal) N=0; T=none ; compiz_on ; keymap 0 ;;
 *)
