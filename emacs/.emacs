@@ -158,6 +158,25 @@ Otherwise, return result of last form in BODY."
 									(ignore-errors
 									  (windmove-down))))
 
+;;;; compilation
+(fset 'goto-prev-error
+   (lambda (&optional arg)
+	 "Goto previous error in compilation-mode"
+	 (interactive "p")
+	 (kmacro-exec-ring-item
+	  (quote ("error:" 0 "%d")) arg)))
+(fset 'goto-next-error
+   (lambda (&optional arg)
+	 "Goto next error in compilation-mode"
+	 (interactive "p")
+	 (kmacro-exec-ring-item
+	  (quote ("error:" 0 "%d")) arg)))
+
+(add-hook 'compilation-mode-hook
+		  (lambda()
+			(local-set-key (kbd "M-<up>") 'goto-prev-error)
+			(local-set-key (kbd "M-<down>") 'goto-next-error)))
+
 ;;;; Mode line and minibuffer
 (setq display-time-string-forms
 	  '((if	(and
