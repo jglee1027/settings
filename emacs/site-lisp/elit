@@ -10,6 +10,7 @@ doxymacs \
 dsvn \
 ecb \
 el-get \
+gdb-bp-session \
 geben \
 highlight-symbol \
 javascript \
@@ -65,6 +66,11 @@ el_get_path="$elit_path/el-get"
 el_get_download="git clone git://github.com/dimitri/el-get.git"
 el_get_install=""
 el_get_depend=""
+
+gdb_bp_session_path="$elit_path/gdb-bp-session/"
+gdb_bp_session_download="git clone git://github.com/jglee1027/gdb-bp-session.git"
+gdb_bp_session_install=""
+gdb_bp_session_depend=""
 
 geben_path="$elit_path/geben/"
 geben_download="svn co http://geben-on-emacs.googlecode.com/svn/trunk/ geben"
@@ -151,7 +157,7 @@ usage() {
 
 	for pkg in $all; do
 		installed=" "
-		pkg_name=${pkg/-/_}
+		pkg_name=${pkg//-/_}
 		eval path=\$${pkg_name}_path
 		
 		if [ -e $path ]; then
@@ -166,7 +172,7 @@ install_dependency_package() {
 		return 1
 	fi
 	
-	local pkg_name=${1/-/_}
+	local pkg_name=${1//-/_}
 	
 	local path=
 	eval path=\$${pkg_name}_path
@@ -213,7 +219,7 @@ install_package() {
 		return 1
 	fi
 
-	local pkg_name=${1/-/_}
+	local pkg_name=${1//-/_}
 	local path=
 	eval path=\$${pkg_name}_path
 	if [ -e $path ]; then
