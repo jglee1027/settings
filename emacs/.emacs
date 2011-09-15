@@ -119,6 +119,11 @@ Otherwise, return result of last form in BODY."
 (add-hook 'pdb-mode-hook 'gud-mode-common-keys)
 (add-hook 'jdb-mode-hook 'gud-mode-common-keys)
 
+;;;; gdb-bp-session
+(eval-after-load "gud"
+  '(ignore-errors
+	 (require 'gdb-bp-session)))
+
 ;;;; hs-minor-mode
 (add-hook 'hs-minor-mode-hook
 		  (lambda()
