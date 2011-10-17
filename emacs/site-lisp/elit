@@ -16,6 +16,7 @@ highlight-symbol \
 javascript \
 jda \
 jdee \
+jdibug \
 nxhtml \
 ri-emacs \
 rinari \
@@ -96,6 +97,11 @@ jdee_path="$elit_path/jdee-2.4.0.1/"
 jdee_download="wget http://sourceforge.net/projects/jdee/files/jdee/2.4.0.1/jdee-bin-2.4.0.1.zip"
 jdee_install="unzip jdee-bin-2.4.0.1.zip"
 jdee_depend="ecb"
+
+jdibug_path="$elit_path/jdibug/"
+jdibug_download="svn checkout http://jdibug.googlecode.com/svn/trunk/ jdibug"
+jdibug_install="sed -i 's#~/cedet-1.0pre7#../cedet-1.0pre7#g' jdibug/Makefile && make -C jdibug"
+jdibug_depend="jdee"
 
 nxhtml_path="$elit_path/nxhtml/"
 nxhtml_download="wget http://ourcomments.org/Emacs/DL/elisp/nxhtml/zip/nxhtml-2.08-100425.zip"
