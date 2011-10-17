@@ -119,6 +119,21 @@ Otherwise, return result of last form in BODY."
 (add-hook 'pdb-mode-hook 'gud-mode-common-keys)
 (add-hook 'jdb-mode-hook 'gud-mode-common-keys)
 
+;;;; jde and jdibug
+(eval-after-load "jde"
+  '(ignore-errors
+	 (global-set-key [f5] 'jde-debug-step-into)
+	 (global-set-key [f6] 'jde-debug-step-over)
+	 (global-set-key [f7] 'jde-debug-step-out)
+	 (global-set-key [f8] 'jde-debug-cont)
+	 (global-set-key (kbd "M-<up>") 'jde-debug-up)
+	 (global-set-key (kbd "M-<down>") 'jde-debug-down)
+	 (require 'jdibug)
+	 (global-set-key [f5] 'jdibug-step-into)
+	 (global-set-key [f6] 'jdibug-step-over)
+	 (global-set-key [f7] 'jdibug-step-out)
+	 (global-set-key [f8] 'jdibug-resume)))
+
 ;;;; gdb-bp-session
 (eval-after-load "gud"
   '(ignore-errors
