@@ -119,6 +119,8 @@
    '(highlight ((t (:background "black" :foreground "white"))))
    '(isearch ((t (:background "green" :foreground "black"))))
    '(lazy-highlight ((t (:background "yellow" :foreground "black"))))
+   '(log-view-file ((t (:background "green" :foreground "black"))))
+   '(log-view-message ((t (:background "white" :foreground "black"))))
    '(minibuffer-prompt ((t (:foreground "cyan"))))
    '(mumamo-background-chunk-major ((t nil)))
    '(mumamo-background-chunk-submode1 ((t nil)))
