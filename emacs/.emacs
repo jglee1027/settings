@@ -161,19 +161,19 @@ Otherwise, return result of last form in BODY."
 (autoload 'highlight-symbol-next "highlight-symbol" nil t)
 
 ;;;; winmove
-(global-set-key (kbd "S-<left>") '(lambda ()
+(global-set-key (kbd "C-x <left>") '(lambda ()
 									(interactive)
 									(ignore-errors
 									  (windmove-left))))
-(global-set-key (kbd "S-<right>") '(lambda ()
+(global-set-key (kbd "C-x <right>") '(lambda ()
 									 (interactive)
 									 (ignore-errors
 									   (windmove-right))))
-(global-set-key (kbd "S-<up>") '(lambda ()
+(global-set-key (kbd "C-x <up>") '(lambda ()
 								  (interactive)
 								  (ignore-errors
 									(windmove-up))))
-(global-set-key (kbd "S-<down>") '(lambda ()
+(global-set-key (kbd "C-x <down>") '(lambda ()
 									(interactive)
 									(ignore-errors
 									  (windmove-down))))
