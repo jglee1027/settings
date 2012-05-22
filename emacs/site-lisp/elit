@@ -147,7 +147,7 @@ xcscope_install=""
 xcscope_depend=""
 
 yasnippet_path="$elit_path/yasnippet"
-yasnippet_download="svn checkout http://yasnippet.googlecode.com/svn/trunk/ yasnippet"
+yasnippet_download="git clone git://github.com/capitaomorte/yasnippet.git"
 yasnippet_install=""
 yasnippet_depend=""
 
