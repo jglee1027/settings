@@ -151,6 +151,7 @@ Otherwise, return result of last form in BODY."
 
 ;;;; highlight-symbol
 (global-set-key (kbd "C-c j 8") 'highlight-symbol-mode)
+(global-set-key (kbd "C-c *") 'highlight-symbol-remove-all)
 (global-set-key (kbd "C-c 8") 'highlight-symbol-at-point)
 (global-set-key (kbd "M-p") 'highlight-symbol-prev)
 (global-set-key (kbd "M-n") 'highlight-symbol-next)
