@@ -142,12 +142,12 @@ Otherwise, return result of last form in BODY."
 ;;;; hs-minor-mode
 (add-hook 'hs-minor-mode-hook
 		  (lambda()
-			(local-set-key (kbd "C-c h '") 'hs-toggle-hiding)
-			(local-set-key (kbd "C-c h ;") 'hs-hide-level)
-			(local-set-key (kbd "C-c h h") 'hs-hide-block)
-			(local-set-key (kbd "C-c h j") 'hs-show-block)
-			(local-set-key (kbd "C-c h k") 'hs-hide-all)
-			(local-set-key (kbd "C-c h l") 'hs-show-all)))
+			(local-set-key (kbd "C-c ' '") 'hs-toggle-hiding)
+			(local-set-key (kbd "C-c ' ;") 'hs-hide-level)
+			(local-set-key (kbd "C-c ' h") 'hs-hide-block)
+			(local-set-key (kbd "C-c ' j") 'hs-show-block)
+			(local-set-key (kbd "C-c ' k") 'hs-hide-all)
+			(local-set-key (kbd "C-c ' l") 'hs-show-all)))
 
 ;;;; highlight-symbol
 (global-set-key (kbd "C-c j 8") 'highlight-symbol-mode)
