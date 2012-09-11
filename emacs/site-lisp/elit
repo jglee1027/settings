@@ -6,6 +6,7 @@ all="android \
 anything \
 auto-complete \
 cedet \
+docsetutil-el \
 doxymacs \
 dsvn \
 ecb \
@@ -47,6 +48,11 @@ cedet_path="$elit_path/cedet-1.0pre7/"
 cedet_download="wget http://sourceforge.net/projects/cedet/files/cedet/1.0pre7/cedet-1.0pre7.tar.gz"
 cedet_install="tar xzf cedet-1.0pre7.tar.gz"
 cedet_depend=""
+
+docsetutil_el_path="$elit_path/docsetutil-el"
+docsetutil_el_download="git clone git://github.com/leoliu/docsetutil-el.git"
+docsetutil_el_install=""
+docsetutil_el_depend=""
 
 doxymacs_path="$elit_path/doxymacs"
 doxymacs_download="git clone git://doxymacs.git.sourceforge.net/gitroot/doxymacs/doxymacs "

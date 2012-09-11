@@ -490,6 +490,11 @@ Otherwise, return result of last form in BODY."
   (require 'jda)
   (jda-minor-mode))
 
+;;;; docsetutil-el
+(ignore-errors
+  (require 'docsetutil)
+  (define-key help-map "d" 'docsetutil-search))
+
 ;; ======================================================================
 ;; Org-mode
 ;; ======================================================================
