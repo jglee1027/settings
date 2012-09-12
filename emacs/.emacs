@@ -491,9 +491,38 @@ Otherwise, return result of last form in BODY."
   (jda-minor-mode))
 
 ;;;; docsetutil-el
+(defcustom docsetutil-select-help-window t
+  "Select help window after `docsetutil-search' funcstion is
+finished."
+  :type 'boolean
+  :group 'docsetutil)
+
+(defun docsetutil-search-wrap(&optional full-text)
+  (interactive)
+  (docsetutil-search (completing-read (format "Apple docset %s search: "
+											  (if full-text "full-text" "API"))
+									  (docsetutil-objc-completions)
+									  nil
+									  nil
+									  (current-word)
+									  'docsetutil-search-history (current-word))
+					 full-text)
+  (let ((help-buffer (get-buffer "*Help*")))
+	(when (and docsetutil-select-help-window help-buffer)
+	  (select-window (get-buffer-window help-buffer)))))
+
+(defun docsetutil-search-api()
+  (interactive)
+  (docsetutil-search-wrap nil))
+(defun docsetutil-search-full-text()
+  (interactive)
+  (docsetutil-search-wrap t))
+
 (ignore-errors
+  (require 'simple)
   (require 'docsetutil)
-  (define-key help-map "d" 'docsetutil-search))
+  (define-key help-map "D" 'docsetutil-search-full-text)
+  (define-key help-map "d" 'docsetutil-search-api))
 
 ;; ======================================================================
 ;; Org-mode
