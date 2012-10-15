@@ -28,11 +28,7 @@
 				  (set-fontset-font nil 'korean-ksc5601 mono-font))
 				 (t
 				  (set-face-font 'default (font-spec :family "Monospace"
-													 :size 10.0))
-				  (set-fontset-font nil
-									'korean-ksc5601
-									(font-spec :family "UnDotum"
-											   :size 10.0)))))))
+													 :size 10.0)))))))
   
   (custom-set-variables
    '(scroll-bar-mode nil))
