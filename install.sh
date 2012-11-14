@@ -51,7 +51,7 @@ diff_cp $settings_path/.Xmodmap ~/.Xmodmap
 echo xmodmap setting... OK
 
 echo -ne "font setting...\r"
-diff_cp $settings_path/fonts/.fonts.conf ~/
+diff_cp $settings_path/fonts/.fonts.conf ~/.fonts.conf
 echo font setting... OK
 
 echo -ne "git setting...\r"
@@ -76,6 +76,12 @@ fi
 
 echo -ne "conkeror setting...\r"
 diff_cp $settings_path/.conkerorrc ~/.conkerorrc
+
+if [ -d ~/.config/terminator ]; then
+	echo -ne "terminator setting...\r"
+	diff_cp $settings_path/config/terminator/config ~/.config/terminator/config
+	echo terminator setting... OK
+fi
 
 # make conkeror bookmarks synchronize with firefox bookmarks
 firefox_config_path=~/.mozilla/firefox
