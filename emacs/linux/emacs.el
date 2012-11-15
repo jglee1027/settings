@@ -5,30 +5,46 @@
   (set-background-color "#102040")
   (set-foreground-color "white"))
 
+(defvar default-font-spec-eng-list '((font-spec :family "Andale Mono" :size 10.0)
+									 (font-spec :family "NanumGothic_AndaleMono" :size 10.0)
+									 (font-spec :family "Liberation Mono" :size 10.0)
+									 (font-spec :family "Monospace" :size 10.0)))
+
+(defvar default-font-spec-kor-list '((font-spec :family "NanumGothic" :size 10.0)
+									 (font-spec :family "UnBatang" :size 10.0)
+									 (font-spec :family "Monospace" :size 10.0)))
+
+(defvar default-font-spec-eng-mac-list '((font-spec :family "Andale Mono" :size 12.0)
+										 (font-spec :family "Menlo" :size 12.0)
+										 (font-spec :family "Monaco" :size 12.0)
+										 (font-spec :family "Courier New" :size 12.0)))
+
+(defvar default-font-spec-kor-mac-list '((font-spec :family "나눔고딕" :size 12.0)
+										 (font-spec :family "AppleGothic" :size 12.0)
+										 (font-spec :family "AppleMyungjo" :size 12.0)))
+
+(defun default-font-get (font-spec-list)
+  (catch 'while-exit
+	(let (font)
+	  (while (not (null font-spec-list))
+		(setq font (eval (pop font-spec-list)))
+		(cond ((find-font font)
+			   (throw 'while-exit font)))))
+	(throw 'while-exit nil)))
+
 (when window-system
   (set-default-frame-color)
   (add-hook 'after-make-frame-functions
 			(lambda (frame)
 			  (select-frame frame)
 			  (set-default-frame-color)))
-  (let ((mono-font (font-spec :family "NanumGothic_AndaleMono"
-							  :size 10.0)))
-	(cond ((equal system-type 'darwin)	; macosx
-		   (set-face-font 'default
-						  (font-spec :family "Andale Mono"
-									 :size 11.0))
-		   (if (find-font mono-font)
-			   (set-fontset-font nil
-								 'korean-ksc5601
-								 (font-spec :family "NanumGothic_AndaleMono"
-											:size 10.0))))
-		  (t							; unix or linux
-		   (cond ((find-font mono-font)
-				  (set-face-font 'default mono-font)
-				  (set-fontset-font nil 'korean-ksc5601 mono-font))
-				 (t
-				  (set-face-font 'default (font-spec :family "Monospace"
-													 :size 10.0)))))))
+
+  (cond ((equal system-type 'darwin)	; macosx
+		 (set-face-font 'default (default-font-get default-font-spec-eng-mac-list))
+		 (set-fontset-font nil 'korean-ksc5601 (default-font-get default-font-spec-kor-mac-list)))
+		(t								; linux
+		 (set-face-font 'default (default-font-get default-font-spec-eng-list))
+		 (set-fontset-font nil 'korean-ksc5601 (default-font-get default-font-spec-kor-list))))
   
   (custom-set-variables
    '(scroll-bar-mode nil))
