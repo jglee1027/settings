@@ -1,4 +1,5 @@
 # name : Makefile template for a project
+# key : make
 # expand-env : ((yas/indent-line 'fixed) (yas/wrap-around-region 'nil))
 # --
 CXX = ${1:g++}

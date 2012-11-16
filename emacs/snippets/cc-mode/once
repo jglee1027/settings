@@ -1,4 +1,5 @@
-#name : #ifndef XXX; #define XXX; #endif
+# name : #ifndef XXX; #define XXX; #endif
+# key : once
 # --
 #ifndef ${1:_`(upcase (let ((case-fold-search nil)) (replace-regexp-in-string "^_" "" (replace-regexp-in-string "__" "_" (replace-regexp-in-string "[A-Z]" "_\\\\&" (file-name-nondirectory (file-name-sans-extension (buffer-file-name))))))))`_H_}
 #define $1
