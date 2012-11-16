@@ -670,6 +670,15 @@ finished."
 		  (message "el-get alread installed."))))
 
 ;;;; platform specific settings
+(defun default-font-get (font-spec-list)
+  (catch 'while-exit
+	(let (font)
+	  (while (not (null font-spec-list))
+		(setq font (eval (pop font-spec-list)))
+		(cond ((find-font font)
+			   (throw 'while-exit font)))))
+	(throw 'while-exit nil)))
+
 (if (eq system-type 'windows-nt)
  	(load-library "~/settings/emacs/windows/emacs")
   (load-library "~/settings/emacs/linux/emacs"))

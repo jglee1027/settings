@@ -1,10 +1,6 @@
 ;; ======================================================================
 ;; Custom variables and faces
 ;; ======================================================================
-(defun set-default-frame-color()
-  (set-background-color "#102040")
-  (set-foreground-color "white"))
-
 (defvar default-font-spec-eng-list '((font-spec :family "Andale Mono" :size 10.0)
 									 (font-spec :family "NanumGothic_AndaleMono" :size 10.0)
 									 (font-spec :family "Liberation Mono" :size 10.0)
@@ -33,23 +29,24 @@
 	(throw 'while-exit nil)))
 
 (when window-system
-  (set-default-frame-color)
-  (add-hook 'after-make-frame-functions
-			(lambda (frame)
-			  (select-frame frame)
-			  (set-default-frame-color)))
-
-  (cond ((equal system-type 'darwin)	; macosx
-		 (set-face-font 'default (default-font-get default-font-spec-eng-mac-list))
-		 (set-fontset-font nil 'korean-ksc5601 (default-font-get default-font-spec-kor-mac-list)))
-		(t								; linux
-		 (set-face-font 'default (default-font-get default-font-spec-eng-list))
-		 (set-fontset-font nil 'korean-ksc5601 (default-font-get default-font-spec-kor-list))))
-  
   (custom-set-variables
    '(scroll-bar-mode nil))
   
   (custom-set-faces
+   '(default ((t (	:inherit nil
+					:stipple nil
+					:background "#102040"
+					:foreground "white"
+					:inverse-video nil
+					:box nil
+					:strike-through nil
+					:overline nil
+					:underline nil
+					:slant normal
+					:weight normal
+					:height 98
+					:width normal
+					:foundry "outline"))))
    '(compilation-info ((t (:foreground "DodgerBlue"))))
    '(compilation-warning ((t (:foreground "Orange"))))
    '(cscope-line-face ((nil)))
@@ -95,6 +92,12 @@
    '(mumamo-background-chunk-submode3 ((t nil)))
    '(mumamo-background-chunk-submode4 ((t nil)))
    '(region ((t (:background "gray" :foreground "black")))))
+  (cond ((equal system-type 'darwin)	; macosx
+		 (set-face-font 'default (default-font-get default-font-spec-eng-mac-list))
+		 (set-fontset-font nil 'korean-ksc5601 (default-font-get default-font-spec-kor-mac-list)))
+		(t								; linux
+		 (set-face-font 'default (default-font-get default-font-spec-eng-list))
+		 (set-fontset-font nil 'korean-ksc5601 (default-font-get default-font-spec-kor-list))))
   )
 (unless window-system
   (custom-set-faces
