@@ -19,15 +19,6 @@
 										 (font-spec :family "AppleGothic" :size 12.0)
 										 (font-spec :family "AppleMyungjo" :size 12.0)))
 
-(defun default-font-get (font-spec-list)
-  (catch 'while-exit
-	(let (font)
-	  (while (not (null font-spec-list))
-		(setq font (eval (pop font-spec-list)))
-		(cond ((find-font font)
-			   (throw 'while-exit font)))))
-	(throw 'while-exit nil)))
-
 (when window-system
   (custom-set-variables
    '(scroll-bar-mode nil))
