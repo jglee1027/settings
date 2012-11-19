@@ -83,6 +83,13 @@ if [ -d ~/.config/terminator ]; then
 	echo terminator setting... OK
 fi
 
+if [ -d ~/.config/openbox ]; then
+	echo -ne "openbox setting...\r"
+	diff_cp $settings_path/config/openbox/autostart.sh ~/.config/openbox/autostart.sh
+	diff_cp $settings_path/config/openbox/rc.xml ~/.config/openbox/rc.xml
+	echo openbox setting... OK
+fi
+
 # make conkeror bookmarks synchronize with firefox bookmarks
 firefox_config_path=~/.mozilla/firefox
 conkeror_config_path=~/.conkeror.mozdev.org/conkeror
