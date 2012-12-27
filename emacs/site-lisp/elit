@@ -25,6 +25,7 @@ ruby-debug \
 ruby-mode \
 simplenote \
 w3m \
+wgrep \
 xcode-document \
 xcscope \
 yasnippet"
@@ -141,6 +142,11 @@ w3m_path="$elit_path/emacs-w3m/"
 w3m_download="cvs -d :pserver:anonymous@cvs.namazu.org:/storage/cvsroot login"
 w3m_install="cvs -d :pserver:anonymous@cvs.namazu.org:/storage/cvsroot co emacs-w3m"
 w3m_depend=""
+
+wgrep_path="$elit_path/wgrep/"
+wgrep_download="git clone git://github.com/mhayashi1120/Emacs-wgrep.git wgrep"
+wgrep_install=""
+wgrep_depend=""
 
 xcode_document_path="$elit_path/emacs-xcode-document-viewer/"
 xcode_document_download="git clone http://github.com/imakado/emacs-xcode-document-viewer.git"

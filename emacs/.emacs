@@ -483,6 +483,9 @@ Otherwise, return result of last form in BODY."
   (setq yas/prompt-functions (cons 'yas/dropdown-prompt
 								   (remove 'yas/dropdown-prompt
 										   yas/prompt-functions))))
+;;;; wgrep
+(ignore-errors
+  (require 'wgrep))
 
 ;;;; jda-minor-mode
 (ignore-errors
