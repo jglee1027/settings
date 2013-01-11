@@ -618,6 +618,7 @@ finished."
 ;; Misc. Customization
 ;; ======================================================================
 (custom-set-variables
+ '(compilation-message-face (quote default))
  '(compilation-skip-threshold 2) ;; Warnings and info
  '(align-c++-modes (quote (c++-mode c-mode java-mode objc-mode))))
 

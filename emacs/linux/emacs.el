@@ -38,8 +38,9 @@
 					:height 98
 					:width normal
 					:foundry "outline"))))
-   '(compilation-info ((t (:foreground "DodgerBlue"))))
-   '(compilation-warning ((t (:foreground "Orange"))))
+   '(compilation-error ((t (:foreground "red"))))
+   '(compilation-info ((((class color)) nil)))
+   '(compilation-warning ((((class color)) (:foreground "yellow"))))
    '(cscope-line-face ((nil)))
    '(cscope-line-number-face ((nil)))
    '(cscope-mouse-face ((t (:inherit highlight))))
@@ -92,6 +93,9 @@
   )
 (unless window-system
   (custom-set-faces
+   '(compilation-error ((t (:foreground "red"))))
+   '(compilation-info ((((class color)) nil)))
+   '(compilation-warning ((((class color)) (:foreground "yellow"))))
    '(cscope-line-face ((nil)))
    '(cscope-line-number-face ((nil)))
    '(cscope-mouse-face ((t (:inherit highlight))))
