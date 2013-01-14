@@ -90,6 +90,12 @@ if [ -d ~/.config/openbox ]; then
 	echo openbox setting... OK
 fi
 
+if [ "`which stumpwm`" != "" ]; then
+	echo -ne "StumpWM setting...\r"
+	sudo diff_cp $settings_path/config/stumpwm/stumpwm.desktop /usr/share/xsessions/stumpwm.desktop
+	echo StumpWM setting... OK
+fi
+
 # make conkeror bookmarks synchronize with firefox bookmarks
 firefox_config_path=~/.mozilla/firefox
 conkeror_config_path=~/.conkeror.mozdev.org/conkeror

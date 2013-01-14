@@ -1,0 +1,6 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=StumpWM
+Comment=Stump window manager
+Exec=/usr/bin/stumpwm
+Type=Application
