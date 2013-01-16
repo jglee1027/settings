@@ -8,7 +8,7 @@ diff_cp() {
 	fi
 	
 	if [ ! -e $2 ]; then
-		cp $1 $2
+		$3 cp $1 $2
 	fi
 	
 	diff -u $2 $1 > $diff_file
@@ -21,7 +21,7 @@ diff_cp() {
 		echo cp: overwrite "'$2' [Y/n/d(diff)]? "
 		read choice
 		if [ "$choice" = "Y" -o "$choice" = "y" ]; then
-			cp $1 $2
+			$3 cp $1 $2
 			return 2
 		elif [ "$choice" = "N" -o "$choice" = "n" ]; then
 			return 3
@@ -91,8 +91,8 @@ if [ -d ~/.config/openbox ]; then
 fi
 
 if [ "`which stumpwm`" != "" ]; then
-	echo -ne "StumpWM setting...\r"
-	sudo diff_cp $settings_path/config/stumpwm/stumpwm.desktop /usr/share/xsessions/stumpwm.desktop
+	echo "StumpWM setting..."
+	diff_cp $settings_path/config/stumpwm/stumpwm.desktop /usr/share/xsessions/stumpwm.desktop sudo
 	echo StumpWM setting... OK
 fi
 
