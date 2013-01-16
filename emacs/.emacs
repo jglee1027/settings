@@ -620,6 +620,7 @@ finished."
 (custom-set-variables
  '(compilation-message-face (quote default))
  '(compilation-skip-threshold 2) ;; Warnings and info
+ '(show-paren-style (quote expression))
  '(align-c++-modes (quote (c++-mode c-mode java-mode objc-mode))))
 
 ;;;; elpa
