@@ -74,9 +74,6 @@ if [ -d ~/.mplayer ]; then
 	echo mplayer setting... OK
 fi
 
-echo -ne "conkeror setting...\r"
-diff_cp $settings_path/.conkerorrc ~/.conkerorrc
-
 if [ -d ~/.config/terminator ]; then
 	echo -ne "terminator setting...\r"
 	diff_cp $settings_path/config/terminator/config ~/.config/terminator/config
@@ -97,12 +94,17 @@ if [ "`which stumpwm`" != "" ]; then
 	echo StumpWM setting... OK
 fi
 
-# make conkeror bookmarks synchronize with firefox bookmarks
-firefox_config_path=~/.mozilla/firefox
-conkeror_config_path=~/.conkeror.mozdev.org/conkeror
-if [ -d $firefox_config_path -a -d $conkeror_config_path ]; then
-	firefox_bookmarks=$firefox_config_path/$(cat $firefox_config_path/profiles.ini | grep Path | awk 'BEGIN { FS = "=" } { print $2 }')
-	conkeror_bookmarks=$conkeror_config_path/$(cat $conkeror_config_path/profiles.ini | grep Path | awk 'BEGIN { FS = "=" } { print $2 }')
-	cp $firefox_bookmarks/places.sqlite $conkeror_bookmarks/places.sqlite
+if [ "`which conkeror`" != "" ]; then
+	echo -ne "conkeror setting...\r"
+	diff_cp $settings_path/.conkerorrc ~/.conkerorrc
+
+	# make conkeror bookmarks synchronize with firefox bookmarks
+	firefox_config_path=~/.mozilla/firefox
+	conkeror_config_path=~/.conkeror.mozdev.org/conkeror
+	if [ -d $firefox_config_path -a -d $conkeror_config_path ]; then
+		firefox_bookmarks=$firefox_config_path/$(cat $firefox_config_path/profiles.ini | grep Path | awk 'BEGIN { FS = "=" } { print $2 }')
+		conkeror_bookmarks=$conkeror_config_path/$(cat $conkeror_config_path/profiles.ini | grep Path | awk 'BEGIN { FS = "=" } { print $2 }')
+		cp $firefox_bookmarks/places.sqlite $conkeror_bookmarks/places.sqlite
+	fi
+	echo conkeror setting... OK
 fi
-echo conkeror setting... OK
