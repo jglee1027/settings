@@ -92,6 +92,7 @@ fi
 
 if [ "`which stumpwm`" != "" ]; then
 	echo "StumpWM setting..."
+	diff_cp $settings_path/config/stumpwm/.stumpwmrc ~/.stumpwmrc
 	diff_cp $settings_path/config/stumpwm/stumpwm.desktop /usr/share/xsessions/stumpwm.desktop sudo
 	echo StumpWM setting... OK
 fi
