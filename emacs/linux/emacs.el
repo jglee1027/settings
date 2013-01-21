@@ -6,7 +6,8 @@
 									 (font-spec :family "Liberation Mono" :size 10.0)
 									 (font-spec :family "Monospace" :size 10.0)))
 
-(defvar default-font-spec-kor-list '((font-spec :family "NanumGothic" :size 10.0)
+(defvar default-font-spec-kor-list '((font-spec :family "\263\252\264\256\260\355\265\361" :size 10.0)
+									 (font-spec :family "NanumGothic" :size 10.0)
 									 (font-spec :family "UnBatang" :size 10.0)
 									 (font-spec :family "Monospace" :size 10.0)))
 
