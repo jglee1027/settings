@@ -66,6 +66,11 @@ Otherwise, return result of last form in BODY."
 							 '("\\.[mM][kK][vV]$" "mplayer")
 							 '("\\.[mM][pP]4$" "mplayer")
 							 '("\\.[wW][mM][vV]$" "mplayer"))))))
+
+;;;; find-dired
+(eval-after-load "find-dired"
+  '(setq find-ls-option '("-exec ls -ldh {} +". "")))
+
 ;;;; uniquify
 (eval-after-load "uniquify"
   '(setq uniquify-buffer-name-style 'forward))
