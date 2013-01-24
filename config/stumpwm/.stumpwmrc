@@ -1,13 +1,20 @@
 ;; -*-lisp-*-
 (in-package :stumpwm)
 
+(define-key *root-map* (kbd "M-w") "exec x-www-browser")
+(define-key *root-map* (kbd "M-W") "exec conkeror")
+
 ;; Turn on the modeline
 (unless (head-mode-line (current-head))
   (toggle-mode-line (current-screen) (current-head)))
 
-(load "/usr/share/common-lisp/source/stumpwm/contrib/net.lisp")
-(load "/usr/share/common-lisp/source/stumpwm/contrib/cpu.lisp")
+(set-contrib-dir "/usr/share/common-lisp/source/stumpwm/contrib")
+(mapcar #'load-module '("cpu"
+						"net"
+						"notifications"
+						"mem"))
 
 ;; Show time, cpu usage and network traffic in the modeline
 (setf *screen-mode-line-format*
-      (list '(:eval (run-shell-command "LOCALE_ALL=C date '+%R, %F'|tr -d [:cntrl:]" t)) " | %t | %c| %l | [^B%n^b] %W"))
+      (list "%c %C (%f) %t | %M | %l [^B%n^b] %W"))
+(setf *mode-line-timeout* 1)
