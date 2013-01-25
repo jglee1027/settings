@@ -87,14 +87,14 @@ if [ -d ~/.config/openbox ]; then
 	echo openbox setting... OK
 fi
 
-if [ "`which stumpwm`" != "" ]; then
+if [ "`which stumpwm 2> /dev/null`" != "" ]; then
 	echo "StumpWM setting..."
 	diff_cp $settings_path/config/stumpwm/.stumpwmrc ~/.stumpwmrc
 	diff_cp $settings_path/config/stumpwm/stumpwm.desktop /usr/share/xsessions/stumpwm.desktop sudo
 	echo StumpWM setting... OK
 fi
 
-if [ "`which conkeror`" != "" ]; then
+if [ "`which conkeror 2> /dev/null`" != "" ]; then
 	echo -ne "conkeror setting...\r"
 	diff_cp $settings_path/.conkerorrc ~/.conkerorrc
 
