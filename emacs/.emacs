@@ -85,6 +85,9 @@ Otherwise, return result of last form in BODY."
 (ignore-errors
   (require 'auto-complete))
 
+(ignore-errors
+  (require 'uniquify))
+
 ;;;; Key definition
 (global-set-key [C-kanji] 'set-mark-command)
 (global-set-key [?\S- ] 'toggle-input-method)
