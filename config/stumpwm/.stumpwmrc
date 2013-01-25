@@ -10,11 +10,9 @@
 
 (set-contrib-dir "/usr/share/common-lisp/source/stumpwm/contrib")
 (mapcar #'load-module '("cpu"
-						"net"
-						"notifications"
-						"mem"))
+						"net"))
 
 ;; Show time, cpu usage and network traffic in the modeline
 (setf *screen-mode-line-format*
-      (list "%c %C (%f) %t | %M | %l [^B%n^b] %W"))
+      (list "%c | %l [^B%n^b] %W"))
 (setf *mode-line-timeout* 1)
