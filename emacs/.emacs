@@ -35,6 +35,8 @@ Otherwise, return result of last form in BODY."
 (setq semantic-load-turn-everything-on t)
 (setq vc-make-backup-files t)
 
+(fset 'yes-or-no-p 'y-or-n-p)
+
 (when window-system
   (tool-bar-mode -1))
 (unless window-system
