@@ -468,6 +468,7 @@ Otherwise, return result of last form in BODY."
 ;;;; yasnippet
 (ignore-errors
   (require 'yasnippet)
+  (yas-global-mode 1)
   (setq yas-snippet-dirs '("~/settings/emacs/site-lisp/yasnippet/snippets"
 						   "~/settings/emacs/snippets"))
   (mapc 'yas/load-directory yas/root-directory)
