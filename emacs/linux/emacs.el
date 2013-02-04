@@ -1,7 +1,8 @@
 ;; ======================================================================
 ;; Custom variables and faces
 ;; ======================================================================
-(defvar default-font-spec-eng-list '((font-spec :family "Andale Mono" :size 10.0)
+(defvar default-font-spec-eng-list '((font-spec :family "Ubuntu Mono" :size 10.0)
+									 (font-spec :family "Andale Mono" :size 10.0)
 									 (font-spec :family "NanumGothic_AndaleMono" :size 10.0)
 									 (font-spec :family "Liberation Mono" :size 10.0)
 									 (font-spec :family "Monospace" :size 10.0)))
@@ -11,7 +12,8 @@
 									 (font-spec :family "UnBatang" :size 10.0)
 									 (font-spec :family "Monospace" :size 10.0)))
 
-(defvar default-font-spec-eng-mac-list '((font-spec :family "Andale Mono" :size 12.0)
+(defvar default-font-spec-eng-mac-list '((font-spec :family "Ubuntu Mono" :size 13.0)
+										 (font-spec :family "Andale Mono" :size 12.0)
 										 (font-spec :family "Menlo" :size 12.0)
 										 (font-spec :family "Monaco" :size 12.0)
 										 (font-spec :family "Courier New" :size 12.0)))
