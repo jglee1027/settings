@@ -32,6 +32,11 @@ diff_cp() {
 }
 
 echo -ne "emacs setting...\r"
+
+if [ ! -d ~/.emacs.d/snippets ]; then
+	ln -s $PWD/$settings_path/emacs/snippets ~/.emacs.d/snippets
+fi
+
 diff_cp $settings_path/emacs/.emacs ~/.emacs
 
 fc-list | grep NanumGothic_AndaleMono > /dev/null
