@@ -37,14 +37,14 @@ if [ ! -d ~/.emacs.d/snippets ]; then
 	ln -s $PWD/$settings_path/emacs/snippets ~/.emacs.d/snippets
 fi
 
-diff_cp $settings_path/emacs/.emacs ~/.emacs
+diff_cp $settings_path/.emacs ~/.emacs
 
 fc-list | grep NanumGothic_AndaleMono > /dev/null
 if [ $? -eq 0 ]; then
 	diff_cp $settings_path/emacs/linux/.Xresources ~/.Xresources
 fi
 
-emacs --batch -f batch-byte-compile ~/.emacs 2> ~/.emacs.elc.log
+# emacs --batch -f batch-byte-compile ~/.emacs 2> ~/.emacs.elc.log
 echo emacs setting... OK
 
 echo -ne "vim setting...\r"
