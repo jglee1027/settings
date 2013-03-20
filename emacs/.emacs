@@ -17,8 +17,8 @@ Otherwise, return result of last form in BODY."
 ;;;; tab
 (setq c-basic-offset 4)
 (setq default-tab-width 4)
-(setq tab-stop-list
-	  '(4 8 12 16 20 24 28 32 36 40 44 48 52 56 60 64 68 72 76  80 84 88 92 96 100 104 108 112 116 120))
+(setq tab-stop-list (number-sequence 4 200 4))
+
 (setq scalable-fonts-allowed t)
 (setq compilation-scroll-output t)
 (setq ns-pop-up-frames 'nil)
