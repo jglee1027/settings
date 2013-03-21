@@ -44,7 +44,7 @@ anything_depend=""
 
 auto_complete_path="$elit_path/auto-complete/"
 auto_complete_download="git clone http://cx4a.org/repo/auto-complete.git/"
-auto_complete_install=""
+auto_complete_install="cd $elit_path/auto-complete/ && git checkout 1.3"
 auto_complete_depend=""
 
 cedet_path="$elit_path/cedet-1.0pre7/"
