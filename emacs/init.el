@@ -80,9 +80,9 @@ Otherwise, return result of last form in BODY."
 ;;;; auto-complete
 (eval-after-load "auto-complete"
   '(progn
-	(add-to-list 'ac-modes 'jde-mode)
-	(add-to-list 'ac-modes 'objc-mode)
-	(global-auto-complete-mode t)))
+	 (add-to-list 'ac-modes 'jde-mode)
+	 (add-to-list 'ac-modes 'objc-mode)
+	 (global-auto-complete-mode t)))
 
 (ignore-errors
   (require 'auto-complete))
@@ -173,21 +173,21 @@ Otherwise, return result of last form in BODY."
 
 ;;;; winmove
 (global-set-key (kbd "C-x <left>") '(lambda ()
-									(interactive)
-									(ignore-errors
-									  (windmove-left))))
+									  (interactive)
+									  (ignore-errors
+										(windmove-left))))
 (global-set-key (kbd "C-x <right>") '(lambda ()
-									 (interactive)
-									 (ignore-errors
-									   (windmove-right))))
+									   (interactive)
+									   (ignore-errors
+										 (windmove-right))))
 (global-set-key (kbd "C-x <up>") '(lambda ()
-								  (interactive)
-								  (ignore-errors
-									(windmove-up))))
-(global-set-key (kbd "C-x <down>") '(lambda ()
 									(interactive)
 									(ignore-errors
-									  (windmove-down))))
+									  (windmove-up))))
+(global-set-key (kbd "C-x <down>") '(lambda ()
+									  (interactive)
+									  (ignore-errors
+										(windmove-down))))
 
 ;;;; Mode line and minibuffer
 (setq display-time-string-forms
@@ -246,7 +246,7 @@ Otherwise, return result of last form in BODY."
 		
 		(if mode
 			(funcall (cdr mode))))))
-	
+
 (add-hook 'find-file-hook 'header-file-mode-hook)
 
 (c-add-style
@@ -302,7 +302,7 @@ Otherwise, return result of last form in BODY."
 
 ;;;; JDE
 (defun jde-activate ()
-"Activates JDEE"
+  "Activates JDEE"
   (interactive)
   (require 'ecb)
   (require 'jde))
@@ -411,7 +411,7 @@ Otherwise, return result of last form in BODY."
 ;;;; xcode-document-viewer
 (eval-after-load "xcode-document-viewer"
   '(setq xcdoc:document-path "/Developer/Platforms/iPhoneOS.platform/Developer/Documentation/DocSets/com.apple.adc.documentation.AppleiPhone4_0.iPhoneLibrary.docset"))
-  
+
 (autoload 'xcdoc:set-document-path "xcode-document-viewer" nil t)
 (autoload 'xcdoc:search "xcode-document-viewer" nil t)
 (autoload 'xcdoc:ask-search "xcode-document-viewer" nil t)
@@ -440,7 +440,7 @@ Otherwise, return result of last form in BODY."
 ;;;; dsvn
 (autoload 'svn-status "dsvn" "Run 'svn status'." t)
 (autoload 'svn-update "dsvn" "Run 'svn update'." t)
-	  
+
 ;;;; svn
 (defun jda-svn-log-report ()
   (interactive)
@@ -675,13 +675,13 @@ finished."
 (defun install-el-get ()
   (interactive)
   (cond ((null (require 'el-get nil t))
-			  (url-retrieve
-			   "https://github.com/dimitri/el-get/raw/master/el-get-install.el"
-			   (lambda (s)
-				 (end-of-buffer)
-				 (eval-print-last-sexp))))
-		 (t
-		  (message "el-get alread installed."))))
+		 (url-retrieve
+		  "https://github.com/dimitri/el-get/raw/master/el-get-install.el"
+		  (lambda (s)
+			(end-of-buffer)
+			(eval-print-last-sexp))))
+		(t
+		 (message "el-get alread installed."))))
 
 ;;;; platform specific settings
 (defun default-font-get (font-spec-list)
