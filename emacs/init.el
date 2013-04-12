@@ -84,6 +84,10 @@ Otherwise, return result of last form in BODY."
 	 (add-to-list 'ac-modes 'objc-mode)
 	 (global-auto-complete-mode t)))
 
+;;;; magit
+(eval-after-load "magit"
+  '(global-set-key (kbd "C-x g") 'magit-status))
+
 (ignore-errors
   (require 'auto-complete))
 
