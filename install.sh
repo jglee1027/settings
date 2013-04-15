@@ -113,3 +113,9 @@ if [ "`which conkeror 2> /dev/null`" != "" ]; then
 	fi
 	echo conkeror setting... OK
 fi
+
+if [ -f /Applications/Slate.app/Contents/MacOS/Slate ]; then
+	echo -ne "Slate settings...\r"
+	diff_cp $settings_path/.slate ~/.slate
+	echo Slate settings... OK
+fi
