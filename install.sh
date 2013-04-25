@@ -99,6 +99,12 @@ if [ "`which stumpwm 2> /dev/null`" != "" ]; then
 	echo StumpWM setting... OK
 fi
 
+if [ "`which tmux 2> /dev/null`" != "" ]; then
+	echo "tmux setting..."
+	diff_cp $settings_path/config/tmux/.tmux.conf ~/.tmux.conf
+	echo tmux setting... OK
+fi
+
 if [ "`which conkeror 2> /dev/null`" != "" ]; then
 	echo -ne "conkeror setting...\r"
 	diff_cp $settings_path/.conkerorrc ~/.conkerorrc
