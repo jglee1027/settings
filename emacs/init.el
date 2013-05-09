@@ -19,15 +19,16 @@ Otherwise, return result of last form in BODY."
 (setq default-tab-width 4)
 (setq tab-stop-list (number-sequence 4 200 4))
 
+(setq inhibit-splash-screen t)
 (setq scalable-fonts-allowed t)
 (setq compilation-scroll-output t)
 (setq ns-pop-up-frames 'nil)
 
 (setq-default transient-mark-mode t)
 (show-paren-mode t)
-
 (column-number-mode t)
 (display-time-mode t)
+(global-hl-line-mode t)
 (ffap-bindings)
 (iswitchb-mode)
 ;; (ido-mode t)
