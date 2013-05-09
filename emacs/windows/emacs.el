@@ -65,6 +65,7 @@
  '(font-lock-type-face ((t (:foreground "green"))))
  '(font-lock-variable-name-face ((t (:foreground "gray70"))))
  '(fringe ((nil)))
+ '(hi-blue ((t (:background "blue"))))
  '(highlight ((t (:background "black"))))
  '(isearch ((t (:background "green" :foreground "black"))))
  '(lazy-highlight ((t (:background "yellow" :foreground "black"))))
