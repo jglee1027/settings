@@ -126,6 +126,16 @@ Otherwise, return result of last form in BODY."
   (global-set-key (kbd "M-+") 'gud-up)
   (global-set-key (kbd "M-_") 'gud-down))
 
+(add-hook 'gdb-frames-mode-hook (lambda()
+								  (global-set-key (kbd "M-+") '(lambda()
+								  								 (interactive)
+								  								 (gdb-frames-force-update)
+								  								 (gud-up 1)))
+								  (global-set-key (kbd "M-_") '(lambda()
+								  								 (interactive)
+								  								 (gdb-frames-force-update)
+								  								 (gud-down 1)))))
+
 (add-hook 'gdb-mode-hook 'gud-mode-common-keys)
 (add-hook 'sdb-mode-hook 'gud-mode-common-keys)
 (add-hook 'dbx-mode-hook 'gud-mode-common-keys)
