@@ -142,7 +142,10 @@ Otherwise, return result of last form in BODY."
 (add-hook 'xdb-mode-hook 'gud-mode-common-keys)
 (add-hook 'perldb-mode-hook 'gud-mode-common-keys)
 (add-hook 'pdb-mode-hook 'gud-mode-common-keys)
-(add-hook 'jdb-mode-hook 'gud-mode-common-keys)
+(add-hook 'jdb-mode-hook (lambda()
+						   (gud-mode-common-keys)
+						   (setq comint-prompt-regexp "^> \\|^[^ ]+\\[[0-9]+\\] \\|^<[0-9]*> [a-zA-Z0-9-_$]*\\[[0-9]+\\] ")))
+
 
 ;;;; jde and jdibug
 (eval-after-load "jde"
