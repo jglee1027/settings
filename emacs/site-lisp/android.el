@@ -19,6 +19,11 @@
   :type 'string
   :group 'android)
 
+(defcustom  android-jdb-sourcepath ""
+  "Value of sourcepath option in jdb"
+  :type 'string
+  :group 'android)
+
 (defgroup android nil
   "Android Applications."
   :group 'applications)
@@ -37,7 +42,6 @@
  "This is where your Android Activity class is stored."
  :type 'string
  :group 'android)
-
 (defun android-read-project-root ()
  (if (or (string-match "XEmacs" emacs-version)
          (>= emacs-major-version 22))
@@ -73,7 +77,7 @@
         (format "%s -attach localhost:%s -sourcepath%s"
                 android-jdb-command-name
                 port
-                (format "%s/src" root))))
+                (format "%s/src:%s" root android-jdb-sourcepath))))
    (if (not (string= jdb-command (car android-jdb-history)))
        (push jdb-command android-jdb-history))
    (jdb jdb-command)))
