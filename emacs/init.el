@@ -87,7 +87,9 @@ Otherwise, return result of last form in BODY."
 
 ;;;; magit
 (eval-after-load "magit"
-  '(global-set-key (kbd "C-x g") 'magit-status))
+  '(progn
+	 (global-set-key (kbd "C-x g") 'magit-status)
+	 (global-set-key (kbd "C-x v g") 'magit-blame-mode)))
 
 (ignore-errors
   (require 'auto-complete))
