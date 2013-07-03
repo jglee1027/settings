@@ -116,6 +116,12 @@ Otherwise, return result of last form in BODY."
 (global-set-key (kbd "M-7") 'find-prev-tag)
 
 ;;;; gud
+
+(defadvice gdb-setup-windows (after gdb-setup-more-windows activate)
+  "Customization window layout."
+  (delete-window
+   (car (get-buffer-window-list (gdb-breakpoints-buffer-name)))))
+
 (defun gud-mode-common-keys()
   (message ">>> run gud-mode-common-keys")
   (global-set-key [f5] 'gud-step)
