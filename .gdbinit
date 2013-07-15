@@ -1,4 +1,5 @@
 # set disassembly-flavor intel
+set print pretty on
 
 define pr
   if $argc == 1
