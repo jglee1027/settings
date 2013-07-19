@@ -37,6 +37,23 @@ document prpv
 Ask an UIView object to print its parent view stack
 end
 
+define pvptr
+  if $argc == 2
+	set $i = 0
+	while $i < $arg1
+	  p/a ((void***)$arg0)[$i]
+	  set $i = $i + 1
+	end
+  else
+	help pvptr
+  end
+end
+
+document pvptr
+print virtual function table in an C++ object
+pvptr VPTR_ADDR COUNT
+end
+
 # define bpsave
 #   shell rm -f ~/.gdb-breakpoints.log
 #   set logging file ~/.gdb-breakpoints.log
