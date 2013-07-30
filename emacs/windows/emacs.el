@@ -19,7 +19,7 @@
  '(default ((t (:inherit nil
 			    :stipple nil
 				:background "#102040"
-				:foreground "white"
+				:foreground "#90c090"
 				:inverse-video nil
 				:box nil
 				:strike-through nil
