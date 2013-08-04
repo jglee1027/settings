@@ -28,10 +28,10 @@ Otherwise, return result of last form in BODY."
 (show-paren-mode t)
 (column-number-mode t)
 (display-time-mode t)
-(global-hl-line-mode t)
 (ffap-bindings)
 (iswitchb-mode)
 ;; (ido-mode t)
+;; (global-hl-line-mode t)
 
 (setq semantic-load-turn-everything-on t)
 (setq vc-make-backup-files t)
