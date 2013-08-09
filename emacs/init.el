@@ -120,6 +120,8 @@ Otherwise, return result of last form in BODY."
 (defadvice gdb-setup-windows (after gdb-setup-more-windows activate)
   "Customization window layout."
   (delete-window
+   (car (get-buffer-window-list (gdb-locals-buffer-name))))
+  (delete-window
    (car (get-buffer-window-list (gdb-breakpoints-buffer-name)))))
 
 (defun gud-mode-common-keys()
