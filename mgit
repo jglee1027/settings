@@ -1,0 +1,11 @@
+#!/bin/bash
+
+SUB_DIRS=`ls -1`
+for i in $SUB_DIRS
+do
+	if [ -d $PWD/$i/.git ]; then
+		echo -ne "==================================================\r"
+		echo "===[$PWD/$i]"
+		(cd $PWD/$i && git $*)
+	fi
+done
