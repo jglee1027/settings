@@ -1,11 +1,15 @@
 #!/bin/bash
 
+NORMAL='\033[0m'
+LBLUE='\033[01;34m'
+BLUE='\033[00;34m'
+
 SUB_DIRS=`ls -1`
+
 for i in $SUB_DIRS
 do
 	if [ -d $PWD/$i/.git ]; then
-		echo -ne "==================================================\r"
-		echo "===[$PWD/$i]"
+		echo -e "=====[ ${LBLUE}$i${NORMAL}:${BLUE}$PWD/$i${NORMAL} ]====="
 		(cd $PWD/$i && git $*)
 	fi
 done
