@@ -9,7 +9,9 @@ SUB_DIRS=`ls -1`
 for i in $SUB_DIRS
 do
 	if [ -d $PWD/$i/.git ]; then
-		echo -e "=====[ ${LBLUE}$i${NORMAL}:${BLUE}$PWD/$i${NORMAL} ]====="
+		COLS=`tput cols`
+		for ((col=0; col<$COLS; col++)); do echo -n "#"; done
+		echo -e "\r##### ${LBLUE}$i${NORMAL}:${BLUE}$PWD/$i${NORMAL} "
 		(cd $PWD/$i && git $*)
 	fi
 done
