@@ -108,6 +108,7 @@ Otherwise, return result of last form in BODY."
 (global-set-key (kbd "C-c TAB") 'indent-relative)
 (global-set-key (kbd "C-x p") 'previous-buffer)
 (global-set-key (kbd "C-x n") 'next-buffer)
+(global-set-key (kbd "C-x <f5>")  'revert-buffer)
 
 ;;;; tags
 (fset 'find-next-tag "\C-u\256")
