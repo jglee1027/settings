@@ -85,12 +85,6 @@ Otherwise, return result of last form in BODY."
 	 (add-to-list 'ac-modes 'objc-mode)
 	 (global-auto-complete-mode t)))
 
-;;;; magit
-(eval-after-load "magit"
-  '(progn
-	 (global-set-key (kbd "C-x g") 'magit-status)
-	 (global-set-key (kbd "C-x v g") 'magit-blame-mode)))
-
 (ignore-errors
   (require 'auto-complete))
 
@@ -700,6 +694,13 @@ finished."
 	(add-to-list 'load-path "~/.emacs.d/el-get/el-get"))
 
 (require 'el-get nil t)
+
+;;;; magit
+(add-hook 'el-get-post-init-hooks
+		  '(lambda (package)
+			 (when (eq package 'magit)
+			   (global-set-key (kbd "C-x g") 'magit-status)
+			   (global-set-key (kbd "C-x v g") 'magit-blame-mode))))
 
 (defun install-el-get ()
   (interactive)
