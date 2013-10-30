@@ -1,0 +1,3 @@
+command script import ~/lldb_wchar_t_summary_provider.py
+type summary add -F lldb_wchar_t_summary_provider.utf16 "wchar_t *"
+command regex pw 's/(.+)/print (wchar_t*) %1/'
