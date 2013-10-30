@@ -67,6 +67,11 @@ echo -ne "gdb setting...\r"
 diff_cp $settings_path/.gdbinit ~/.gdbinit
 echo gdb setting... OK
 
+echo -ne "lldb setting...\r"
+diff_cp $settings_path/.lldbinit ~/.lldbinit
+diff_cp $settings_path/lldb_wchar_t_summary_provider.py ~/lldb_wchar_t_summary_provider.py
+echo lldb setting... OK
+
 if [ -d ~/.moc ]; then
 	echo -ne "moc setting...\r"
 	diff_cp $settings_path/.moc/config ~/.moc/config
