@@ -83,6 +83,7 @@
  '(fringe ((nil)))
  '(hi-blue ((t (:background "blue"))))
  '(highlight ((t (:background "black"))))
+ '(hl-line ((t (:background "DodgerBlue4"))))
  '(isearch ((t (:background "green" :foreground "black"))))
  '(lazy-highlight ((t (:background "yellow" :foreground "black"))))
  '(magit-item-highlight ((t (:inherit nil))))
