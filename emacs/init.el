@@ -31,7 +31,10 @@ Otherwise, return result of last form in BODY."
 (ffap-bindings)
 (iswitchb-mode)
 ;; (ido-mode t)
-;; (global-hl-line-mode t)
+
+(global-hl-line-mode t)
+(if (equal (tty-type) "xterm-256color")
+	(set-face-attribute 'hl-line nil :background "color-17"))
 
 (setq semantic-load-turn-everything-on t)
 (setq vc-make-backup-files t)
