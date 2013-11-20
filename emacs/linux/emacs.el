@@ -116,6 +116,7 @@
   )
 (unless window-system
   (custom-set-faces
+   '(default ((nil (:background nil))))
    '(compilation-error ((t (:foreground "red"))))
    '(compilation-info ((((class color)) nil)))
    '(compilation-line-number ((((class color)) nil)))
@@ -180,4 +181,7 @@
    '(mumamo-background-chunk-submode3 ((t nil)))
    '(mumamo-background-chunk-submode4 ((t nil)))
    '(region ((t (:background "white" :foreground "black")))))
+  (if (and (facep "hl-line")
+		   (equal (tty-type) "xterm-256color"))
+	  (set-face-attribute 'hl-line nil :background "color-17"))
   )

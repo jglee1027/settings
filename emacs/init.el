@@ -30,11 +30,8 @@ Otherwise, return result of last form in BODY."
 (display-time-mode t)
 (ffap-bindings)
 (iswitchb-mode)
-;; (ido-mode t)
-
 (global-hl-line-mode t)
-(if (equal (tty-type) "xterm-256color")
-	(set-face-attribute 'hl-line nil :background "color-17"))
+;; (ido-mode t)
 
 (setq semantic-load-turn-everything-on t)
 (setq vc-make-backup-files t)
@@ -726,6 +723,11 @@ finished."
 			   (throw 'while-exit font)))))
 	(throw 'while-exit nil)))
 
-(if (eq system-type 'windows-nt)
- 	(load-library "~/settings/emacs/windows/emacs")
-  (load-library "~/settings/emacs/linux/emacs"))
+(defun init-faces ()
+  (interactive)
+  (if (eq system-type 'windows-nt)
+	  (load-library "~/settings/emacs/windows/emacs")
+	(load-library "~/settings/emacs/linux/emacs")))
+
+(init-faces)
+(add-hook 'server-visit-hook 'init-faces)
