@@ -182,6 +182,7 @@
    '(mumamo-background-chunk-submode4 ((t nil)))
    '(region ((t (:background "white" :foreground "black")))))
   (if (and (facep "hl-line")
+		   (functionp 'tty-type)
 		   (equal (tty-type) "xterm-256color"))
 	  (set-face-attribute 'hl-line nil :background "color-17"))
   )
