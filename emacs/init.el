@@ -7,6 +7,9 @@
 				(add-to-list 'load-path entry)))
 		  entries))
 
+;; to run multiple emacs daemons on a single system
+(setq server-use-tcp t)
+
 ;; define ignore-errors macro
 (eval-when-compile
   (defmacro ignore-errors (&rest body)
