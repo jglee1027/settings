@@ -512,9 +512,9 @@ Otherwise, return result of last form in BODY."
 ;;;; yasnippet
 (ignore-errors
   (require 'yasnippet)
-  (yas-global-mode 1)
-  (setq yas-snippet-dirs '("~/settings/emacs/site-lisp/yasnippet/snippets"
-						   "~/settings/emacs/snippets"))
+  (yas/global-mode 1)
+  (setq yas/snippet-dirs '("~/settings/emacs/snippets"
+						   "~/settings/emacs/site-lisp/yasnippet/snippets"))
   (setq yas/prompt-functions (cons 'yas/dropdown-prompt
 								   (remove 'yas/dropdown-prompt
 										   yas/prompt-functions))))
