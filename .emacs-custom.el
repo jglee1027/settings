@@ -1,3 +1,5 @@
+(global-hl-line-mode t)
+
 (ignore-errors
   (el-get-init 'switch-window)
   (el-get-init 'grep-a-lot)

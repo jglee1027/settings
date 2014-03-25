@@ -33,7 +33,7 @@ Otherwise, return result of last form in BODY."
 (display-time-mode t)
 (ffap-bindings)
 (iswitchb-mode)
-(global-hl-line-mode t)
+;; (global-hl-line-mode t)
 ;; (ido-mode t)
 
 (setq semantic-load-turn-everything-on t)
