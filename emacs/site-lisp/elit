@@ -25,6 +25,7 @@ ri-emacs \
 rinari \
 ruby-debug \
 ruby-mode \
+slime \
 simplenote \
 w3m \
 wgrep \
@@ -145,6 +146,10 @@ ruby_debug_depend=""
 ruby_mode_path="$elit_path/ruby-mode/"
 ruby_mode_download="svn co http://svn.ruby-lang.org/repos/ruby/trunk/misc ruby-mode"
 ruby_mode_install=""
+
+slime_path="$elit_path/slime/"
+slime_download="git clone git://github.com/slime/slime.git"
+slime_install=""
 
 simplenote_path="$elit_path/simplenote.el/"
 simplenote_download="git clone git://github.com/cefstat/simplenote.el.git"
