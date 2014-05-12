@@ -27,6 +27,7 @@ ruby-debug \
 ruby-mode \
 slime \
 simplenote \
+slime \
 w3m \
 wgrep \
 xcode-document \
@@ -154,6 +155,10 @@ slime_install=""
 simplenote_path="$elit_path/simplenote.el/"
 simplenote_download="git clone git://github.com/cefstat/simplenote.el.git"
 simplenote_install=""
+
+slime_path="$elit_path/slime/"
+slime_download="git clone git@github.com:slime/slime.git"
+slime_install=""
 
 w3m_path="$elit_path/emacs-w3m/"
 w3m_download="cvs -d :pserver:anonymous@cvs.namazu.org:/storage/cvsroot login"
