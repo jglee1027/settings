@@ -20,6 +20,7 @@ javascript \
 jda \
 jdee \
 jdibug \
+magit \
 nxhtml \
 ri-emacs \
 rinari \
@@ -123,6 +124,11 @@ jdibug_path="$elit_path/jdibug/"
 jdibug_download="svn checkout http://jdibug.googlecode.com/svn/trunk/ jdibug"
 jdibug_install="sed -i 's#~/cedet-1.0pre7#../cedet-1.0pre7#g' jdibug/Makefile && make -C jdibug"
 jdibug_depend="jdee"
+
+magit_path="$elit_path/magit/"
+magit_download="git clone git@github.com:magit/magit.git"
+magit_install=""
+magit_depend=""
 
 nxhtml_path="$elit_path/nxhtml/"
 nxhtml_download="wget http://ourcomments.org/Emacs/DL/elisp/nxhtml/zip/nxhtml-2.08-100425.zip"
