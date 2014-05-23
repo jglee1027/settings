@@ -127,7 +127,7 @@ jdibug_depend="jdee"
 
 magit_path="$elit_path/magit/"
 magit_download="git clone git@github.com:magit/magit.git"
-magit_install=""
+magit_install="cd $elit_path/magit && git checkout -b 1.2.0 1.2.0"
 magit_depend=""
 
 nxhtml_path="$elit_path/nxhtml/"
