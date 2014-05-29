@@ -3,8 +3,12 @@
 	email = jglee1027@gmail.com
 [core]
 	editor = vim
+	quotepath = no
+	precomposeunicode = true
 [color]
 	ui = true
+[push]
+	default = simple
 [alias]
 	br = branch
 	ci = commit
