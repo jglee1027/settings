@@ -18,7 +18,7 @@
 (custom-set-faces
  '(default ((t (:inherit nil
 			    :stipple nil
-				:background "#102040"
+				:background "#002040"
 				:foreground "#90c090"
 				:inverse-video nil
 				:box nil
@@ -95,6 +95,7 @@
  '(mumamo-background-chunk-submode2 ((t nil)))
  '(mumamo-background-chunk-submode3 ((t nil)))
  '(mumamo-background-chunk-submode4 ((t nil)))
+ '(show-paren-match ((t (:background "black"))))
  '(region ((t (:background "gray" :foreground "black"))))
  (set-face-font 'default (default-font-get default-font-spec-eng-list))
  (set-fontset-font nil 'korean-ksc5601 (default-font-get default-font-spec-kor-list))
