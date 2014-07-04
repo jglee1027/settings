@@ -1,0 +1,23 @@
+#!/bin/bash
+
+require() {
+	echo ""
+}
+
+description() {
+	echo ""
+}
+
+target() {
+	echo "$TARGET_DIR/gdb-bp-session"
+}
+
+install() {
+	git clone git://github.com/jglee1027/gdb-bp-session.git
+}
+
+remove() {
+	rm -vrf $(target)
+}
+
+eval $1

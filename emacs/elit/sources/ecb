@@ -1,0 +1,24 @@
+#!/bin/bash
+
+require() {
+	echo "cedet"
+}
+
+description() {
+	echo ""
+}
+
+target() {
+	echo "$TARGET_DIR/ecb-snap"
+}
+
+install() {
+	wget http://ecb.sourceforge.net/cvs_snapshots/ecb.tar.gz
+	tar xzf ecb.tar.gz
+}
+
+remove() {
+	rm -vrf $(target)
+}
+
+eval $1

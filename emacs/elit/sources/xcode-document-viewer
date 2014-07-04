@@ -1,0 +1,24 @@
+#!/bin/bash
+
+require() {
+	echo "w3m anything"
+}
+
+description() {
+	echo ""
+}
+
+target() {
+	echo "$TARGET_DIR/emacs-xcode-document-viewer"
+}
+
+install() {
+	git clone http://github.com/imakado/emacs-xcode-document-viewer.git
+	patch -p1 -d emacs-xcode-document-viewer -i xcode-document-viewer.patch
+}
+
+remove() {
+	rm -vrf $(target)
+}
+
+eval $1

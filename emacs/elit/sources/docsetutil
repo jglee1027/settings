@@ -1,0 +1,23 @@
+#!/bin/bash
+
+require() {
+	echo ""
+}
+
+description() {
+	echo ""
+}
+
+target() {
+	echo "$TARGET_DIR/docsetutil-el"
+}
+
+install() {
+	git clone git://github.com/leoliu/docsetutil-el.git
+}
+
+remove() {
+	rm -vrf $(target)
+}
+
+eval $1

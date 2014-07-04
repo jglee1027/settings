@@ -1,0 +1,23 @@
+#!/bin/bash
+
+require() {
+	echo ""
+}
+
+description() {
+	echo ""
+}
+
+target() {
+	echo "$TARGET_DIR/yasnippet"
+}
+
+install() {
+	git clone git://github.com/capitaomorte/yasnippet.git
+}
+
+remove() {
+	rm -vrf $(target)
+}
+
+eval $1

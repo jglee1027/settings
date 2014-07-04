@@ -1,0 +1,24 @@
+#!/bin/bash
+
+require() {
+	echo "javascript"
+}
+
+description() {
+	echo ""
+}
+
+target() {
+	echo "$TARGET_DIR/nxhtml"
+}
+
+install() {
+	wget http://ourcomments.org/Emacs/DL/elisp/nxhtml/zip/nxhtml-2.08-100425.zip
+	unzip nxhtml-2.08-100425.zip
+}
+
+remove() {
+	rm -vrf $(target)
+}
+
+eval $1

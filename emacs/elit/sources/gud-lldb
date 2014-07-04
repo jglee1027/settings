@@ -1,0 +1,23 @@
+#!/bin/bash
+
+require() {
+	echo ""
+}
+
+description() {
+	echo ""
+}
+
+target() {
+	echo "$TARGET_DIR/gud-lldb.el"
+}
+
+install() {
+	wget http://opensource.apple.com/source/lldb/lldb-69/utils/emacs/gud.el?txt -O gud-lldb.el
+}
+
+remove() {
+	rm -vrf $(target)
+}
+
+eval $1

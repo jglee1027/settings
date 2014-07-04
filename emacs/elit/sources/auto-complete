@@ -1,0 +1,24 @@
+#!/bin/bash
+
+require() {
+	echo ""
+}
+
+description() {
+	echo ""
+}
+
+target() {
+	echo "$TARGET_DIR/auto-complete"
+}
+
+install() {
+	git clone http://cx4a.org/repo/auto-complete.git
+	(cd auto-complete && git checkout 1.3)
+}
+
+remove() {
+	rm -vrf $(target)
+}
+
+eval $1

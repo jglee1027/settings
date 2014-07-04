@@ -1,0 +1,23 @@
+#!/bin/bash
+
+require() {
+	echo ""
+}
+
+description() {
+	echo ""
+}
+
+target() {
+	echo "$TARGET_DIR/ruby-mode"
+}
+
+install() {
+	svn co http://svn.ruby-lang.org/repos/ruby/trunk/misc ruby-mode
+}
+
+remove() {
+	rm -vrf $(target)
+}
+
+eval $1

@@ -1,0 +1,24 @@
+#!/bin/bash
+
+require() {
+	echo ""
+}
+
+description() {
+	echo ""
+}
+
+target() {
+	echo "$TARGET_DIR/doxymacs"
+}
+
+install() {
+	git clone git://doxymacs.git.sourceforge.net/gitroot/doxymacs/doxymacs
+	(cd doxymacs && ./bootstrap && ./configure)
+}
+
+remove() {
+	rm -vrf $(target)
+}
+
+eval $1

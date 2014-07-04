@@ -1,0 +1,24 @@
+#!/bin/bash
+
+require() {
+	echo "ecb"
+}
+
+description() {
+	echo ""
+}
+
+target() {
+	echo "$TARGET_DIR/jdee-2.4.0.1"
+}
+
+install() {
+	wget http://sourceforge.net/projects/jdee/files/jdee/2.4.0.1/jdee-bin-2.4.0.1.zip
+	unzip jdee-bin-2.4.0.1.zip
+}
+
+remove() {
+	rm -vrf $(target)
+}
+
+eval $1

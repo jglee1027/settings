@@ -1,0 +1,23 @@
+#!/bin/bash
+
+require() {
+	echo ""
+}
+
+description() {
+	echo ""
+}
+
+target() {
+	echo "$TARGET_DIR/dsvn.el"
+}
+
+install() {
+	wget http://svn.apache.org/repos/asf/subversion/trunk/contrib/client-side/emacs/dsvn.el
+}
+
+remove() {
+	rm -vrf $(target)
+}
+
+eval $1

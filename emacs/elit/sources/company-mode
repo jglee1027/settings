@@ -1,0 +1,23 @@
+#!/bin/bash
+
+require() {
+	echo ""
+}
+
+description() {
+	echo ""
+}
+
+target() {
+	echo "$TARGET_DIR/company-mode"
+}
+
+install() {
+	git clone git://github.com/company-mode/company-mode.git
+}
+
+remove() {
+	rm -vrf $(target)
+}
+
+eval $1

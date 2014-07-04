@@ -1,0 +1,23 @@
+#!/bin/bash
+
+require() {
+	echo "deferred"
+}
+
+description() {
+	echo ""
+}
+
+target() {
+	echo "$TARGET_DIR/c-eldoc.el"
+}
+
+install() {
+	wget http://github.com/mooz/c-eldoc/raw/master/c-eldoc.el
+}
+
+remove() {
+	rm -vrf $(target)
+}
+
+eval $1

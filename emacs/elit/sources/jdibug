@@ -1,0 +1,24 @@
+#!/bin/bash
+
+require() {
+	echo "jdee"
+}
+
+description() {
+	echo ""
+}
+
+target() {
+	echo "$TARGET_DIR/jdibug"
+}
+
+install() {
+	svn checkout http://jdibug.googlecode.com/svn/trunk/ jdibug
+	sed -i 's#~/cedet-1.0pre7#../cedet-1.0pre7#g' jdibug/Makefile && make -C jdibug
+}
+
+remove() {
+	rm -vrf $(target)
+}
+
+eval $1

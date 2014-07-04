@@ -1,0 +1,24 @@
+#!/bin/bash
+
+require() {
+	echo ""
+}
+
+description() {
+	echo ""
+}
+
+target() {
+	echo "$TARGET_DIR/emacs-w3m"
+}
+
+install() {
+	cvs -d :pserver:anonymous@cvs.namazu.org:/storage/cvsroot login
+	cvs -d :pserver:anonymous@cvs.namazu.org:/storage/cvsroot co emacs-w3m	
+}
+
+remove() {
+	rm -vrf $(target)
+}
+
+eval $1

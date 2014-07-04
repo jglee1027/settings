@@ -1,0 +1,23 @@
+#!/bin/bash
+
+require() {
+	echo ""
+}
+
+description() {
+	echo ""
+}
+
+target() {
+	echo "$TARGET_DIR/deferred.el"
+}
+
+install() {
+	wget http://github.com/kiwanami/emacs-deferred/raw/master/deferred.el
+}
+
+remove() {
+	rm -vrf $(target)
+}
+
+eval $1

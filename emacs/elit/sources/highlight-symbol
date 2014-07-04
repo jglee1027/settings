@@ -1,0 +1,23 @@
+#!/bin/bash
+
+require() {
+	echo ""
+}
+
+description() {
+	echo ""
+}
+
+target() {
+	echo "$TARGET_DIR/highlight-symbol.el"
+}
+
+install() {
+	wget http://nschum.de/src/emacs/highlight-symbol/highlight-symbol.el
+}
+
+remove() {
+	rm -vrf $(target)
+}
+
+eval $1

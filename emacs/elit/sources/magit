@@ -1,0 +1,24 @@
+#!/bin/bash
+
+require() {
+	echo ""
+}
+
+description() {
+	echo ""
+}
+
+target() {
+	echo "$TARGET_DIR/magit"
+}
+
+install() {
+	git clone git@github.com:magit/magit.git
+	cd magit && git checkout -b 1.2.0 1.2.0
+}
+
+remove() {
+	rm -vrf $(target)
+}
+
+eval $1

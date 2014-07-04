@@ -1,0 +1,23 @@
+#!/bin/bash
+
+require() {
+	echo ""
+}
+
+description() {
+	echo ""
+}
+
+target() {
+	echo "$TARGET_DIR/ruby-debug"
+}
+
+install() {
+	svn co http://ruby-debug.rubyforge.org/svn/trunk/emacs ruby-debug
+}
+
+remove() {
+	rm -vrf $(target)
+}
+
+eval $1

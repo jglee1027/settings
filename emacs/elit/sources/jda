@@ -1,0 +1,23 @@
+#!/bin/bash
+
+require() {
+	echo ""
+}
+
+description() {
+	echo ""
+}
+
+target() {
+	echo "$TARGET_DIR/jda-minor-mode"
+}
+
+install() {
+	git clone git://github.com/jglee1027/jda-minor-mode.git
+}
+
+remove() {
+	rm -vrf $(target)
+}
+
+eval $1

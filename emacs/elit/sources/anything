@@ -1,0 +1,23 @@
+#!/bin/bash
+
+require() {
+	echo ""
+}
+
+description() {
+	echo "open anything / QuickSilver-like candidate-selection framework"
+}
+
+target() {
+	echo "$TARGET_DIR/anything.el"
+}
+
+install() {
+	wget http://www.emacswiki.org/emacs/download/anything.el
+}
+
+remove() {
+	rm -vrf $(target)
+}
+
+eval $1

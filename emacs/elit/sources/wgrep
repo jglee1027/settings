@@ -1,0 +1,23 @@
+#!/bin/bash
+
+require() {
+	echo ""
+}
+
+description() {
+	echo ""
+}
+
+target() {
+	echo "$TARGET_DIR/wgrep"
+}
+
+install() {
+	git clone git://github.com/mhayashi1120/Emacs-wgrep.git wgrep
+}
+
+remove() {
+	rm -vrf $(target)
+}
+
+eval $1

@@ -1,0 +1,24 @@
+#!/bin/bash
+
+require() {
+	echo ""
+}
+
+description() {
+	echo ""
+}
+
+target() {
+	echo "$TARGET_DIR/ri-emacs"
+}
+
+install() {
+	cvs -d :pserver:anonymous@rubyforge.org:/var/cvs/ri-emacs login
+	cvs -d :pserver:anonymous@rubyforge.org:/var/cvs/ri-emacs co ri-emacs
+}
+
+remove() {
+	rm -vrf $(target)
+}
+
+eval $1

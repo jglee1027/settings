@@ -1,0 +1,23 @@
+#!/bin/bash
+
+require() {
+	echo ""
+}
+
+description() {
+	echo ""
+}
+
+target() {
+	echo "$TARGET_DIR/geben"
+}
+
+install() {
+	svn co http://geben-on-emacs.googlecode.com/svn/trunk/ geben
+}
+
+remove() {
+	rm -vrf $(target)
+}
+
+eval $1

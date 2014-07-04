@@ -1,0 +1,104 @@
+#!/bin/bash
+
+elit_path=$(cd $(dirname $0); pwd)
+src_dir=$elit_path/sources
+export TARGET_DIR=$elit_path/../site-lisp
+
+# $1 = pkg
+is_installed() {
+	local target=$($src_dir/$1 target)
+	if [ -e $target ]; then
+		# installed
+		return 0
+	else
+		return 1
+	fi
+}
+
+# $1 = pkg
+description() {
+	local desc=$($src_dir/$1 description)
+	echo $desc
+}
+
+usage() {
+	echo "Emacs Lisp Installation Tool"
+	echo 
+	echo "Usage: elit [install pkg | remove pkg]"
+	echo
+	echo "Packages:"
+	echo
+
+	for pkg in `ls $src_dir`; do
+		local i;
+		local desc=$(description $pkg)
+
+		if $(is_installed $pkg); then
+			i="i"
+		else
+			i=" "
+		fi
+
+		if [ "$desc" != "" ]; then
+			echo "$i $pkg : $desc"
+		else
+			echo "$i $pkg"
+		fi
+
+	done
+}
+
+# $1 = pkg
+install() {
+	if [ ! -e $src_dir/$1 ]; then
+		echo "Not found '$1' package"
+		return 1
+	fi
+
+	local require=$($src_dir/$1 require)
+
+	for pkg in $require; do
+		install $pkg
+	done
+
+	echo "=== install '$1' start ==="
+
+	if $(is_installed $1); then
+		echo "'$1' is already installed"
+	else
+		$src_dir/$1 install
+	fi
+
+	echo "=== install '$1' end ==="
+}
+
+# $1 = pkg
+remove() {
+	if [ ! -e $src_dir/$1 ]; then
+		echo "error: Not found '$1' package"
+		return 1
+	fi
+
+	echo "=== remove '$1' start ==="
+	$src_dir/$1 remove
+	echo "=== remove '$1' end ==="
+}
+
+if [ $# -eq 0 -o $# -ne 2 ]; then
+	usage
+	exit
+fi
+
+cd $TARGET_DIR;
+
+case "$1" in
+	"install")
+		install $2
+		;;
+	"remove")
+		remove $2
+		;;
+	*)
+		echo "error: Not found '$1' command"
+		;;
+esac

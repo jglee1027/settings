@@ -1,0 +1,23 @@
+#!/bin/bash
+
+require() {
+	echo ""
+}
+
+description() {
+	echo ""
+}
+
+target() {
+	echo "$TARGET_DIR/android.el"
+}
+
+install() {
+	echo ""
+}
+
+remove() {
+	rm -vrf $(target)
+}
+
+eval $1

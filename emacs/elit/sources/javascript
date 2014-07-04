@@ -1,0 +1,23 @@
+#!/bin/bash
+
+require() {
+	echo ""
+}
+
+description() {
+	echo ""
+}
+
+target() {
+	echo "$TARGET_DIR/javascript.el"
+}
+
+install() {
+	wget http://www.brgeight.se/downloads/emacs/javascript.el
+}
+
+remove() {
+	rm -vrf $(target)
+}
+
+eval $1
