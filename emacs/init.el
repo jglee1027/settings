@@ -317,6 +317,11 @@ Otherwise, return result of last form in BODY."
 		  (function (lambda ()
 					  (c-set-style "stroustrup"))))
 
+(eval-after-load "c-eldoc"
+  '(progn
+	 (add-hook 'c-mode-hook 'c-turn-on-eldoc-mode)
+	 (add-hook 'c++-mode-hook 'c-turn-on-eldoc-mode)))
+
 (add-hook 'objc-mode-hook
 		  (lambda ()
 			(hi-lock-face-buffer "\\<\\(@property\\|@synthesize\\)\\>"
