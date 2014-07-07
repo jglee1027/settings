@@ -13,7 +13,7 @@ target() {
 }
 
 install() {
-	wget http://github.com/mooz/c-eldoc/raw/master/c-eldoc.el
+	wget --no-check-certificate http://github.com/mooz/c-eldoc/raw/master/c-eldoc.el
 }
 
 remove() {

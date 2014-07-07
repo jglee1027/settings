@@ -13,7 +13,7 @@ target() {
 }
 
 install() {
-	wget http://github.com/kiwanami/emacs-deferred/raw/master/deferred.el
+	wget --no-check-certificate http://github.com/kiwanami/emacs-deferred/raw/master/deferred.el
 }
 
 remove() {
