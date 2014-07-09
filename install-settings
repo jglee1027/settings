@@ -31,6 +31,10 @@ diff_cp() {
 	done
 }
 
+fge() {
+	awk -v n1=$1 -v n2=$2 'BEGIN{ if (n1 >= n2) exit 0; exit 1 }'
+}
+
 echo -ne "emacs setting...\r"
 
 if [ ! -d ~/.emacs.d/snippets ]; then
@@ -61,6 +65,14 @@ echo font setting... OK
 
 echo -ne "git setting...\r"
 diff_cp $settings_path/.gitconfig ~/.gitconfig
+
+git_version=`git --version | cut -d ' ' -f 3`
+if fge $git_version 1.7.11; then
+	git config --global push.default simple
+else
+	git config --global push.default current
+fi
+
 echo git setting... OK
 
 echo -ne "gdb setting...\r"
