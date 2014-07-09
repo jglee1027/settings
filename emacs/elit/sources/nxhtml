@@ -13,7 +13,7 @@ target() {
 }
 
 install() {
-	wget http://ourcomments.org/Emacs/DL/elisp/nxhtml/zip/nxhtml-2.08-100425.zip
+	wget http://ourcomments.org/Emacs/DL/elisp/nxhtml/zip/nxhtml-2.08-100425.zip &&
 	unzip nxhtml-2.08-100425.zip
 }
 

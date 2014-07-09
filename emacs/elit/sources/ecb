@@ -13,7 +13,7 @@ target() {
 }
 
 install() {
-	wget http://ecb.sourceforge.net/cvs_snapshots/ecb.tar.gz
+	wget http://ecb.sourceforge.net/cvs_snapshots/ecb.tar.gz &&
 	tar xzf ecb.tar.gz
 }
 

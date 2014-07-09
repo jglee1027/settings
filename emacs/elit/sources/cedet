@@ -13,7 +13,7 @@ target() {
 }
 
 install() {
-	wget http://sourceforge.net/projects/cedet/files/cedet/1.0pre7/cedet-1.0pre7.tar.gz
+	wget http://sourceforge.net/projects/cedet/files/cedet/1.0pre7/cedet-1.0pre7.tar.gz &&
 	tar xzf cedet-1.0pre7.tar.gz
 }
 

@@ -13,8 +13,8 @@ target() {
 }
 
 install() {
-	cvs -d :pserver:anonymous@cvs.namazu.org:/storage/cvsroot login
-	cvs -d :pserver:anonymous@cvs.namazu.org:/storage/cvsroot co emacs-w3m	
+	cvs -d :pserver:anonymous@cvs.namazu.org:/storage/cvsroot login &&
+	cvs -d :pserver:anonymous@cvs.namazu.org:/storage/cvsroot co emacs-w3m
 }
 
 remove() {

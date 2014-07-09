@@ -13,7 +13,7 @@ target() {
 }
 
 install() {
-	git clone http://github.com/imakado/emacs-xcode-document-viewer.git
+	git clone git://github.com/imakado/emacs-xcode-document-viewer.git &&
 	patch -p1 -d emacs-xcode-document-viewer -i xcode-document-viewer.patch
 }
 

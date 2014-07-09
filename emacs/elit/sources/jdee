@@ -13,7 +13,7 @@ target() {
 }
 
 install() {
-	wget http://sourceforge.net/projects/jdee/files/jdee/2.4.0.1/jdee-bin-2.4.0.1.zip
+	wget http://sourceforge.net/projects/jdee/files/jdee/2.4.0.1/jdee-bin-2.4.0.1.zip &&
 	unzip jdee-bin-2.4.0.1.zip
 }
 

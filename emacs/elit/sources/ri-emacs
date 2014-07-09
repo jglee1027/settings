@@ -13,7 +13,7 @@ target() {
 }
 
 install() {
-	cvs -d :pserver:anonymous@rubyforge.org:/var/cvs/ri-emacs login
+	cvs -d :pserver:anonymous@rubyforge.org:/var/cvs/ri-emacs login &&
 	cvs -d :pserver:anonymous@rubyforge.org:/var/cvs/ri-emacs co ri-emacs
 }
 

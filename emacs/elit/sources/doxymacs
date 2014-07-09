@@ -13,8 +13,10 @@ target() {
 }
 
 install() {
-	git clone git://doxymacs.git.sourceforge.net/gitroot/doxymacs/doxymacs
-	(cd doxymacs && ./bootstrap && ./configure)
+	git clone git://doxymacs.git.sourceforge.net/gitroot/doxymacs/doxymacs &&
+	cd doxymacs &&
+	./bootstrap &&
+	./configure
 }
 
 remove() {
