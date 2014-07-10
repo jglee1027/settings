@@ -87,6 +87,7 @@
  '(isearch ((t (:background "green" :foreground "black"))))
  '(lazy-highlight ((t (:background "yellow" :foreground "black"))))
  '(magit-item-highlight ((t (:inherit nil))))
+ '(match ((t (:background "blue" :foreground "black"))))
  '(minibuffer-prompt ((t (:foreground "cyan"))))
  '(mode-line ((t (:background "gray" :foreground "black"))))
  '(mouse ((t nil)))
