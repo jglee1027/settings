@@ -88,6 +88,10 @@ Otherwise, return result of last form in BODY."
 	 (add-to-list 'ac-modes 'objc-mode)
 	 (global-auto-complete-mode t)))
 
+;;;; switch-window
+(eval-after-load "switch-window"
+  (global-set-key (kbd "C-x o") 'switch-window))
+
 (ignore-errors
   (require 'auto-complete))
 
