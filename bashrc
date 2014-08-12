@@ -16,10 +16,19 @@ emacs_client() {
 	fi
 }
 
+emacs_client_frame() {
+	if [ "$1" = "" ]; then
+		emacsclient -c --eval "(init-faces)"
+	else
+		emacsclient -c --eval "(init-faces)" -f $1
+	fi
+}
+
 export TERM=xterm-256color
 export PS1="\[\033[01;32m\]\u@\h:\w\$(git branch 2>/dev/null | grep -e '\* ' | sed 's/^..\(.*\)/{\1}/')\[\033[00m\]\$ "
 
 alias e='emacs_client'
+alias ec='emacs_client_frame'
 alias en='emacs -nw'
 alias es='emacs_daemon'
 alias grep='grep --color=auto'

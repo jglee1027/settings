@@ -41,9 +41,9 @@ Otherwise, return result of last form in BODY."
 
 (fset 'yes-or-no-p 'y-or-n-p)
 
-(when window-system
-  (tool-bar-mode -1))
-(unless window-system
+(tool-bar-mode -1)
+(if window-system
+	(menu-bar-mode 1)
   (menu-bar-mode -1))
 
 (unless (or enable-multibyte-characters window-system)
@@ -749,5 +749,5 @@ finished."
 	  (load-library "~/settings/emacs/windows/emacs")
 	(load-library "~/settings/emacs/linux/emacs")))
 
-(init-faces)
 (add-hook 'server-visit-hook 'init-faces)
+(init-faces)
