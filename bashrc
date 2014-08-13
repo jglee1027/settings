@@ -33,6 +33,10 @@ alias en='emacs -nw'
 alias es='emacs_daemon'
 alias grep='grep --color=auto'
 alias g='git'
+alias gd='git diff'
+alias gl='git log'
+alias gs='git status'
+alias gsh='git show'
 
 dir="$(dirname ${BASH_SOURCE[0]})"
 export PATH=$PATH:$dir
