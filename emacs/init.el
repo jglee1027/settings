@@ -41,7 +41,9 @@ Otherwise, return result of last form in BODY."
 
 (fset 'yes-or-no-p 'y-or-n-p)
 
-(tool-bar-mode -1)
+(if window-system
+	(tool-bar-mode -1))
+
 (if window-system
 	(menu-bar-mode 1)
   (menu-bar-mode -1))
