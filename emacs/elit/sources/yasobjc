@@ -9,10 +9,11 @@ description() {
 }
 
 target() {
-	echo "$TARGET_DIR/yasobjc"
+	echo "$TARGET_DIR/../yasobjc"
 }
 
 install() {
+	cd .. &&
 	git clone git://github.com/roupam/yasobjc.git
 }
 
