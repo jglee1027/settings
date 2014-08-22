@@ -90,6 +90,15 @@ Otherwise, return result of last form in BODY."
 	 (add-to-list 'ac-modes 'objc-mode)
 	 (global-auto-complete-mode t)))
 
+;;;; auto-complete-yasnippet
+(eval-after-load "auto-complete-yasnippet"
+  '(progn
+	 (setq-default ac-sources
+				   '(ac-source-yasnippet
+					 ac-source-abbrev
+					 ac-source-dictionary
+					 ac-source-words-in-same-mode-buffers))))
+
 ;;;; switch-window
 (eval-after-load "switch-window"
   '(global-set-key (kbd "C-x o") 'switch-window))
@@ -529,7 +538,9 @@ Otherwise, return result of last form in BODY."
 						   "~/settings/emacs/site-lisp/yasnippet/snippets"))
   (setq yas/prompt-functions (cons 'yas/dropdown-prompt
 								   (remove 'yas/dropdown-prompt
-										   yas/prompt-functions))))
+										   yas/prompt-functions)))
+  (require 'auto-complete-yasnippet))
+
 ;;;; wgrep
 (ignore-errors
   (require 'wgrep))
