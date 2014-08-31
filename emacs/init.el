@@ -571,11 +571,35 @@ finished."
 	(when (and docsetutil-select-help-window help-buffer)
 	  (select-window (get-buffer-window help-buffer)))))
 
-(defun docsetutil-search-api()
+(defun get-docsetutil-path ()
   (interactive)
+  (or (executable-find "docsetutil")
+	  (with-temp-buffer
+		(if (equal
+			 (shell-command-on-region (point-min)
+									  (point-max)
+									  "xcrun --find docsetutil"
+									  t)
+			 0)
+			(buffer-substring (point-min) (- (point-max) 1))
+		  "docsetutil"))				;not found
+	  ))
+
+(defun set-docsetutil-path ()
+  (interactive)
+  (if (null (executable-find
+			 docsetutil-program))
+	  (setq-default docsetutil-program
+					(get-docsetutil-path))))
+
+(defun docsetutil-search-api ()
+  (interactive)
+  (set-docsetutil-path)
   (docsetutil-search-wrap nil))
-(defun docsetutil-search-full-text()
+
+(defun docsetutil-search-full-text ()
   (interactive)
+  (set-docsetutil-path)
   (docsetutil-search-wrap t))
 
 (ignore-errors
