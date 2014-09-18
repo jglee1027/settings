@@ -8,6 +8,7 @@
 [color]
 	ui = true
 [alias]
+	bl = blame
 	br = branch
 	ci = commit
 	co = checkout
