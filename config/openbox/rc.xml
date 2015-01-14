@@ -218,28 +218,34 @@
         <wrap>no</wrap>
       </action>
     </keybind>
-    <keybind key="C-1">
+    <keybind key="W-1">
       <action name="Desktop">
         <desktop>1</desktop>
       </action>
     </keybind>
-    <keybind key="C-2">
+    <keybind key="W-2">
       <action name="Desktop">
         <desktop>2</desktop>
       </action>
     </keybind>
-    <keybind key="C-3">
+    <keybind key="W-3">
       <action name="Desktop">
         <desktop>3</desktop>
       </action>
     </keybind>
-    <keybind key="C-4">
+    <keybind key="W-4">
       <action name="Desktop">
         <desktop>4</desktop>
       </action>
     </keybind>
     <keybind key="W-d">
       <action name="ToggleShowDesktop"/>
+    </keybind>
+    <!-- Keybindings for menu -->
+    <keybind key="W-space">
+      <action name="ShowMenu">
+        <menu>root-menu</menu>
+      </action>
     </keybind>
     <!-- Keybindings for windows -->
     <keybind key="A-F4">
@@ -253,11 +259,6 @@
     <keybind key="A-space">
       <action name="ShowMenu">
         <menu>client-menu</menu>
-      </action>
-    </keybind>
-    <keybind key="W-space">
-      <action name="ShowMenu">
-        <menu>root-menu</menu>
       </action>
     </keybind>
     <keybind key="Print">
@@ -288,14 +289,68 @@
         <menu>client-list-combined-menu</menu>
       </action>
     </keybind>
+    <!-- Keybindings for window switching with the arrow keys -->
+    <keybind key="W-S-Right">
+      <action name="DirectionalCycleWindows">
+        <direction>right</direction>
+      </action>
+    </keybind>
+    <keybind key="W-S-Left">
+      <action name="DirectionalCycleWindows">
+        <direction>left</direction>
+      </action>
+    </keybind>
+    <keybind key="W-S-Up">
+      <action name="DirectionalCycleWindows">
+        <direction>up</direction>
+      </action>
+    </keybind>
+    <keybind key="W-S-Down">
+      <action name="DirectionalCycleWindows">
+        <direction>down</direction>
+      </action>
+    </keybind>
+    <!-- Keybindings for window tiling -->
+    <keybind key="W-Left">        # HalfLeftScreen
+      <action name="UnmaximizeFull"/>
+      <action name="MoveResizeTo"><x>0</x><y>0</y><height>100%</height><width>50%</width></action>
+    </keybind>
+    <keybind key="W-Right">        # HalfRightScreen
+      <action name="UnmaximizeFull"/>
+      <action name="MoveResizeTo"><x>-0</x><y>0</y><height>100%</height><width>50%</width></action>
+    </keybind>
+    <keybind key="W-Up">        # HalfUpperScreen
+      <action name="UnmaximizeFull"/>
+      <action name="MoveResizeTo"><x>0</x><y>0</y><width>100%</width><height>50%</height></action>
+    </keybind>
+    <keybind key="W-Down">        # HalfLowerScreen
+      <action name="UnmaximizeFull"/>
+      <action name="MoveResizeTo"><x>0</x><y>-0</y><width>100%</width><height>50%</height></action>
+    </keybind>
     <!-- Keybindings for running applications -->
     <keybind key="W-e">
       <action name="Execute">
         <startupnotify>
           <enabled>true</enabled>
-          <name>Konqueror</name>
+          <name>PCManFM</name>
         </startupnotify>
-        <command>kfmclient openProfile filemanagement</command>
+        <command>pcmanfm</command>
+      </action>
+    </keybind>
+    <!-- Keybinding for Volume management -->
+    <keybind key="XF86AudioRaiseVolume">
+      <action name="Execute">
+        <command>amixer -q sset Master 3%+ unmute</command>
+      </action>
+    </keybind>
+    <keybind key="XF86AudioLowerVolume">
+      <action name="Execute">
+        <command>amixer -q sset Master 3%- unmute</command>
+      </action>
+    </keybind>
+    <keybind key="XF86AudioMute">
+      <action name="Execute">
+        <command>amixer -q sset Master toggle</command>
       </action>
     </keybind>
   </keyboard>
@@ -645,20 +700,34 @@
       </mousebind>
     </context>
   </mouse>
-  <menu><!-- You can specify more than one menu file in here and they are all loaded,
-       just don't make menu ids clash or, well, it'll be kind of pointless --><!-- default menu file (or custom one in $HOME/.config/openbox/) --><!-- system menu files on Debian systems --><file>/var/lib/openbox/debian-menu.xml</file><file>debian-menu.xml</file><file>menu.xml</file><hideDelay>200</hideDelay><!-- if a press-release lasts longer than this setting (in milliseconds), the
-       menu is hidden again --><middle>no</middle><!-- center submenus vertically about the parent entry --><submenuShowDelay>100</submenuShowDelay><!-- time to delay before showing a submenu after hovering over the parent
+  <menu>
+	<!-- You can specify more than one menu file in here and they are all loaded,
+       just don't make menu ids clash or, well, it'll be kind of pointless -->
+	<!-- default menu file (or custom one in $HOME/.config/openbox/) -->
+	<!-- system menu files on Debian systems -->
+	<file>/var/lib/openbox/debian-menu.xml</file>
+	<file>debian-menu.xml</file>
+	<file>menu.xml</file>
+	<hideDelay>200</hideDelay>
+	<!-- if a press-release lasts longer than this setting (in milliseconds), the
+       menu is hidden again -->
+	<middle>no</middle>
+	<!-- center submenus vertically about the parent entry -->
+	<submenuShowDelay>100</submenuShowDelay>
+	<!-- time to delay before showing a submenu after hovering over the parent
        entry.
        if this is a negative value, then the delay is infinite and the
-       submenu will not be shown until it is clicked on --><submenuHideDelay>400</submenuHideDelay><!-- time to delay before hiding a submenu when selecting another
-       entry in parent menu -->
+       submenu will not be shown until it is clicked on -->
+	<submenuHideDelay>400</submenuHideDelay>
+	<!-- time to delay before hiding a submenu when selecting another
+       entry in parent menu
        if this is a negative value, then the delay is infinite and the
-       submenu will not be hidden until a different submenu is opened --&gt;
-  <applicationIcons>yes</applicationIcons>
-  <!-- controls if icons appear in the client-list-(combined-)menu -->
-  <manageDesktops>yes</manageDesktops>
-  <!-- show the manage desktops section in the client-list-(combined-)menu -->
-</menu>
+       submenu will not be hidden until a different submenu is opened -->
+	<applicationIcons>yes</applicationIcons>
+	<!-- controls if icons appear in the client-list-(combined-)menu -->
+	<manageDesktops>yes</manageDesktops>
+	<!-- show the manage desktops section in the client-list-(combined-)menu -->
+  </menu>
   <applications>
     <!--
   # this is an example with comments through out. use these to make your
