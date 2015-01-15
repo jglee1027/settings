@@ -59,9 +59,11 @@ echo -ne "xmodmap setting...\r"
 diff_cp $settings_path/.Xmodmap ~/.Xmodmap
 echo xmodmap setting... OK
 
-echo -ne "font setting...\r"
-diff_cp $settings_path/fonts/.fonts.conf ~/.fonts.conf
-echo font setting... OK
+# comment out to resolve the deprecated warning on Debian 7.0 testing
+# echo -ne "font setting...\r"
+# diff_cp $settings_path/fonts/.fonts.conf ~/.config/fontconfig/fonts.conf
+# diff_cp $settings_path/fonts/.fonts.conf ~/.fonts.conf
+# echo font setting... OK
 
 echo -ne "git setting...\r"
 diff_cp $settings_path/.gitconfig ~/.gitconfig
