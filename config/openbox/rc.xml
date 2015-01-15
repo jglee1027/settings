@@ -346,6 +346,34 @@
         <monitor>prev</monitor>
       </action>
     </keybind>
+    <!-- Keybindings to resize the window -->
+    <keybind key="W-C-Left">
+      <action name="ResizeRelative">
+		<right>-10</right>
+      </action>
+    </keybind>
+    <keybind key="W-C-Right">
+      <action name="ResizeRelative">
+		<right>10</right>
+      </action>
+    </keybind>
+    <keybind key="W-C-Up">
+      <action name="ResizeRelative">
+		<bottom>-10</bottom>
+      </action>
+    </keybind>
+    <keybind key="W-C-Down">
+      <action name="ResizeRelative">
+		<bottom>10</bottom>
+      </action>
+    </keybind>
+    <!-- Keybindings to minimize/maximize the window -->
+    <keybind key="W-S-m">
+      <action name="Maximize"/>
+    </keybind>
+    <keybind key="W-m">
+      <action name="Iconify"/>
+    </keybind>
     <!-- Keybindings for running applications -->
     <keybind key="W-e">
       <action name="Execute">
