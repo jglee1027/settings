@@ -2,7 +2,7 @@
 
 emacs_daemon() {
 	if [ "$1" = "" ]; then
-		emacs --daemon
+		echo "emacs error: server file required"
 	else
 		emacs --daemon=$1
 	fi
@@ -10,7 +10,7 @@ emacs_daemon() {
 
 emacs_client() {
 	if [ "$1" = "" ]; then
-		emacsclient -nw --eval "(init-faces)"
+		echo "emacsclient error: server file required"
 	else
 		emacsclient -nw --eval "(init-faces)" -f $1
 	fi
@@ -18,7 +18,7 @@ emacs_client() {
 
 emacs_client_frame() {
 	if [ "$1" = "" ]; then
-		emacsclient -c --eval "(init-faces)"
+		echo "emacsclient error: server file required"
 	else
 		emacsclient -c --eval "(init-faces)" -f $1
 	fi
