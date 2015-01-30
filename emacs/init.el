@@ -148,6 +148,7 @@ Otherwise, return result of last form in BODY."
   (global-set-key (kbd "C-<f6>") 'gud-nexti)
   (global-set-key [f7] 'gud-finish)
   (global-set-key [f8] 'gud-cont)
+  (global-set-key [f9] 'gud-break)
   (global-set-key [f12] 'gdb-many-windows)
   (global-set-key (kbd "M-+") 'gud-up)
   (global-set-key (kbd "M-_") 'gud-down))
