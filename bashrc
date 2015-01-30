@@ -24,11 +24,21 @@ emacs_client_frame() {
 	fi
 }
 
+emacs_gdb() {
+	if [ "$1" = "" ]; then
+		echo "emacs error: file required"
+	else
+		GDB_COMMAND="gdb -i=mi $1"
+		emacs -nw --execute="(gdb \"$GDB_COMMAND\")"
+	fi
+}
+
 export TERM=xterm-256color
 export PS1="\[\033[01;32m\]\u@\h:\w\$(git branch 2>/dev/null | grep -e '\* ' | sed 's/^..\(.*\)/{\1}/')\[\033[00m\]\$ "
 
 alias e='emacs_client'
 alias ec='emacs_client_frame'
+alias egdb='emacs_gdb'
 alias en='emacs -nw'
 alias es='emacs_daemon'
 alias grep='grep --color=auto'
