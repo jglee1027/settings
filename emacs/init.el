@@ -134,6 +134,9 @@ Otherwise, return result of last form in BODY."
   "Customization window layout."
   (delete-window
    (car (get-buffer-window-list (gdb-locals-buffer-name))))
+  (if (functionp 'gdb-inferior-io-name)
+	  (delete-window
+	   (car (get-buffer-window-list (gdb-inferior-io-name)))))
   (delete-window
    (car (get-buffer-window-list (gdb-breakpoints-buffer-name)))))
 
@@ -152,11 +155,13 @@ Otherwise, return result of last form in BODY."
 (add-hook 'gdb-frames-mode-hook (lambda()
 								  (global-set-key (kbd "M-+") '(lambda()
 								  								 (interactive)
-								  								 (gdb-frames-force-update)
+																 (if (functionp 'gdb-frames-force-update)
+																	 (gdb-frames-force-update))
 								  								 (gud-up 1)))
 								  (global-set-key (kbd "M-_") '(lambda()
 								  								 (interactive)
-								  								 (gdb-frames-force-update)
+																 (if (functionp 'gdb-frames-force-update)
+																	 (gdb-frames-force-update))
 								  								 (gud-down 1)))))
 
 (add-hook 'gdb-mode-hook 'gud-mode-common-keys)
