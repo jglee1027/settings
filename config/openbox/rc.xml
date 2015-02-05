@@ -369,7 +369,7 @@
     </keybind>
     <!-- Keybindings to minimize/maximize the window -->
     <keybind key="W-S-m">
-      <action name="Maximize"/>
+      <action name="ToggleMaximize"/>
     </keybind>
     <keybind key="W-m">
       <action name="Iconify"/>
