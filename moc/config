@@ -61,7 +61,7 @@ Prebuffering	= 64
 # Sound driver - OSS, ALSA, JACK, or null (only for debugging).
 # You can enter more than one driver separated by a comma. The first working
 # driver will be used.
-SoundDriver		= JACK, ALSA, OSS
+# SoundDriver		= JACK, ALSA, OSS
 
 # Jack output settings.
 JackOutLeft		= "alsa_pcm:playback_1"
@@ -74,13 +74,13 @@ OSSDevice		= /dev/dsp
 OSSMixerDevice		= /dev/mixer
 
 # OSS Mixer channel: pcm or master.
-OSSMixerChannel		= pcm
+OSSMixerChannel1	 = pcm
 
 # Second OSS Mixer channel: pcm or master.
 OSSMixerChannel2	= master
 
 # ALSA mixer device.
-AlsaMixer 		= PCM
+AlsaMixer1 		= PCM
 
 # Second ALSA mixer device.
 AlsaMixer2		= Master
