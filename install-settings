@@ -105,6 +105,7 @@ fi
 
 if [ -d ~/.config/openbox ]; then
 	echo -ne "openbox setting...\r"
+	diff_cp $settings_path/openbox/environment ~/.config/openbox/environment
 	diff_cp $settings_path/openbox/autostart.sh ~/.config/openbox/autostart.sh
 	diff_cp $settings_path/openbox/rc.xml ~/.config/openbox/rc.xml
 	echo openbox setting... OK
