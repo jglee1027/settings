@@ -52,5 +52,5 @@ alias gpull='git pull'
 alias gs='git status'
 alias gsh='git show'
 
-dir="$(dirname ${BASH_SOURCE[0]})"
-export PATH=$PATH:$dir
+settings_dir="$(dirname ${BASH_SOURCE[0]})"
+export PATH=$PATH:$settings_dir/bin

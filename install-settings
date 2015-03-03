@@ -6,7 +6,7 @@ diff_cp() {
 	if [ -z "$1" -o -z "$2" ]; then
 		return 0
 	fi
-	
+
 	if [ ! -e $2 ]; then
 		$3 cp $1 $2
 	fi
@@ -41,7 +41,7 @@ if [ ! -d ~/.emacs.d/snippets ]; then
 	ln -s $PWD/$settings_path/emacs/snippets ~/.emacs.d/snippets
 fi
 
-diff_cp $settings_path/.emacs ~/.emacs
+diff_cp $settings_path/emacs/.emacs ~/.emacs
 
 fc-list | grep NanumGothic_AndaleMono > /dev/null
 if [ $? -eq 0 ]; then
@@ -56,7 +56,7 @@ diff_cp $settings_path/vim/.vimrc ~/.vimrc
 echo vim setting... OK
 
 echo -ne "xmodmap setting...\r"
-diff_cp $settings_path/.Xmodmap ~/.Xmodmap
+diff_cp $settings_path/xmodmap/.Xmodmap ~/.Xmodmap
 echo xmodmap setting... OK
 
 # comment out to resolve the deprecated warning on Debian 7.0 testing
@@ -66,7 +66,7 @@ echo xmodmap setting... OK
 # echo font setting... OK
 
 echo -ne "git setting...\r"
-diff_cp $settings_path/.gitconfig ~/.gitconfig
+diff_cp $settings_path/git/.gitconfig ~/.gitconfig
 
 git_version=`git --version | cut -d ' ' -f 3`
 if fge $git_version 1.7.11; then
@@ -78,55 +78,54 @@ fi
 echo git setting... OK
 
 echo -ne "gdb setting...\r"
-diff_cp $settings_path/.gdbinit ~/.gdbinit
+diff_cp $settings_path/gdb/.gdbinit ~/.gdbinit
 echo gdb setting... OK
 
 echo -ne "lldb setting...\r"
-diff_cp $settings_path/.lldbinit ~/.lldbinit
-diff_cp $settings_path/lldb_wchar_t_summary_provider.py ~/lldb_wchar_t_summary_provider.py
+diff_cp $settings_path/lldb/.lldbinit ~/.lldbinit
 echo lldb setting... OK
 
 if [ -d ~/.moc ]; then
 	echo -ne "moc setting...\r"
-	diff_cp $settings_path/.moc/config ~/.moc/config
+	diff_cp $settings_path/moc/config ~/.moc/config
 	echo moc setting... OK
 fi
 
 if [ -d ~/.mplayer ]; then
 	echo -ne "mplayer setting...\r"
-	diff_cp $settings_path/.mplayer/config ~/.mplayer/config
+	diff_cp $settings_path/mplayer/config ~/.mplayer/config
 	echo mplayer setting... OK
 fi
 
 if [ -d ~/.config/terminator ]; then
 	echo -ne "terminator setting...\r"
-	diff_cp $settings_path/config/terminator/config ~/.config/terminator/config
+	diff_cp $settings_path/terminator/config ~/.config/terminator/config
 	echo terminator setting... OK
 fi
 
 if [ -d ~/.config/openbox ]; then
 	echo -ne "openbox setting...\r"
-	diff_cp $settings_path/config/openbox/autostart.sh ~/.config/openbox/autostart.sh
-	diff_cp $settings_path/config/openbox/rc.xml ~/.config/openbox/rc.xml
+	diff_cp $settings_path/openbox/autostart.sh ~/.config/openbox/autostart.sh
+	diff_cp $settings_path/openbox/rc.xml ~/.config/openbox/rc.xml
 	echo openbox setting... OK
 fi
 
 if [ "`which stumpwm 2> /dev/null`" != "" ]; then
 	echo "StumpWM setting..."
-	diff_cp $settings_path/config/stumpwm/.stumpwmrc ~/.stumpwmrc
-	diff_cp $settings_path/config/stumpwm/stumpwm.desktop /usr/share/xsessions/stumpwm.desktop sudo
+	diff_cp $settings_path/stumpwm/.stumpwmrc ~/.stumpwmrc
+	diff_cp $settings_path/stumpwm/stumpwm.desktop /usr/share/xsessions/stumpwm.desktop sudo
 	echo StumpWM setting... OK
 fi
 
 if [ "`which tmux 2> /dev/null`" != "" ]; then
 	echo "tmux setting..."
-	diff_cp $settings_path/config/tmux/.tmux.conf ~/.tmux.conf
+	diff_cp $settings_path/tmux/.tmux.conf ~/.tmux.conf
 	echo tmux setting... OK
 fi
 
 if [ "`which conkeror 2> /dev/null`" != "" ]; then
 	echo -ne "conkeror setting...\r"
-	diff_cp $settings_path/.conkerorrc ~/.conkerorrc
+	diff_cp $settings_path/conkeror/.conkerorrc ~/.conkerorrc
 
 	# make conkeror bookmarks synchronize with firefox bookmarks
 	firefox_config_path=~/.mozilla/firefox
@@ -141,6 +140,6 @@ fi
 
 if [ -f /Applications/Slate.app/Contents/MacOS/Slate ]; then
 	echo -ne "Slate settings...\r"
-	diff_cp $settings_path/.slate ~/.slate
+	diff_cp $settings_path/slate/.slate ~/.slate
 	echo Slate settings... OK
 fi
