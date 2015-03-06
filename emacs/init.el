@@ -134,7 +134,8 @@ Otherwise, return result of last form in BODY."
   "Customization window layout."
   (delete-window
    (car (get-buffer-window-list (gdb-locals-buffer-name))))
-  (if (functionp 'gdb-inferior-io-name)
+  (if (and (functionp 'gdb-inferior-io-name)
+		   (get-buffer-window-list (gdb-inferior-io-name)))
 	  (delete-window
 	   (car (get-buffer-window-list (gdb-inferior-io-name)))))
   (delete-window
