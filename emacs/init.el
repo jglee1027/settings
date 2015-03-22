@@ -99,12 +99,16 @@ Otherwise, return result of last form in BODY."
 					 ac-source-dictionary
 					 ac-source-words-in-same-mode-buffers))))
 
+(ignore-errors
+  (require 'auto-complete))
+
+;;;; dropdown-list
+(ignore-errors
+  (require 'dropdown-list))
+
 ;;;; switch-window
 (eval-after-load "switch-window"
   '(global-set-key (kbd "C-x o") 'switch-window))
-
-(ignore-errors
-  (require 'auto-complete))
 
 (ignore-errors
   (require 'uniquify))

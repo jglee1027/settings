@@ -1,0 +1,23 @@
+#!/bin/bash
+
+require() {
+	echo ""
+}
+
+description() {
+	echo "Drop-down menu interface"
+}
+
+target() {
+	echo "$TARGET_DIR/dropdown-list.el"
+}
+
+install() {
+	wget http://www.emacswiki.org/emacs/download/dropdown-list.el
+}
+
+remove() {
+	rm -vrf $(target)
+}
+
+eval $1
