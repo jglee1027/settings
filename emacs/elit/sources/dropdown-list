@@ -13,7 +13,8 @@ target() {
 }
 
 install() {
-	wget http://www.emacswiki.org/emacs/download/dropdown-list.el
+	wget http://www.emacswiki.org/emacs/download/dropdown-list.el &&
+	patch -p1 -i dropdown-list.patch
 }
 
 remove() {
