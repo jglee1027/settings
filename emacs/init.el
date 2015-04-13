@@ -358,6 +358,13 @@ Otherwise, return result of last form in BODY."
 		  (function (lambda ()
 					  (c-set-style "stroustrup"))))
 
+(add-hook 'python-mode-hook
+		  (lambda()
+			(setq python-indent-offset 4)
+			(setq-default indent-tabs-mode nil)
+			(setq-default tab-width 4)
+			(setq-default python-indent 4)))
+
 ;;;; JDE
 (defun jde-activate ()
   "Activates JDEE"
