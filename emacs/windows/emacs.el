@@ -18,7 +18,7 @@
 (custom-set-faces
  '(default ((t (:inherit nil
 			    :stipple nil
-				:background "#002040"
+				:background "#103070"
 				:foreground "#90c090"
 				:inverse-video nil
 				:box nil
