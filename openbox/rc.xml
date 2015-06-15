@@ -367,6 +367,26 @@
         <bottom>10</bottom>
       </action>
     </keybind>
+    <keybind key="W-C-S-Left">
+      <action name="ResizeRelative">
+        <left>10</left>
+      </action>
+    </keybind>
+    <keybind key="W-C-S-Right">
+      <action name="ResizeRelative">
+        <left>-10</left>
+      </action>
+    </keybind>
+    <keybind key="W-C-S-Up">
+      <action name="ResizeRelative">
+        <top>10</top>
+      </action>
+    </keybind>
+    <keybind key="W-C-S-Down">
+      <action name="ResizeRelative">
+        <top>-10</top>
+      </action>
+    </keybind>
     <!-- Keybindings to minimize/maximize the window -->
     <keybind key="W-S-m">
       <action name="ToggleMaximize"/>
