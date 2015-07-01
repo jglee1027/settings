@@ -108,7 +108,7 @@
    '(mumamo-background-chunk-submode2 ((t nil)))
    '(mumamo-background-chunk-submode3 ((t nil)))
    '(mumamo-background-chunk-submode4 ((t nil)))
-   '(show-paren-match ((t (:background "black"))))
+   '(show-paren-match ((t (:background "blue"))))
    '(region ((t (:background "gray" :foreground "black")))))
   (cond ((equal system-type 'darwin)	; macosx
 		 (set-face-font 'default (default-font-get default-font-spec-eng-mac-list))
@@ -186,7 +186,7 @@
    '(mumamo-background-chunk-submode2 ((t nil)))
    '(mumamo-background-chunk-submode3 ((t nil)))
    '(mumamo-background-chunk-submode4 ((t nil)))
-   '(show-paren-match ((t (:background "black"))))
+   '(show-paren-match ((t (:background "blue"))))
    '(region ((t (:background "white" :foreground "black")))))
   (if (and (facep "hl-line")
 		   (functionp 'tty-type)
