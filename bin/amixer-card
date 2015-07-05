@@ -1,1 +1,0 @@
-amixer -c $AMIXER_CARD $*

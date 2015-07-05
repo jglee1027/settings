@@ -407,17 +407,17 @@
     <!-- Keybinding for Volume management -->
     <keybind key="W-F12">
       <action name="Execute">
-        <command>~/settings/bin/amixer-card -q sset Master 3%+ unmute</command>
+        <command>~/settings/bin/amixer-volume up</command>
       </action>
     </keybind>
     <keybind key="W-F11">
       <action name="Execute">
-        <command>~/settings/bin/amixer-card -q sset Master 3%- unmute</command>
+        <command>~/settings/bin/amixer-volume down</command>
       </action>
     </keybind>
     <keybind key="W-F10">
       <action name="Execute">
-        <command>~/settings/bin/amixer-card -q sset Master toggle</command>
+        <command>~/settings/bin/amixer-volume mute</command>
       </action>
     </keybind>
     <keybind key="XF86AudioRaiseVolume">
