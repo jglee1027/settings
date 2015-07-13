@@ -289,6 +289,11 @@
         <menu>client-list-combined-menu</menu>
       </action>
     </keybind>
+    <keybind key="W-0x31"> <!-- "W-`" -->
+      <action name="Execute">
+        <command>~/settings/bin/switch-win-by-app</command>
+      </action>
+    </keybind>
     <!-- Keybindings for window switching with the arrow keys -->
     <keybind key="W-S-Right">
       <action name="DirectionalCycleWindows">
