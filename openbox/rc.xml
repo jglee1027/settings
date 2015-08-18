@@ -409,7 +409,7 @@
         <command>pcmanfm</command>
       </action>
     </keybind>
-    <!-- Keybinding for Volume management -->
+    <!-- Keybindings for Volume management -->
     <keybind key="W-F12">
       <action name="Execute">
         <command>~/settings/bin/amixer-volume up</command>
@@ -438,6 +438,12 @@
     <keybind key="XF86AudioMute">
       <action name="Execute">
         <command>amixer -q sset Master toggle</command>
+      </action>
+    </keybind>
+    <!-- Keybinding to execute a program -->
+    <keybind key="A-F2">
+      <action name="Execute">
+        <command>gmrun</command>
       </action>
     </keybind>
   </keyboard>
