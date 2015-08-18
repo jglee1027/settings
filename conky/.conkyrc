@@ -20,9 +20,9 @@ net_avg_samples 2
 no_buffers yes
 out_to_console no
 own_window_colour black
-own_window_hints undecorated,below,sticky,skip_taskbar,skip_pager,above
+own_window_hints undecorated,below,sticky,skip_taskbar,skip_pager
 own_window_transparent yes
-own_window_type normal
+own_window_type desktop
 own_window yes
 stippled_borders 2
 update_interval 2
