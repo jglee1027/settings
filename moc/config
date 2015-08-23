@@ -127,11 +127,11 @@ ShowFormat		= no
 
 # Show file time in menu. Possible options: yes, no, IfAvailable - show the
 # time only when it was read before (often works faster).
-ShowTime		= IfAvailable
+ShowTime		= no
 
 # Theme file. This can be absolute path or relative to
 # /usr/share/moc/themes/ (depends on installation prefix) or ~/.moc/themes/
-Theme			= darkdot_theme
+Theme			= transparent-background
 
 # The theme used when running on an xterm.
 # XTermTheme		= transparent-background
