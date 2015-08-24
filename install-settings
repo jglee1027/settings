@@ -124,6 +124,12 @@ if [ "`which tmux 2> /dev/null`" != "" ]; then
 	echo tmux setting... OK
 fi
 
+if [ "`which conky 2> /dev/null`" != "" ]; then
+	echo "conky setting..."
+	diff_cp $settings_path/conky/.conkyrc ~/.conkyrc
+	echo tmux setting... OK
+fi
+
 if [ "`which conkeror 2> /dev/null`" != "" ]; then
 	echo -ne "conkeror setting...\r"
 	diff_cp $settings_path/conkeror/.conkerorrc ~/.conkerorrc
