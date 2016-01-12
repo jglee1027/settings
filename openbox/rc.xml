@@ -289,9 +289,55 @@
         <menu>client-list-combined-menu</menu>
       </action>
     </keybind>
-    <keybind key="W-0x31"> <!-- "W-`" -->
+    <keybind key="W-0x31">
+      <!-- "W-`" -->
       <action name="Execute">
         <command>~/settings/bin/switch-win-by-app</command>
+      </action>
+    </keybind>
+    <keybind key="W-F1">
+      <action name="Execute">
+        <command>~/settings/bin/activate-win w-f1</command>
+      </action>
+    </keybind>
+    <keybind key="W-F2">
+      <action name="Execute">
+        <command>~/settings/bin/activate-win w-f2</command>
+      </action>
+    </keybind>
+    <keybind key="W-F3">
+      <action name="Execute">
+        <command>~/settings/bin/activate-win w-f3</command>
+      </action>
+    </keybind>
+    <keybind key="W-F4">
+      <action name="Execute">
+        <command>~/settings/bin/activate-win w-f4</command>
+      </action>
+    </keybind>
+    <keybind key="W-F5">
+      <action name="Execute">
+        <command>~/settings/bin/activate-win w-f5</command>
+      </action>
+    </keybind>
+    <keybind key="W-F6">
+      <action name="Execute">
+        <command>~/settings/bin/activate-win w-f6</command>
+      </action>
+    </keybind>
+    <keybind key="W-F7">
+      <action name="Execute">
+        <command>~/settings/bin/activate-win w-f7</command>
+      </action>
+    </keybind>
+    <keybind key="W-F8">
+      <action name="Execute">
+        <command>~/settings/bin/activate-win w-f8</command>
+      </action>
+    </keybind>
+    <keybind key="W-F9">
+      <action name="Execute">
+        <command>~/settings/bin/activate-win w-f9</command>
       </action>
     </keybind>
     <!-- Keybindings for window switching with the arrow keys -->

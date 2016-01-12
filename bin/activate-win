@@ -1,0 +1,3 @@
+#!/bin/bash
+window_id=`cat ~/.config/openbox/$1`
+wmctrl -i -a $window_id
