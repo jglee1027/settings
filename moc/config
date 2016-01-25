@@ -131,7 +131,7 @@ ShowTime		= no
 
 # Theme file. This can be absolute path or relative to
 # /usr/share/moc/themes/ (depends on installation prefix) or ~/.moc/themes/
-Theme			= transparent-background
+# Theme			= transparent-background
 
 # The theme used when running on an xterm.
 # XTermTheme		= transparent-background
@@ -147,13 +147,13 @@ UseMmap			= no
 # UTF-8 is not used here and MOC can't guess how tags are encoded. Another
 # solution is using librcc (see the next option). This option is ignored
 # if UseRCC is set to yes.
-#ID3v1TagsEncoding	= CP949
+# ID3v1TagsEncoding	= UTF-8
 
 # Use librcc to fix ID3 version 1/1.1 tags encoding.
-#UseRCC				= yes
+# UseRCC				= yes
 
 # Use librcc to filenames and directory names encoding.
-#UseRCCForFilesystem = yes
+# UseRCCForFilesystem = yes
 
 # Remember the playlist after exit?
 SavePlaylist		= yes
