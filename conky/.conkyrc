@@ -16,6 +16,7 @@ max_port_monitor_connections 64
 max_specials 512
 max_user_text 16384
 minimum_size 330 10
+music_player_interval 2
 net_avg_samples 2
 no_buffers yes
 out_to_console no
