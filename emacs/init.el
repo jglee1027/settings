@@ -768,7 +768,11 @@ finished."
 (autoload 'magit-blame-mode "magit" nil t)
 
 (global-set-key (kbd "C-x g") 'magit-status)
-(global-set-key (kbd "C-x v g") 'magit-blame-mode)
+(global-set-key (kbd "C-x v g") '(lambda()
+								   (interactive)
+								   (if (functionp 'magit-blame-popup)
+									   (magit-blame-popup)
+									 (magit-blame-mode))))
 
 ;;;; el-get-post-init-hooks
 (add-hook 'el-get-post-init-hooks
