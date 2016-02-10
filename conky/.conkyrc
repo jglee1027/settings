@@ -9,8 +9,8 @@ draw_borders no
 draw_graph_borders yes
 draw_outline no
 draw_shades no
-gap_x 25
-gap_y 15
+gap_x 10
+gap_y 10
 maximum_width 330
 max_port_monitor_connections 64
 max_specials 512
@@ -90,4 +90,4 @@ ${color}${font}${moc_curtime}/${moc_totaltime} ${alignr}-${moc_timeleft}
 ${color}${font NanumGothic:style=bold:size=9}${moc_artist}
 ${color}${font NanumGothic:style=bold:size=9}${moc_album}${font}
 ${color #90c090}/var/log/messages $hr
-${color}${exec tail -n 5 /var/log/messages | fold -w47}
+${color}${exec tail -n 4 /var/log/messages | fold -w47}
