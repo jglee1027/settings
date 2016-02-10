@@ -1,0 +1,23 @@
+alignment top_right
+border_width 1
+default_color cornflowerblue
+double_buffer yes
+gap_x 400
+gap_y 5
+minimum_size 330
+maximum_width 800
+max_user_text 16384
+own_window_colour black
+own_window_hints undecorated,below,sticky,skip_taskbar,skip_pager
+own_window_transparent yes
+own_window_type desktop
+own_window yes
+text_buffer_size 8192
+update_interval 1
+use_xft yes
+xftfont LiberationMono:size=9
+
+TEXT
+${font}
+${color #90c090}Lyrics $hr
+${color}${font NanumGothic:style=bold:size=9}${execi 1 ~/settings/bin/mocp-lyrics}
