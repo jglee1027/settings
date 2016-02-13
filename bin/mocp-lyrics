@@ -35,7 +35,7 @@ if [ "$CUR_TITLE" != "`cat $TMP_TITLE_FILE`" ]; then
 	printf "$lyrics" > $TMP_LYRICS_FILE
 fi
 
-echo "`cat $TMP_TITLE_FILE`"
-echo "`cat $TMP_LYRICS_FILE`"
+printf "`cat $TMP_TITLE_FILE`"
+printf "`cat $TMP_LYRICS_FILE`"
 
 exit 0
