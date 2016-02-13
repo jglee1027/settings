@@ -19,5 +19,5 @@ fi
 
 tint2&
 conky&
-tilda&
+guake&
 x-www-browser&
