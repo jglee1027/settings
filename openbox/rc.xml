@@ -374,6 +374,18 @@
         <x>-0</x><y>0</y><height>100%</height><width>50%</width>
       </action>
     </keybind>
+    <keybind key="W-A-C-Left">        # 82% LeftScreen
+      <action name="UnmaximizeFull"/>
+      <action name="MoveResizeTo">
+        <x>0</x><y>0</y><height>100%</height><width>82%</width>
+      </action>
+    </keybind>
+    <keybind key="W-A-C-Right">        # 82% RightScreen
+      <action name="UnmaximizeFull"/>
+      <action name="MoveResizeTo">
+        <x>-0</x><y>0</y><height>100%</height><width>82%</width>
+      </action>
+    </keybind>
     <keybind key="W-Up">        # HalfUpperScreen
       <action name="UnmaximizeFull"/>
       <action name="MoveResizeTo">
