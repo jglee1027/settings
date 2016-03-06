@@ -52,6 +52,7 @@ alias gpush='git push'
 alias gpull='git pull'
 alias gs='git status'
 alias gsh='git show'
+alias yd='youtube-dl -f bestvideo+bestaudio'
 
 settings_dir="$(dirname ${BASH_SOURCE[0]})"
 export PATH=$PATH:$settings_dir/bin
