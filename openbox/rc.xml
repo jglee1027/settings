@@ -504,6 +504,11 @@
         <command>gmrun</command>
       </action>
     </keybind>
+    <keybind key="W-A-Delete">
+      <action name="Execute">
+        <command>gksudo pm-suspend</command>
+      </action>
+    </keybind>
   </keyboard>
   <mouse>
     <dragThreshold>8</dragThreshold>
