@@ -17,7 +17,7 @@ if [ -f $OPENBOX_CONFIG_DIR/autostart-custom.sh ]; then
 	$OPENBOX_CONFIG_DIR/autostart-custom.sh
 fi
 
-tint2&
 conky&
 guake&
 x-www-browser&
+cairo-dock -o &
