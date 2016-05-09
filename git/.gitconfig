@@ -16,6 +16,7 @@
 	di = diff --full-index
 	l = log --graph
 	lg = log --graph --decorate --pretty=oneline --abbrev-commit --all
+	lgs = log --graph --decorate --oneline --simplify-by-decoration --all
 	ll = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --numstat
 	ls = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate
 	lsd = log --pretty=format:"%C(yellow)%h\\ %ad%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --date=short
