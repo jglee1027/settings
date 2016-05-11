@@ -33,6 +33,61 @@ emacs_gdb() {
 	fi
 }
 
+is_utf_8_with_bom() {
+	if [ "$1" == "" ]; then
+		echo "SYNOPSIS"
+		echo "   ${FUNCNAME[0]} FILE"
+		echo "EXAMPLE"
+		echo "   $ ${FUNCNAME[0]} a.txt && echo yes"
+		return
+	fi
+
+	file=$1
+	head -c3 "$file" | grep -q $'\xef\xbb\xbf';
+}
+
+utf_8_with_bom() {
+	if [ "$2" == "" ]; then
+		echo "SYNOPSIS"
+		echo "   ${FUNCNAME[0]} FROM_ENCODING FILE"
+		echo "EXAMPLE"
+		echo "   $ ${FUNCNAME[0]} cp949 a.txt"
+		return
+	fi
+
+	from_encoding=$1
+	file=$2
+	uconv -f $from_encoding -t utf-8 --add-signature $file > $file.utf8
+	mv $file.utf8 $file
+}
+
+line_ending_lf_to_crlf() {
+	if [ "$1" == "" ]; then
+		echo "SYNOPSIS"
+		echo "   ${FUNCNAME[0]} FILE"
+		echo "EXAMPLE"
+		echo "   $ ${FUNCNAME[0]} a.txt"
+		return
+	fi
+
+	file=$1
+	perl -i -pe 's/([^\r])\n/$1\r\n/' "$file"
+	perl -i -pe 's/^\n/\r\n/' "$file"
+}
+
+line_ending_crlf_to_lf() {
+	if [ "$1" == "" ]; then
+		echo "SYNOPSIS"
+		echo "   ${FUNCNAME[0]} FILE"
+		echo "EXAMPLE"
+		echo "   $ ${FUNCNAME[0]} a.txt"
+		return
+	fi
+
+	file=$1
+	perl -i -pe 's/\r\n/\n/' "$file"
+}
+
 export TERM=xterm-256color
 export PS1="\[\033[01;32m\]\u@\h:\w\$(git branch 2>/dev/null | grep -e '\* ' | sed 's/^..\(.*\)/{\1}/')\[\033[00m\]\$ "
 
