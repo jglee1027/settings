@@ -69,7 +69,7 @@ ${color #0077ff}External IP: ${color}${execi 600 wget -qO - http://ifcfg.me/}${i
 ${color #0077ff}Wired    IP: ${color}${addrs eth0}
 ${color #0077ff} Net Down:$color ${downspeed eth0}k/s${alignr}${color #0077ff}Net Up:$color ${upspeed eth0}k/s
 ${color #0077ff} ${downspeedgraph eth0 24,155 104E8B 0077ff} $alignr${color #0077ff}${upspeedgraph eth0 24,155 104E8B 0077ff}${endif}${if_existing /proc/net/route wlan0}
-${color #0077ff}Wireless IP: ${color}${addrs wlan0}
+${color #0077ff}Wireless IP: ${color}${addrs wlan0}(${execi 5 /sbin/iwgetid --raw wlan0})
 ${color #0077ff} Net Down:$color ${downspeed wlan0}k/s${alignr}${color #0077ff}Net Up:$color ${upspeed wlan0}k/s
 ${color #0077ff} ${downspeedgraph wlan0 24,155 104E8B 0077ff} $alignr${color #0077ff}${upspeedgraph wlan0 24,155 104E8B 0077ff}${endif}
 ${color #0077ff}Port(s)${alignr}#Connections
