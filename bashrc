@@ -28,7 +28,7 @@ emacs_gdb() {
 	if [ "$1" = "" ]; then
 		echo "emacs error: file required"
 	else
-		GDB_COMMAND="gdb -i=mi $1"
+		GDB_COMMAND="gdb -i=mi $@"
 		emacs -nw --execute="(gdb \"$GDB_COMMAND\")"
 	fi
 }
