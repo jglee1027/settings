@@ -26,7 +26,10 @@ emacs_client_frame() {
 
 emacs_gdb() {
 	if [ "$1" = "" ]; then
-		echo "emacs error: file required"
+		echo "SYNOPSIS"
+		echo "   ${FUNCNAME[0]} FILE [ARG]..."
+		echo "EXAMPLE"
+		echo "   $ ${FUNCNAME[0]} emacs"
 	else
 		GDB_COMMAND="gdb -i=mi $@"
 		emacs -nw --execute="(gdb \"$GDB_COMMAND\")"
@@ -93,7 +96,6 @@ export PS1="\[\033[01;32m\]\u@\h:\w\$(git branch 2>/dev/null | grep -e '\* ' | s
 
 alias e='emacs_client'
 alias ec='emacs_client_frame'
-alias egdb='emacs_gdb'
 alias en='emacs -nw'
 alias es='emacs_daemon'
 alias grep='grep --color=auto'

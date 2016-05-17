@@ -1,0 +1,14 @@
+#!/bin/bash
+
+SCRIPT_NAME=$(basename $0)
+
+if [ "$1" = "" ]; then
+	echo "SYNOPSIS"
+	echo "   $SCRIPT_NAME FILE [ARG]..."
+	echo "EXAMPLE"
+	echo "   $ $SCRIPT_NAME emacs"
+	exit 1
+fi
+
+GDB_COMMAND="gdb -i=mi $@"
+emacs -nw --execute="(gdb \"$GDB_COMMAND\")"
