@@ -1,6 +1,9 @@
 #!/bin/bash
 
 SCRIPT_NAME=$(basename $0)
+VERSION=$(emacs --version | awk 'NR==1 { print $3; }')
+VERSIONS=( ${VERSION//./ } )
+MAJOR=${VERSIONS[0]}
 
 if [ "$1" = "" ]; then
 	echo "SYNOPSIS"
@@ -10,5 +13,10 @@ if [ "$1" = "" ]; then
 	exit 1
 fi
 
-GDB_COMMAND="gdb -i=mi $@"
+if [ $MAJOR -ge 24 ]; then
+	GDB_COMMAND="gdb -i=mi $@"
+else
+	GDB_COMMAND="gdb --annotate=3 $@"
+fi
+
 emacs -nw --execute="(gdb \"$GDB_COMMAND\")"
