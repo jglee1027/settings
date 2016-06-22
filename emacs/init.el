@@ -297,8 +297,9 @@ Otherwise, return result of last form in BODY."
 		  (if (file-exists-p (concat filename (car ext-mode)))
 			  (setq mode ext-mode)))
 		
-		(if mode
-			(funcall (cdr mode))))))
+		(cond (mode
+			   (funcall (cdr mode))
+			   (hack-dir-local-variables-non-file-buffer))))))
 
 (add-hook 'find-file-hook 'header-file-mode-hook)
 
