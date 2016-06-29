@@ -116,15 +116,18 @@
    '(mumamo-background-chunk-submode2 ((t nil)))
    '(mumamo-background-chunk-submode3 ((t nil)))
    '(mumamo-background-chunk-submode4 ((t nil)))
+   '(region ((t (:background "gray" :foreground "black"))))
    '(show-paren-match ((t (:background "blue"))))
-   '(region ((t (:background "gray" :foreground "black")))))
-  (cond ((equal system-type 'darwin)	; macosx
-		 (set-face-font 'default (default-font-get default-font-spec-eng-mac-list))
-		 (set-fontset-font nil 'korean-ksc5601 (default-font-get default-font-spec-kor-mac-list)))
-		(t								; linux
-		 (set-face-font 'default (default-font-get default-font-spec-eng-list))
-		 (set-fontset-font nil 'korean-ksc5601 (default-font-get default-font-spec-kor-list))))
-  )
+   '(whitespace-line ((t nil)))
+   '(whitespace-space ((t (:background nil :foreground "yellow"))))
+   '(whitespace-tab ((t (:background nil :foreground "yellow")))))
+   (cond ((equal system-type 'darwin)	; macosx
+		  (set-face-font 'default (default-font-get default-font-spec-eng-mac-list))
+		  (set-fontset-font nil 'korean-ksc5601 (default-font-get default-font-spec-kor-mac-list)))
+		 (t								; linux
+		  (set-face-font 'default (default-font-get default-font-spec-eng-list))
+		  (set-fontset-font nil 'korean-ksc5601 (default-font-get default-font-spec-kor-list))))
+   )
 (unless window-system
   (custom-set-faces
    '(default ((nil (:background nil))))
@@ -202,8 +205,11 @@
    '(mumamo-background-chunk-submode2 ((t nil)))
    '(mumamo-background-chunk-submode3 ((t nil)))
    '(mumamo-background-chunk-submode4 ((t nil)))
+   '(region ((t (:background "white" :foreground "black"))))
    '(show-paren-match ((t (:background "blue"))))
-   '(region ((t (:background "white" :foreground "black")))))
+   '(whitespace-line ((t nil)))
+   '(whitespace-space ((t (:background nil :foreground "yellow"))))
+   '(whitespace-tab ((t (:background nil :foreground "yellow")))))
   (if (and (facep "hl-line")
 		   (functionp 'tty-type)
 		   (equal (tty-type) "xterm-256color"))
