@@ -170,7 +170,9 @@ Otherwise, return result of last form in BODY."
 																	 (gdb-frames-force-update))
 								  								 (gud-down 1)))))
 
-(add-hook 'gdb-mode-hook 'gud-mode-common-keys)
+(add-hook 'gdb-mode-hook (lambda()
+						   (gud-mode-common-keys)
+						   (setq gdb-display-io-nopopup t)))
 (add-hook 'sdb-mode-hook 'gud-mode-common-keys)
 (add-hook 'dbx-mode-hook 'gud-mode-common-keys)
 (add-hook 'xdb-mode-hook 'gud-mode-common-keys)
