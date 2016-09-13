@@ -42,7 +42,7 @@
                   'Active' - where the active window is -->
   </placement>
   <theme>
-    <name>Onyx</name>
+    <name>Nightmare-02</name>
     <titleLayout>NLIMC</titleLayout>
     <!--
       available characters are NDSLIMC, each can occur at most once.
@@ -69,7 +69,7 @@
       <name>Sans</name>
       <size>8</size>
       <!-- font size in points -->
-      <weight>Bold</weight>
+      <weight>Normal</weight>
       <!-- 'bold' or 'normal' -->
       <slant>Normal</slant>
       <!-- 'italic' or 'normal' -->
@@ -92,14 +92,14 @@
       <slant>Normal</slant>
       <!-- 'italic' or 'normal' -->
     </font>
-    <font place="OnScreenDisplay">
+    <font place="ActiveOnScreenDisplay">
+      <name/>
+    </font>
+    <font place="InactiveOnScreenDisplay">
       <name>Sans</name>
       <size>8</size>
-      <!-- font size in points -->
-      <weight>Bold</weight>
-      <!-- 'bold' or 'normal' -->
-      <slant>Normal</slant>
-      <!-- 'italic' or 'normal' -->
+      <weight/>
+      <slant/>
     </font>
   </theme>
   <desktops>
@@ -364,50 +364,34 @@
     <!-- Keybindings for window tiling -->
     <keybind key="W-Left">        # HalfLeftScreen
       <action name="UnmaximizeFull"/>
-      <action name="MoveResizeTo">
-        <x>0</x><y>0</y><height>100%</height><width>50%</width>
-      </action>
+      <action name="MoveResizeTo"><x>0</x><y>0</y><height>100%</height><width>50%</width></action>
     </keybind>
     <keybind key="W-Right">        # HalfRightScreen
       <action name="UnmaximizeFull"/>
-      <action name="MoveResizeTo">
-        <x>-0</x><y>0</y><height>100%</height><width>50%</width>
-      </action>
+      <action name="MoveResizeTo"><x>-0</x><y>0</y><height>100%</height><width>50%</width></action>
     </keybind>
     <keybind key="W-A-C-Left">        # 82% LeftScreen
       <action name="UnmaximizeFull"/>
-      <action name="MoveResizeTo">
-        <x>0</x><y>0</y><height>100%</height><width>82%</width>
-      </action>
+      <action name="MoveResizeTo"><x>0</x><y>0</y><height>100%</height><width>82%</width></action>
     </keybind>
     <keybind key="W-A-C-Right">        # 82% RightScreen
       <action name="UnmaximizeFull"/>
-      <action name="MoveResizeTo">
-        <x>-0</x><y>0</y><height>100%</height><width>82%</width>
-      </action>
+      <action name="MoveResizeTo"><x>-0</x><y>0</y><height>100%</height><width>82%</width></action>
     </keybind>
     <keybind key="W-Up">        # HalfUpperScreen
       <action name="UnmaximizeFull"/>
-      <action name="MoveResizeTo">
-        <x>0</x><y>0</y><width>100%</width><height>50%</height>
-      </action>
+      <action name="MoveResizeTo"><x>0</x><y>0</y><width>100%</width><height>50%</height></action>
     </keybind>
     <keybind key="W-Down">        # HalfLowerScreen
       <action name="UnmaximizeFull"/>
-      <action name="MoveResizeTo">
-        <x>0</x><y>-0</y><width>100%</width><height>50%</height>
-      </action>
+      <action name="MoveResizeTo"><x>0</x><y>-0</y><width>100%</width><height>50%</height></action>
     </keybind>
     <!-- Keybindings to move a window between monitors -->
     <keybind key="W-A-Left">        # Next Monitor
-      <action name="MoveResizeTo">
-        <monitor>next</monitor>
-      </action>
+      <action name="MoveResizeTo"><monitor>next</monitor></action>
     </keybind>
     <keybind key="W-A-Right">        # Previous Monitor
-      <action name="MoveResizeTo">
-        <monitor>prev</monitor>
-      </action>
+      <action name="MoveResizeTo"><monitor>prev</monitor></action>
     </keybind>
     <!-- Keybindings to resize the window -->
     <keybind key="W-C-Left">
