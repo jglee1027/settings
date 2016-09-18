@@ -865,7 +865,7 @@
        submenu will not be hidden until a different submenu is opened -->
     <applicationIcons>yes</applicationIcons>
     <!-- controls if icons appear in the client-list-(combined-)menu -->
-    <manageDesktops>yes</manageDesktops>
+    <manageDesktops>no</manageDesktops>
     <!-- show the manage desktops section in the client-list-(combined-)menu -->
   </menu>
   <applications>
