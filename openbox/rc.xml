@@ -488,6 +488,11 @@
         <command>gmrun</command>
       </action>
     </keybind>
+    <keybind key="W-A-L">
+      <action name="Execute">
+        <command>dm-tool lock</command>
+      </action>
+    </keybind>
     <keybind key="W-A-Delete">
       <action name="Execute">
         <command>gksudo pm-suspend</command>
