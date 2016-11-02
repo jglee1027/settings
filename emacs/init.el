@@ -226,6 +226,23 @@ Otherwise, return result of last form in BODY."
 (autoload 'highlight-symbol-prev "highlight-symbol" nil t)
 (autoload 'highlight-symbol-next "highlight-symbol" nil t)
 
+;;;; whitespace-mode
+(setq whitespace-display-mappings
+	  '((space-mark 32 [?.])
+		(newline-mark 10 [?$ ?\n])
+		(tab-mark 9 [?\t])))
+
+(add-hook 'whitespace-mode-hook
+		  (function (lambda()
+					  (set-face-attribute 'whitespace-tab
+										  nil
+										  :background "magenta"
+										  :foreground nil)
+					  (set-face-attribute 'whitespace-space
+										  nil
+										  :background nil
+										  :foreground "gray"))))
+
 ;;;; winmove
 (global-set-key (kbd "C-x <left>") '(lambda ()
 									  (interactive)
