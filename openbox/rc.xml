@@ -871,6 +871,8 @@
     <applicationIcons>yes</applicationIcons>
     <!-- controls if icons appear in the client-list-(combined-)menu -->
     <manageDesktops>no</manageDesktops>
+    <!-- controls if "Go there..." menu appear in the client-list-(combined-)menu -->
+    <showGoThere>no</showGoThere>
     <!-- show the manage desktops section in the client-list-(combined-)menu -->
   </menu>
   <applications>
