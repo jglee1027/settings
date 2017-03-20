@@ -32,6 +32,7 @@ use_spacer yes
 use_xft yes
 xftalpha 0.8
 xftfont LiberationMono:size=9
+lua_load ~/settings/conky/network.lua
 
 TEXT
 ${color #0077ff}$nodename${alignr}$sysname $kernel
@@ -68,12 +69,8 @@ $color ${top_mem name 4} 	 ${top_mem pid 4} ${top_mem cpu 4} ${top_mem mem 4}
 $color ${top_mem name 5} 	 ${top_mem pid 5} ${top_mem cpu 5} ${top_mem mem 5}
 ${color #90c090}Network $hr
 ${color #0077ff}External IP: ${color}${execi 600 dig +short myip.opendns.com @resolver1.opendns.com}${if_existing /proc/net/route eth0}
-${color #0077ff}Wired    IP: ${color}${addrs eth0}
-${color #0077ff} Net Down:$color ${downspeed eth0}k/s${alignr}${color #0077ff}Net Up:$color ${upspeed eth0}k/s
-${color #0077ff} ${downspeedgraph eth0 24,155 104E8B 0077ff} $alignr${color #0077ff}${upspeedgraph eth0 24,155 104E8B 0077ff}${endif}${if_existing /proc/net/route wlan0}
-${color #0077ff}Wireless IP: ${color}${addrs wlan0}(${execi 5 /sbin/iwgetid --raw wlan0})
-${color #0077ff} Net Down:$color ${downspeed wlan0}k/s${alignr}${color #0077ff}Net Up:$color ${upspeed wlan0}k/s
-${color #0077ff} ${downspeedgraph wlan0 24,155 104E8B 0077ff} $alignr${color #0077ff}${upspeedgraph wlan0 24,155 104E8B 0077ff}${endif}
+${lua_parse network Wired eth}
+${lua_parse network Wireless wlan}
 ${color #0077ff}Port(s)${alignr}#Connections
 $color Inbound: ${tcp_portmon 1 32767 count} Outbound: ${tcp_portmon 32768 61000 count}${alignr} ALL: ${tcp_portmon 1 65535 count}
 ${color #0077ff}Inbound Connection ${alignr} Local Service/Port$color
