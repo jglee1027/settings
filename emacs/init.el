@@ -41,13 +41,6 @@ Otherwise, return result of last form in BODY."
 
 (fset 'yes-or-no-p 'y-or-n-p)
 
-(if window-system
-	(tool-bar-mode -1))
-
-(if window-system
-	(menu-bar-mode 1)
-  (menu-bar-mode -1))
-
 (unless (or enable-multibyte-characters window-system)
   (standard-display-european t)
   (set-input-mode (car (current-input-mode))
@@ -822,11 +815,16 @@ finished."
 			   (throw 'while-exit font)))))
 	(throw 'while-exit nil)))
 
-(defun init-faces ()
+(defun init-ui ()
   (interactive)
+  (tool-bar-mode -1)
+  (if window-system
+      (menu-bar-mode 1)
+    (menu-bar-mode -1))
   (if (eq system-type 'windows-nt)
-	  (load-library "~/settings/emacs/windows/emacs")
-	(load-library "~/settings/emacs/linux/emacs")))
+      (load-library "~/settings/emacs/windows/emacs")
+    (load-library "~/settings/emacs/linux/emacs")))
 
-(add-hook 'server-visit-hook 'init-faces)
-(init-faces)
+(global-set-key (kbd "C-x C-l") 'init-ui)
+(add-hook 'server-visit-hook 'init-ui)
+(init-ui)
