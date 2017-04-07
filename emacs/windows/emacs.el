@@ -1,8 +1,8 @@
 ;; ======================================================================
 ;; Custom variables and faces
 ;; ======================================================================
-(defvar default-font-spec-eng-list '((font-spec :family "Ubuntu Mono" :size 10.0)
-									 (font-spec :family "Andale Mono" :size 10.0)
+(defvar default-font-spec-eng-list '((font-spec :family "Andale Mono" :size 9.0)
+									 (font-spec :family "Ubuntu Mono" :size 9.0)
 									 (font-spec :family "³ª´®°íµñÄÚµù" :size 10.0)
 									 (font-spec :family "Bitstream Vera Sans Mono" :size 10.0)
 									 (font-spec :family "Verdana" :size 10.0)))
