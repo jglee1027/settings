@@ -91,6 +91,14 @@ line_ending_crlf_to_lf() {
 	perl -i -pe 's/\r\n/\n/' "$file"
 }
 
+cc_dump_macro() {
+    echo "$1" | cc -dM -E -
+}
+
+cpp_dump_macro() {
+    echo "$1" | cpp -dM -E -x c++ -
+}
+
 export TERM=xterm-256color
 export PS1="\[\033[01;32m\]\u@\h:\w\$(git branch 2>/dev/null | grep -e '\* ' | sed 's/^..\(.*\)/{\1}/')\[\033[00m\]\$ "
 
