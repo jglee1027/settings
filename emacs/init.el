@@ -127,14 +127,26 @@ Otherwise, return result of last form in BODY."
 
 ;;;; gud
 
-(defadvice gdb-setup-windows (after gdb-setup-more-windows activate)
+;; (defadvice gdb-setup-windows (after gdb-setup-more-windows activate)
+;;   "Customization window layout."
+;;   (delete-window
+;;    (car (get-buffer-window-list (gdb-locals-buffer-name))))
+;;   (if (and (functionp 'gdb-inferior-io-name)
+;;         (get-buffer-window-list (gdb-inferior-io-name)))
+;;    (delete-window
+;;     (car (get-buffer-window-list (gdb-inferior-io-name)))))
+;;   (delete-window
+;;    (car (get-buffer-window-list (gdb-breakpoints-buffer-name)))))
+
+(defun gdb-setup-custom-windows ()
   "Customization window layout."
+  (interactive)
   (delete-window
    (car (get-buffer-window-list (gdb-locals-buffer-name))))
   (if (and (functionp 'gdb-inferior-io-name)
-		   (get-buffer-window-list (gdb-inferior-io-name)))
-	  (delete-window
-	   (car (get-buffer-window-list (gdb-inferior-io-name)))))
+           (get-buffer-window-list (gdb-inferior-io-name)))
+      (delete-window
+       (car (get-buffer-window-list (gdb-inferior-io-name)))))
   (delete-window
    (car (get-buffer-window-list (gdb-breakpoints-buffer-name)))))
 
@@ -148,6 +160,7 @@ Otherwise, return result of last form in BODY."
   (global-set-key [f8] 'gud-cont)
   (global-set-key [f9] 'gud-break)
   (global-set-key [f12] 'gdb-many-windows)
+  (global-set-key (kbd "C-x <f12>") 'gdb-setup-custom-windows)
   (global-set-key (kbd "M-+") 'gud-up)
   (global-set-key (kbd "M-_") 'gud-down))
 
