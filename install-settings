@@ -1,4 +1,5 @@
 #!/bin/bash
+
 settings_path=$(dirname $0)
 
 diff_file=/tmp/install.diff
@@ -35,8 +36,16 @@ fge() {
 	awk -v n1=$1 -v n2=$2 'BEGIN{ if (n1 >= n2) exit 0; exit 1 }'
 }
 
-echo -ne "emacs setting...\r"
+echo_begin() {
+	echo -ne "$1 settings...\r"
+}
 
+echo_end() {
+	echo "$1 settings... OK"
+}
+
+
+echo_begin emacs
 if [ ! -d ~/.emacs.d/snippets ]; then
 	ln -s $PWD/$settings_path/emacs/snippets ~/.emacs.d/snippets
 fi
@@ -49,23 +58,23 @@ if [ $? -eq 0 ]; then
 fi
 
 # emacs --batch -f batch-byte-compile ~/.emacs 2> ~/.emacs.elc.log
-echo emacs setting... OK
+echo_end emacs
 
-echo -ne "vim setting...\r"
+echo_begin vim
 diff_cp $settings_path/vim/.vimrc ~/.vimrc
-echo vim setting... OK
+echo_end   vim
 
-echo -ne "xmodmap setting...\r"
+echo_begin xmodmap
 diff_cp $settings_path/xmodmap/.Xmodmap ~/.Xmodmap
-echo xmodmap setting... OK
+echo_end   xmodmap
 
 # comment out to resolve the deprecated warning on Debian 7.0 testing
-# echo -ne "font setting...\r"
+# echo_begin font
 # diff_cp $settings_path/fonts/.fonts.conf ~/.config/fontconfig/fonts.conf
 # diff_cp $settings_path/fonts/.fonts.conf ~/.fonts.conf
-# echo font setting... OK
+# echo_end font
 
-echo -ne "git setting...\r"
+echo_begin git
 diff_cp $settings_path/git/.gitconfig ~/.gitconfig
 
 git_version=`git --version | cut -d ' ' -f 3`
@@ -74,27 +83,26 @@ if fge $git_version 1.7.11; then
 else
 	git config --global push.default current
 fi
+echo_end   git
 
-echo git setting... OK
-
-echo -ne "gdb setting...\r"
+echo_begin gdb
 diff_cp $settings_path/gdb/.gdbinit ~/.gdbinit
-echo gdb setting... OK
+echo_end   gdb
 
-echo -ne "lldb setting...\r"
+echo_begin lldb
 diff_cp $settings_path/lldb/.lldbinit ~/.lldbinit
-echo lldb setting... OK
+echo_end   lldb
 
 if [ -d ~/.moc ]; then
-	echo -ne "moc setting...\r"
+	echo_begin moc
 	diff_cp $settings_path/moc/config ~/.moc/config
-	echo moc setting... OK
+	echo_end   moc
 fi
 
 if [ -d ~/.mplayer ]; then
-	echo -ne "mplayer setting...\r"
+	echo_begin mplayer
 	diff_cp $settings_path/mplayer/config ~/.mplayer/config
-	echo mplayer setting... OK
+	echo_end   mplayer
 fi
 
 if [ -d ~/.config/terminator ]; then
@@ -104,35 +112,42 @@ if [ -d ~/.config/terminator ]; then
 fi
 
 if [ -d ~/.config/openbox ]; then
-	echo -ne "openbox setting...\r"
+	echo_begin openbox
 	diff_cp $settings_path/openbox/environment ~/.config/openbox/environment
 	diff_cp $settings_path/openbox/autostart.sh ~/.config/openbox/autostart.sh
 	diff_cp $settings_path/openbox/rc.xml ~/.config/openbox/rc.xml
 	diff_cp $settings_path/openbox/menu.xml ~/.config/openbox/menu.xml
-	echo openbox setting... OK
+	echo_end   oepnbox
+
+	echo_begin blueskyonyx
+	mkdir -p ~/.themes
+	if [ ! -L ~/.themes/blueskyonyx ]; then
+		ln -s $(realpath $settings_path)/themes/blueskyonyx ~/.themes/blueskyonyx
+	fi
+	echo_end   blueskyonyx
 fi
 
 if [ "`which stumpwm 2> /dev/null`" != "" ]; then
-	echo "StumpWM setting..."
+	echo_begin StumpWM
 	diff_cp $settings_path/stumpwm/.stumpwmrc ~/.stumpwmrc
 	diff_cp $settings_path/stumpwm/stumpwm.desktop /usr/share/xsessions/stumpwm.desktop sudo
-	echo StumpWM setting... OK
+	echo_end   StumpWM
 fi
 
 if [ "`which tmux 2> /dev/null`" != "" ]; then
-	echo "tmux setting..."
+	echo_begin tmux
 	diff_cp $settings_path/tmux/.tmux.conf ~/.tmux.conf
-	echo tmux setting... OK
+	echo_end tmux
 fi
 
 if [ "`which conky 2> /dev/null`" != "" ]; then
-	echo "conky setting..."
+	echo_begin conky
 	diff_cp $settings_path/conky/.conkyrc ~/.conkyrc
-	echo tmux setting... OK
+	echo_end   conky
 fi
 
 if [ "`which conkeror 2> /dev/null`" != "" ]; then
-	echo -ne "conkeror setting...\r"
+	echo_begin conkeror
 	diff_cp $settings_path/conkeror/.conkerorrc ~/.conkerorrc
 
 	# make conkeror bookmarks synchronize with firefox bookmarks
@@ -143,11 +158,11 @@ if [ "`which conkeror 2> /dev/null`" != "" ]; then
 		conkeror_bookmarks=$conkeror_config_path/$(cat $conkeror_config_path/profiles.ini | grep Path | awk 'BEGIN { FS = "=" } { print $2 }')
 		cp $firefox_bookmarks/places.sqlite $conkeror_bookmarks/places.sqlite
 	fi
-	echo conkeror setting... OK
+	echo_end   conkeror
 fi
 
 if [ -f /Applications/Slate.app/Contents/MacOS/Slate ]; then
-	echo -ne "Slate settings...\r"
+	echo_begin Slate
 	diff_cp $settings_path/slate/.slate ~/.slate
-	echo Slate settings... OK
+	echo_end   Slate
 fi
