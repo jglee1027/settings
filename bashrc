@@ -37,7 +37,7 @@ emacs_gdb() {
 }
 
 is_utf_8_with_bom() {
-	if [ "$1" == "" ]; then
+	if [ "$1" = "" ]; then
 		echo "SYNOPSIS"
 		echo "   ${FUNCNAME[0]} FILE"
 		echo "EXAMPLE"
@@ -50,7 +50,7 @@ is_utf_8_with_bom() {
 }
 
 utf_8_with_bom() {
-	if [ "$2" == "" ]; then
+	if [ "$2" = "" ]; then
 		echo "SYNOPSIS"
 		echo "   ${FUNCNAME[0]} FROM_ENCODING FILE"
 		echo "EXAMPLE"
@@ -65,7 +65,7 @@ utf_8_with_bom() {
 }
 
 line_ending_lf_to_crlf() {
-	if [ "$1" == "" ]; then
+	if [ "$1" = "" ]; then
 		echo "SYNOPSIS"
 		echo "   ${FUNCNAME[0]} FILE"
 		echo "EXAMPLE"
@@ -79,7 +79,7 @@ line_ending_lf_to_crlf() {
 }
 
 line_ending_crlf_to_lf() {
-	if [ "$1" == "" ]; then
+	if [ "$1" = "" ]; then
 		echo "SYNOPSIS"
 		echo "   ${FUNCNAME[0]} FILE"
 		echo "EXAMPLE"
@@ -97,6 +97,46 @@ cc_dump_macro() {
 
 cpp_dump_macro() {
     echo "$1" | cpp -dM -E -x c++ -
+}
+
+gr() {
+    if [ "$1" = "--help" ]; then
+        echo "SYNOPSIS"
+        echo "   ${FUNCNAME[0]} [REPOSITORY [REFSPEC...]]"
+        echo "EXAMPLE"
+        echo "   $ ${FUNCNAME[0]} origin"
+        return 0
+    fi
+
+    local_branch=$(git rev-parse --abbrev-ref HEAD)
+    if [ $? -ne 0 ]; then
+        return 1
+    fi
+
+    repo=$1
+    refspec=$2
+
+    if [ "$repo" = "" ]; then
+        repo=$(git config "branch.${local_branch}.remote")
+        if [ "$repo" = "" ]; then
+            echo "error: Not found upsteam of '${local_branch}' branch !!!"
+            echo "Run \"git branch --set-upstream-to\" or \"gr REPOSITORY REFSPEC\""
+            return 2
+        fi
+
+        remote_branch=$(git config "branch.${local_branch}.merge")
+        remote_branch=${remote_branch##refs/heads/}
+    fi
+
+    if [ "$refspec" = "" ]; then
+        refspec="$local_branch:refs/for/$remote_branch"
+    fi
+
+    echo -n "git push $repo $refspec (y or n) "
+    read choice
+    if [ "$choice" = "Y" -o "$choice" = "y" ]; then
+        git push $repo $refspec
+    fi
 }
 
 export TERM=xterm-256color
