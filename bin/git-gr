@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+
+SCRIPT_NAME=$(basename $0)
+
+if [ "$1" = "--help" ]; then
+    echo "SYNOPSIS"
+    echo "   ${SCRIPT_NAME} [REPOSITORY [REFSPEC...]]"
+    echo "EXAMPLE"
+    echo "   $ ${SCRIPT_NAME} origin"
+    exit 0
+fi
+
+local_branch=$(git rev-parse --abbrev-ref HEAD)
+if [ $? -ne 0 ]; then
+    exit 1
+fi
+
+repo=$1
+refspec=$2
+
+if [ "$repo" = "" ]; then
+    repo=$(git config "branch.${local_branch}.remote")
+    if [ "$repo" = "" ]; then
+        echo "error: Not found upsteam of '${local_branch}' branch !!!"
+        echo "Run \"git branch --set-upstream-to\" or \"gr REPOSITORY REFSPEC\""
+        exit 2
+    fi
+
+    remote_branch=$(git config "branch.${local_branch}.merge")
+    remote_branch=${remote_branch##refs/heads/}
+fi
+
+if [ "$refspec" = "" ]; then
+    refspec="$local_branch:refs/for/$remote_branch"
+fi
+
+echo -n "git push $repo $refspec (y or n) "
+read choice
+if [ "$choice" = "Y" -o "$choice" = "y" ]; then
+    git push $repo $refspec
+fi
