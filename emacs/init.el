@@ -329,6 +329,12 @@ Otherwise, return result of last form in BODY."
 (add-hook 'find-file-hook 'header-file-mode-hook)
 
 (c-add-style
+ "my-c-style"
+ '("stroustrup"
+   (c-offsets-alist
+    (innamespace . 0))))
+
+(c-add-style
  "java"
  '((c-basic-offset . 4)
    (c-comment-only-line-offset 0 . 0)
@@ -364,11 +370,11 @@ Otherwise, return result of last form in BODY."
 
 (add-hook 'c-mode-hook
 		  (function (lambda ()
-					  (c-set-style "stroustrup"))))
+                      (c-set-style "my-c-style"))))
 
 (add-hook 'c++-mode-hook
 		  (function (lambda ()
-					  (c-set-style "stroustrup"))))
+                      (c-set-style "my-c-style"))))
 
 (eval-after-load "c-eldoc"
   '(progn
@@ -377,6 +383,7 @@ Otherwise, return result of last form in BODY."
 
 (add-hook 'objc-mode-hook
 		  (lambda ()
+            (c-set-style "my-c-style")
 			(hi-lock-face-buffer "\\<\\(@property\\|@synthesize\\)\\>"
 								 font-lock-keyword-face)))
 
