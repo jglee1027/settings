@@ -2,34 +2,34 @@
 ;; Custom variables and faces
 ;; ======================================================================
 (defvar default-font-spec-eng-list '((font-spec :family "Andale Mono" :size 9.0)
-									 (font-spec :family "Ubuntu Mono" :size 9.0)
-									 (font-spec :family "³ª´®°íµñÄÚµù" :size 10.0)
-									 (font-spec :family "Bitstream Vera Sans Mono" :size 10.0)
-									 (font-spec :family "Verdana" :size 10.0)))
+                                     (font-spec :family "Ubuntu Mono" :size 9.0)
+                                     (font-spec :family "³ª´®°íµñÄÚµù" :size 10.0)
+                                     (font-spec :family "Bitstream Vera Sans Mono" :size 10.0)
+                                     (font-spec :family "Verdana" :size 10.0)))
 
 (defvar default-font-spec-kor-list '((font-spec :family "NanumGothic" :size 10.0)
-									 (font-spec :family "³ª´®°íµñÄÚµù" :size 10.0)
-									 (font-spec :family "¸¼Àº °íµñ" :size 10.0)
-									 (font-spec :family "±¼¸²" :size 10.0)))
+                                     (font-spec :family "³ª´®°íµñÄÚµù" :size 10.0)
+                                     (font-spec :family "¸¼Àº °íµñ" :size 10.0)
+                                     (font-spec :family "±¼¸²" :size 10.0)))
 
 (custom-set-variables
  '(scroll-bar-mode nil))
 
 (custom-set-faces
  '(default ((t (:inherit nil
-			    :stipple nil
-				:background "#103070"
-				:foreground "#90c090"
-				:inverse-video nil
-				:box nil
-				:strike-through nil
-				:overline nil
-				:underline nil
-				:slant normal
-				:weight normal
-				:height 98
-				:width normal
-				:foundry "outline"))))
+                :stipple nil
+                :background "#103070"
+                :foreground "#90c090"
+                :inverse-video nil
+                :box nil
+                :strike-through nil
+                :overline nil
+                :underline nil
+                :slant normal
+                :weight normal
+                :height 98
+                :width normal
+                :foundry "outline"))))
  '(compilation-error ((t (:foreground "red"))))
  '(compilation-info ((((class color)) nil)))
  '(compilation-line-number ((((class color)) nil)))
@@ -111,5 +111,4 @@
  '(whitespace-space ((t (:background nil :foreground "yellow"))))
  '(whitespace-tab ((t (:background nil :foreground "yellow"))))
  (set-face-font 'default (default-font-get default-font-spec-eng-list))
- (set-fontset-font nil 'korean-ksc5601 (default-font-get default-font-spec-kor-list))
-)
+ (set-fontset-font nil 'korean-ksc5601 (default-font-get default-font-spec-kor-list)))

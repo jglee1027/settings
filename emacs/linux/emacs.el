@@ -2,45 +2,45 @@
 ;; Custom variables and faces
 ;; ======================================================================
 (defvar default-font-spec-eng-list '((font-spec :family "Andale Mono" :size 9.0)
-									 (font-spec :family "Ubuntu Mono" :size 9.0)
-									 (font-spec :family "NanumGothic_AndaleMono" :size 9.0)
-									 (font-spec :family "Liberation Mono" :size 9.0)
-									 (font-spec :family "Monospace" :size 9.0)))
+                                     (font-spec :family "Ubuntu Mono" :size 9.0)
+                                     (font-spec :family "NanumGothic_AndaleMono" :size 9.0)
+                                     (font-spec :family "Liberation Mono" :size 9.0)
+                                     (font-spec :family "Monospace" :size 9.0)))
 
 (defvar default-font-spec-kor-list '((font-spec :family "\263\252\264\256\260\355\265\361" :size 9.0)
-									 (font-spec :family "NanumGothic" :size 9.0)
-									 (font-spec :family "UnBatang" :size 9.0)
-									 (font-spec :family "Monospace" :size 9.0)))
+                                     (font-spec :family "NanumGothic" :size 9.0)
+                                     (font-spec :family "UnBatang" :size 9.0)
+                                     (font-spec :family "Monospace" :size 9.0)))
 
 (defvar default-font-spec-eng-mac-list '((font-spec :family "Andale Mono" :size 12.0)
-										 (font-spec :family "Ubuntu Mono" :size 13.0)
-										 (font-spec :family "Menlo" :size 12.0)
-										 (font-spec :family "Monaco" :size 12.0)
-										 (font-spec :family "Courier New" :size 12.0)))
+                                         (font-spec :family "Ubuntu Mono" :size 13.0)
+                                         (font-spec :family "Menlo" :size 12.0)
+                                         (font-spec :family "Monaco" :size 12.0)
+                                         (font-spec :family "Courier New" :size 12.0)))
 
 (defvar default-font-spec-kor-mac-list '((font-spec :family "나눔고딕" :size 12.0)
-										 (font-spec :family "AppleGothic" :size 12.0)
-										 (font-spec :family "AppleMyungjo" :size 12.0)))
+                                         (font-spec :family "AppleGothic" :size 12.0)
+                                         (font-spec :family "AppleMyungjo" :size 12.0)))
 
 (when window-system
   (custom-set-variables
    '(scroll-bar-mode nil))
-  
+
   (custom-set-faces
-   '(default ((t (	:inherit nil
-					:stipple nil
-					:background "#103070"
-					:foreground "#90c090"
-					:inverse-video nil
-					:box nil
-					:strike-through nil
-					:overline nil
-					:underline nil
-					:slant normal
-					:weight normal
-					:height 98
-					:width normal
-					:foundry "outline"))))
+   '(default ((t (:inherit nil
+                  :stipple nil
+                  :background "#103070"
+                  :foreground "#90c090"
+                  :inverse-video nil
+                  :box nil
+                  :strike-through nil
+                  :overline nil
+                  :underline nil
+                  :slant normal
+                  :weight normal
+                  :height 98
+                  :width normal
+                  :foundry "outline"))))
    '(compilation-error ((t (:foreground "red"))))
    '(compilation-info ((((class color)) nil)))
    '(compilation-line-number ((((class color)) nil)))
@@ -121,13 +121,13 @@
    '(whitespace-line ((t nil)))
    '(whitespace-space ((t (:background nil :foreground "yellow"))))
    '(whitespace-tab ((t (:background nil :foreground "yellow")))))
-   (cond ((equal system-type 'darwin)	; macosx
-		  (set-face-font 'default (default-font-get default-font-spec-eng-mac-list))
-		  (set-fontset-font nil 'korean-ksc5601 (default-font-get default-font-spec-kor-mac-list)))
-		 (t								; linux
-		  (set-face-font 'default (default-font-get default-font-spec-eng-list))
-		  (set-fontset-font nil 'korean-ksc5601 (default-font-get default-font-spec-kor-list))))
-   )
+  (cond ((equal system-type 'darwin)   ; macosx
+         (set-face-font 'default (default-font-get default-font-spec-eng-mac-list))
+         (set-fontset-font nil 'korean-ksc5601 (default-font-get default-font-spec-kor-mac-list)))
+        (t                             ; linux
+         (set-face-font 'default (default-font-get default-font-spec-eng-list))
+         (set-fontset-font nil 'korean-ksc5601 (default-font-get default-font-spec-kor-list))))
+  )
 (unless window-system
   (custom-set-faces
    '(default ((nil (:background nil))))
@@ -211,7 +211,6 @@
    '(whitespace-space ((t (:background nil :foreground "yellow"))))
    '(whitespace-tab ((t (:background nil :foreground "yellow")))))
   (if (and (facep "hl-line")
-		   (functionp 'tty-type)
-		   (equal (tty-type) "xterm-256color"))
-	  (set-face-attribute 'hl-line nil :background "color-17"))
-  )
+           (functionp 'tty-type)
+           (equal (tty-type) "xterm-256color"))
+      (set-face-attribute 'hl-line nil :background "color-17")))

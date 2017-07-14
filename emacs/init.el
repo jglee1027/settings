@@ -3,9 +3,9 @@
 ;; ======================================================================
 (let ((entries (directory-files "~/settings/emacs/site-lisp" t)))
   (mapcar (lambda (entry)
-			(if (equal (car (file-attributes entry)) t)
-				(add-to-list 'load-path entry)))
-		  entries))
+            (if (equal (car (file-attributes entry)) t)
+                (add-to-list 'load-path entry)))
+          entries))
 
 ;; to run multiple emacs daemons on a single system
 (setq server-use-tcp t)
@@ -13,9 +13,9 @@
 ;; define ignore-errors macro
 (eval-when-compile
   (defmacro ignore-errors (&rest body)
-	"Execute BODY; if an error occurs, return nil.
+    "Execute BODY; if an error occurs, return nil.
 Otherwise, return result of last form in BODY."
-	`(condition-case nil (progn ,@body) (error nil))))
+    `(condition-case nil (progn ,@body) (error nil))))
 
 ;;;; tab
 (setq c-basic-offset 4)
@@ -59,14 +59,14 @@ Otherwise, return result of last form in BODY."
 
 ;;;; dired
 (add-hook 'dired-load-hook
-		  (function (lambda()
-					  (load "dired-x" nil)
-					  (setq dired-guess-shell-alist-user
-							(list
-							 '("\\.[aA][vV][iI]$" "mplayer")
-							 '("\\.[mM][kK][vV]$" "mplayer")
-							 '("\\.[mM][pP]4$" "mplayer")
-							 '("\\.[wW][mM][vV]$" "mplayer"))))))
+          (function (lambda()
+                      (load "dired-x" nil)
+                      (setq dired-guess-shell-alist-user
+                            (list
+                             '("\\.[aA][vV][iI]$" "mplayer")
+                             '("\\.[mM][kK][vV]$" "mplayer")
+                             '("\\.[mM][pP]4$" "mplayer")
+                             '("\\.[wW][mM][vV]$" "mplayer"))))))
 
 ;;;; find-dired
 (eval-after-load "find-dired"
@@ -79,18 +79,18 @@ Otherwise, return result of last form in BODY."
 ;;;; auto-complete
 (eval-after-load "auto-complete"
   '(progn
-	 (add-to-list 'ac-modes 'jde-mode)
-	 (add-to-list 'ac-modes 'objc-mode)
-	 (global-auto-complete-mode t)))
+     (add-to-list 'ac-modes 'jde-mode)
+     (add-to-list 'ac-modes 'objc-mode)
+     (global-auto-complete-mode t)))
 
 ;;;; auto-complete-yasnippet
 (eval-after-load "auto-complete-yasnippet"
   '(progn
-	 (setq-default ac-sources
-				   '(ac-source-yasnippet
-					 ac-source-abbrev
-					 ac-source-dictionary
-					 ac-source-words-in-same-mode-buffers))))
+     (setq-default ac-sources
+                   '(ac-source-yasnippet
+                     ac-source-abbrev
+                     ac-source-dictionary
+                     ac-source-words-in-same-mode-buffers))))
 
 (ignore-errors
   (require 'auto-complete))
@@ -166,20 +166,20 @@ Otherwise, return result of last form in BODY."
   (global-set-key (kbd "M-_") 'gud-down))
 
 (add-hook 'gdb-frames-mode-hook (lambda()
-								  (global-set-key (kbd "M-+") '(lambda()
-								  								 (interactive)
-																 (if (functionp 'gdb-frames-force-update)
-																	 (gdb-frames-force-update))
-								  								 (gud-up 1)))
-								  (global-set-key (kbd "M-_") '(lambda()
-								  								 (interactive)
-																 (if (functionp 'gdb-frames-force-update)
-																	 (gdb-frames-force-update))
-								  								 (gud-down 1)))))
+                                  (global-set-key (kbd "M-+") '(lambda()
+                                                                 (interactive)
+                                                                 (if (functionp 'gdb-frames-force-update)
+                                                                     (gdb-frames-force-update))
+                                                                 (gud-up 1)))
+                                  (global-set-key (kbd "M-_") '(lambda()
+                                                                 (interactive)
+                                                                 (if (functionp 'gdb-frames-force-update)
+                                                                     (gdb-frames-force-update))
+                                                                 (gud-down 1)))))
 
 (add-hook 'gdb-mode-hook (lambda()
-						   (gud-mode-common-keys)
-						   (setq gdb-display-io-nopopup t)))
+                           (gud-mode-common-keys)
+                           (setq gdb-display-io-nopopup t)))
 (add-hook 'sdb-mode-hook 'gud-mode-common-keys)
 (add-hook 'dbx-mode-hook 'gud-mode-common-keys)
 (add-hook 'xdb-mode-hook 'gud-mode-common-keys)
@@ -187,39 +187,39 @@ Otherwise, return result of last form in BODY."
 (add-hook 'pdb-mode-hook 'gud-mode-common-keys)
 (add-hook 'lldb-mode-hook 'gud-mode-common-keys)
 (add-hook 'jdb-mode-hook (lambda()
-						   (gud-mode-common-keys)
-						   (setq comint-prompt-regexp "^> \\|^[^ ]+\\[[0-9]+\\] \\|^<[0-9]*> [a-zA-Z0-9-_$]*\\[[0-9]+\\] ")))
+                           (gud-mode-common-keys)
+                           (setq comint-prompt-regexp "^> \\|^[^ ]+\\[[0-9]+\\] \\|^<[0-9]*> [a-zA-Z0-9-_$]*\\[[0-9]+\\] ")))
 
 
 ;;;; jde and jdibug
 (eval-after-load "jde"
   '(ignore-errors
-	 (global-set-key [f5] 'jde-debug-step-into)
-	 (global-set-key [f6] 'jde-debug-step-over)
-	 (global-set-key [f7] 'jde-debug-step-out)
-	 (global-set-key [f8] 'jde-debug-cont)
-	 (global-set-key (kbd "M-+") 'jde-debug-up)
-	 (global-set-key (kbd "M-_") 'jde-debug-down)
-	 (require 'jdibug)
-	 (global-set-key [f5] 'jdibug-step-into)
-	 (global-set-key [f6] 'jdibug-step-over)
-	 (global-set-key [f7] 'jdibug-step-out)
-	 (global-set-key [f8] 'jdibug-resume)))
+     (global-set-key [f5] 'jde-debug-step-into)
+     (global-set-key [f6] 'jde-debug-step-over)
+     (global-set-key [f7] 'jde-debug-step-out)
+     (global-set-key [f8] 'jde-debug-cont)
+     (global-set-key (kbd "M-+") 'jde-debug-up)
+     (global-set-key (kbd "M-_") 'jde-debug-down)
+     (require 'jdibug)
+     (global-set-key [f5] 'jdibug-step-into)
+     (global-set-key [f6] 'jdibug-step-over)
+     (global-set-key [f7] 'jdibug-step-out)
+     (global-set-key [f8] 'jdibug-resume)))
 
 ;;;; gdb-bp-session
 (eval-after-load "gud"
   '(ignore-errors
-	 (require 'gdb-bp-session)))
+     (require 'gdb-bp-session)))
 
 ;;;; hs-minor-mode
 (add-hook 'hs-minor-mode-hook
-		  (lambda()
-			(local-set-key (kbd "C-c ' '") 'hs-toggle-hiding)
-			(local-set-key (kbd "C-c ' ;") 'hs-hide-level)
-			(local-set-key (kbd "C-c ' h") 'hs-hide-block)
-			(local-set-key (kbd "C-c ' j") 'hs-show-block)
-			(local-set-key (kbd "C-c ' k") 'hs-hide-all)
-			(local-set-key (kbd "C-c ' l") 'hs-show-all)))
+          (lambda()
+            (local-set-key (kbd "C-c ' '") 'hs-toggle-hiding)
+            (local-set-key (kbd "C-c ' ;") 'hs-hide-level)
+            (local-set-key (kbd "C-c ' h") 'hs-hide-block)
+            (local-set-key (kbd "C-c ' j") 'hs-show-block)
+            (local-set-key (kbd "C-c ' k") 'hs-hide-all)
+            (local-set-key (kbd "C-c ' l") 'hs-show-all)))
 
 ;;;; highlight-symbol
 (global-set-key (kbd "C-c j 8") 'highlight-symbol-mode)
@@ -235,55 +235,55 @@ Otherwise, return result of last form in BODY."
 
 ;;;; whitespace-mode
 (setq whitespace-display-mappings
-	  '((space-mark 32 [?.])
-		(newline-mark 10 [?$ ?\n])
-		(tab-mark 9 [?\t])))
+      '((space-mark 32 [?.])
+        (newline-mark 10 [?$ ?\n])
+        (tab-mark 9 [?\t])))
 
 (add-hook 'whitespace-mode-hook
-		  (function (lambda()
-					  (set-face-attribute 'whitespace-tab
-										  nil
-										  :background "magenta"
-										  :foreground nil)
-					  (set-face-attribute 'whitespace-space
-										  nil
-										  :background nil
-										  :foreground "gray"))))
+          (function (lambda()
+                      (set-face-attribute 'whitespace-tab
+                                          nil
+                                          :background "magenta"
+                                          :foreground nil)
+                      (set-face-attribute 'whitespace-space
+                                          nil
+                                          :background nil
+                                          :foreground "gray"))))
 
 ;;;; winmove
 (global-set-key (kbd "C-x <left>") '(lambda ()
-									  (interactive)
-									  (ignore-errors
-										(windmove-left))))
+                                      (interactive)
+                                      (ignore-errors
+                                        (windmove-left))))
 (global-set-key (kbd "C-x <right>") '(lambda ()
-									   (interactive)
-									   (ignore-errors
-										 (windmove-right))))
+                                       (interactive)
+                                       (ignore-errors
+                                         (windmove-right))))
 (global-set-key (kbd "C-x <up>") '(lambda ()
-									(interactive)
-									(ignore-errors
-									  (windmove-up))))
+                                    (interactive)
+                                    (ignore-errors
+                                      (windmove-up))))
 (global-set-key (kbd "C-x <down>") '(lambda ()
-									  (interactive)
-									  (ignore-errors
-										(windmove-down))))
+                                      (interactive)
+                                      (ignore-errors
+                                        (windmove-down))))
 
 ;;;; Mode line and minibuffer
 (setq display-time-string-forms
-	  '((if	(and
-			 (not display-time-format)
-			 display-time-day-and-date)
-			(decode-coding-string (format-time-string "%m/%d (%a) " now)
-								  (car default-process-coding-system))
-		  "")
-		(decode-coding-string 
-		 (format-time-string
-		  (or display-time-format
-			  (if display-time-24hr-format "%H:%M" "%p %-I:%M"))
-		  now)
-		 (car default-process-coding-system))
-		load
-		(if mail " Mail" "")))
+      '((if (and
+             (not display-time-format)
+             display-time-day-and-date)
+            (decode-coding-string (format-time-string "%m/%d (%a) " now)
+                                  (car default-process-coding-system))
+          "")
+        (decode-coding-string
+         (format-time-string
+          (or display-time-format
+              (if display-time-24hr-format "%H:%M" "%p %-I:%M"))
+          now)
+         (car default-process-coding-system))
+        load
+        (if mail " Mail" "")))
 
 (setq display-time-day-and-date t)
 (display-time)
@@ -292,7 +292,7 @@ Otherwise, return result of last form in BODY."
 ;; Programming modes
 ;; ======================================================================
 ;;;; auto-mode-alist
-(setq magic-mode-alist nil)				; to use eruby-nxhtml-mumamo-mode
+(setq magic-mode-alist nil)             ; to use eruby-nxhtml-mumamo-mode
 
 (add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
 (add-to-list 'auto-mode-alist '("\\.cs$" . java-mode))
@@ -308,24 +308,24 @@ Otherwise, return result of last form in BODY."
 ;;;; choose header file mode
 (defun header-file-mode-hook()
   (if (and (file-name-extension buffer-file-name)
-		   (string-match "\\.[hH]$" buffer-file-name))
-	  (let ((filename (file-name-sans-extension buffer-file-name))
-			(mode-alist '((".c" . c-mode)
-						  (".C" . c-mode)
-						  (".cpp" . c++-mode)
-						  (".CPP" . c++-mode)
-						  (".m" . objc-mode)
-						  (".M" . objc-mode)
-						  (".mm" . objc-mode)
-						  (".MM" . objc-mode)))
-			(mode nil))
-		(dolist (ext-mode mode-alist)
-		  (if (file-exists-p (concat filename (car ext-mode)))
-			  (setq mode ext-mode)))
-		
-		(cond (mode
-			   (funcall (cdr mode))
-			   (hack-dir-local-variables-non-file-buffer))))))
+           (string-match "\\.[hH]$" buffer-file-name))
+      (let ((filename (file-name-sans-extension buffer-file-name))
+            (mode-alist '((".c" . c-mode)
+                          (".C" . c-mode)
+                          (".cpp" . c++-mode)
+                          (".CPP" . c++-mode)
+                          (".m" . objc-mode)
+                          (".M" . objc-mode)
+                          (".mm" . objc-mode)
+                          (".MM" . objc-mode)))
+            (mode nil))
+        (dolist (ext-mode mode-alist)
+          (if (file-exists-p (concat filename (car ext-mode)))
+              (setq mode ext-mode)))
+
+        (cond (mode
+               (funcall (cdr mode))
+               (hack-dir-local-variables-non-file-buffer))))))
 
 (add-hook 'find-file-hook 'header-file-mode-hook)
 
@@ -358,46 +358,46 @@ Otherwise, return result of last form in BODY."
     (func-decl-cont . c-lineup-java-throws))))
 
 (add-hook 'c-mode-common-hook
-		  (function (lambda ()
-					  (setq abbrev-mode nil))))
+          (function (lambda ()
+                      (setq abbrev-mode nil))))
 
 (add-hook 'java-mode-hook
-		  (function (lambda ()
-					  (c-set-style "java"))))
+          (function (lambda ()
+                      (c-set-style "java"))))
 
 (add-hook 'jde-mode-hook
-		  (lambda()
-			(local-set-key (kbd "C-c C-v .") 'jde-complete-minibuf)))
+          (lambda()
+            (local-set-key (kbd "C-c C-v .") 'jde-complete-minibuf)))
 
 (add-hook 'c-mode-hook
-		  (function (lambda ()
+          (function (lambda ()
                       (c-set-style "my-c-style"))))
 
 (add-hook 'c++-mode-hook
-		  (function (lambda ()
+          (function (lambda ()
                       (c-set-style "my-c-style"))))
 
 (eval-after-load "c-eldoc"
   '(progn
-	 (add-hook 'c-mode-hook 'c-turn-on-eldoc-mode)
-	 (add-hook 'c++-mode-hook 'c-turn-on-eldoc-mode)))
+     (add-hook 'c-mode-hook 'c-turn-on-eldoc-mode)
+     (add-hook 'c++-mode-hook 'c-turn-on-eldoc-mode)))
 
 (add-hook 'objc-mode-hook
-		  (lambda ()
+          (lambda ()
             (c-set-style "my-c-style")
-			(hi-lock-face-buffer "\\<\\(@property\\|@synthesize\\)\\>"
-								 font-lock-keyword-face)))
+            (hi-lock-face-buffer "\\<\\(@property\\|@synthesize\\)\\>"
+                                 font-lock-keyword-face)))
 
 (add-hook 'idl-mode-hook
-		  (function (lambda ()
-					  (c-set-style "stroustrup"))))
+          (function (lambda ()
+                      (c-set-style "stroustrup"))))
 
 (add-hook 'python-mode-hook
-		  (lambda()
-			(setq python-indent-offset 4)
-			(setq-default indent-tabs-mode nil)
-			(setq-default tab-width 4)
-			(setq-default python-indent 4)))
+          (lambda()
+            (setq python-indent-offset 4)
+            (setq-default indent-tabs-mode nil)
+            (setq-default tab-width 4)
+            (setq-default python-indent 4)))
 
 ;;;; JDE
 (defun jde-activate ()
@@ -419,15 +419,15 @@ Otherwise, return result of last form in BODY."
   "Activates nXhtml"
   (interactive)
   (ignore-errors
-	(require 'autostart)))
+    (require 'autostart)))
 
 ;;;; geben
 (eval-after-load "geben"
   '(progn
-	 (define-key geben-mode-map [f5] 'geben-step-into)
-	 (define-key geben-mode-map [f6] 'geben-step-over)
-	 (define-key geben-mode-map [f7] 'geben-step-out)
-	 (define-key geben-mode-map [f8] 'geben-run)))
+     (define-key geben-mode-map [f5] 'geben-step-into)
+     (define-key geben-mode-map [f6] 'geben-step-over)
+     (define-key geben-mode-map [f7] 'geben-step-out)
+     (define-key geben-mode-map [f8] 'geben-run)))
 
 (autoload 'geben "geben" "DBGp protocol front-end" t)
 
@@ -437,51 +437,51 @@ Otherwise, return result of last form in BODY."
 ;;;; ruby
 (defun which-gem-package(package)
   (let (start end path version)
-	(catch 'which-gem-exception
-	  (shell-command (format "gem list -d %s" package) "*which-gem-package*")
-	  (with-current-buffer "*which-gem-package*"
-		(goto-char (point-min))
-		(if (null (re-search-forward "Installed at: " nil t))
-			(throw 'which-gem-exception nil))
-		(setq start (point))
-		(if (null (re-search-forward "$" nil t))
-			(throw 'which-gem-exception nil))
-		(setq end (point))
-		(setq path (buffer-substring start end))
+    (catch 'which-gem-exception
+      (shell-command (format "gem list -d %s" package) "*which-gem-package*")
+      (with-current-buffer "*which-gem-package*"
+        (goto-char (point-min))
+        (if (null (re-search-forward "Installed at: " nil t))
+            (throw 'which-gem-exception nil))
+        (setq start (point))
+        (if (null (re-search-forward "$" nil t))
+            (throw 'which-gem-exception nil))
+        (setq end (point))
+        (setq path (buffer-substring start end))
 
-		(goto-char (point-min))
-		(if (null (re-search-forward (format "%s \(" package) nil t))
-			(throw 'which-gem-exception nil))
-		(setq start (point))
-		(if (null (re-search-forward "\)$" nil t))
-			(throw 'which-gem-exception nil))
-		(setq end (1- (point)))
-		(setq version (buffer-substring start end))
+        (goto-char (point-min))
+        (if (null (re-search-forward (format "%s \(" package) nil t))
+            (throw 'which-gem-exception nil))
+        (setq start (point))
+        (if (null (re-search-forward "\)$" nil t))
+            (throw 'which-gem-exception nil))
+        (setq end (1- (point)))
+        (setq version (buffer-substring start end))
 
-		(setq path (format "%s/gems/%s-%s" path package version))))
-	(kill-buffer "*which-gem-package*")
-	path))
+        (setq path (format "%s/gems/%s-%s" path package version))))
+    (kill-buffer "*which-gem-package*")
+    path))
 
 (eval-after-load "ruby-mode"
   '(progn
-	 (ignore-errors
-	   (setq ri-ruby-script
-			 (locate-library "ri-emacs"))
-	   (load-library "ri-ruby")
-	   (add-hook 'ruby-mode-hook
-				 (lambda()
-				   (local-set-key (kbd "C-c h") 'ri)
-				   (local-set-key (kbd "C-c @") 'ri-ruby-show-args))))
-	 (ignore-errors
-	   (let ((rcodetools-path (which-gem-package "rcodetools")))
-		 (cond ((not (null rcodetools-path))
-				(add-to-list 'load-path rcodetools-path)
-				(require 'anything-rcodetools)
-				(define-key ruby-mode-map (kbd "C-c /") 'rct-complete-symbol)))))
-	 (ignore-errors
-	   (require 'inf-ruby)
-	   (require 'ruby-electric)
-	   (require 'rdebug))))
+     (ignore-errors
+       (setq ri-ruby-script
+             (locate-library "ri-emacs"))
+       (load-library "ri-ruby")
+       (add-hook 'ruby-mode-hook
+                 (lambda()
+                   (local-set-key (kbd "C-c h") 'ri)
+                   (local-set-key (kbd "C-c @") 'ri-ruby-show-args))))
+     (ignore-errors
+       (let ((rcodetools-path (which-gem-package "rcodetools")))
+         (cond ((not (null rcodetools-path))
+                (add-to-list 'load-path rcodetools-path)
+                (require 'anything-rcodetools)
+                (define-key ruby-mode-map (kbd "C-c /") 'rct-complete-symbol)))))
+     (ignore-errors
+       (require 'inf-ruby)
+       (require 'ruby-electric)
+       (require 'rdebug))))
 
 (autoload 'ruby-mode "ruby-mode" nil t)
 (autoload 'rdebug "rdebug" nil t)
@@ -544,23 +544,23 @@ Otherwise, return result of last form in BODY."
 (defun jda-svn-log-report ()
   (interactive)
   (let (command
-		id
-		start-date
-		end-date)
-	(jda-gf-set-project-root)
-	(setq id (read-from-minibuffer "Id: "))
-	(setq start-date (read-from-minibuffer "Start date: "))
-	(setq end-date (read-from-minibuffer "End date: "))
-	(setq svnlr-rb (expand-file-name "svnlr.rb"
-									 (file-name-directory (symbol-file 'jda-svn-log-report))))
-	(setq command (jda-read-shell-command
-				   "Command: "
-				   (format "cd %s; svn log | ~/settings/emacs/svnlr.rb -id %s -sd %s -ed %s"
-						   jda-gf-project-root
-						   id
-						   start-date
-						   end-date)))
-	(shell-command command "*svn-log-report*")))
+        id
+        start-date
+        end-date)
+    (jda-gf-set-project-root)
+    (setq id (read-from-minibuffer "Id: "))
+    (setq start-date (read-from-minibuffer "Start date: "))
+    (setq end-date (read-from-minibuffer "End date: "))
+    (setq svnlr-rb (expand-file-name "svnlr.rb"
+                                     (file-name-directory (symbol-file 'jda-svn-log-report))))
+    (setq command (jda-read-shell-command
+                   "Command: "
+                   (format "cd %s; svn log | ~/settings/emacs/svnlr.rb -id %s -sd %s -ed %s"
+                           jda-gf-project-root
+                           id
+                           start-date
+                           end-date)))
+    (shell-command command "*svn-log-report*")))
 
 (global-set-key (kbd "C-x v #") 'jda-svn-log-report)
 
@@ -568,7 +568,7 @@ Otherwise, return result of last form in BODY."
 (ignore-errors
   (require 'eclim)
   (global-eclim-mode)
-  
+
   (setq help-at-pt-display-when-idle t)
   (setq help-at-pt-timer-delay 0.1)
   (help-at-pt-set-timer)
@@ -587,10 +587,10 @@ Otherwise, return result of last form in BODY."
   (require 'yasnippet)
   (yas/global-mode 1)
   (setq yas/snippet-dirs '("~/settings/emacs/snippets"
-						   "~/settings/emacs/site-lisp/yasnippet/snippets"))
+                           "~/settings/emacs/site-lisp/yasnippet/snippets"))
   (setq yas/prompt-functions (cons 'yas/dropdown-prompt
-								   (remove 'yas/dropdown-prompt
-										   yas/prompt-functions)))
+                                   (remove 'yas/dropdown-prompt
+                                           yas/prompt-functions)))
   (require 'auto-complete-yasnippet))
 
 ;;;; wgrep
@@ -612,37 +612,37 @@ finished."
 (defun docsetutil-search-wrap(&optional full-text)
   (interactive)
   (docsetutil-search (completing-read (format "Apple docset %s search: "
-											  (if full-text "full-text" "API"))
-									  (docsetutil-objc-completions)
-									  nil
-									  nil
-									  (current-word)
-									  'docsetutil-search-history (current-word))
-					 full-text)
+                                              (if full-text "full-text" "API"))
+                                      (docsetutil-objc-completions)
+                                      nil
+                                      nil
+                                      (current-word)
+                                      'docsetutil-search-history (current-word))
+                     full-text)
   (let ((help-buffer (get-buffer "*Help*")))
-	(when (and docsetutil-select-help-window help-buffer)
-	  (select-window (get-buffer-window help-buffer)))))
+    (when (and docsetutil-select-help-window help-buffer)
+      (select-window (get-buffer-window help-buffer)))))
 
 (defun get-docsetutil-path ()
   (interactive)
   (or (executable-find "docsetutil")
-	  (with-temp-buffer
-		(if (equal
-			 (shell-command-on-region (point-min)
-									  (point-max)
-									  "xcrun --find docsetutil"
-									  t)
-			 0)
-			(buffer-substring (point-min) (- (point-max) 1))
-		  "docsetutil"))				;not found
-	  ))
+      (with-temp-buffer
+        (if (equal
+             (shell-command-on-region (point-min)
+                                      (point-max)
+                                      "xcrun --find docsetutil"
+                                      t)
+             0)
+            (buffer-substring (point-min) (- (point-max) 1))
+          "docsetutil"))                ;not found
+      ))
 
 (defun set-docsetutil-path ()
   (interactive)
   (if (null (executable-find
-			 docsetutil-program))
-	  (setq-default docsetutil-program
-					(get-docsetutil-path))))
+             docsetutil-program))
+      (setq-default docsetutil-program
+                    (get-docsetutil-path))))
 
 (defun docsetutil-search-api ()
   (interactive)
@@ -668,32 +668,32 @@ finished."
 
 (setq org-log-done t)
 (setq org-todo-keywords
-	  '((sequence "TODO(t)" "STARTED(s!)" "WAITING(w@/!)" "APPT(a@)" "|" "DONE(d!)" "CANCELED(c@)" "POSTPONED(p@)")
-		(sequence "TODO(t)" "|" "DONE(d!)")
-		(sequence "REPORT(r)" "BUG(b!)" "KNOWNCAUSE(k!)" "|" "FIXED(f@)")))
+      '((sequence "TODO(t)" "STARTED(s!)" "WAITING(w@/!)" "APPT(a@)" "|" "DONE(d!)" "CANCELED(c@)" "POSTPONED(p@)")
+        (sequence "TODO(t)" "|" "DONE(d!)")
+        (sequence "REPORT(r)" "BUG(b!)" "KNOWNCAUSE(k!)" "|" "FIXED(f@)")))
 
 (setq org-todo-keyword-faces
-	  '(("TODO" . (:foreground "firebrick2" :weight bold))
-		("STARTED" . (:foreground "olivedrab"' :weight bold))
-		("WAITING" . (:foreground "sienna" :weight bold))
-		("APPT" . (:foreground "steelblue" :weight bold))
-		("DONE" . (:foreground "forestgreen" :weight bold))
-		("DEFERRED" . (:foreground "forestgreen" :weight bold))
-		("CANCELED" . shadow)))
+      '(("TODO" . (:foreground "firebrick2" :weight bold))
+        ("STARTED" . (:foreground "olivedrab"' :weight bold))
+        ("WAITING" . (:foreground "sienna" :weight bold))
+        ("APPT" . (:foreground "steelblue" :weight bold))
+        ("DONE" . (:foreground "forestgreen" :weight bold))
+        ("DEFERRED" . (:foreground "forestgreen" :weight bold))
+        ("CANCELED" . shadow)))
 
 (setq org-tag-alist '(("@work" . ?w)
-					  ("@home" . ?h)
-					  ("computer" . ?c)
-					  ("project" . ?p)
-					  ("reading" . ?r)
-					  ("music" . ?m)
-					  ("video" . ?v)))
+                      ("@home" . ?h)
+                      ("computer" . ?c)
+                      ("project" . ?p)
+                      ("reading" . ?r)
+                      ("music" . ?m)
+                      ("video" . ?v)))
 
 (setq org-columns-default-format "%7TODO(To Do) %5Effort(Time){:} %6CLOCKSUM{Total} %38ITEM(Details) %TAGS(Context)")
 (setq org-global-properties '(("Effort_All" . "0 0:10 0:20 0:30 1:00 2:00 3:00 4:00 8:00")))
 (setq org-agenda-files (list "~/org/hobby.org"
-							 "~/org/study.org"
-							 "~/org/work.org"))
+                             "~/org/study.org"
+                             "~/org/work.org"))
 (setq org-clock-persist t)
 
 ;; ======================================================================
@@ -703,48 +703,48 @@ finished."
  ;; auto join
  '(erc-autojoin-channels-alist
    '(("hanirc.org"
-	  "#gnome"
-	  "#c++"
-	  "#java"
-	  "#eclipse"
-	  "#lisp"
-	  "#perl"
-	  "#python"
-	  "#ruby")
-	 ("freenode.net"
-	  "#android"
-	  "#android-dev"
-	  "##gnome"
-	  "#ubuntu"
-	  "#lisp"
-	  "#scheme"
-	  "#haskell"
-	  "##c++"
-	  "#perl"
-	  "#ruby"
-	  "#eclipse"
-	  "#emacs"
-	  "#python"
-	  "##java")))
+      "#gnome"
+      "#c++"
+      "#java"
+      "#eclipse"
+      "#lisp"
+      "#perl"
+      "#python"
+      "#ruby")
+     ("freenode.net"
+      "#android"
+      "#android-dev"
+      "##gnome"
+      "#ubuntu"
+      "#lisp"
+      "#scheme"
+      "#haskell"
+      "##c++"
+      "#perl"
+      "#ruby"
+      "#eclipse"
+      "#emacs"
+      "#python"
+      "##java")))
  ;; for hanirc.org
  '(erc-server-coding-system (quote (cp949 . undecided))))
 
-(setq erc-server "irc.hanirc.org" 
-	  erc-port 6667 
-	  erc-nick "jjong"
-	  erc-user-full-name "The little prince"
-	  erc-password nil
-	  erc-prompt-for-password t)
+(setq erc-server "irc.hanirc.org"
+      erc-port 6667
+      erc-nick "jjong"
+      erc-user-full-name "The little prince"
+      erc-password nil
+      erc-prompt-for-password t)
 
-(setq erc-server "irc.freenode.net" 
-	  erc-port 6667 
-	  erc-nick "jjong"
-	  erc-password nil
-	  erc-prompt-for-password t)
+(setq erc-server "irc.freenode.net"
+      erc-port 6667
+      erc-nick "jjong"
+      erc-password nil
+      erc-prompt-for-password t)
 
 ;; ======================================================================
 ;; Using ThingAtPoint and the Existing C-s C-w
-;; 
+;;
 ;; http://www.emacswiki.org/emacs/SearchAtPoint
 ;; ======================================================================
 (defun isearch-yank-symbol-from-beginning ()
@@ -756,16 +756,16 @@ finished."
       (beginning-of-thing 'symbol))
   (isearch-yank-char (- (end-of-thing 'symbol) (beginning-of-thing 'symbol)))
   ;; Revert to 'isearch-yank-word-or-char for subsequent calls
-  (substitute-key-definition 'isearch-yank-symbol-from-beginning 
-							 'isearch-yank-word-or-char
-							 isearch-mode-map))
+  (substitute-key-definition 'isearch-yank-symbol-from-beginning
+                             'isearch-yank-word-or-char
+                             isearch-mode-map))
 
 (add-hook 'isearch-mode-hook
-		  (lambda ()
-			"Activate my customized Isearch word yank command."
-			(substitute-key-definition 'isearch-yank-word-or-char 
-									   'isearch-yank-symbol-from-beginning
-									   isearch-mode-map)))
+          (lambda ()
+            "Activate my customized Isearch word yank command."
+            (substitute-key-definition 'isearch-yank-word-or-char
+                                       'isearch-yank-symbol-from-beginning
+                                       isearch-mode-map)))
 
 ;; ======================================================================
 ;; Misc. Customization
@@ -780,20 +780,20 @@ finished."
 (defun install-elpa ()
   (interactive)
   (cond ((not (file-exists-p "~/.emacs.d/elpa/package.el"))
-		 (let ((buffer (url-retrieve-synchronously
-						"http://tromey.com/elpa/package-install.el")))
-		   (save-excursion
-			 (set-buffer buffer)
-			 (goto-char (point-min))
-			 (re-search-forward "^$" nil 'move)
-			 (eval-region (point) (point-max))
-			 (kill-buffer (current-buffer)))))
-		(t
-		 (message "ELPA is already installed."))))
+         (let ((buffer (url-retrieve-synchronously
+                        "http://tromey.com/elpa/package-install.el")))
+           (save-excursion
+             (set-buffer buffer)
+             (goto-char (point-min))
+             (re-search-forward "^$" nil 'move)
+             (eval-region (point) (point-max))
+             (kill-buffer (current-buffer)))))
+        (t
+         (message "ELPA is already installed."))))
 
 ;;;; el-get
 (if (file-exists-p "~/.emacs.d/el-get/el-get")
-	(add-to-list 'load-path "~/.emacs.d/el-get/el-get"))
+    (add-to-list 'load-path "~/.emacs.d/el-get/el-get"))
 
 (require 'el-get nil t)
 
@@ -803,38 +803,38 @@ finished."
 
 (global-set-key (kbd "C-x g") 'magit-status)
 (global-set-key (kbd "C-x v g") '(lambda()
-								   (interactive)
-								   (if (functionp 'magit-blame-popup)
-									   (magit-blame-popup)
-									 (magit-blame-mode))))
+                                   (interactive)
+                                   (if (functionp 'magit-blame-popup)
+                                       (magit-blame-popup)
+                                     (magit-blame-mode))))
 
 ;;;; el-get-post-init-hooks
 (add-hook 'el-get-post-init-hooks
-		  '(lambda (package)
-			 (cond ((eq package 'grep-a-lot)
-					(load-library "grep-a-lot")
-					(grep-a-lot-setup-keys)))))
+          '(lambda (package)
+             (cond ((eq package 'grep-a-lot)
+                    (load-library "grep-a-lot")
+                    (grep-a-lot-setup-keys)))))
 
 (defun install-el-get ()
   (interactive)
   (cond ((null (require 'el-get nil t))
-		 (url-retrieve
-		  "https://github.com/dimitri/el-get/raw/master/el-get-install.el"
-		  (lambda (s)
-			(end-of-buffer)
-			(eval-print-last-sexp))))
-		(t
-		 (message "el-get alread installed."))))
+         (url-retrieve
+          "https://github.com/dimitri/el-get/raw/master/el-get-install.el"
+          (lambda (s)
+            (end-of-buffer)
+            (eval-print-last-sexp))))
+        (t
+         (message "el-get alread installed."))))
 
 ;;;; platform specific settings
 (defun default-font-get (font-spec-list)
   (catch 'while-exit
-	(let (font)
-	  (while (not (null font-spec-list))
-		(setq font (eval (pop font-spec-list)))
-		(cond ((find-font font)
-			   (throw 'while-exit font)))))
-	(throw 'while-exit nil)))
+    (let (font)
+      (while (not (null font-spec-list))
+        (setq font (eval (pop font-spec-list)))
+        (cond ((find-font font)
+               (throw 'while-exit font)))))
+    (throw 'while-exit nil)))
 
 (defun init-ui ()
   (interactive)
