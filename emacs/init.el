@@ -600,6 +600,7 @@ Otherwise, return result of last form in BODY."
 ;;;; jda-minor-mode
 (ignore-errors
   (require 'jda)
+  (require 'jda-highlight-comment)
   (jda-minor-mode))
 
 ;;;; docsetutil-el
