@@ -1,0 +1,5 @@
+((nil . ((indent-tabs-mode . nil)
+         (tab-width . 4)
+         (fill-column . 80)))
+ (cmake-mode . ((cmake-tab-width . 2)))
+ (makefile-mode . ((indent-tabs-mode . t))))
