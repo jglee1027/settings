@@ -601,7 +601,8 @@ Otherwise, return result of last form in BODY."
 (ignore-errors
   (require 'jda)
   (require 'jda-highlight-comment)
-  (jda-minor-mode))
+  (jda-minor-mode)
+  (jda-hl-comment-mode))
 
 ;;;; docsetutil-el
 (defcustom docsetutil-select-help-window t
