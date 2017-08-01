@@ -64,8 +64,10 @@ Otherwise, return result of last form in BODY."
                       (setq dired-guess-shell-alist-user
                             (list
                              '("\\.[aA][vV][iI]$" "mplayer")
+                             '("\\.[eE][mM][lL]$" "thunderbird")
                              '("\\.[mM][kK][vV]$" "mplayer")
                              '("\\.[mM][pP]4$" "mplayer")
+                             '("\\.[pP][dD][fF]$" "evince")
                              '("\\.[wW][mM][vV]$" "mplayer"))))))
 
 ;;;; find-dired
