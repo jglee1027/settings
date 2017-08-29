@@ -7,6 +7,8 @@
 	precomposeunicode = true
 [color]
 	ui = true
+[log]
+    date = iso
 [alias]
 	bl = blame
 	br = branch
