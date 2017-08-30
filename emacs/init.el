@@ -106,6 +106,10 @@ Otherwise, return result of last form in BODY."
   '(global-set-key (kbd "C-x o") 'switch-window))
 
 (ignore-errors
+  (el-get-init 'switch-window))
+
+
+(ignore-errors
   (require 'uniquify))
 
 ;;;; Key definition
@@ -802,15 +806,37 @@ finished."
 (require 'el-get nil t)
 
 ;;;; magit
-(autoload 'magit-status "magit" nil t)
-(autoload 'magit-blame-mode "magit" nil t)
+(ignore-errors
+  (el-get-init 'magit)
+  (load-library "magit")
+  (autoload 'magit-status "magit" nil t)
+  (autoload 'magit-blame-mode "magit" nil t)
+  (global-set-key (kbd "C-x g") 'magit-status)
+  (global-set-key (kbd "C-x v g") '(lambda()
+                                     (interactive)
+                                     (if (functionp 'magit-blame-popup)
+                                         (magit-blame-popup)
+                                       (magit-blame-mode)))))
+;;;; irony
+(ignore-errors
+  (el-get-init 'irony-mode)
+  (load-library "irony")
+  (load-library "irony-cdb")
+  (add-hook 'c++-mode-hook 'irony-mode)
+  (add-hook 'c-mode-hook 'irony-mode)
+  (add-hook 'objc-mode-hook 'irony-mode)
+  (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options))
 
-(global-set-key (kbd "C-x g") 'magit-status)
-(global-set-key (kbd "C-x v g") '(lambda()
-                                   (interactive)
-                                   (if (functionp 'magit-blame-popup)
-                                       (magit-blame-popup)
-                                     (magit-blame-mode))))
+(ignore-errors
+  (el-get-init 'irony-eldoc)
+  (load-library "irony-eldoc")
+  (add-hook 'irony-mode-hook 'irony-eldoc))
+
+;;;; company
+(ignore-errors (el-get-init 'company-mode)
+               (load-library "company")
+               (global-company-mode))
+
 
 ;;;; el-get-post-init-hooks
 (add-hook 'el-get-post-init-hooks
