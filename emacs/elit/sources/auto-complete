@@ -13,7 +13,7 @@ target() {
 }
 
 install() {
-	git clone http://cx4a.org/repo/auto-complete.git &&
+	git clone https://github.com/auto-complete/auto-complete.git &&
 	cd auto-complete &&
 	git checkout 1.3
 }
