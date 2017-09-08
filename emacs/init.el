@@ -383,6 +383,11 @@ Otherwise, return result of last form in BODY."
           (function (lambda ()
                       (c-set-style "my-c-style"))))
 
+;;;; eldoc
+(add-hook 'emacs-lisp-mode-hook 'turn-on-eldoc-mode)
+(add-hook 'lisp-interaction-mode-hook 'turn-on-eldoc-mode)
+(add-hook 'ielm-mode-hook 'turn-on-eldoc-mode)
+
 (eval-after-load "c-eldoc"
   '(progn
      (add-hook 'c-mode-hook 'c-turn-on-eldoc-mode)
