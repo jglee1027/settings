@@ -227,6 +227,24 @@ Otherwise, return result of last form in BODY."
             (local-set-key (kbd "C-c ' k") 'hs-hide-all)
             (local-set-key (kbd "C-c ' l") 'hs-show-all)))
 
+;;;; smerge-mode
+(add-hook 'smerge-mode-hook
+          (lambda()
+            (define-key smerge-mode-map (kbd "C-c RET") 'smerge-keep-current)
+            (define-key smerge-mode-map (kbd "C-c C") 'smerge-combine-with-next)
+            (define-key smerge-mode-map (kbd "C-c E") 'smerge-ediff)
+            (define-key smerge-mode-map (kbd "C-c R") 'smerge-refine)
+            (define-key smerge-mode-map (kbd "C-c a") 'smerge-keep-all)
+            (define-key smerge-mode-map (kbd "C-c b") 'smerge-keep-base)
+            (define-key smerge-mode-map (kbd "C-c m") 'smerge-keep-mine)
+            (define-key smerge-mode-map (kbd "C-c n") 'smerge-next)
+            (define-key smerge-mode-map (kbd "C-c o") 'smerge-keep-other)
+            (define-key smerge-mode-map (kbd "C-c p") 'smerge-prev)
+            (define-key smerge-mode-map (kbd "C-c r") 'smerge-resolve)
+            (define-key smerge-mode-map (kbd "C-c <") 'smerge-diff-base-mine)
+            (define-key smerge-mode-map (kbd "C-c =") 'smerge-diff-mine-other)
+            (define-key smerge-mode-map (kbd "C-c >") 'smerge-diff-base-other)))
+
 ;;;; highlight-symbol
 (global-set-key (kbd "C-c j 8") 'highlight-symbol-mode)
 (global-set-key (kbd "C-c *") 'highlight-symbol-remove-all)
