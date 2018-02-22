@@ -132,10 +132,10 @@ gr() {
         refspec="$local_branch:refs/for/$remote_branch"
     fi
 
-    echo -n "git push $repo $refspec (y or n) "
+    echo -n "git push $repo $refspec$PUSH_OPTIONS (y or n) "
     read choice
     if [ "$choice" = "Y" -o "$choice" = "y" ]; then
-        git push $repo $refspec
+        git push $repo $refspec$PUSH_OPTIONS
     fi
 }
 
