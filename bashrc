@@ -157,7 +157,7 @@ alias gl='git log --format=fuller --decorate=full'
 alias gpush='git push'
 alias gpull='git pull'
 alias gs='git status --short --branch'
-alias gsh='git show'
+alias gsh='git show --format=fuller'
 alias rm~='find . -iname "*~" | xargs rm -v'
 alias yd='youtube-dl -f bestvideo+bestaudio'
 
