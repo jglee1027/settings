@@ -5,23 +5,25 @@
 	editor = vim
 	quotepath = no
 	precomposeunicode = true
+	pager = less -x1,5
 [color]
 	ui = true
-[log]
-    date = iso
 [alias]
 	bl = blame
 	br = branch
 	ci = commit
 	co = checkout
+	cp = cherry-pick -x
 	d = diff
 	di = diff --full-index
-	l = log --graph
+	l = log --graph --format=fuller
 	lg = log --graph --decorate --pretty=oneline --abbrev-commit --all
 	lgs = log --graph --decorate --oneline --simplify-by-decoration --all
 	ll = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --numstat
 	ls = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate
 	lsd = log --pretty=format:"%C(yellow)%h\\ %ad%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --date=short
 	s = status -sb
-	sh = show
+	sh = show --format=fuller
 	st = status -uno
+[log]
+	date = iso
