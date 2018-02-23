@@ -13,7 +13,8 @@
 	br = branch
 	ci = commit
 	co = checkout
-	cp = cherry-pick -x
+	cp = cherry-pick
+	cpx = cherry-pick -x
 	d = diff
 	di = diff --full-index
 	l = log --graph --format=fuller
