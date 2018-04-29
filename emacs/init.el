@@ -406,6 +406,14 @@ Otherwise, return result of last form in BODY."
 (add-hook 'lisp-interaction-mode-hook 'turn-on-eldoc-mode)
 (add-hook 'ielm-mode-hook 'turn-on-eldoc-mode)
 
+(eval-after-load "highlight-sexp"
+  '(progn
+     (setq hl-sexp-background-color (if window-system
+                                        "#00008b"
+                                      "#ffffd7"))
+     (add-hook 'lisp-mode-hook 'highlight-sexp-mode)
+     (add-hook 'emacs-lisp-mode-hook 'highlight-sexp-mode)))
+
 (eval-after-load "c-eldoc"
   '(progn
      (add-hook 'c-mode-hook 'c-turn-on-eldoc-mode)
