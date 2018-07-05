@@ -899,7 +899,8 @@ finished."
 
 (defun init-ui ()
   (interactive)
-  (tool-bar-mode -1)
+  (if (functionp 'tool-bar-mode)
+      (tool-bar-mode -1))
   (if window-system
       (menu-bar-mode 1)
     (menu-bar-mode -1))
