@@ -161,5 +161,8 @@ alias gsh='git show --format=fuller'
 alias rm~='find . -iname "*~" | xargs rm -v'
 alias yd='youtube-dl -f bestvideo+bestaudio'
 
-settings_dir="$(dirname ${BASH_SOURCE[0]})"
-export PATH=$PATH:$settings_dir/bin
+src=${BASH_SOURCE[0]}
+if [ "$src" != "" ]; then
+    settings_dir="$(dirname $src)"
+    export PATH=$PATH:$settings_dir/bin
+fi
