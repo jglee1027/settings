@@ -259,8 +259,9 @@ Otherwise, return result of last form in BODY."
 
 ;;;; whitespace-mode
 (setq whitespace-display-mappings
-      '((space-mark 32 [?␣])
-        (newline-mark 10 [?¶ ?\n])
+      '(;; not display in fixed-width
+        ;; (space-mark 32 [?\␣])
+        ;; (newline-mark 10 [?¶ ?\n])
         (tab-mark 9 [?» ?\t])))
 
 (add-hook 'whitespace-mode-hook
