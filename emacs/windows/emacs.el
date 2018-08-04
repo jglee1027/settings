@@ -3,14 +3,14 @@
 ;; ======================================================================
 (defvar default-font-spec-eng-list '((font-spec :family "Andale Mono" :size 9.0)
                                      (font-spec :family "Ubuntu Mono" :size 9.0)
-                                     (font-spec :family "³ª´®°íµñÄÚµù" :size 10.0)
-                                     (font-spec :family "Bitstream Vera Sans Mono" :size 10.0)
-                                     (font-spec :family "Verdana" :size 10.0)))
+                                     (font-spec :family "³ª´®°íµñÄÚµù" :size 9.0)
+                                     (font-spec :family "Bitstream Vera Sans Mono" :size 9.0)
+                                     (font-spec :family "Consolas" :size 9.0)))
 
-(defvar default-font-spec-kor-list '((font-spec :family "NanumGothic" :size 10.0)
-                                     (font-spec :family "³ª´®°íµñÄÚµù" :size 10.0)
-                                     (font-spec :family "¸¼Àº °íµñ" :size 10.0)
-                                     (font-spec :family "±¼¸²" :size 10.0)))
+(defvar default-font-spec-kor-list '((font-spec :family "NanumGothic" :size 9.0)
+                                     (font-spec :family "³ª´®°íµñÄÚµù" :size 9.0)
+                                     (font-spec :family "¸¼Àº °íµñ" :size 9.0)
+                                     (font-spec :family "±¼¸²" :size 9.0)))
 
 (custom-set-variables
  '(scroll-bar-mode nil))
