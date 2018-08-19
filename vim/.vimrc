@@ -24,7 +24,13 @@ set hlsearch		" 찾는 단어 하이라이팅
 set autowrite       " :next 나 :make 같은 명령를 입력하면 자동으로 저장
 set title			" 타이틀바에 현재 편집중인 파일을 표시
 set titleold=""
-set listchars=eol:¶,tab:»\ ,trail:~,extends:>,precedes:<,space:␣
+
+if has("patch-7.4.710")
+    set listchars=eol:¶,tab:»\ ,trail:~,extends:>,precedes:<,space:␣
+else
+    set listchars=eol:¶,tab:»\ ,trail:~,extends:>,precedes:<
+endif
+
 set selectmode=mouse,key
  
 """ ========================================================
