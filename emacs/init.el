@@ -119,7 +119,7 @@ Otherwise, return result of last form in BODY."
 (global-set-key (kbd "C-c C-s a") 'semantic-complete-analyze-inline)
 (global-set-key (kbd "C-c /") 'semantic-ia-complete-symbol-menu)
 (global-set-key (kbd "C-c c") 'compile)
-(global-set-key (kbd "C-c r") 'recompile)
+(global-set-key (kbd "C-c C") 'recompile)
 (global-set-key (kbd "C-c TAB") 'indent-relative)
 (global-set-key (kbd "C-x p") 'previous-buffer)
 (global-set-key (kbd "C-x n") 'next-buffer)
