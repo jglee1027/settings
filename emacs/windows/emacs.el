@@ -1,7 +1,8 @@
 ;; ======================================================================
 ;; Custom variables and faces
 ;; ======================================================================
-(defvar default-font-spec-eng-list '((font-spec :family "Andale Mono" :size 9.0)
+(defvar default-font-spec-eng-list '((font-spec :family "Dina TTF" :size 9.0)
+                                     (font-spec :family "Andale Mono" :size 9.0)
                                      (font-spec :family "Ubuntu Mono" :size 9.0)
                                      (font-spec :family "³ª´®°íµñÄÚµù" :size 9.0)
                                      (font-spec :family "Bitstream Vera Sans Mono" :size 9.0)
@@ -27,7 +28,7 @@
                 :underline nil
                 :slant normal
                 :weight normal
-                :height 98
+                :height 90
                 :width normal
                 :foundry "outline"))))
  '(compilation-error ((t (:foreground "red"))))
