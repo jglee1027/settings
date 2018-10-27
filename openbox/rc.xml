@@ -441,6 +441,10 @@
     <keybind key="W-m">
       <action name="Iconify"/>
     </keybind>
+    <!-- Keybindings to toggle fullscreen -->
+    <keybind key="F11">
+      <action name="ToggleFullscreen"/>
+    </keybind>
     <!-- Keybindings for running applications -->
     <keybind key="W-e">
       <action name="Execute">
