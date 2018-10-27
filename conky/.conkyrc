@@ -47,7 +47,7 @@ ${color #0077ff}Swap Usage:$color $swap${color #0077ff}/${color}$swapmax - $swap
 ${color #0077ff}Procs:$color $processes ${color #0077ff}Run:$color $running_processes ${color #0077ff}CPU:$color $cpu
 ${color #0077ff}Entropy: ${color}${entropy_avail}${color #0077ff}/${color}${entropy_poolsize} ${color #0077ff}${entropy_bar}
 ${color #0077ff}Master Volume:
-$color ${execi 1 amixer sget Master | grep '  Front'}
+$color ${execi 1 amixer sget Master | grep '%]'}
 ${color #90c090}File Systems $hr
 ${color #0077ff}/          $color${fs_used /}/${fs_size /}${alignr}${color #0077ff}${fs_bar 5,120 /}
 ${color #0077ff}/home      $color${fs_used /home}/${fs_size /home}${alignr}${color #0077ff}${fs_bar 5,120 /home}
