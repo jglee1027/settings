@@ -455,6 +455,11 @@
         <command>pcmanfm</command>
       </action>
     </keybind>
+    <keybind key="W-t">
+      <action name="Execute">
+        <command>x-terminal-emulator</command>
+      </action>
+    </keybind>
     <!-- Keybindings for Volume management -->
     <keybind key="W-F12">
       <action name="Execute">
