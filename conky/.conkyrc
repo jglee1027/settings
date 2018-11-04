@@ -40,6 +40,9 @@ ${color #90c090}Time $hr
 ${offset 80}${color}${font Arial:style=bold:size=34}${time %I:%M}${font :size=8}${voffset -26}${offset 10}${font Arial:style=bold:size=20}${time %d} ${voffset 3}${font NanumGothic:style=bold:size=9}${time %B}${font :size=8}${voffset 10}${font NanumGothic:style=bold:size=9}${offset -57}${time %A}${font}
 ${color #90c090}System $hr
 ${color #0077ff}Uptime:$color $uptime ${color #0077ff} Load:$color $loadavg
+${if_existing /sys/class/power_supply/BAT1}\
+${color #0077ff}Battery:$color ${battery_short BAT1}(${battery_time BAT1}) ${color #0077ff}${battery_bar BAT1}
+${endif}\
 ${color #0077ff}CPU:$color ${cpu}% ${color #0077ff}${cpubar 5,85}${alignr}${color #0077ff}Disk I/O: $color${diskio}
 ${color #0077ff}${cpugraph 0 32,155 104E8B 0077ff} $alignr${color #0077ff}${diskiograph 32,155 104E8B 0077ff 750}
 ${color #0077ff}RAM  Usage:$color $mem${color #0077ff}/${color}$memmax - $memperc% ${color #0077ff}$membar
