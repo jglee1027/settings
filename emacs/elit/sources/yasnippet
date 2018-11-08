@@ -15,6 +15,7 @@ target() {
 install() {
 	git clone git://github.com/capitaomorte/yasnippet.git &&
 	cd yasnippet &&
+	git checkout 0.10.0 &&
 	git submodule init &&
 	git submodule update
 }
