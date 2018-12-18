@@ -839,7 +839,7 @@ finished."
 
 ;;;; magit
 (ignore-errors
-  (el-get-init 'magit)
+  (ignore-errors (el-get-init 'magit))
   (load-library "magit")
   (autoload 'magit-status "magit" nil t)
   (autoload 'magit-blame-mode "magit" nil t)
