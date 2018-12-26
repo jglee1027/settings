@@ -160,6 +160,7 @@ alias gs='git status --short --branch'
 alias gsh='git show --format=fuller'
 alias rm~='find . -iname "*~" | xargs rm -v'
 alias yd='youtube-dl -f bestvideo+bestaudio'
+alias weather='curl -4 http://wttr.in/Pangyo,South_Korea'
 
 src=${BASH_SOURCE[0]}
 if [ "$src" != "" ]; then
