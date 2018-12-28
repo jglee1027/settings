@@ -75,6 +75,9 @@ echo_end   xmodmap
 # echo_end font
 
 echo_begin git
+git_user_name="`git config --global --get user.name`"
+git_user_email="`git config --global --get user.email`"
+
 diff_cp $settings_path/git/.gitconfig ~/.gitconfig
 
 git_version=`git --version | cut -d ' ' -f 3`
@@ -83,6 +86,19 @@ if fge $git_version 1.7.11; then
 else
 	git config --global push.default current
 fi
+
+if [ "$git_user_name" = "" ]; then
+		echo -n "user.name: "
+		read git_user_name
+fi
+
+if [ "$git_user_email" = "" ]; then
+		echo -n "user.email: "
+		read git_user_email
+fi
+
+git config --global user.name "$git_user_name"
+git config --global user.email "$git_user_email"
 echo_end   git
 
 echo_begin gdb
