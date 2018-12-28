@@ -37,7 +37,7 @@ fge() {
 }
 
 echo_begin() {
-	echo -ne "$1 settings...\r"
+	echo "--- $1 settings ---"
 }
 
 echo_end() {
