@@ -1,5 +1,8 @@
 command script import ~/settings/lldb/lldb_wchar_t_summary_provider.py
 command script import ~/settings/lldb/lldb_qstring_summary_provider.py
+command script import ~/settings/lldb/lldb_std_wstring_summary_provider.py
 type summary add -F lldb_wchar_t_summary_provider.utf16 "wchar_t *"
 command regex pw 's/(.+)/print (wchar_t*) %1/'
 type summary add -F lldb_qstring_summary_provider.qstring_summary "QString"
+type summary add -F lldb_std_wstring_summary_provider.std_wstring_summary "hncstd::wstring"
+type summary add -F lldb_std_wstring_summary_provider.std_wstring_summary "std::wstring"
