@@ -28,11 +28,11 @@ fi
 CUR_TITLE="$SONGTITLE - $ARTIST - $ALBUM"
 
 if [ "$CUR_TITLE" != "`cat $TMP_TITLE_FILE`" ]; then
-	title=$(echo "$SONGTITLE" | perl -MURI::Escape -ne 'chomp;print uri_escape($_),"\n"')
-	artist=$(echo "$ARTIST" | perl -MURI::Escape -ne 'chomp;print uri_escape($_),"\n"')
-	lyrics=$(curl -s --connect-timeout 30 "http://makeitpersonal.co/lyrics?artist=$artist&title=$title")
-	printf "$SONGTITLE - $ARTIST - $ALBUM" > $TMP_TITLE_FILE
-	printf "$lyrics" > $TMP_LYRICS_FILE
+    title=$(echo "$SONGTITLE" | perl -MURI::Escape -ne 'chomp;print uri_escape($_),"\n"')
+    artist=$(echo "$ARTIST" | perl -MURI::Escape -ne 'chomp;print uri_escape($_),"\n"')
+    lyrics=$(curl -s --connect-timeout 30 "http://makeitpersonal.co/lyrics?artist=$artist&title=$title")
+    printf "$SONGTITLE - $ARTIST - $ALBUM" > $TMP_TITLE_FILE
+    printf "$lyrics" > $TMP_LYRICS_FILE
 fi
 
 printf "`cat $TMP_TITLE_FILE`"

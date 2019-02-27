@@ -3,11 +3,11 @@
 SCRIPT_NAME=$(basename $0)
 
 if [ "$1" = "" -o "$2" == "" ]; then
-	echo "SYNOPSIS"
-	echo "   $SCRIPT_NAME FILEA FILEB"
-	echo "EXAMPLE"
-	echo "   $ $SCRIPT_NAME a.txt b.txt"
-	exit 1
+    echo "SYNOPSIS"
+    echo "   $SCRIPT_NAME FILEA FILEB"
+    echo "EXAMPLE"
+    echo "   $ $SCRIPT_NAME a.txt b.txt"
+    exit 1
 fi
 
 emacs -nw --execute="(ediff \"$1\" \"$2\")"
