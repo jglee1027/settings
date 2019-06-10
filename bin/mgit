@@ -13,6 +13,8 @@ do
         BRANCH=`cd $PWD/$i && git rev-parse --abbrev-ref HEAD`
         for ((col=0; col<$COLS; col++)); do echo -n "#"; done
         echo -e "\r##### ${LBLUE}$i{${BRANCH}}${NORMAL}:${BLUE}$PWD/$i${NORMAL} "
-        (cd $PWD/$i && git $*)
+        if [ $# -ge 1 ]; then
+            (cd $PWD/$i && git $*)
+        fi
     fi
 done
