@@ -16,7 +16,7 @@ function get_reviewers() {
         curdir=$(dirname $curdir)
     done
 
-    echo "${res:0:-1}"
+    echo "${res:0:$((${#res} - 1))}"
 }
 
 SCRIPT_NAME=$(basename $0)
