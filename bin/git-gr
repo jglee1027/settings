@@ -1,5 +1,24 @@
 #!/usr/bin/env bash
 
+function get_reviewers() {
+    local curdir=$PWD
+    local reviewers_file=.gitreviewers
+    local res="%"
+
+    while [ $curdir != "/" ]
+    do
+        reviewers_file_path=$curdir/$reviewers_file
+        if [ -e $reviewers_file_path ]; then
+            for i in `cat $reviewers_file_path`; do
+                res="${res}r=$i,"
+            done
+        fi
+        curdir=$(dirname $curdir)
+    done
+
+    echo "${res:0:-1}"
+}
+
 SCRIPT_NAME=$(basename $0)
 
 if [ "$1" = "--help" ]; then
@@ -32,6 +51,10 @@ fi
 
 if [ "$refspec" = "" ]; then
     refspec="$local_branch:refs/for/$remote_branch"
+fi
+
+if [ "$PUSH_OPTIONS" = "" ]; then
+    PUSH_OPTIONS="$(get_reviewers)"
 fi
 
 echo -n "git push $repo $refspec$PUSH_OPTIONS (y or n) "
