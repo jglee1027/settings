@@ -72,7 +72,7 @@ $color ${top_mem name 4} 	 ${top_mem pid 4} ${top_mem cpu 4} ${top_mem mem 4}
 $color ${top_mem name 5} 	 ${top_mem pid 5} ${top_mem cpu 5} ${top_mem mem 5}
 ${color #90c090}Network $hr
 ${color #0077ff}External IP: ${color}${execi 600 dig +short myip.opendns.com @resolver1.opendns.com}${if_existing /proc/net/route eth0}
-${lua_parse network Wired eth}
+${lua_parse network Wired eth0}${endif}
 ${lua_parse network Wireless wlan}
 ${color #0077ff}Port(s)${alignr}#Connections
 $color Inbound: ${tcp_portmon 1 32767 count} Outbound: ${tcp_portmon 32768 61000 count}${alignr} ALL: ${tcp_portmon 1 65535 count}
