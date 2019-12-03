@@ -1,8 +1,8 @@
 #!/bin/bash
 
 if [ "$1" == "" ]; then
-	echo Usage: mconv file
-	exit 1;
+    echo Usage: mconv file
+    exit 1;
 fi
 
 in_file="$1"
@@ -13,9 +13,9 @@ sub_file=`ls "${in_file_name}".s*`
 sub_option=""
 
 if [ ! -e "$sub_file" ]; then
-	echo "Not found $sub_file !!!"
+    echo "Not found $sub_file !!!"
 else
-	sub_option="-sub $sub_file"
+    sub_option="-sub $sub_file"
 fi
 
 mencoder -noodml "$in_file" -o "$out_file" -ofps 24.000 -vf-add crop=0:0:-1:-1 -vf-add scale=1280:720 -vf-add expand=1280:720:-1:-1:1 -srate 44100 -of mpeg -ovc lavc -lavcopts vcodec=mpeg2video -lavcopts vbitrate=600 -oac mp3lame -lameopts vbr=0 -lameopts br=128 -lameopts vol=0 -lameopts mode=0 -lameopts aq=5 -lameopts padding=3 $sub_option -subpos 90 -af volnorm

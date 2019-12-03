@@ -10,16 +10,16 @@ HALF_OF_MONITOR=$(($HALF_OF_SCREEN / $MONITORS))
 
 # left in a monitor
 if [ $ACTIVE_WIN_POS_X -ge $HALF_OF_SCREEN ]; then
-	X=$HALF_OF_SCREEN
+    X=$HALF_OF_SCREEN
 else
-	X=0
+    X=0
 fi
 WIDTH=$HALF_OF_MONITOR
 
 # left in the screen
 if [ "$1" = "monitor" ]; then
-	X=0
-	WIDTH=$HALF_OF_SCREEN
+    X=0
+    WIDTH=$HALF_OF_SCREEN
 fi
 
 wmctrl -r :ACTIVE: -b add,maximized_vert && wmctrl -r :ACTIVE: -e 0,$X,0,$WIDTH,-1

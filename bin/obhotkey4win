@@ -5,17 +5,17 @@ obconf_dir=~/.config/openbox/
 is_valid_arg=`[[ $1 =~ ^[f|F][1-9]$ ]] && echo "true"`
 
 if [ "$1" = "" -o "$is_valid_arg" != "true" ]; then
-	echo "Usage : $filename key"
-	echo "$filename is the shell script to bind a hotkey to activate"
-	echo "the specified window."
-	echo
-	echo "KEY"
-	echo "  f1, f2, f3, f4, f5, f6, f7, f8, f9"
-	echo
-	echo "EXAMPLES"
-	echo "  $ $filename f1"
-	echo "  To activate the specified window, press \"Win-F1\""
-	exit 1
+    echo "Usage : $filename key"
+    echo "$filename is the shell script to bind a hotkey to activate"
+    echo "the specified window."
+    echo
+    echo "KEY"
+    echo "  f1, f2, f3, f4, f5, f6, f7, f8, f9"
+    echo
+    echo "EXAMPLES"
+    echo "  $ $filename f1"
+    echo "  To activate the specified window, press \"Win-F1\""
+    exit 1
 fi
 
 echo "Please select the window about which you would like to activate by pressing \"Win-${1^^}\""

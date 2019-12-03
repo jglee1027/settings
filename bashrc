@@ -139,6 +139,41 @@ gr() {
     fi
 }
 
+grho() {
+    if [ "$1" = "--help" ]; then
+        echo "SYNOPSIS"
+        echo "   ${FUNCNAME[0]} [COMMIT]"
+        echo "EXAMPLE"
+        echo "   $ ${FUNCNAME[0]} origin/develop"
+        return 0
+    fi
+
+    local_branch=$(git rev-parse --abbrev-ref HEAD)
+    if [ $? -ne 0 ]; then
+        return 1
+    fi
+
+    commit=$1
+    if [ "$commit" = "" ]; then
+        remote=$(git config "branch.${local_branch}.remote")
+        if [ "$remote" = "" ]; then
+            echo "error: Not found upsteam of '${local_branch}' branch !!!"
+            echo "Run \"git branch --set-upstream-to\""
+            return 2
+        fi
+
+        remote_branch=$(git config "branch.${local_branch}.merge")
+        remote_branch=${remote_branch##refs/heads/}
+        commit="$remote/$remote_branch"
+    fi
+
+    echo -n "git reset --hard $commit (y or n) "
+    read choice
+    if [ "$choice" = "Y" -o "$choice" = "y" ]; then
+        git reset --hard  $commit
+    fi
+}
+
 export TERM=xterm-256color
 export PS1="\[\033[01;32m\]\u@\h:\w\$(git branch 2>/dev/null | grep -e '\* ' | sed 's/^..\(.*\)/{\1}/')\[\033[00m\]\$ "
 
@@ -156,9 +191,11 @@ alias gg='git grep'
 alias gl='git log --format=fuller --decorate=full'
 alias gpush='git push'
 alias gpull='git pull'
+alias gr='git-gr'
 alias gs='git status --short --branch'
 alias gsh='git show --format=fuller'
-alias rm~='find . -iname "*~" | xargs rm -v'
+alias rm#='find . -iname "#*#" -exec rm -v "{}" \;'
+alias rm~='find . -iname "*~" -exec rm -v "{}" \;'
 alias yd='youtube-dl -f bestvideo+bestaudio'
 alias weather='curl -4 http://wttr.in/Pangyo,South_Korea'
 
