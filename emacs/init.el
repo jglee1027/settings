@@ -752,20 +752,37 @@ finished."
       "#python"
       "#ruby")
      ("freenode.net"
+      "##c++"
+      "##c++general"
+      "##gnome"
+      "##java"
+      "##lisp"
+      "##programming"
       "#android"
       "#android-dev"
-      "##gnome"
-      "#ubuntu"
-      "#lisp"
-      "#scheme"
-      "#haskell"
-      "##c++"
-      "#perl"
-      "#ruby"
+      "#clim"
+      "#clschool"
+      "#debian"
+      "#ecl"
       "#eclipse"
       "#emacs"
+      "#haskell"
+      "#linux"
+      "#lisp"
+      "#lispcafe"
+      "#lispgames"
+      "#lispweb"
+      "#llvm"
+      "#mezzano"
+      "#perl"
       "#python"
-      "##java")))
+      "#ruby"
+      "#sbcl"
+      "#scheme"
+      "#shirakumo"
+      "#sicl"
+      "#slime"
+      "#ubuntu")))
  ;; for hanirc.org
  '(erc-server-coding-system (quote (cp949 . undecided))))
 
@@ -777,7 +794,7 @@ finished."
       erc-prompt-for-password t)
 
 (setq erc-server "irc.freenode.net"
-      erc-port 6667
+      erc-port 8000
       erc-nick "jjong"
       erc-password nil
       erc-prompt-for-password t)
