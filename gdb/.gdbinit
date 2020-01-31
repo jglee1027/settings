@@ -1,5 +1,8 @@
 # set disassembly-flavor intel
 set print pretty on
+set history save
+set history filename ~/.gdb_history
+# set target-wide-charset UTF-16
 
 define pr
   if $argc == 1
