@@ -174,6 +174,14 @@ grho() {
     fi
 }
 
+lesstab() {
+    sed $'s/\t/»   /g' | less -rX $@
+}
+
+gsh() {
+    git show --color --format=fuller $@ | lesstab
+}
+
 export TERM=xterm-256color
 export PS1="\[\033[01;32m\]\u@\h:\w\$(git branch 2>/dev/null | grep -e '\* ' | sed 's/^..\(.*\)/{\1}/')\[\033[00m\]\$ "
 
@@ -185,15 +193,14 @@ alias grep='grep --color=auto'
 alias g='git'
 alias gbl='git blame'
 alias gbr='git branch'
-alias gd='git diff --color | sed "s/\t/»   /g" | less -r'
-alias gdc='git diff --color --cached | sed "s/\t/»   /g" | less -r'
+alias gd='git diff --color | lesstab'
+alias gdc='git diff --color --cached | lesstab'
 alias gg='git grep'
-alias gl='git log --format=fuller --decorate=full'
+alias gl='git log --color --format=fuller --decorate=full'
 alias gpush='git push'
 alias gpull='git pull'
 alias gr='git-gr'
 alias gs='git status --short --branch'
-alias gsh='git show --format=fuller'
 alias rm#='find . -iname "#*#" -exec rm -v "{}" \;'
 alias rm~='find . -iname "*~" -exec rm -v "{}" \;'
 alias yd='youtube-dl -f bestvideo+bestaudio'
