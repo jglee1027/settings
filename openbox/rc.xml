@@ -510,12 +510,7 @@
     <!-- Keybindings for Touchpad management -->
     <keybind key="W-A-F5">
       <action name="Execute">
-        <command>synclient touchpadoff=0</command>
-      </action>
-    </keybind>
-    <keybind key="W-C-F5">
-      <action name="Execute">
-        <command>synclient touchpadoff=1</command>
+        <command>~/settings/bin/toggletouchpad</command>
       </action>
     </keybind>
   </keyboard>
