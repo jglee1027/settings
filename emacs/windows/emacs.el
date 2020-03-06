@@ -80,7 +80,7 @@
  '(font-lock-preprocessor-face ((t (:foreground "magenta"))))
  '(font-lock-string-face ((t (:foreground "red"))))
  '(font-lock-type-face ((t (:foreground "green"))))
- '(font-lock-variable-name-face ((t (:foreground "gray70"))))
+ '(font-lock-variable-name-face ((t (:foreground "tomato"))))
  '(fringe ((nil)))
  '(hi-blue ((t (:background "blue"))))
  '(highlight ((t (:background "black"))))
