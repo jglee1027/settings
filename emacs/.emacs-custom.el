@@ -14,6 +14,8 @@
                (load-library "highlight-sexp"))
 (ignore-errors (el-get-init 'c-eldoc)
                (load-library "c-eldoc"))
+(ignore-errors (el-get-init 'paredit)
+               (load-library "paredit"))
 
 ;; slime
 (ignore-errors (el-get-init 'slime)
