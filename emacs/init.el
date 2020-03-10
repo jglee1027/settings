@@ -93,6 +93,12 @@ Otherwise, return result of last form in BODY."
                      ac-source-abbrev
                      ac-source-dictionary
                      ac-source-words-in-same-mode-buffers))))
+;;;; helm
+(with-eval-after-load "helm"
+  (global-set-key (kbd "C-c o") 'helm-occur)
+  (global-set-key (kbd "C-x b") 'helm-buffers-list)
+  (global-set-key (kbd "C-x C-f") 'helm-find-files)
+  (global-set-key (kbd "M-x") 'helm-M-x))
 
 (ignore-errors
   (require 'auto-complete))

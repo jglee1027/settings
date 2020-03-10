@@ -16,6 +16,8 @@
                (load-library "c-eldoc"))
 (ignore-errors (el-get-init 'paredit)
                (load-library "paredit"))
+(ignore-errors (el-get-init 'helm)
+               (require "helm"))
 
 ;; slime
 (ignore-errors (el-get-init 'slime)
