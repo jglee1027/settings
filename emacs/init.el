@@ -427,7 +427,11 @@ Otherwise, return result of last form in BODY."
   (add-hook 'emacs-lisp-mode-hook       #'enable-paredit-mode)
   (add-hook 'eval-expression-minibuffer-setup-hook #'enable-paredit-mode)
   (add-hook 'ielm-mode-hook             #'enable-paredit-mode)
-  (add-hook 'lisp-interaction-mode-hook #'enable-paredit-mode)
+  (add-hook 'lisp-interaction-mode-hook
+            (lambda ()
+              (enable-paredit-mode)
+              (local-set-key (kbd "C-c RET") 'eval-print-last-sexp)
+              (local-set-key (kbd "C-c e") 'eval-print-last-sexp)))
   (add-hook 'lisp-mode-hook             #'enable-paredit-mode)
   (add-hook 'scheme-mode-hook           #'enable-paredit-mode))
 
