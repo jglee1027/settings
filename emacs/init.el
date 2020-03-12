@@ -433,8 +433,8 @@ Otherwise, return result of last form in BODY."
 
 (with-eval-after-load "highlight-sexp"
   (setq hl-sexp-background-color (if window-system
-                                      "#00008b"
-                                    "#ffffd7"))
+                                     "#00008b"
+                                   "#ffffd7"))
   (add-hook 'lisp-mode-hook 'highlight-sexp-mode)
   (add-hook 'emacs-lisp-mode-hook 'highlight-sexp-mode))
 
@@ -523,13 +523,13 @@ Otherwise, return result of last form in BODY."
 
 (with-eval-after-load "ruby-mode"
   (ignore-errors
-     (setq ri-ruby-script
-           (locate-library "ri-emacs"))
-     (load-library "ri-ruby")
-     (add-hook 'ruby-mode-hook
-               (lambda()
-                 (local-set-key (kbd "C-c h") 'ri)
-                 (local-set-key (kbd "C-c @") 'ri-ruby-show-args))))
+    (setq ri-ruby-script
+          (locate-library "ri-emacs"))
+    (load-library "ri-ruby")
+    (add-hook 'ruby-mode-hook
+              (lambda()
+                (local-set-key (kbd "C-c h") 'ri)
+                (local-set-key (kbd "C-c @") 'ri-ruby-show-args))))
   (ignore-errors
     (let ((rcodetools-path (which-gem-package "rcodetools")))
       (cond ((not (null rcodetools-path))
