@@ -109,6 +109,14 @@ Otherwise, return result of last form in BODY."
   (global-set-key (kbd "M-y") 'helm-show-kill-ring)
   (global-set-key (kbd "M-x") 'helm-M-x))
 
+;;;; helm-company
+(ignore-errors
+  (el-get-init "helm-company")
+  (load-library "helm-company")
+  (eval-after-load "company"
+    (define-key company-mode-map (kbd "C-:") 'helm-company)
+    (define-key company-active-map (kbd "C-:") 'helm-company)))
+
 (ignore-errors
   (require 'auto-complete))
 
