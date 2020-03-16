@@ -19,6 +19,12 @@
 (ignore-errors (el-get-init 'helm)
                (load-library "helm"))
 
+(ignore-errors (el-get-init "pos-tip")
+               (load-library "pos-tip")
+               (el-get-init "company-quickhelp")
+               (load-library "company-quickhelp")
+               (company-quickhelp-mode))
+
 ;; slime
 (ignore-errors (el-get-init 'slime)
                (setq inferior-lisp-program "/usr/bin/clisp")
