@@ -7,6 +7,12 @@
                 (add-to-list 'load-path entry)))
           entries))
 
+;;;; el-get
+(if (file-exists-p "~/.emacs.d/el-get/el-get")
+    (add-to-list 'load-path "~/.emacs.d/el-get/el-get"))
+
+(require 'el-get nil t)
+
 ;; to run multiple emacs daemons on a single system
 (setq server-use-tcp t)
 
@@ -113,9 +119,9 @@ Otherwise, return result of last form in BODY."
 (ignore-errors
   (el-get-init "helm-company")
   (load-library "helm-company")
-  (eval-after-load "company"
-    (define-key company-mode-map (kbd "C-:") 'helm-company)
-    (define-key company-active-map (kbd "C-:") 'helm-company)))
+  (with-eval-after-load "company"
+    (define-key company-mode-map (kbd "C-c .") 'helm-company)
+    (define-key company-active-map (kbd "C-c .") 'helm-company)))
 
 (ignore-errors
   (require 'auto-complete))
@@ -879,12 +885,6 @@ finished."
              (kill-buffer (current-buffer)))))
         (t
          (message "ELPA is already installed."))))
-
-;;;; el-get
-(if (file-exists-p "~/.emacs.d/el-get/el-get")
-    (add-to-list 'load-path "~/.emacs.d/el-get/el-get"))
-
-(require 'el-get nil t)
 
 ;;;; magit
 (ignore-errors
