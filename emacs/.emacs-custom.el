@@ -2,7 +2,8 @@
 
 (ignore-errors (el-get-init 'grep-a-lot))
 (ignore-errors (el-get-init 'switch-window))
-(ignore-errors (el-get-init 'magit))
+(ignore-errors (el-get-init 'magit)
+               (el-get-init 'magit-extras))
 (ignore-errors (el-get-init 'lua-mode)
                (load-library "lua-mode"))
 (ignore-errors (el-get-init 'cmake-mode)
