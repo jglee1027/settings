@@ -1,0 +1,8 @@
+XTerm*metaSendsEscape:true
+XTerm*utf8Title:true
+XTerm*allowBoldFonts:false
+XTerm*faceName:xft:envypn:size=9:antialias=false
+XTerm*wideFont:xft:NanumMyeongjo:size=9:antialias=true:hinting=true:hintstyle=hintfull
+! XTerm*font:-ypn-envypn-medium-r-normal--13-130-75-75-c-90-iso8859-1
+! XTerm*font:-schumacher-clean-medium-r-normal--13-130-75-75-c-60-iso646.1991-irv
+! XTerm*wideFont:-misc-fixed-medium-r-normal-*-13-120-75-75-c-120-iso10646-1
