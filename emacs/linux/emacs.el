@@ -1,7 +1,8 @@
 ;; ======================================================================
 ;; Custom variables and faces
 ;; ======================================================================
-(defvar default-font-spec-eng-list '((font-spec :family "Ubuntu Mono" :size 9.0)
+(defvar default-font-spec-eng-list '((font-spec :family "envypn" :size 9.0)
+                                     (font-spec :family "Ubuntu Mono" :size 9.0)
                                      (font-spec :family "Andale Mono" :size 9.0)
                                      (font-spec :family "NanumGothic_AndaleMono" :size 9.0)
                                      (font-spec :family "Liberation Mono" :size 9.0)
