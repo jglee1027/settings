@@ -1,5 +1,6 @@
 XTerm*metaSendsEscape:true
 XTerm*utf8Title:true
+XTerm*selectToClipboard:true
 XTerm*allowBoldFonts:false
 XTerm*faceName:xft:envypn:size=9:antialias=false
 XTerm*wideFont:xft:NanumMyeongjo:size=9:antialias=true:hinting=true:hintstyle=hintfull
