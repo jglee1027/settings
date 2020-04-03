@@ -75,6 +75,8 @@ Otherwise, return result of last form in BODY."
                              '("\\.[mM][pP]4$" "mplayer")
                              '("\\.[pP][dD][fF]$" "evince")
                              '("\\.[wW][mM][vV]$" "mplayer"))))))
+(ignore-errors
+  (load-library "dired"))
 
 ;;;; find-dired
 (with-eval-after-load "find-dired"
