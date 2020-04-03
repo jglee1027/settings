@@ -36,6 +36,19 @@ emacs_gdb() {
 	fi
 }
 
+fcd() {
+    if [ "$(which fzy)" == "" ]; then
+        echo "Not found fzy!!!"
+        echo "Install fzy as the following:"
+        echo "$ sudo apt install fzy"
+        return
+    fi
+
+    cd "$(find $1 -type d ! \( \
+-path *.git* -o -path *.svn* -o -path *.cvs* \) 2> /dev/null | \
+fzy -l 20)"
+}
+
 is_utf_8_with_bom() {
 	if [ "$1" = "" ]; then
 		echo "SYNOPSIS"

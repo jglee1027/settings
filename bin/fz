@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 
 command_list() {
-    echo 'cd     : cd $(find -type d | fzy)'
     echo 'gbrD   : git branch -D $(git branch | cut -c 3- | fzy)'
     echo 'gbrd   : git branch -d $(git branch | cut -c 3- | fzy)'
     echo 'gco    : git checkout $(git branch | cut -c 3- | fzy)'
