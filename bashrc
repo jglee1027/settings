@@ -44,7 +44,7 @@ fcd() {
         return
     fi
 
-    cd "$(find $1 -type d ! \( \
+    cd "$(find $* -type d ! \( \
 -path *.git* -o -path *.svn* -o -path *.cvs* \) 2> /dev/null | \
 fzy -l 20)"
 }
