@@ -37,6 +37,7 @@ emacs_gdb() {
 }
 
 fcd() {
+    local fcd_history="/tmp/fcd.history"
     if [ "$(which fzy)" == "" ]; then
         echo "Not found fzy!!!"
         echo "Install fzy as the following:"
@@ -44,9 +45,20 @@ fcd() {
         return
     fi
 
-    cd "$(find $* -type d ! \( \
--path *.git* -o -path *.svn* -o -path *.cvs* \) 2> /dev/null | \
-fzy -l 20)"
+    if [ "$1" == "-c" ]; then
+        echo "fcd history was cleaned"
+        rm -f $fcd_history*
+        return
+    fi
+
+    cd "$(tee \
+>(cat $fcd_history 2> /dev/null) \
+>(find $* -type d ! \( \
+-path *.git* -o -path *.svn* -o -path *.cvs* \) 2> /dev/null) \
+> /dev/null | \
+fzy -l 20)" &&
+        (echo $PWD ;cat $fcd_history 2> /dev/null;) > $fcd_history.1
+    mv $fcd_history.1 $fcd_history
 }
 
 is_utf_8_with_bom() {
