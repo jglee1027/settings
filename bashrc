@@ -38,6 +38,12 @@ emacs_gdb() {
 
 fcd() {
     local fcd_history="/tmp/fcd.history"
+    local ignore_path_opts="\
+-path *.git* -o \
+-path *.svn* -o \
+-path *.cvs* \
+"
+
     if [ "$(which fzy)" == "" ]; then
         echo "Not found fzy!!!"
         echo "Install fzy as the following:"
@@ -51,13 +57,23 @@ fcd() {
         return
     fi
 
-    cd "$(tee \
+    local maxdepth=""
+    if [ "$2" != "" ]; then
+        maxdepth="-maxdepth $2"
+    fi
+
+    local dir="$(echo > /dev/null | tee \
 >(cat $fcd_history 2> /dev/null) \
->(find $* -type d ! \( \
--path *.git* -o -path *.svn* -o -path *.cvs* \) 2> /dev/null) \
+>(find $1 $maxdepth -type d ! \( $ignore_path_opts \) 2> /dev/null) \
 > /dev/null | \
-fzy -l 20)" &&
-        (echo $PWD ;cat $fcd_history 2> /dev/null;) > $fcd_history.1
+fzy -l 20)"
+
+    if [ "$dir" == "" ]; then
+        return
+    fi
+
+    cd  "$dir" &&
+        (echo $PWD; cat $fcd_history 2> /dev/null) | awk '!x[$0]++' > $fcd_history.1
     mv $fcd_history.1 $fcd_history
 }
 
