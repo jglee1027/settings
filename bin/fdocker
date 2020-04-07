@@ -1,0 +1,45 @@
+#!/usr/bin/env bash
+
+command_list() {
+    echo 'attach  : docker attach $(sudo docker ps | fzy | field_1)'
+    echo 'history : docker history $(sudo docker images | fzy | field_3)'
+    echo 'image   : docker images | fzy | field_3'
+    echo 'rmi     : docker rmi $(sudo docker images | fzy | field_3)'
+    echo 'run     : docker run $FDOCKER_RUN_OPT $(sudo docker images | fzy | field_3) /bin/bash'
+}
+
+fdockerrc="$HOME/.fdockerrc"
+FDOCKER_RUN_OPT="--rm -it --privileged"
+
+field_1() {
+    awk '{print $1}'
+}
+
+field_2() {
+    awk '{print $2}'
+}
+
+field_3() {
+    awk '{print $3}'
+}
+
+field_4() {
+    awk '{print $4}'
+}
+
+field_5() {
+    awk '{print $5}'
+}
+
+if [ "$(which fzy)" == "" ]; then
+    echo "Not found fzy!!!"
+    echo "Install fzy as the following:"
+    echo "$ sudo apt install fzy"
+    exit 1
+fi
+
+cmd=`command_list | fzy | cut -d : -f 2`
+source $fdockerrc
+
+echo "$cmd"
+eval sudo $cmd

@@ -1,0 +1,1 @@
+FDOCKER_RUN_OPT="--rm -it --privileged -v $HOME/work:/work -v $HOME/settings:/root/settings"
