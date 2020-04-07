@@ -23,6 +23,13 @@
 Otherwise, return result of last form in BODY."
     `(condition-case nil (progn ,@body) (error nil))))
 
+(if (not (fboundp 'with-eval-after-load))
+    (defmacro with-eval-after-load (feature &rest body)
+      "After FEATURE is loaded, evaluate BODY."
+      (declare (indent defun))
+      `(eval-after-load ,feature
+         '(progn ,@body))))
+
 ;;;; tab
 (setq c-basic-offset 4)
 (setq default-tab-width 4)
