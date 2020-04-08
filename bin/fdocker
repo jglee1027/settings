@@ -2,14 +2,23 @@
 
 command_list() {
     echo 'attach  : docker attach $(sudo docker ps | fzy | field_1)'
+    echo 'exec    : docker exec $FDOCKER_EXEC_OPT $(sudo docker ps | fzy | field_1) /bin/bash'
     echo 'history : docker history $(sudo docker images | fzy | field_3)'
     echo 'image   : docker images | fzy | field_3'
+    echo 'kill    : docker kill $(sudo docker ps | fzy | field_1)'
+    echo 'logs    : docker logs -ft $(sudo docker ps -a | fzy | field_1)'
+    echo 'ps      : docker ps -a'
+    echo 'rm      : docker rm $(sudo docker ps -a | fzy | field_1)'
     echo 'rmi     : docker rmi $(sudo docker images | fzy | field_3)'
     echo 'run     : docker run $FDOCKER_RUN_OPT $(sudo docker images | fzy | field_3) /bin/bash'
+    echo 'stats   : docker stats'
+    echo 'stop    : docker stop $(sudo docker ps | fzy | field_1)'
+    echo 'top     : docker top $(sudo docker ps | fzy | field_1)'
 }
 
 fdockerrc="$HOME/.fdockerrc"
 FDOCKER_RUN_OPT="--rm -it --privileged"
+FDOCKER_EXEC_OPT="-it --privileged"
 
 field_1() {
     awk '{print $1}'
