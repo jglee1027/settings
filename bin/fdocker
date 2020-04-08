@@ -41,5 +41,6 @@ fi
 cmd=`command_list | fzy | cut -d : -f 2`
 source $fdockerrc
 
-echo "$cmd"
+set -x
 eval sudo $cmd
+set +x
