@@ -95,3 +95,11 @@ end
 document bprestore
 restore breakpoints saved by bpsave
 end
+
+define init-peda
+  source ~/settings/gdb/peda/peda.py
+end
+
+document init-peda
+initialize PEDA(Python Exploit Development Assistant for GDB)
+end
