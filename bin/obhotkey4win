@@ -1,8 +1,8 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 filename=$(basename $0)
 obconf_dir=~/.config/openbox/
-is_valid_arg=`[[ $1 =~ ^[f|F][1-9]$ ]] && echo "true"`
+is_valid_arg=`[[ $1 =~ ^[f|F]([1-9]|1[0-2])$ ]] && echo "true"`
 
 if [ "$1" = "" -o "$is_valid_arg" != "true" ]; then
     echo "Usage : $filename key"
@@ -10,7 +10,7 @@ if [ "$1" = "" -o "$is_valid_arg" != "true" ]; then
     echo "the specified window."
     echo
     echo "KEY"
-    echo "  f1, f2, f3, f4, f5, f6, f7, f8, f9"
+    echo "  f1, f2, f3, f4, f5, f6, f7, f8, f9, f10, f11, f12"
     echo
     echo "EXAMPLES"
     echo "  $ $filename f1"
