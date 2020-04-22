@@ -295,6 +295,68 @@
         <command>~/settings/bin/switch-win-by-app</command>
       </action>
     </keybind>
+    <!-- obhotkey4win -->
+    <keybind key="W-C-F1">
+      <action name="Execute">
+        <command>~/settings/bin/obhotkey4win f1</command>
+      </action>
+    </keybind>
+    <keybind key="W-C-F2">
+      <action name="Execute">
+        <command>~/settings/bin/obhotkey4win f2</command>
+      </action>
+    </keybind>
+    <keybind key="W-C-F3">
+      <action name="Execute">
+        <command>~/settings/bin/obhotkey4win f3</command>
+      </action>
+    </keybind>
+    <keybind key="W-C-F4">
+      <action name="Execute">
+        <command>~/settings/bin/obhotkey4win f4</command>
+      </action>
+    </keybind>
+    <keybind key="W-C-F5">
+      <action name="Execute">
+        <command>~/settings/bin/obhotkey4win f5</command>
+      </action>
+    </keybind>
+    <keybind key="W-C-F6">
+      <action name="Execute">
+        <command>~/settings/bin/obhotkey4win f6</command>
+      </action>
+    </keybind>
+    <keybind key="W-C-F7">
+      <action name="Execute">
+        <command>~/settings/bin/obhotkey4win f7</command>
+      </action>
+    </keybind>
+    <keybind key="W-C-F8">
+      <action name="Execute">
+        <command>~/settings/bin/obhotkey4win f8</command>
+      </action>
+    </keybind>
+    <keybind key="W-C-F9">
+      <action name="Execute">
+        <command>~/settings/bin/obhotkey4win f9</command>
+      </action>
+    </keybind>
+    <keybind key="W-C-F10">
+      <action name="Execute">
+        <command>~/settings/bin/obhotkey4win f10</command>
+      </action>
+    </keybind>
+    <keybind key="W-C-F11">
+      <action name="Execute">
+        <command>~/settings/bin/obhotkey4win f11</command>
+      </action>
+    </keybind>
+    <keybind key="W-C-F12">
+      <action name="Execute">
+        <command>~/settings/bin/obhotkey4win f12</command>
+      </action>
+    </keybind>
+    <!-- activate-win -->
     <keybind key="W-F1">
       <action name="Execute">
         <command>~/settings/bin/activate-win w-f1</command>
@@ -338,6 +400,21 @@
     <keybind key="W-F9">
       <action name="Execute">
         <command>~/settings/bin/activate-win w-f9</command>
+      </action>
+    </keybind>
+    <keybind key="W-F10">
+      <action name="Execute">
+        <command>~/settings/bin/activate-win w-f10</command>
+      </action>
+    </keybind>
+    <keybind key="W-F11">
+      <action name="Execute">
+        <command>~/settings/bin/activate-win w-f11</command>
+      </action>
+    </keybind>
+    <keybind key="W-F12">
+      <action name="Execute">
+        <command>~/settings/bin/activate-win w-f12</command>
       </action>
     </keybind>
     <!-- Keybindings for window switching with the arrow keys -->
