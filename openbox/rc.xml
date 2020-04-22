@@ -461,19 +461,19 @@
       </action>
     </keybind>
     <!-- Keybindings for Volume management -->
-    <keybind key="W-F12">
+    <keybind key="W-A-F10">
       <action name="Execute">
-        <command>~/settings/bin/amixer-volume up</command>
+        <command>~/settings/bin/amixer-volume mute</command>
       </action>
     </keybind>
-    <keybind key="W-F11">
+    <keybind key="W-A-F11">
       <action name="Execute">
         <command>~/settings/bin/amixer-volume down</command>
       </action>
     </keybind>
-    <keybind key="W-F10">
+    <keybind key="W-A-F12">
       <action name="Execute">
-        <command>~/settings/bin/amixer-volume mute</command>
+        <command>~/settings/bin/amixer-volume up</command>
       </action>
     </keybind>
     <keybind key="XF86AudioRaiseVolume">
