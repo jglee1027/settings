@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Set a background color
 
@@ -21,3 +21,5 @@ conky&
 guake&
 x-www-browser&
 cairo-dock -o &
+xmodmap ~/.Xmodmap
+xrdb ~/.Xdefaults
