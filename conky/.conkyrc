@@ -90,7 +90,7 @@ ${tcp_portmon 32768 61000 rhost 4} ${alignr} ${tcp_portmon 32768 61000 rservice 
 ${if_running mocp}
 ${color #90c090}Music ${moc_state} $hr
 ${color}${font NanumGothic:style=bold:size=9}${moc_song}
-${color}${execibar 1 mocp -Q '%cs*100/%ts' | bc}
+${color}${execibar 1 which mocp && mocp -Q '%cs*100/%ts' | bc}
 ${color}${font}${moc_curtime}/${moc_totaltime} ${alignr}-${moc_timeleft}
 ${color}${font NanumGothic:style=bold:size=9}${moc_artist}
 ${color}${font NanumGothic:style=bold:size=9}${moc_album}${font}
