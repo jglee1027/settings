@@ -27,7 +27,7 @@ diff_cp() {
 		elif [ "$choice" = "N" -o "$choice" = "n" ]; then
 			return 3
 		elif [ "$choice" = "d" ]; then
-			less $diff_file
+			less -X $diff_file
 		fi
 	done
 }
