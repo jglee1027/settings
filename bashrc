@@ -223,6 +223,10 @@ gsh() {
     git show --color --format=fuller $@ | lesstab
 }
 
+jsonindent() {
+    python -m json.tool
+}
+
 export TERM=xterm-256color
 export PS1="\[\033[01;32m\]\u@\h:\w\$(git branch 2>/dev/null | grep -e '\* ' | sed 's/^..\(.*\)/{\1}/')\[\033[00m\]\$ "
 
