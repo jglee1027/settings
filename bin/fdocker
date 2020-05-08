@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 command_list() {
-    echo 'attach  : docker attach $(sudo docker ps | fzy | field_1)'
+    echo 'attach  : docker attach $FDOCKER_ATTACH_OPT $(sudo docker ps | fzy | field_1)'
     echo 'exec    : docker exec $FDOCKER_EXEC_OPT $(sudo docker ps | fzy | field_1) /bin/bash'
     echo 'history : docker history $(sudo docker images | fzy | field_3)'
     echo 'image   : docker images | fzy | field_3'
@@ -17,8 +17,9 @@ command_list() {
 }
 
 fdockerrc="$HOME/.fdockerrc"
-FDOCKER_RUN_OPT="--rm -it --privileged"
-FDOCKER_EXEC_OPT="-it --privileged"
+FDOCKER_ATTACH_OPT="--detach-keys ctrl-q,q"
+FDOCKER_RUN_OPT="--rm -it --privileged --detach-keys ctrl-q,q"
+FDOCKER_EXEC_OPT="-it --privileged --detach-keys ctrl-q,q"
 
 field_1() {
     awk '{print $1}'
