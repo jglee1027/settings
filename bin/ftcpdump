@@ -1,0 +1,49 @@
+#!/usr/bin/env bash
+
+command_list() {
+    echo 'port 53: sudo tcpdump -l -i $(up_interfaces | fzy) port 53 | tee -a /tmp/tcpdump'
+}
+
+ftcpdumprc="$HOME/.ftcpdumprc"
+FTCPDUMP_OPT=""
+
+field_1() {
+    awk '{print $1}'
+}
+
+field_2() {
+    awk '{print $2}'
+}
+
+field_3() {
+    awk '{print $3}'
+}
+
+field_4() {
+    awk '{print $4}'
+}
+
+field_5() {
+    awk '{print $5}'
+}
+
+up_interfaces() {
+    for i in `ls /sys/class/net/`; do
+        echo -n "`cat /sys/class/net/$i/operstate` ";
+        echo $i;
+    done | grep 'up ' | cut -d ' ' -f2
+}
+
+if [ "$(which fzy)" == "" ]; then
+    echo "Not found fzy!!!"
+    echo "Install fzy as the following:"
+    echo "$ sudo apt install fzy"
+    exit 1
+fi
+
+cmd=`command_list | fzy | cut -d : -f 2`
+source $ftcpdumprc
+
+set -x
+eval sudo $cmd
+set +x
