@@ -1,1 +1,1 @@
-FDOCKER_RUN_OPT="--rm -it --privileged -v $HOME/work:/work -v $HOME/settings:/root/settings"
+FDOCKER_RUN_OPT="--rm -it --privileged --detach-keys ctrl-q,q -v $HOME/work:/work -v $HOME/settings:/root/settings"
