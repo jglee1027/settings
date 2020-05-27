@@ -11,6 +11,7 @@ command_list() {
     echo 'rm      : docker rm $(sudo docker ps -a | fzy | field_1)'
     echo 'rmi     : docker rmi $(sudo docker images | fzy | field_3)'
     echo 'run     : docker run $FDOCKER_RUN_OPT $(sudo docker images | fzy | field_3) /bin/bash'
+    echo 'run init: docker run $FDOCKER_RUN_OPT $(sudo docker images | fzy | field_3) /sbin/init'
     echo 'stats   : docker stats'
     echo 'stop    : docker stop $(sudo docker ps | fzy | field_1)'
     echo 'top     : docker top $(sudo docker ps | fzy | field_1)'
