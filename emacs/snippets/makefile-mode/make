@@ -2,12 +2,15 @@
 # key : make
 # expand-env : ((yas/indent-line 'fixed) (yas/wrap-around-region 'nil))
 # --
-CXX = ${1:g++}
-CXXFLAGS = ${2:-Wall -g}
+CC = ${1:gcc}
+CFLAGS = ${2:-Wall -g}
+CXX = ${3:g++}
+CXXFLAGS = ${4:-Wall -g}
+LDFLAGS = ${5:}
 
-TARGET = ${3:target program name}
-SRCS = ${4:\$(wildcard *.cpp)}
-OBJS = ${5:\$(SRCS:.cpp=.o)}
+TARGET = ${6:target program name}
+SRCS = ${7:\$(wildcard *.cpp *.c)}
+OBJS = ${8:\$(SRCS:.cpp=.o)}
 
 $(TARGET) : $(OBJS)
 	$(CXX) $(CXXFLAGS) -o $@ $^
@@ -16,7 +19,10 @@ dep :
 	$(CXX) -M $(SRCS) > .depend
 
 %.o : %.cpp
-	$(CXX) $(CXXFLAGS) -o $@ -c $<
+	$(CXX) $(CXXFLAGS) $(LDFLAGS) -o $@ -c $<
+
+% : %.c
+	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $<
 
 clean :
 	rm -f $(TARGET) $(OBJS) .depend

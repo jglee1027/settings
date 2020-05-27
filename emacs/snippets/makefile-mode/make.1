@@ -6,18 +6,19 @@ CC = ${1:gcc}
 CFLAGS = ${2:-Wall -g}
 CXX = ${3:g++}
 CXXFLAGS = ${4:-Wall -g}
+LDFLAGS = ${5:}
 
-SRCS = ${5:\$(wildcard *.cpp)}
-SRCS += ${6:\$(wildcard *.c)}
-PROGRAMS = ${7:\$(patsubst %.c, %, \$(patsubst %.cpp, %, \$(SRCS)))}
+SRCS = ${6:\$(wildcard *.cpp)}
+SRCS += ${7:\$(wildcard *.c)}
+PROGRAMS = ${8:\$(patsubst %.c, %, \$(patsubst %.cpp, %, \$(SRCS)))}
 
 all : $(PROGRAMS)
 
 % : %.cpp
-	$(CXX) $(CXXFLAGS) -o $@ $<
+	$(CXX) $(CXXFLAGS) $(LDFLAGS) -o $@ $<
 
 % : %.c
-	$(CC) $(CFLAGS) -o $@ $<
+	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $<
 
 clean :
 	rm -f $(PROGRAMS) *.o
