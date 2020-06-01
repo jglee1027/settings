@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+if [ "$1" = "" ]; then
+    echo "SYNOPSIS"
+    echo "   $SCRIPT_NAME FILE [ARG]..."
+    echo "EXAMPLE"
+    echo "   $ $SCRIPT_NAME emacs"
+    exit 1
+fi
+
+PRINT_CMD="$(which figlet)"
+if [ "$PRINT_CMD" = "" ]; then
+   PRINT_CMD="echo"
+fi
+
+$PRINT_CMD $@ | xmessage -nearmouse -timeout 5 -file - -font lucidasanstypewriter-8
