@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+/sbin/ifconfig | xmessage -nearmouse -timeout 3 -file - -font lucidasanstypewriter-8
