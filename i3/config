@@ -11,9 +11,14 @@
 
 set $mod Mod4
 
-# border
+### border ###
+
 # default_border none
 # default_floating_border none
+
+# border toggle
+bindsym $mod+b exec "i3-msg border toggle"
+
 
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
@@ -33,20 +38,34 @@ font pango:monospace 8
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
 
+### execute a program ###
+
 # start a terminal
 bindsym $mod+Return exec i3-sensible-terminal
 
-# execute a program
 bindsym $mod+Shift+i exec "gksudo ~/local/bin/net-in"
 bindsym $mod+Shift+o exec "gksudo ~/local/bin/net-out"
 bindsym $mod+Shift+p exec "~/settings/bin/ifconfig-xmessage"
 bindsym $mod+Tab exec "rofi -modi window,run,drun,ssh -show window"
 
-# border toggle
-bindsym $mod+b exec "i3-msg border toggle"
+### for_window ###
 
-# for_window
 for_window [title="xmessage"] floating enable
+for_window [class="Emacs"] mark "emacs" move scratchpad
+
+### scratchpad ###
+
+# move all floating windows to the scratchpad
+bindsym $mod+x [floating] move scratchpad
+
+# make the currently focused window a scratchpad
+bindsym $mod+Shift+minus move scratchpad
+
+# show the first scratchpad window
+bindsym $mod+minus scratchpad show
+
+# show emacs scratchpad window
+bindsym $mod+Ctrl+e [con_mark="emacs"] scratchpad show
 
 # kill focused window
 bindsym $mod+Shift+q kill
