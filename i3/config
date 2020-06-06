@@ -47,6 +47,10 @@ bindsym $mod+Shift+i exec "gksudo ~/local/bin/net-in"
 bindsym $mod+Shift+o exec "gksudo ~/local/bin/net-out"
 bindsym $mod+Shift+p exec "~/settings/bin/ifconfig-xmessage"
 bindsym $mod+Tab exec "rofi -modi window,run,drun,ssh -show window"
+bindsym $mod+grave exec "~/settings/bin/switch-win-by-app"
+bindsym $mod+apostrophe exec "i3-easyfocus"
+bindsym $mod+z exec "i3lock -c 000000"
+bindsym $mod+Shift+z exec "systemctl suspend"
 
 ### for_window ###
 
