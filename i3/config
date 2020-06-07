@@ -52,6 +52,11 @@ bindsym $mod+apostrophe exec "i3-easyfocus"
 bindsym $mod+z exec "i3lock -c 000000"
 bindsym $mod+Shift+z exec "systemctl suspend"
 
+# amixer-volume
+bindsym $mod+F10 exec "~/settings/bin/amixer-volume mute"
+bindsym $mod+F11 exec "~/settings/bin/amixer-volume down"
+bindsym $mod+F12 exec "~/settings/bin/amixer-volume up"
+
 ### for_window ###
 
 for_window [title="xmessage"] floating enable
