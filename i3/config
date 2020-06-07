@@ -48,7 +48,9 @@ bindsym $mod+Shift+o exec "gksudo ~/local/bin/net-out"
 bindsym $mod+Shift+p exec "~/settings/bin/ifconfig-xmessage"
 bindsym $mod+Tab exec "rofi -modi window,run,drun,ssh -show window"
 bindsym $mod+grave exec "~/settings/bin/switch-win-by-app"
-bindsym $mod+apostrophe exec "i3-easyfocus"
+bindsym $mod+apostrophe exec "i3-easyfocus \
+--color-urgent-bg ffcccc --color-focused-bg 99ccff --color-unfocused-bg ffffcc \
+--color-urgent-fg 000000 --color-focused-fg 000000 --color-unfocused-fg 000000"
 bindsym $mod+z exec "i3lock -c 000000"
 bindsym $mod+Shift+z exec "systemctl suspend"
 bindsym $mod+Ctrl+Shift+z exec "systemctl hibernate"
