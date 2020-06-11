@@ -1,0 +1,25 @@
+# -*- mode: snippet -*-
+# name : add_app
+# key : app
+# expand-env : ((yas/indent-line 'fixed) (yas/wrap-around-region 'nil))
+# --
+
+cmake_minimum_required(VERSION ${1:2.8})
+
+project(${2:project_name})
+
+function(add_app name sources)
+    set(\${name}_SOURCES \${sources} \${ARGN})
+    set(\${name}_INCLUDE_DIRS ${3:directories})
+    add_executable(\${name} \${\${name}_SOURCES})
+    set_target_properties(\${name} PROPERTIES
+        INCLUDE_DIRECTORIES "\${\${name}_INCLUDE_DIRS}"
+        COMPILE_DEFINITIONS "${4:definitions}"
+        COMPILE_OPTIONS "${5:cflags}"
+    )
+    target_link_libraries(\${name}
+        ${6:libraries}
+    )
+endfunction()
+
+add_app(${7:binary_name} ${8:source_files})
