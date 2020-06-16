@@ -880,6 +880,30 @@ finished."
  '(show-paren-style (quote expression))
  '(align-c++-modes (quote (c++-mode c-mode java-mode objc-mode))))
 
+;;;; compilation
+
+;;; compilation-start
+(defcustom compilation-start-display-output-buffer t
+  "Enable or disable to display *compilation* bufffer on compilation-start.
+If not-nil, *compilation* buffer is displayed."
+  :type 'boolean
+  :group 'compilation
+  :version "20.4")
+(defadvice compilation-start
+    (around inhibit-display
+            (command &optional mode name-function highlight-regexp))
+  (if compilation-start-display-output-buffer
+      ad-do-it
+    (save-window-excursion
+      ad-do-it)))
+(ad-activate 'compilation-start)
+
+;;; compilation-finish
+(defun compilation-finish-switch-output-buffer (buffer outstr)
+  (unless (string-match "finished" outstr)
+    (switch-to-buffer-other-window buffer)))
+(setq compilation-finish-functions 'compilation-finish-switch-output-buffer)
+
 ;;;; elpa
 (defun install-elpa ()
   (interactive)
