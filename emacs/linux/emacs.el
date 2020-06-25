@@ -172,8 +172,8 @@
    '(ediff-odd-diff-C ((t (:background "brightblack"))))
    '(font-lock-builtin-face ((t (:foreground "magenta"))))
    '(font-lock-preprocessor-face ((t (:foreground "magenta"))))
-   '(font-lock-comment-face ((t (:foreground "blue"))))
-   '(font-lock-comment-delimiter-face ((t (:foreground "blue"))))
+   '(font-lock-comment-face ((t (:foreground "#1e90ff"))))  ; DodgerBlue
+   '(font-lock-comment-delimiter-face ((t (:foreground "#1e90ff")))) ; DodgerBlue
    '(font-lock-constant-face ((t (:foreground "green"))))
    '(font-lock-doc-face ((t (:foreground "blue"))))
    '(font-lock-function-name-face ((t (:foreground "cyan"))))
