@@ -180,6 +180,14 @@ gr() {
     fi
 }
 
+yesorno() {
+    echo -n "$* (y or n) "
+    read choice
+    if [ "$choice" = "Y" -o "$choice" = "y" ]; then
+        $*
+    fi
+}
+
 grho() {
     if [ "$1" = "--help" ]; then
         echo "SYNOPSIS"
