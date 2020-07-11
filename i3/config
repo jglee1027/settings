@@ -60,6 +60,9 @@ bindsym $mod+F10 exec "~/settings/bin/amixer-volume mute"
 bindsym $mod+F11 exec "~/settings/bin/amixer-volume down"
 bindsym $mod+F12 exec "~/settings/bin/amixer-volume up"
 
+# touchpad
+bindsym $mod+F5 exec "~/settings/bin/toggletouchpad"
+
 ### for_window ###
 
 for_window [title="xmessage"] floating enable
