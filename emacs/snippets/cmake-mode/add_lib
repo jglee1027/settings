@@ -1,0 +1,51 @@
+# -*- mode: snippet -*-
+# name : function(add_lib)
+# key : lib
+# expand-env : ((yas/indent-line 'fixed) (yas/wrap-around-region 'nil))
+# --
+function(add_lib name type)
+    set(options)
+    set(oneValueArgs
+        INSTALL_DESTINATION
+        OUTPUT_NAME
+        OUTPUT_DIRECTORY
+        SOVERSION
+        VERSION)
+    set(multiValueArgs
+        COMPILE_DEFINITIONS
+        COMPILE_OPTIONS
+        INCLUDE_DIRECTORIES
+        LINK_LIBRARIES
+        SOURCES)
+
+    cmake_parse_arguments(add_lib
+        "\${options}"
+        "\${oneValueArgs}"
+        "\${multiValueArgs}"
+        \${ARGN})
+
+    add_library(\${name} \${type} \${add_lib_SOURCES})
+    set_target_properties(\${name} PROPERTIES
+        COMPILE_DEFINITIONS "\${add_lib_COMPILE_DEFINITIONS}"
+        COMPILE_OPTIONS "\${add_lib_COMPILE_OPTIONS}"
+        INCLUDE_DIRECTORIES "\${add_lib_INCLUDE_DIRECTORIES}"
+        LIBRARY_OUTPUT_DIRECTORY "\${add_lib_OUTPUT_DIRECTORY}"
+        LIBRARY_OUTPUT_DIRECTORY_DEBUG "\${add_lib_OUTPUT_DIRECTORY}"
+        LIBRARY_OUTPUT_DIRECTORY_RELEASE "\${add_lib_OUTPUT_DIRECTORY}"
+        LIBRARY_OUTPUT_DIRECTORY_MINSIZEREL "\${add_lib_OUTPUT_DIRECTORY}"
+        LIBRARY_OUTPUT_DIRECTORY_RELWITHDEBINFO "\${add_lib_OUTPUT_DIRECTORY}"
+        SOVERSION "\${add_lib_SOVERSION}"
+        VERSION "\${add_lib_VERSION}")
+    if(add_lib_INSTALL_DESTINATION)
+        install(TARGETS \${name}
+            DESTINATION "\${add_lib_INSTALL_DESTINATION}")
+    endif()
+
+    if(add_lib_OUTPUT_NAME)
+        set_target_properties(\${name} PROPERTIES
+            OUTPUT_NAME "\${add_lib_OUTPUT_NAME}")
+    endif()
+
+    target_link_libraries(\${name}
+        "\${add_lib_LINK_LIBRARIES}")
+endfunction()

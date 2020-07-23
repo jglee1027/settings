@@ -1,0 +1,22 @@
+# -*- mode: snippet -*-
+# name : add_lib(...)
+# key : lib
+# expand-env : ((yas/indent-line 'fixed) (yas/wrap-around-region 'nil))
+# --
+add_lib(${1:target_name} ${2:STATIC or SHARED}
+    # INSTALL_DESTINATION
+    # OUTPUT_NAME
+    # OUTPUT_DIRECTORY
+    # SOVERSION
+    # VERSION
+    SOURCES
+        ${3:source files}
+    COMPILE_DEFINTIONS
+        ${4:compile definitions}
+    COMPILE_OPTIONS
+        ${5:compile options: -std=c++11, -fxxx, ...}
+    INCLUDE_DIRECTORIES
+        ${6:include_directories}
+    LINK_LIBRARIES
+        ${7:link_libraries}
+)
