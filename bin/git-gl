@@ -1,0 +1,95 @@
+#!/usr/bin/env bash
+
+get_reviewers() {
+    local curdir=$PWD
+    local reviewers_file=.gitreviewers
+    local res=""
+
+    while [ $curdir != "/" ]; do
+        reviewers_file_path=$curdir/$reviewers_file
+        if [ -e $reviewers_file_path ]; then
+            for i in `cat $reviewers_file_path`; do
+                if [ "${i:0:1}" = "#" ]; then
+                    continue
+                fi
+                res="${res}@$i "
+            done
+        fi
+        curdir=$(dirname $curdir)
+    done
+
+    if [ "$res" = "" ]; then
+        echo ""
+    else
+        echo "${res:0:$((${#res} - 1))}"
+    fi
+}
+
+get_count_of_commits() {
+    local first=""
+    local count=0
+    for i in $(seq 0 10); do
+        if [ "$i" = "0" ]; then
+            first=$(git name-rev HEAD~$i | cut -d ' ' -f 2)
+        fi
+        local name=$(git name-rev HEAD~$i | cut -d ' ' -f 2)
+        local regexp="^$first~?.*$"
+        if [[ $name =~ $regexp ]]; then
+            count=$i
+        fi
+    done
+    count="$count + 1"
+    echo $(expr $count)
+}
+
+get_description() {
+    if [ "$GITLAB_REVIWERS" = "" ]; then
+        GITLAB_REVIWERS="$(get_reviewers)"
+    fi
+
+    count=$(get_count_of_commits)
+    echo "=== description($count) ===" 1>&2
+    git log --format="# %s%n%n%b" HEAD...HEAD~$count
+    echo "$GITLAB_REVIWERS"
+}
+
+SCRIPT_NAME=$(basename $0)
+
+if [ "$1" = "--help" ]; then
+    echo "SYNOPSIS"
+    echo "   ${SCRIPT_NAME} [REPOSITORY [REFSPEC...]]"
+    echo "EXAMPLE"
+    echo "   $ ${SCRIPT_NAME} origin"
+    exit 0
+fi
+
+local_branch=$(git rev-parse --abbrev-ref HEAD)
+if [ $? -ne 0 ]; then
+    exit 1
+fi
+
+repo=$1
+refspec=$2
+
+if [ "$repo" = "" ]; then
+    repo=$(git config "branch.${local_branch}.remote")
+    if [ "$repo" = "" ]; then
+        repo=origin
+    fi
+fi
+
+if [ "$refspec" = "" ]; then
+    refspec="$local_branch"
+fi
+
+get_description &&
+    which xclip > /dev/null &&
+    get_description | xclip -selection c &&
+    echo "The description was copied."
+
+echo
+echo -n "git push -f $repo $refspec (y or n) "
+read choice
+if [ "$choice" = "Y" -o "$choice" = "y" ]; then
+    git push -f $repo $refspec
+fi
