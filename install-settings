@@ -146,6 +146,7 @@ fi
 if [ -d ~/.config/i3 ]; then
     echo_begin i3
     diff_cp $settings_path/i3/config ~/.config/i3/config
+    diff_cp $settings_path/i3/.i3status.conf ~/.i3status.conf
     echo_end i3
 fi
 
