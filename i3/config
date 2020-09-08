@@ -64,6 +64,10 @@ bindsym XF86AudioMute exec "~/settings/bin/amixer-volume mute"
 bindsym XF86AudioLowerVolume exec "~/settings/bin/amixer-volume down"
 bindsym XF86AudioRaiseVolume exec "~/settings/bin/amixer-volume up"
 
+# brightness
+bindsym XF86MonBrightnessDown exec "~/settings/bin/brightness down"
+bindsym XF86MonBrightnessUp exec "~/settings/bin/brightness up"
+
 # touchpad
 bindsym $mod+F5 exec "~/settings/bin/toggletouchpad"
 
