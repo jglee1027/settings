@@ -1,5 +1,22 @@
 #!/usr/bin/env bash
 
+# GitLab CLI tool that updates remote refs and creates a merge request
+#
+# Copyright (C) 2020  <jglee1027@gmail.com>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
 get_reviewers() {
     local curdir=$PWD
     local reviewers_file=.gitreviewers
@@ -28,6 +45,7 @@ get_reviewers() {
 get_count_of_commits() {
     local first=""
     local count=0
+
     for i in $(seq 0 10); do
         if [ "$i" = "0" ]; then
             first=$(git name-rev HEAD~$i | cut -d ' ' -f 2)
@@ -42,22 +60,42 @@ get_count_of_commits() {
     echo $(expr $count)
 }
 
-get_description() {
+gen_gitlab_title_and_description() {
     if [ "$GITLAB_REVIWERS" = "" ]; then
         GITLAB_REVIWERS="$(get_reviewers)"
     fi
 
-    count=$(get_count_of_commits)
-    echo "=== description($count) ===" 1>&2
+    local count=$(get_count_of_commits)
+
+    git log --format="%s%n" HEAD...HEAD~$count
+    echo "=== description($count) === DO NOT DELETE THIS LINE!!!"
     git log --format="# %s%n%n%b" HEAD...HEAD~$count
     echo "$GITLAB_REVIWERS"
+}
+
+gitlab_target_branch() {
+    $(which fzy &> /dev/null)
+    if [ $? -eq 0 ]; then
+        echo "$(git branch -r | sed 's/[[:space:]]*origin\///' | \
+        grep -v 'HEAD -' | fzy -p 'target_branch ? ')"
+    else
+        echo ""
+    fi
+}
+
+create_mr() {
+    if [ "$GITLAB_TARGET_BRANCH" = "" ]; then
+        GITLAB_TARGET_BRANCH="$(gitlab_target_branch)"
+    fi
+    (export GITLAB_TARGET_BRANCH="$GITLAB_TARGET_BRANCH";
+     gitlab.pl)
 }
 
 SCRIPT_NAME=$(basename $0)
 
 if [ "$1" = "--help" ]; then
     echo "SYNOPSIS"
-    echo "   ${SCRIPT_NAME} [REPOSITORY [REFSPEC...]]"
+    echo "   ${SCRIPT_NAME} [REPOSITORY [REFSPEC]]"
     echo "EXAMPLE"
     echo "   $ ${SCRIPT_NAME} origin"
     exit 0
@@ -82,14 +120,19 @@ if [ "$refspec" = "" ]; then
     refspec="$local_branch"
 fi
 
-get_description &&
-    which xclip > /dev/null &&
-    get_description | xclip -selection c &&
-    echo "The description was copied."
+count=$(get_count_of_commits)
+git log --oneline HEAD...HEAD~$count
 
-echo
-echo -n "git push -f $repo $refspec (y or n) "
+echo -n "=== git push -f $repo $refspec (y or n)? "
 read choice
 if [ "$choice" = "Y" -o "$choice" = "y" ]; then
     git push -f $repo $refspec
+fi
+
+echo -n "=== create or update merge request (y or n)? "
+read choice
+if [ "$choice" = "Y" -o "$choice" = "y" ]; then
+    gitlab_mr_file="/tmp/gitlab_mr.txt"
+    gen_gitlab_title_and_description > $gitlab_mr_file
+    create_mr
 fi
