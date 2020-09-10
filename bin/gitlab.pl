@@ -52,7 +52,7 @@ sub trim {
 sub env {
     my ($var) = @_;
 
-    if (!defined $ENV{$var}) {
+    if (not defined $ENV{$var}) {
         print "Add \"$var\" environment variable!!!\n";
         exit 1;
     }
@@ -63,20 +63,28 @@ sub mr_info {
     my $http = HTTP::Tiny->new;
     my $response = $http->get($gitlab_api_url, { headers => $headers });
     my $decoded_json = decode_json($response->{content});
-    my $origin_url = `git remote get-url origin`;
+    my $origin_url = trim(`git remote get-url origin`);
     if ($?) {
         exit 2;
     }
 
     my $res;
     foreach my $h (@$decoded_json) {
-        if (trim($h->{ssh_url_to_repo}) eq trim($origin_url)) {
+        if (trim($h->{ssh_url_to_repo}) eq $origin_url) {
             $res->{id} = $h->{id};
             $res->{url} = $h->{_links}->{merge_requests};
             $res->{default_branch} = $h->{default_branch};
             return $res;
         }
     }
+
+    if (not defined $res) {
+        print "Not found \"$origin_url\" in $gitlab_api_url\n";
+        print "Check the scopes of your personal access tokens in GitLab!\n";
+        print "Please contact a GitLab administrator.\n";
+        exit 3;
+    }
+
     return $res;
 }
 
@@ -88,8 +96,8 @@ sub update_mr {
     my $response = $http->put($url, {headers => $headers,
                                      content => $params});
 
-    my $decoded_json = decode_json($response->{content});
     print "$response->{status} $response->{reason}\n";
+    my $decoded_json = decode_json($response->{content});
 }
 
 sub create_mr {
@@ -104,8 +112,8 @@ sub create_mr {
     my $response = $http->post($mr_info->{url}, {headers => $headers,
                                                  content => $params});
 
-    my $decoded_json = decode_json($response->{content});
     print "$response->{status} $response->{reason}\n";
+    my $decoded_json = decode_json($response->{content});
 
     if ($response->{status} == 409) {
         my $message = $decoded_json->{message};
