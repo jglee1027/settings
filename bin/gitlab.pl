@@ -60,23 +60,34 @@ sub env {
 }
 
 sub mr_info {
-    my $http = HTTP::Tiny->new;
-    my $response = $http->get($gitlab_api_url, { headers => $headers });
-    my $decoded_json = decode_json($response->{content});
     my $origin_url = trim(`git remote get-url origin`);
     if ($?) {
         exit 2;
     }
 
+    my $http = HTTP::Tiny->new;
+    my $page = 1;
+    my $total_pages = 1;
+    my $per_page = 100;
+
     my $res;
-    foreach my $h (@$decoded_json) {
-        if (trim($h->{ssh_url_to_repo}) eq $origin_url) {
-            $res->{id} = $h->{id};
-            $res->{url} = $h->{_links}->{merge_requests};
-            $res->{default_branch} = $h->{default_branch};
-            return $res;
+
+    do {
+        my $response = $http->get($gitlab_api_url . "?page=$page&per_page=$per_page",
+                                  { headers => $headers });
+        $total_pages = $response->{headers}->{'x-total-pages'};
+        my $decoded_json = decode_json($response->{content});
+
+        foreach my $h (@$decoded_json) {
+            if (trim($h->{ssh_url_to_repo}) eq $origin_url) {
+                $res->{id} = $h->{id};
+                $res->{url} = $h->{_links}->{merge_requests};
+                $res->{default_branch} = $h->{default_branch};
+                return $res;
+            }
         }
-    }
+        $page++;
+    } while ($page <= $total_pages);
 
     if (not defined $res) {
         print "Not found \"$origin_url\" in $gitlab_api_url\n";
