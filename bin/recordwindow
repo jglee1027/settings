@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 
 winid=$(xwininfo | awk '/Window id:/ {print $4}')
-recordmydesktop --windowid $winid
+recordmydesktop --device pulse --windowid $winid $*
