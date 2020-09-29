@@ -36,6 +36,10 @@ if (defined $ENV{GITLAB_EDITOR}) {
     $gitlab_editor = $ENV{GITLAB_EDITOR};
 }
 
+if (defined $ENV{GITLAB_MR_TXT_FILE}) {
+    $gitlab_mr_txt_file = $ENV{GITLAB_MR_TXT_FILE};
+}
+
 my $headers = {
     'PRIVATE-TOKEN' => $gitlab_token,
     'Content-Type' => "application/json"
@@ -83,6 +87,7 @@ sub mr_info {
                 $res->{id} = $h->{id};
                 $res->{url} = $h->{_links}->{merge_requests};
                 $res->{default_branch} = $h->{default_branch};
+                $res->{target_project_id} = $h->{forked_from_project}->{id};
                 return $res;
             }
         }
@@ -182,15 +187,27 @@ sub target_branch {
     return $branch;
 }
 
+sub target_project_id {
+    my $target_project_id;
+    if (defined $ENV{GITLAB_TARGET_PROJECT_ID}) {
+        $target_project_id = $ENV{GITLAB_TARGET_PROJECT_ID};
+    } else {
+        $target_project_id = $mr_info->{target_project_id};
+    }
+    return $target_project_id;
+}
+
 system($gitlab_editor, $gitlab_mr_txt_file);
 
 my $source_branch = trim(`git rev-parse --abbrev-ref HEAD`);
 my $target_branch = target_branch();
+my $target_project_id = target_project_id();
 my ($title, $description) = parse_gitlab_mr_txt();
 
 my $args = {
     source_branch => $source_branch,
     target_branch => $target_branch,
+    target_project_id => $target_project_id,
     title => $title,
     description => $description
 };
