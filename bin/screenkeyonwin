@@ -1,3 +1,4 @@
 #!/usr/bin/env bash
 
+unset XMODIFIERS
 screenkey --no-detach --opacity 0.5 -t 1.5 -s small -g $(slop -n -f %g) $*
