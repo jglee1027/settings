@@ -108,7 +108,8 @@ sub update_mr {
     my ($mr_id, $params) = @_;
 
     my $http = HTTP::Tiny->new;
-    my $url = $mr_info->{url} . "/" . $mr_id;
+    my $url = $mr_info->{url} =~ s/$mr_info->{id}/$mr_info->{target_project_id}/r;
+    $url = $url . "/" . $mr_id;
     my $response = $http->put($url, {headers => $headers,
                                      content => $params});
 
