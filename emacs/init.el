@@ -878,6 +878,10 @@ finished."
  '(compilation-message-face (quote default))
  '(compilation-skip-threshold 2) ;; Warnings and info
  '(show-paren-style (quote expression))
+ '(hl-paren-background-colors
+   (quote
+    ("red" "green" "yellow" "blue" "magenta" "cyan" "white")))
+ '(hl-paren-colors nil)
  '(align-c++-modes (quote (c++-mode c-mode java-mode objc-mode))))
 
 ;;;; compilation
