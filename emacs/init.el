@@ -924,11 +924,7 @@ If not-nil, *compilation* buffer is displayed."
          (message "ELPA is already installed."))))
 
 ;;;; magit
-(ignore-errors
-  (ignore-errors (el-get-init 'magit))
-  (load-library "magit")
-  (autoload 'magit-status "magit" nil t)
-  (autoload 'magit-blame-mode "magit" nil t)
+(with-eval-after-load "magit"
   (global-set-key (kbd "C-x g") 'magit-status)
   (global-set-key (kbd "C-x v g") '(lambda()
                                      (interactive)
