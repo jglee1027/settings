@@ -1,21 +1,17 @@
 ;; ======================================================================
 ;; General setting
 ;; ======================================================================
-(let ((entries (directory-files "~/settings/emacs/site-lisp" t)))
+(let ((entries (nconc (directory-files "~/settings/emacs/site-lisp" t)
+                      (directory-files "~/.emacs.d/elpa" t "[^.]"))))
   (mapcar (lambda (entry)
             (if (equal (car (file-attributes entry)) t)
                 (add-to-list 'load-path entry)))
           entries))
 
-;;;; el-get
-(if (file-exists-p "~/.emacs.d/el-get/el-get")
-    (add-to-list 'load-path "~/.emacs.d/el-get/el-get"))
+(eval-when-compile
+  (require 'use-package))
 
-(require 'el-get nil t)
-
-;; to run multiple emacs daemons on a single system
-(setq server-use-tcp t)
-
+;;;; macros
 ;; define ignore-errors macro
 (eval-when-compile
   (defmacro ignore-errors (&rest body)
@@ -29,6 +25,23 @@ Otherwise, return result of last form in BODY."
       (declare (indent defun))
       `(eval-after-load ,feature
          '(progn ,@body))))
+
+;;;; el-get
+;; (if (file-exists-p "~/.emacs.d/el-get/el-get")
+;;     (add-to-list 'load-path "~/.emacs.d/el-get/el-get"))
+
+;; (require 'el-get nil t)
+
+;;;; melpa
+(require 'package)
+;; (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+;; Comment/uncomment this line to enable MELPA Stable if desired.  See `package-archive-priorities`
+;; and `package-pinned-packages`. Most users will not need or want to do this.
+(add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/") t)
+(package-initialize)
+
+;; to run multiple emacs daemons on a single system
+(setq server-use-tcp t)
 
 ;;;; tab
 (setq c-basic-offset 4)
@@ -93,59 +106,9 @@ Otherwise, return result of last form in BODY."
 (with-eval-after-load "uniquify"
   (setq uniquify-buffer-name-style 'forward))
 
-;;;; auto-complete
-(with-eval-after-load "auto-complete"
-  (add-to-list 'ac-modes 'jde-mode)
-  (add-to-list 'ac-modes 'objc-mode)
-  (global-auto-complete-mode t))
-
-;;;; auto-complete-yasnippet
-(with-eval-after-load "auto-complete-yasnippet"
-  (setq-default ac-sources
-                '(ac-source-yasnippet
-                  ac-source-abbrev
-                  ac-source-dictionary
-                  ac-source-words-in-same-mode-buffers)))
-;;;; helm
-(defun helm-grep-do-git-grep-prompt (arg)
-  (interactive "P")
-  (require 'helm-files)
-  (helm-grep-git-1 (helm-advice--ffap-read-file-or-url "Helm git grep dir: "
-                                                       default-directory)
-                   arg))
-
-(with-eval-after-load "helm"
-  (global-set-key (kbd "C-c h") 'helm-command-prefix)
-  (global-set-key (kbd "C-c h g") 'helm-grep-do-git-grep-prompt)
-  (global-set-key (kbd "C-c h G") 'helm-grep-do-git-grep)
-  (global-set-key (kbd "C-c o") 'helm-occur)
-  (global-set-key (kbd "C-x b") 'helm-buffers-list)
-  (global-set-key (kbd "C-x C-f") 'helm-find-files)
-  (global-set-key (kbd "M-y") 'helm-show-kill-ring)
-  (global-set-key (kbd "M-x") 'helm-M-x))
-
-;;;; helm-company
-(ignore-errors
-  (el-get-init "helm-company")
-  (load-library "helm-company")
-  (with-eval-after-load "company"
-    (define-key company-mode-map (kbd "C-c .") 'helm-company)
-    (define-key company-active-map (kbd "C-c .") 'helm-company)))
-
-(ignore-errors
-  (require 'auto-complete))
-
 ;;;; dropdown-list
 (ignore-errors
   (require 'dropdown-list))
-
-;;;; switch-window
-(with-eval-after-load "switch-window"
-  (global-set-key (kbd "C-x o") 'switch-window))
-
-(ignore-errors
-  (el-get-init 'switch-window))
-
 
 (ignore-errors
   (require 'uniquify))
@@ -352,6 +315,154 @@ Otherwise, return result of last form in BODY."
 (display-time)
 
 ;; ======================================================================
+;; use-package
+;; ======================================================================
+;; (use-package auto-complete
+;;   :ensure t
+;;   :config
+;;   (add-to-list 'ac-modes 'jde-mode)
+;;   (add-to-list 'ac-modes 'objc-mode)
+;;   (global-auto-complete-mode t))
+
+;; (use-package auto-complete-yasnippet
+;;   :ensure t
+;;   :requires auto-complete
+;;   :config
+;;   (setq-default ac-sources
+;;                 '(ac-source-yasnippet
+;;                   ac-source-abbrev
+;;                   ac-source-dictionary
+;;                   ac-source-words-in-same-mode-buffers)))
+
+;; (use-package cmake-ide
+;;   :ensure t
+;;   :config
+;;   (cmake-ide-setup))
+
+(use-package cmake-mode
+  :ensure t
+  :config
+  (setq cmake-tab-width 4))
+
+(use-package markdown-mode)
+
+(use-package company
+  :ensure t
+  :config
+  (global-company-mode))
+
+(use-package company-quickhelp
+  :ensure t
+  :config
+  (company-quickhelp-mode))
+
+(defun helm-grep-do-git-grep-prompt (arg)
+  (interactive "P")
+  (require 'helm-files)
+  (helm-grep-git-1 (helm-advice--ffap-read-file-or-url "Helm git grep dir: "
+                                                       default-directory)
+                   arg))
+(use-package helm
+  :ensure t
+  :config
+  (global-set-key (kbd "C-c h") 'helm-command-prefix)
+  (global-set-key (kbd "C-c h g") 'helm-grep-do-git-grep-prompt)
+  (global-set-key (kbd "C-c h G") 'helm-grep-do-git-grep)
+  (global-set-key (kbd "C-c o") 'helm-occur)
+  (global-set-key (kbd "C-x b") 'helm-buffers-list)
+  (global-set-key (kbd "C-x C-f") 'helm-find-files)
+  (global-set-key (kbd "M-y") 'helm-show-kill-ring)
+  (global-set-key (kbd "M-x") 'helm-M-x))
+
+(use-package helm-company
+  :ensure t
+  :requires (helm company)
+  :config
+  (define-key company-mode-map (kbd "C-c .") 'helm-company)
+  (define-key company-active-map (kbd "C-c .") 'helm-company))
+
+(use-package helm-gtags
+  :ensure t
+  :requires helm
+  :custom
+  (helm-gtags-auto-update t)
+  (helm-gtags-ignore-case t)
+  (helm-gtags-prefix-key "C-h g")
+  (helm-gtags-suggested-key-mapping t)
+  :config
+  (add-hook 'c-mode-hook 'helm-gtags-mode)
+  (add-hook 'c++-mode-hook 'helm-gtags-mode)
+  (add-hook 'asm-mode-hook 'helm-gtags-mode)
+  (define-key helm-gtags-mode-map (kbd "M-t") 'helm-gtags-find-tag)
+  (define-key helm-gtags-mode-map (kbd "M-r") 'helm-gtags-find-rtag)
+  (define-key helm-gtags-mode-map (kbd "M-s") 'helm-gtags-find-symbol)
+  (define-key helm-gtags-mode-map (kbd "M-g M-p") 'helm-gtags-parse-file)
+  (define-key helm-gtags-mode-map (kbd "C-c <") 'helm-gtags-previous-history)
+  (define-key helm-gtags-mode-map (kbd "C-c >") 'helm-gtags-next-history)
+  (define-key helm-gtags-mode-map (kbd "M-,") 'helm-gtags-pop-stack))
+
+(use-package highlight-parentheses
+  :ensure t
+  :config
+  (global-highlight-parentheses-mode))
+
+(use-package irony
+  :ensure t
+  :config
+  (add-hook 'c++-mode-hook 'irony-mode)
+  (add-hook 'c-mode-hook 'irony-mode)
+  (add-hook 'objc-mode-hook 'irony-mode)
+  (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options))
+
+;; (use-package irony-eldoc
+;;   :ensure t
+;;   :config
+;;   (add-hook 'irony-mode-hook 'irony-eldoc))
+
+(use-package magit
+  :ensure t
+  :config
+  (global-set-key (kbd "C-x g") 'magit-status)
+  (global-set-key (kbd "C-x v g")
+                  '(lambda()
+                     (interactive)
+                     (if (functionp 'magit-blame-popup)
+                         (magit-blame-popup)
+                       (magit-blame-mode)))))
+(use-package paredit
+  :ensure t
+  :config
+  (add-hook 'emacs-lisp-mode-hook #'enable-paredit-mode)
+  (add-hook 'eval-expression-minibuffer-setup-hook #'enable-paredit-mode)
+  (add-hook 'ielm-mode-hook #'enable-paredit-mode)
+  (add-hook 'lisp-interaction-mode-hook
+            (lambda ()
+              (enable-paredit-mode)
+              (local-set-key (kbd "C-c RET") 'eval-print-last-sexp)
+              (local-set-key (kbd "C-c e") 'eval-print-last-sexp)))
+  (add-hook 'lisp-mode-hook #'enable-paredit-mode)
+  (add-hook 'scheme-mode-hook #'enable-paredit-mode))
+
+;; slime
+(use-package slime
+  :ensure t
+  :config
+  (setq inferior-lisp-program "/usr/bin/sbcl")
+  (setq slime-contribs '(slime-fancy)))
+
+(use-package switch-window
+  :ensure t
+  :config
+  (global-set-key (kbd "C-x o") 'switch-window))
+
+(use-package xcscope
+  :ensure t
+  :config
+  (add-hook 'java-mode-hook (function cscope:hook))
+  (add-hook 'asm-mode-hook (function cscope:hook))
+  (add-hook 'c-mode-common-hook (function cscope:hook)))
+
+;; ======================================================================
 ;; Programming modes
 ;; ======================================================================
 ;;;; auto-mode-alist
@@ -444,19 +555,6 @@ Otherwise, return result of last form in BODY."
 (add-hook 'emacs-lisp-mode-hook 'turn-on-eldoc-mode)
 (add-hook 'lisp-interaction-mode-hook 'turn-on-eldoc-mode)
 (add-hook 'ielm-mode-hook 'turn-on-eldoc-mode)
-
-;;;; paredit
-(with-eval-after-load "paredit"
-  (add-hook 'emacs-lisp-mode-hook       #'enable-paredit-mode)
-  (add-hook 'eval-expression-minibuffer-setup-hook #'enable-paredit-mode)
-  (add-hook 'ielm-mode-hook             #'enable-paredit-mode)
-  (add-hook 'lisp-interaction-mode-hook
-            (lambda ()
-              (enable-paredit-mode)
-              (local-set-key (kbd "C-c RET") 'eval-print-last-sexp)
-              (local-set-key (kbd "C-c e") 'eval-print-last-sexp)))
-  (add-hook 'lisp-mode-hook             #'enable-paredit-mode)
-  (add-hook 'scheme-mode-hook           #'enable-paredit-mode))
 
 (with-eval-after-load "highlight-sexp"
   (setq hl-sexp-background-color (if window-system
@@ -604,13 +702,6 @@ Otherwise, return result of last form in BODY."
 ;;;; w3m
 (autoload 'w3m "w3m" nil t)
 (autoload 'w3m-browse-url "w3m" nil t)
-
-;;;; cscope
-(ignore-errors
-  (require 'xcscope)
-  (add-hook 'java-mode-hook (function cscope:hook))
-  (add-hook 'asm-mode-hook (function cscope:hook))
-  (add-hook 'c-mode-common-hook (function cscope:hook)))
 
 ;;;; ecb
 (autoload 'ecb-activate "ecb" nil t)
@@ -922,35 +1013,6 @@ If not-nil, *compilation* buffer is displayed."
              (kill-buffer (current-buffer)))))
         (t
          (message "ELPA is already installed."))))
-
-;;;; magit
-(with-eval-after-load "magit"
-  (global-set-key (kbd "C-x g") 'magit-status)
-  (global-set-key (kbd "C-x v g") '(lambda()
-                                     (interactive)
-                                     (if (functionp 'magit-blame-popup)
-                                         (magit-blame-popup)
-                                       (magit-blame-mode)))))
-;;;; irony
-(ignore-errors
-  (el-get-init 'irony-mode)
-  (load-library "irony")
-  (load-library "irony-cdb")
-  (add-hook 'c++-mode-hook 'irony-mode)
-  (add-hook 'c-mode-hook 'irony-mode)
-  (add-hook 'objc-mode-hook 'irony-mode)
-  (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options))
-
-(ignore-errors
-  (el-get-init 'irony-eldoc)
-  (load-library "irony-eldoc")
-  (add-hook 'irony-mode-hook 'irony-eldoc))
-
-;;;; company
-(ignore-errors (el-get-init 'company-mode)
-               (load-library "company")
-               (global-company-mode))
-
 
 ;;;; el-get-post-init-hooks
 (add-hook 'el-get-post-init-hooks
