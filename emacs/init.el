@@ -1,5 +1,5 @@
 ;; ======================================================================
-;; General setting
+;; MELPA
 ;; ======================================================================
 (let ((entries (nconc (directory-files "~/settings/emacs/site-lisp" t)
                       (directory-files "~/.emacs.d/elpa" t "[^.]"))))
@@ -7,24 +7,6 @@
             (if (equal (car (file-attributes entry)) t)
                 (add-to-list 'load-path entry)))
           entries))
-
-(eval-when-compile
-  (require 'use-package))
-
-;;;; macros
-;; define ignore-errors macro
-(eval-when-compile
-  (defmacro ignore-errors (&rest body)
-    "Execute BODY; if an error occurs, return nil.
-Otherwise, return result of last form in BODY."
-    `(condition-case nil (progn ,@body) (error nil))))
-
-(if (not (fboundp 'with-eval-after-load))
-    (defmacro with-eval-after-load (feature &rest body)
-      "After FEATURE is loaded, evaluate BODY."
-      (declare (indent defun))
-      `(eval-after-load ,feature
-         '(progn ,@body))))
 
 ;;;; el-get
 ;; (if (file-exists-p "~/.emacs.d/el-get/el-get")
@@ -39,6 +21,27 @@ Otherwise, return result of last form in BODY."
 ;; and `package-pinned-packages`. Most users will not need or want to do this.
 (add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/") t)
 (package-initialize)
+
+(eval-when-compile
+  (require 'use-package))
+
+;; ======================================================================
+;; General setting
+;; ======================================================================
+;;;; macros
+;; define ignore-errors macro
+(eval-when-compile
+  (defmacro ignore-errors (&rest body)
+    "Execute BODY; if an error occurs, return nil.
+Otherwise, return result of last form in BODY."
+    `(condition-case nil (progn ,@body) (error nil))))
+
+(if (not (fboundp 'with-eval-after-load))
+    (defmacro with-eval-after-load (feature &rest body)
+      "After FEATURE is loaded, evaluate BODY."
+      (declare (indent defun))
+      `(eval-after-load ,feature
+         '(progn ,@body))))
 
 ;; to run multiple emacs daemons on a single system
 (setq server-use-tcp t)
