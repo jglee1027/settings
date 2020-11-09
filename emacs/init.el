@@ -320,34 +320,38 @@ Otherwise, return result of last form in BODY."
 ;; ======================================================================
 ;; use-package
 ;; ======================================================================
-;; (use-package auto-complete
-;;   :ensure t
-;;   :config
-;;   (add-to-list 'ac-modes 'jde-mode)
-;;   (add-to-list 'ac-modes 'objc-mode)
-;;   (global-auto-complete-mode t))
+(use-package auto-complete
+  :disabled
+  :ensure t
+  :config
+  (add-to-list 'ac-modes 'jde-mode)
+  (add-to-list 'ac-modes 'objc-mode)
+  (global-auto-complete-mode t))
 
-;; (use-package auto-complete-yasnippet
-;;   :ensure t
-;;   :requires auto-complete
-;;   :config
-;;   (setq-default ac-sources
-;;                 '(ac-source-yasnippet
-;;                   ac-source-abbrev
-;;                   ac-source-dictionary
-;;                   ac-source-words-in-same-mode-buffers)))
+(use-package auto-complete-yasnippet
+  :disabled
+  :ensure t
+  :requires auto-complete
+  :config
+  (setq-default ac-sources
+                '(ac-source-yasnippet
+                  ac-source-abbrev
+                  ac-source-dictionary
+                  ac-source-words-in-same-mode-buffers)))
 
-;; (use-package cmake-ide
-;;   :ensure t
-;;   :config
-;;   (cmake-ide-setup))
+(use-package cmake-ide
+  :disabled
+  :ensure t
+  :config
+  (cmake-ide-setup))
 
 (use-package cmake-mode
   :ensure t
   :config
   (setq cmake-tab-width 4))
 
-(use-package markdown-mode)
+(use-package markdown-mode
+  :ensure t)
 
 (use-package company
   :ensure t
@@ -417,10 +421,11 @@ Otherwise, return result of last form in BODY."
   (add-hook 'objc-mode-hook 'irony-mode)
   (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options))
 
-;; (use-package irony-eldoc
-;;   :ensure t
-;;   :config
-;;   (add-hook 'irony-mode-hook 'irony-eldoc))
+(use-package irony-eldoc
+  :disabled
+  :ensure t
+  :config
+  (add-hook 'irony-mode-hook 'irony-eldoc))
 
 (use-package magit
   :ensure t
