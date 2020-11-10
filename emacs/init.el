@@ -453,10 +453,13 @@ Otherwise, return result of last form in BODY."
 
 ;; slime
 (use-package slime
-  :ensure t
+  :ensure slime-company
   :config
-  (setq inferior-lisp-program "/usr/bin/sbcl")
-  (setq slime-contribs '(slime-fancy)))
+  (cond ((eq system-type 'darwin )
+         (setq inferior-lisp-program "/usr/local/bin/sbcl"))
+        (t
+         (setq inferior-lisp-program "sbcl")))
+  (setq slime-contribs '(slime-scratch slime-editing-commands slime-fancy slime-company)))
 
 (use-package switch-window
   :ensure t
