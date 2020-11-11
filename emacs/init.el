@@ -469,9 +469,7 @@ Otherwise, return result of last form in BODY."
 (use-package xcscope
   :ensure t
   :config
-  (add-hook 'java-mode-hook (function cscope:hook))
-  (add-hook 'asm-mode-hook (function cscope:hook))
-  (add-hook 'c-mode-common-hook (function cscope:hook)))
+  (cscope-setup))
 
 ;; ======================================================================
 ;; Programming modes
