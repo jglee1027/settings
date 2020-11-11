@@ -11,7 +11,7 @@ diff_cp() {
 	if [ ! -e $2 ]; then
 		$3 cp $1 $2
 	fi
-	
+
 	diff -u $2 $1 > $diff_file
 	local diff_return=$?
 	if [ $diff_return -eq 0 ]; then
@@ -51,6 +51,7 @@ if [ ! -d ~/.emacs.d/snippets ]; then
 fi
 
 diff_cp $settings_path/emacs/.emacs ~/.emacs
+diff_cp $settings_path/.dir-locals.el ~/.dir-locals.el
 
 fc-list | grep NanumGothic_AndaleMono > /dev/null
 if [ $? -eq 0 ]; then
