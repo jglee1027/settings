@@ -377,7 +377,7 @@ Otherwise, return result of last form in BODY."
   (global-set-key (kbd "C-c h G") 'helm-grep-do-git-grep)
   (global-set-key (kbd "C-c o") 'helm-occur)
   (global-set-key (kbd "C-x b") 'helm-buffers-list)
-  (global-set-key (kbd "C-x C-f") 'helm-find-files)
+  (global-set-key (kbd "C-x M-f") 'helm-find-files)
   (global-set-key (kbd "M-y") 'helm-show-kill-ring)
   (global-set-key (kbd "M-x") 'helm-M-x))
 
