@@ -1,6 +1,9 @@
 ;; ======================================================================
 ;; Custom variables and faces
 ;; ======================================================================
+(defvar default-font-spec-eng (font-spec :family "Ubuntu Mono" :size 9.0))
+(defvar default-font-spec-kor (font-spec :family "NanumMyeongjo" :size 9.0))
+
 (defvar default-font-spec-eng-list '((font-spec :family "Ubuntu Mono" :size 9.0)
                                      (font-spec :family "Andale Mono" :size 9.0)
                                      (font-spec :family "Dina TTF" :size 9.0)
@@ -8,7 +11,8 @@
                                      (font-spec :family "Bitstream Vera Sans Mono" :size 9.0)
                                      (font-spec :family "Consolas" :size 9.0)))
 
-(defvar default-font-spec-kor-list '((font-spec :family "NanumGothic" :size 9.0)
+(defvar default-font-spec-kor-list '((font-spec :family "NanumMyeongjo" :size 9.0)
+                                     (font-spec :family "NanumGothic" :size 9.0)
                                      (font-spec :family "³ª´®°íµñÄÚµù" :size 9.0)
                                      (font-spec :family "¸¼Àº °íµñ" :size 9.0)
                                      (font-spec :family "±¼¸²" :size 9.0)))
@@ -110,6 +114,14 @@
  '(show-paren-match ((t (:background "blue"))))
  '(whitespace-line ((t nil)))
  '(whitespace-space ((t (:background nil :foreground "yellow"))))
- '(whitespace-tab ((t (:background nil :foreground "yellow"))))
- (set-face-font 'default (default-font-get default-font-spec-eng-list))
- (set-fontset-font nil 'korean-ksc5601 (default-font-get default-font-spec-kor-list)))
+ '(whitespace-tab ((t (:background nil :foreground "yellow")))))
+
+(with-eval-after-load ".emacs-custom.el"
+  (cond ((find-font default-font-spec-eng)
+         (set-face-font 'default default-font-spec-eng))
+        (t
+         (set-face-font 'default (default-font-get default-font-spec-eng-list))))
+  (cond ((find-font default-font-spec-kor)
+         (set-fontset-font nil 'korean-ksc5601 default-font-spec-kor))
+        (t
+         (set-fontset-font nil 'korean-ksc5601 (default-font-get default-font-spec-kor-list)))))

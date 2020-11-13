@@ -1,6 +1,9 @@
 ;; ======================================================================
 ;; Custom variables and faces
 ;; ======================================================================
+(defvar default-font-spec-eng (font-spec :family "envypn" :size 9.0))
+(defvar default-font-spec-kor (font-spec :family "NanumMyeongjo" :size 9.0))
+
 (defvar default-font-spec-eng-list '((font-spec :family "envypn" :size 9.0)
                                      (font-spec :family "Ubuntu Mono" :size 9.0)
                                      (font-spec :family "Andale Mono" :size 9.0)
@@ -8,7 +11,7 @@
                                      (font-spec :family "Liberation Mono" :size 9.0)
                                      (font-spec :family "Monospace" :size 9.0)))
 
-(defvar default-font-spec-kor-list '((font-spec :family "\263\252\264\256\260\355\265\361" :size 9.0)
+(defvar default-font-spec-kor-list '((font-spec :family "NanumMyeongjo" :size 9.0)
                                      (font-spec :family "NanumGothic" :size 9.0)
                                      (font-spec :family "UnBatang" :size 9.0)
                                      (font-spec :family "Monospace" :size 9.0)))
@@ -19,9 +22,9 @@
                                          (font-spec :family "Monaco" :size 12.0)
                                          (font-spec :family "Courier New" :size 12.0)))
 
-(defvar default-font-spec-kor-mac-list '((font-spec :family "나눔고딕" :size 12.0)
-                                         (font-spec :family "AppleGothic" :size 12.0)
-                                         (font-spec :family "AppleMyungjo" :size 12.0)))
+(defvar default-font-spec-kor-mac-list '((font-spec :family "AppleMyungjo" :size 12.0)
+                                         (font-spec :family "나눔고딕" :size 12.0)
+                                         (font-spec :family "AppleGothic" :size 12.0)))
 
 (when window-system
   (custom-set-variables
@@ -122,12 +125,19 @@
    '(whitespace-line ((t nil)))
    '(whitespace-space ((t (:background nil :foreground "yellow"))))
    '(whitespace-tab ((t (:background nil :foreground "yellow")))))
-  (cond ((equal system-type 'darwin)   ; macosx
-         (set-face-font 'default (default-font-get default-font-spec-eng-mac-list))
-         (set-fontset-font nil 'korean-ksc5601 (default-font-get default-font-spec-kor-mac-list)))
-        (t                             ; linux
-         (set-face-font 'default (default-font-get default-font-spec-eng-list))
-         (set-fontset-font nil 'korean-ksc5601 (default-font-get default-font-spec-kor-list))))
+  (with-eval-after-load ".emacs-custom.el"
+    (cond ((find-font default-font-spec-eng)
+           (set-face-font 'default default-font-spec-eng))
+          ((equal system-type 'darwin)  ; macosx
+           (set-face-font 'default (default-font-get default-font-spec-eng-mac-list)))
+          (t                            ; linux
+           (set-face-font 'default (default-font-get default-font-spec-eng-list))))
+    (cond ((find-font default-font-spec-kor)
+           (set-fontset-font nil 'korean-ksc5601 default-font-spec-kor))
+          ((equal system-type 'darwin)  ; macosx
+           (set-fontset-font nil 'korean-ksc5601 (default-font-get default-font-spec-kor-mac-list)))
+          (t                            ; linux
+           (set-fontset-font nil 'korean-ksc5601 (default-font-get default-font-spec-kor-list)))))
   )
 (unless window-system
   (custom-set-faces
