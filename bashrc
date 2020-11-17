@@ -256,6 +256,7 @@ alias gr='git-gr'
 alias gs='git status --short --branch'
 alias l='ls -F'
 alias ll='ls -alF'
+alias m="make -j8"
 alias rm#='find . -iname "#*#" -exec rm -v "{}" \;'
 alias rm~='find . -iname "*~" -exec rm -v "{}" \;'
 alias yd='youtube-dl -f bestvideo+bestaudio'
