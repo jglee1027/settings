@@ -17,14 +17,14 @@
                                      (font-spec :family "Monospace" :size 9.0)))
 
 (defvar default-font-spec-eng-mac-list '((font-spec :family "Ubuntu Mono" :size 13.0)
-                                         (font-spec :family "Andale Mono" :size 12.0)
-                                         (font-spec :family "Menlo" :size 12.0)
-                                         (font-spec :family "Monaco" :size 12.0)
-                                         (font-spec :family "Courier New" :size 12.0)))
+                                         (font-spec :family "Andale Mono" :size 13.0)
+                                         (font-spec :family "Menlo" :size 13.0)
+                                         (font-spec :family "Monaco" :size 13.0)
+                                         (font-spec :family "Courier New" :size 13.0)))
 
-(defvar default-font-spec-kor-mac-list '((font-spec :family "AppleMyungjo" :size 12.0)
-                                         (font-spec :family "나눔고딕" :size 12.0)
-                                         (font-spec :family "AppleGothic" :size 12.0)))
+(defvar default-font-spec-kor-mac-list '((font-spec :family "AppleMyungjo" :size 13.0)
+                                         (font-spec :family "나눔고딕" :size 13.0)
+                                         (font-spec :family "AppleGothic" :size 13.0)))
 
 (when window-system
   (custom-set-variables
