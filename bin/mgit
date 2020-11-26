@@ -14,7 +14,7 @@ do
         for ((col=0; col<$COLS; col++)); do echo -n "#"; done
         echo -e "\r##### ${LBLUE}$i{${BRANCH}}${NORMAL}:${BLUE}$PWD/$i${NORMAL} "
         if [ $# -ge 1 ]; then
-            (cd $PWD/$i && git $*)
+            (cd $PWD/$i && LANGUAGE=C git $*)
         fi
     fi
 done

@@ -176,7 +176,7 @@ gr() {
     echo -n "git push $repo $refspec$PUSH_OPTIONS (y or n) "
     read choice
     if [ "$choice" = "Y" -o "$choice" = "y" ]; then
-        git push $repo $refspec$PUSH_OPTIONS
+        LANGUAGE=C git push $repo $refspec$PUSH_OPTIONS
     fi
 }
 
@@ -219,7 +219,7 @@ grho() {
     echo -n "git reset --hard $commit (y or n) "
     read choice
     if [ "$choice" = "Y" -o "$choice" = "y" ]; then
-        git reset --hard  $commit
+        LANGUAGE=C git reset --hard  $commit
     fi
 }
 
@@ -228,7 +228,7 @@ lesstab() {
 }
 
 gsh() {
-    git show --color --format=fuller $@ | lesstab
+    LANGUAGE=C git show --color --format=fuller $@ | lesstab
 }
 
 jsonindent() {
@@ -243,17 +243,17 @@ alias ec='emacs_client_frame'
 alias en='emacs -nw'
 alias es='emacs_daemon'
 alias grep='grep --color=auto'
-alias g='git'
-alias gbl='git blame'
-alias gbr='git branch'
-alias gd='git diff --color | lesstab'
-alias gdc='git diff --color --cached | lesstab'
-alias gg='git grep'
-alias gl='git log --color --format=fuller --decorate=full'
-alias gpush='git push'
-alias gpull='git pull'
-alias gr='git-gr'
-alias gs='git status --short --branch'
+alias g='LANGUAGE=C git'
+alias gbl='LANGUAGE=C git blame -wM'
+alias gbr='LANGUAGE=C git branch'
+alias gd='LANGUAGE=C git diff --color | lesstab'
+alias gdc='LANGUAGE=C git diff --color --cached | lesstab'
+alias gg='LANGUAGE=C git grep'
+alias gl='LANGUAGE=C git log --color --format=fuller --decorate=full'
+alias gpush='LANGUAGE=C git push'
+alias gpull='LANGUAGE=C git pull'
+alias gr='LANGUAGE=C git-gr'
+alias gs='LANGUAGE=C git status --short --branch'
 alias l='ls -F'
 alias ll='ls -alF'
 alias m="make -j8"
