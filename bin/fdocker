@@ -1,20 +1,20 @@
 #!/usr/bin/env bash
 
 command_list() {
-    echo 'attach  : docker attach $FDOCKER_ATTACH_OPT $(sudo docker ps | fzy | field_1)'
-    echo 'exec    : docker exec $FDOCKER_EXEC_OPT $(sudo docker ps | fzy | field_1) /bin/bash'
-    echo 'history : docker history $(sudo docker images | fzy | field_3)'
+    echo 'attach  : docker attach $FDOCKER_ATTACH_OPT $(docker ps | fzy | field_1)'
+    echo 'exec    : docker exec $FDOCKER_EXEC_OPT $(docker ps | fzy | field_1) /bin/bash'
+    echo 'history : docker history $(docker images | fzy | field_3)'
     echo 'image   : docker images | fzy | field_3'
-    echo 'kill    : docker kill $(sudo docker ps | fzy | field_1)'
-    echo 'logs    : docker logs -ft $(sudo docker ps -a | fzy | field_1)'
+    echo 'kill    : docker kill $(docker ps | fzy | field_1)'
+    echo 'logs    : docker logs -ft $(docker ps -a | fzy | field_1)'
     echo 'ps      : docker ps -a'
-    echo 'rm      : docker rm $(sudo docker ps -a | fzy | field_1)'
-    echo 'rmi     : docker rmi $(sudo docker images | fzy | field_3)'
-    echo 'run     : docker run $FDOCKER_RUN_OPT $(sudo docker images | fzy | field_3) /bin/bash'
-    echo 'run init: docker run $FDOCKER_RUN_OPT $(sudo docker images | fzy | field_3) /sbin/init'
+    echo 'rm      : docker rm $(docker ps -a | fzy | field_1)'
+    echo 'rmi     : docker rmi $(docker images | fzy | field_3)'
+    echo 'run     : docker run $FDOCKER_RUN_OPT $(docker images | fzy | field_3) /bin/bash'
+    echo 'run init: docker run $FDOCKER_RUN_OPT $(docker images | fzy | field_3) /sbin/init'
     echo 'stats   : docker stats'
-    echo 'stop    : docker stop $(sudo docker ps | fzy | field_1)'
-    echo 'top     : docker top $(sudo docker ps | fzy | field_1)'
+    echo 'stop    : docker stop $(docker ps | fzy | field_1)'
+    echo 'top     : docker top $(docker ps | fzy | field_1)'
 }
 
 fdockerrc="$HOME/.fdockerrc"
@@ -53,5 +53,5 @@ cmd=`command_list | fzy | cut -d : -f 2`
 source $fdockerrc
 
 set -x
-eval sudo $cmd
+eval $cmd
 set +x
