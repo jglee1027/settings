@@ -1,3 +1,18 @@
+;;;; macros
+;; define ignore-errors macro
+(eval-when-compile
+  (defmacro ignore-errors (&rest body)
+    "Execute BODY; if an error occurs, return nil.
+Otherwise, return result of last form in BODY."
+    `(condition-case nil (progn ,@body) (error nil))))
+
+(if (not (fboundp 'with-eval-after-load))
+    (defmacro with-eval-after-load (feature &rest body)
+      "After FEATURE is loaded, evaluate BODY."
+      (declare (indent defun))
+      `(eval-after-load ,feature
+         '(progn ,@body))))
+
 ;; ======================================================================
 ;; MELPA
 ;; ======================================================================
@@ -20,28 +35,19 @@
 ;; Comment/uncomment this line to enable MELPA Stable if desired.  See `package-archive-priorities`
 ;; and `package-pinned-packages`. Most users will not need or want to do this.
 (add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/") t)
-(package-initialize)
 
-(eval-when-compile
-  (require 'use-package))
+(ignore-errors
+  (package-initialize)
+  (eval-when-compile
+    (require 'use-package)))
+
+(if (not (featurep 'use-package))
+    (defmacro use-package (name &rest args)
+      (message (format "use-package: %s cannot be loaded" name))))
 
 ;; ======================================================================
 ;; General setting
 ;; ======================================================================
-;;;; macros
-;; define ignore-errors macro
-(eval-when-compile
-  (defmacro ignore-errors (&rest body)
-    "Execute BODY; if an error occurs, return nil.
-Otherwise, return result of last form in BODY."
-    `(condition-case nil (progn ,@body) (error nil))))
-
-(if (not (fboundp 'with-eval-after-load))
-    (defmacro with-eval-after-load (feature &rest body)
-      "After FEATURE is loaded, evaluate BODY."
-      (declare (indent defun))
-      `(eval-after-load ,feature
-         '(progn ,@body))))
 
 ;; to run multiple emacs daemons on a single system
 (setq server-use-tcp t)
@@ -437,6 +443,7 @@ Otherwise, return result of last form in BODY."
                      (if (functionp 'magit-blame-popup)
                          (magit-blame-popup)
                        (magit-blame-mode)))))
+
 (use-package paredit
   :ensure t
   :config
