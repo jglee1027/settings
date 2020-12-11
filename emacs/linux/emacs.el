@@ -52,7 +52,7 @@
    '(cscope-line-face ((nil)))
    '(cscope-line-number-face ((nil)))
    '(cscope-mouse-face ((t (:inherit highlight))))
-   '(cursor ((t (:background "yellow" :foreground "black"))))
+   '(cursor ((t (:background "white" :foreground "black"))))
    '(diff-added ((t (:foreground "green"))))
    '(diff-changed ((nil (:foreground "yellow"))))
    '(diff-context ((nil)))
