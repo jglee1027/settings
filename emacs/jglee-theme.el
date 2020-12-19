@@ -1,50 +1,59 @@
-;; ======================================================================
-;; Custom variables and faces
-;; ======================================================================
+(deftheme jglee
+  "Face colors with envypn font on a dark blue background")
+
 (defvar default-font-spec-eng (font-spec :family "envypn" :size 9.0))
 (defvar default-font-spec-kor (font-spec :family "NanumMyeongjo" :size 9.0))
 
 (defvar default-font-spec-eng-list '((font-spec :family "envypn" :size 9.0)
                                      (font-spec :family "Ubuntu Mono" :size 9.0)
                                      (font-spec :family "Andale Mono" :size 9.0)
+                                     (font-spec :family "Dina TTF" :size 9.0)
                                      (font-spec :family "NanumGothic_AndaleMono" :size 9.0)
+                                     (font-spec :family "나눔고딕코딩" :size 9.0)
                                      (font-spec :family "Liberation Mono" :size 9.0)
+                                     (font-spec :family "Consolas" :size 9.0)
                                      (font-spec :family "Monospace" :size 9.0)))
-
 (defvar default-font-spec-kor-list '((font-spec :family "NanumMyeongjo" :size 9.0)
                                      (font-spec :family "NanumGothic" :size 9.0)
                                      (font-spec :family "UnBatang" :size 9.0)
+                                     (font-spec :family "나눔고딕코딩" :size 9.0)
+                                     (font-spec :family "맑은 고딕" :size 9.0)
+                                     (font-spec :family "굴림" :size 9.0)
                                      (font-spec :family "Monospace" :size 9.0)))
-
 (defvar default-font-spec-eng-mac-list '((font-spec :family "Ubuntu Mono" :size 13.0)
                                          (font-spec :family "Andale Mono" :size 13.0)
                                          (font-spec :family "Menlo" :size 13.0)
                                          (font-spec :family "Monaco" :size 13.0)
                                          (font-spec :family "Courier New" :size 13.0)))
-
 (defvar default-font-spec-kor-mac-list '((font-spec :family "AppleMyungjo" :size 13.0)
                                          (font-spec :family "나눔고딕" :size 13.0)
                                          (font-spec :family "AppleGothic" :size 13.0)))
 
+(defun set-default-font ()
+  (cond ((find-font default-font-spec-eng)
+         (set-face-font 'default default-font-spec-eng))
+        ((equal system-type 'darwin)    ; macosx
+         (set-face-font 'default (default-font-get default-font-spec-eng-mac-list)))
+        (t                              ; linux
+         (set-face-font 'default (default-font-get default-font-spec-eng-list))))
+  (cond ((find-font default-font-spec-kor)
+         (set-fontset-font nil 'korean-ksc5601 default-font-spec-kor))
+        ((equal system-type 'darwin)  ; macosx
+         (set-fontset-font nil 'korean-ksc5601 (default-font-get default-font-spec-kor-mac-list)))
+        (t                            ; linux
+         (set-fontset-font nil 'korean-ksc5601 (default-font-get default-font-spec-kor-list)))))
+
 (when window-system
+  (set-default-font)
+  (with-eval-after-load ".emacs-custom.el"
+    (set-default-font))
+
   (custom-set-variables
    '(scroll-bar-mode nil))
 
-  (custom-set-faces
-   '(default ((t (:inherit nil
-                  :stipple nil
-                  :background "#103070"
-                  :foreground "#90c090"
-                  :inverse-video nil
-                  :box nil
-                  :strike-through nil
-                  :overline nil
-                  :underline nil
-                  :slant normal
-                  :weight normal
-                  :height 98
-                  :width normal
-                  :foundry "outline"))))
+  (custom-theme-set-faces
+   'jglee
+   '(default ((t (:inherit nil :stipple nil :background "#103070" :foreground "#90c090" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 98 :width normal :foundry "outline"))))
    '(compilation-error ((t (:foreground "red"))))
    '(compilation-info ((((class color)) nil)))
    '(compilation-line-number ((((class color)) nil)))
@@ -124,23 +133,11 @@
    '(show-paren-match ((t (:background "blue"))))
    '(whitespace-line ((t nil)))
    '(whitespace-space ((t (:background nil :foreground "yellow"))))
-   '(whitespace-tab ((t (:background nil :foreground "yellow")))))
-  (with-eval-after-load ".emacs-custom.el"
-    (cond ((find-font default-font-spec-eng)
-           (set-face-font 'default default-font-spec-eng))
-          ((equal system-type 'darwin)  ; macosx
-           (set-face-font 'default (default-font-get default-font-spec-eng-mac-list)))
-          (t                            ; linux
-           (set-face-font 'default (default-font-get default-font-spec-eng-list))))
-    (cond ((find-font default-font-spec-kor)
-           (set-fontset-font nil 'korean-ksc5601 default-font-spec-kor))
-          ((equal system-type 'darwin)  ; macosx
-           (set-fontset-font nil 'korean-ksc5601 (default-font-get default-font-spec-kor-mac-list)))
-          (t                            ; linux
-           (set-fontset-font nil 'korean-ksc5601 (default-font-get default-font-spec-kor-list)))))
-  )
+   '(whitespace-tab ((t (:background nil :foreground "yellow"))))))
+
 (unless window-system
-  (custom-set-faces
+  (custom-theme-set-faces
+   'jglee
    '(default ((nil (:background nil))))
    '(compilation-error ((t (:foreground "red"))))
    '(compilation-info ((((class color)) nil)))
@@ -225,3 +222,5 @@
            (functionp 'tty-type)
            (equal (tty-type) "xterm-256color"))
       (set-face-attribute 'hl-line nil :background "#ffffd7")))
+
+(provide-theme 'jglee)

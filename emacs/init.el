@@ -1065,9 +1065,7 @@ If not-nil, *compilation* buffer is displayed."
   (if window-system
       (menu-bar-mode 1)
     (menu-bar-mode -1))
-  (if (eq system-type 'windows-nt)
-      (load-library "~/settings/emacs/windows/emacs")
-    (load-library "~/settings/emacs/linux/emacs")))
+  (load-theme 'jglee t))
 
 (global-set-key (kbd "C-x C-l") 'init-ui)
 (add-hook 'server-visit-hook 'init-ui)
