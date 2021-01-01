@@ -461,6 +461,11 @@ Otherwise, return result of last form in BODY."
 ;; slime
 (use-package slime
   :ensure slime-company
+  :bind
+  (:map slime-mode-map
+        ("M-p" . nil)   ; slime-previous-note
+        ("M-n" . nil))  ; slime-next-note
+
   :config
   (cond ((eq system-type 'darwin )
          (setq inferior-lisp-program "/usr/local/bin/sbcl"))
