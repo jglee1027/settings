@@ -462,7 +462,12 @@ Otherwise, return result of last form in BODY."
 (use-package slime
   :ensure slime-company
   :bind
-  (:map slime-mode-map
+  (:map sldb-mode-map
+        ("<f5>" . sldb-step)
+        ("<f6>" . sldb-next)
+        ("<f7>" . sldb-out)
+        ("<f8>" . sldb-continue)
+   :map slime-mode-map
         ("M-p" . nil)   ; slime-previous-note
         ("M-n" . nil))  ; slime-next-note
 
