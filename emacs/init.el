@@ -419,6 +419,11 @@ Otherwise, return result of last form in BODY."
   :config
   (global-highlight-parentheses-mode))
 
+(use-package indent-guide
+  :ensure t
+  :config
+  (indent-guide-global-mode))
+
 (use-package irony
   :ensure t
   :config
