@@ -214,7 +214,7 @@
    '(mumamo-background-chunk-submode3 ((t nil)))
    '(mumamo-background-chunk-submode4 ((t nil)))
    '(region ((t (:background "white" :foreground "black"))))
-   '(show-paren-match ((t (:background "blue"))))
+   '(show-paren-match ((t (:background "color-195"))))
    '(whitespace-line ((t nil)))
    '(whitespace-space ((t (:background nil :foreground "yellow"))))
    '(whitespace-tab ((t (:background nil :foreground "yellow")))))
