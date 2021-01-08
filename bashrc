@@ -236,8 +236,7 @@ jsonindent() {
 }
 
 export TERM=xterm-256color
-export PS1="\[\033[01;32m\]\u@\h:\w\$(git branch 2>/dev/null | grep -e '\* ' | sed 's/^..\(.*\)/{\1}/')\[\033[00m\]\$ "
-
+export PS1="\u@\h:\[\033[1;32;44m\]\w\$(git branch 2>/dev/null | grep -e '\* ' | sed 's/^..\(.*\)/{\1}/')\[\033[00m\]\$ "
 alias e='emacs_client'
 alias ec='emacs_client_frame'
 alias en='emacs -nw'
