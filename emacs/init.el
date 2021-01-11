@@ -1083,5 +1083,5 @@ If not-nil, *compilation* buffer is displayed."
   (load-theme 'jglee t))
 
 (global-set-key (kbd "C-x C-l") 'init-ui)
-(add-hook 'server-visit-hook 'init-ui)
+;; (add-hook 'server-visit-hook 'init-ui)
 (init-ui)
