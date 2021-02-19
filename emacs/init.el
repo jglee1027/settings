@@ -356,6 +356,15 @@ Otherwise, return result of last form in BODY."
   :config
   (setq cmake-tab-width 4))
 
+(use-package docker-compose-mode
+  :ensure t)
+
+(use-package docker-tramp
+  :ensure t)
+
+(use-package dockerfile-mode
+  :ensure t)
+
 (use-package markdown-mode
   :ensure t)
 
