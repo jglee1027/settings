@@ -378,6 +378,9 @@ Otherwise, return result of last form in BODY."
   :config
   (company-quickhelp-mode))
 
+(use-package flycheck
+  :ensure t)
+
 (defun helm-grep-do-git-grep-prompt (arg)
   (interactive "P")
   (require 'helm-files)
@@ -434,7 +437,8 @@ Otherwise, return result of last form in BODY."
   (indent-guide-global-mode))
 
 (use-package irony
-  :ensure t
+  :disabled
+  :ensure nil
   :config
   (add-hook 'c++-mode-hook 'irony-mode)
   (add-hook 'c-mode-hook 'irony-mode)
@@ -446,6 +450,45 @@ Otherwise, return result of last form in BODY."
   :ensure t
   :config
   (add-hook 'irony-mode-hook 'irony-eldoc))
+
+(use-package js2-mode
+  :ensure t)
+
+(use-package lsp-mode
+  :ensure t
+  :init
+  (setq lsp-keymap-prefix "C-c l")
+  :hook ((c-mode . lsp-deferred)
+         (c++-mode . lsp-deferred)
+         (java-mode . lsp-deferred)
+         (js-mode . lsp-deferred)
+         (js2-mode . lsp-deferred)
+         (lsp-mode . lsp-enable-which-key-integration)
+         (perl-mode . lsp-deferred)
+         (python-mode . lsp-deferred)
+         (typescript-mode . lsp-deferred))
+  :commands (lsp lsp-deferred))
+
+(use-package lsp-ui
+  :ensure t
+  :commands lsp-ui-mode)
+
+(use-package helm-lsp
+  :ensure t
+  :commands helm-lsp-workspace-symbol)
+
+;; (use-package lsp-ivy :commands lsp-ivy-workspace-symbol)
+(use-package lsp-treemacs
+  :ensure t
+  :commands lsp-treemacs-errors-list)
+
+(use-package dap-mode
+  :ensure t)
+
+(use-package which-key
+  :ensure t
+  :config
+  (which-key-mode))
 
 (use-package magit
   :ensure t
@@ -496,6 +539,9 @@ Otherwise, return result of last form in BODY."
   :ensure t
   :config
   (global-set-key (kbd "C-x o") 'switch-window))
+
+(use-package typescript-mode
+  :ensure t)
 
 (use-package xcscope
   :ensure t
