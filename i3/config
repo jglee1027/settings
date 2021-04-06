@@ -85,6 +85,8 @@ bindsym XF86MonBrightnessUp exec "~/settings/bin/brightness up"
 # touchpad
 bindsym $mod+F5 exec "~/settings/bin/toggletouchpad"
 
+bindsym Print exec flameshot gui
+
 ### for_window ###
 
 for_window [title="xmessage"] floating enable
