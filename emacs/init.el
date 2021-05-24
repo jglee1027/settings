@@ -454,6 +454,9 @@ Otherwise, return result of last form in BODY."
 (use-package js2-mode
   :ensure t)
 
+(use-package kubernetes
+  :ensure t)
+
 (use-package lsp-mode
   :ensure t
   :init
