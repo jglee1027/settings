@@ -518,6 +518,13 @@ Otherwise, return result of last form in BODY."
   (add-hook 'lisp-mode-hook #'enable-paredit-mode)
   (add-hook 'scheme-mode-hook #'enable-paredit-mode))
 
+(use-package plantuml-mode
+  :ensure t
+  :custom
+  (plantuml-default-exec-mode 'executable)
+  :config
+  (setq plantuml-output-type "png"))
+
 ;; slime
 (use-package slime
   :ensure slime-company
