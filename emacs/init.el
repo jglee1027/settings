@@ -574,6 +574,7 @@ Otherwise, return result of last form in BODY."
 (add-to-list 'auto-mode-alist '("\\.cflow$" . cflow-mode))
 (add-to-list 'auto-mode-alist '("\\.js$" . javascript-mode))
 (add-to-list 'auto-mode-alist '("\\.html\\.erb\\'" . eruby-nxhtml-mumamo-mode))
+(add-to-list 'auto-mode-alist '("\\.puml$" . plantuml-mode))
 
 ;;;; choose header file mode
 (defun header-file-mode-hook()
