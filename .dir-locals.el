@@ -2,4 +2,8 @@
          (tab-width . 4)
          (fill-column . 80)))
  (cmake-mode . ((cmake-tab-width . 2)))
+ (js-mode . ((tab-width . 2)
+             (js-indent-level . 2)))
+ (typescript-mode . ((tab-width . 2)
+                     (typescript-indent-level . 2)))
  (makefile-mode . ((indent-tabs-mode . t))))
