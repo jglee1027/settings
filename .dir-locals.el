@@ -1,6 +1,8 @@
 ((nil . ((indent-tabs-mode . nil)
          (tab-width . 4)
          (fill-column . 80)))
+ (css-mode . ((tab-width . 2)
+              (css-indent-offset . 2)))
  (cmake-mode . ((cmake-tab-width . 2)))
  (js-mode . ((tab-width . 2)
              (js-indent-level . 2)))
