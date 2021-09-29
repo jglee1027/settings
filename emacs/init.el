@@ -523,6 +523,9 @@ Otherwise, return result of last form in BODY."
   :config
   (setq plantuml-output-type "png"))
 
+(use-package s3ed
+  :ensure t)
+
 ;; slime
 (use-package slime
   :ensure slime-company
