@@ -502,6 +502,11 @@ Otherwise, return result of last form in BODY."
                          (magit-blame-popup)
                        (magit-blame-mode)))))
 
+(use-package org-bullets
+  :ensure t
+  :config
+  (add-hook 'org-mode-hook 'org-bullets-mode))
+
 (use-package paredit
   :ensure t
   :config
