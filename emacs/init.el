@@ -35,7 +35,6 @@ Otherwise, return result of last form in BODY."
 (add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/") t)
 
 (ignore-errors
-  (package-initialize)
   (eval-when-compile
     (require 'use-package)))
 
