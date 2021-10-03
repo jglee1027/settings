@@ -1144,6 +1144,8 @@ If not-nil, *compilation* buffer is displayed."
                (throw 'while-exit font)))))
     (throw 'while-exit nil)))
 
+(defvar init-ui-hook '((lambda ()
+                         (load-theme 'jglee t))))
 (defun init-ui ()
   (interactive)
   (if (functionp 'tool-bar-mode)
@@ -1151,8 +1153,14 @@ If not-nil, *compilation* buffer is displayed."
   (if window-system
       (menu-bar-mode 1)
     (menu-bar-mode -1))
-  (load-theme 'jglee t))
+  (run-hooks 'init-ui-hook))
 
 (global-set-key (kbd "C-x C-l") 'init-ui)
 ;; (add-hook 'server-visit-hook 'init-ui)
+
+(load-library "kmacro-functions.el")
+
+(if (file-exists-p custom-file)
+    (load custom-file))
+
 (init-ui)

@@ -1,12 +1,6 @@
-;; (global-hl-line-mode t)
-
-(ignore-errors
-  (el-get-init "grep-a-lot"))
-
-(ignore-errors
-  (el-get-init "highlight-sexp")
-  (load-library "highlight-sexp"))
-
-(ignore-errors
-  (el-get-init "c-eldoc")
-  (load-library "c-eldoc"))
+(setq default-font-spec-eng (font-spec :family "envypn" :size 19.0))
+(setq default-font-spec-kor (font-spec :family "NanumMyeongjo" :size 19.0))
+(when window-system
+  (setq init-ui-hook '((lambda ()
+                         (load-theme 'jglee t t)
+                         (load-theme 'whiteboard t nil)))))
