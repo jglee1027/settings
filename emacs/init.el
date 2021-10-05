@@ -503,6 +503,9 @@ Otherwise, return result of last form in BODY."
 
 (use-package org-bullets
   :ensure t
+  :custom
+  (org-ascii-bullets '((ascii ?* ?+ ?-) (latin1 ?* ?+ ?-) (utf-8 ?⦿ ?▶ ?○ ?◆)))
+  (org-bullets-bullet-list '("⦿" "▶" "○" "◆"))
   :config
   (add-hook 'org-mode-hook 'org-bullets-mode))
 
