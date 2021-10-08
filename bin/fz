@@ -13,6 +13,7 @@ command_list() {
     echo 'gshst  : git show $(git stash list | fzy | cut_f1)'
     echo 'gstapp : git stash apply $(git stash list | fzy | cut_f1)'
     echo 'gstpop : git stash pop $(git stash list | fzy | cut_f1)'
+    echo 'kctx   : kubectl config use-context $(kubectl config get-contexts -o name | fzy)'
     echo 'ls     : ls | fzy'
     echo 'pskill : ps aux | fzy | field_2 | xargs kill'
     echo 'vi     : vi $(find -type f | fzy)'
