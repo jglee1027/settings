@@ -397,6 +397,12 @@ Otherwise, return result of last form in BODY."
   (global-set-key (kbd "M-y") 'helm-show-kill-ring)
   (global-set-key (kbd "M-x") 'helm-M-x))
 
+(use-package helm-ag
+  :ensure t
+  :config
+  (global-set-key (kbd "C-c h a") 'helm-do-grep-ag)
+  (global-set-key (kbd "C-c h A") 'helm-do-ag-project-root))
+
 (use-package helm-company
   :ensure t
   :requires (helm company)
