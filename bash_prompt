@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+
+git_branch_ps1() {
+    echo "$(git branch 2>/dev/null | grep -e '\* ' | sed 's/^..\(.*\)/{\1}/')"
+}
+
+kctx() {
+    if [ "$1" = "" ]; then
+        kubectl config use-context $(kubectl config get-contexts -o name | fzy)
+    elif [ "$1" = "on" ]; then
+        export PS1_KCTX="on"
+    elif [ "$1" = "off" ]; then
+        export PS1_KCTX=""
+    fi
+}
+
+kctx_ps1() {
+    if [ "$PS1_KCTX" = "on" ]; then
+        echo "[$(kubectl config current-context 2>/dev/null)]"
+    else
+        echo ""
+    fi
+}
+
+bash_prompt() {
+    PS1="\[\033[7m\]\u@\h \w$(git_branch_ps1)$(kctx_ps1)\[\033[0m\]$(printf '\n$ ')"
+}
+
+PROMPT_COMMAND=bash_prompt

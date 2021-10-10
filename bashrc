@@ -240,7 +240,6 @@ jsonindent() {
 }
 
 export TERM=xterm-256color
-export PS1="\[\033[7m\]\u@\h \w\$(git branch 2>/dev/null | grep -e '\* ' | sed 's/^..\(.*\)/{\1}/')[\$(kubectl config current-context 2>/dev/null)]\[\033[0m\]$(printf '\n$ ')"
 alias e='emacs_client'
 alias ec='emacs_client_frame'
 alias en='emacs -nw'
@@ -258,7 +257,6 @@ alias gpull='LANGUAGE=C git pull'
 alias gr='LANGUAGE=C git-gr'
 alias gs='LANGUAGE=C git status --short --branch'
 alias k='kubectl'
-alias kctx='kubectl config use-context $(kubectl config get-contexts -o name | fzy)'
 alias l='ls -F'
 alias ll='ls -alF'
 alias m="make -j8"
@@ -280,3 +278,6 @@ export LS_COLORS
 add_completion kubectl bash
 add_completion helm bash
 add_completion oc bash
+
+source $settings_dir/bash_prompt
+kctx on
