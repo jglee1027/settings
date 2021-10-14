@@ -3,4 +3,4 @@
 (when window-system
   (setq init-ui-hook '((lambda ()
                          (load-theme 'jglee t t)
-                         (load-theme 'whiteboard t nil)))))
+                         (load-theme 'leuven t nil)))))
