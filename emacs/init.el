@@ -531,6 +531,8 @@ Otherwise, return result of last form in BODY."
   :ensure t
   :custom
   (org-ascii-bullets '((ascii ?* ?+ ?-) (latin1 ?* ?+ ?-) (utf-8 ?⦿ ?▶ ?○ ?◆)))
+  (org-ascii-text-width most-positive-fixnum)
+  (org-export-preserve-breaks t)
   (org-bullets-bullet-list '("⦿" "▶" "○" "◆"))
   :config
   (add-hook 'org-mode-hook 'org-bullets-mode))
