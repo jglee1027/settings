@@ -490,7 +490,24 @@ Otherwise, return result of last form in BODY."
   :commands lsp-treemacs-errors-list)
 
 (use-package dap-mode
-  :ensure t)
+  :ensure t
+  :config
+  (global-set-key (kbd "<f5>") 'dap-step-in)
+  (global-set-key (kbd "<f6>") 'dap-next)
+  (global-set-key (kbd "<f7>") 'dap-step-out)
+  (global-set-key (kbd "<f8>") 'dap-continue)
+  (global-set-key (kbd "<f9>") 'dap-breakpoint-toggle)
+  (global-set-key (kbd "<f12>") 'dap-ui-show-many-windows)
+  (global-set-key (kbd "C-<f12>") 'dap-ui-hide-many-windows)
+  (global-set-key (kbd "M-+") 'dap-up-stack-frame)
+  (global-set-key (kbd "M-_") 'dap-down-stack-frame)
+  (global-set-key (kbd "C-c d D") 'dap-disconnect)
+  (global-set-key (kbd "C-c d d") 'dap-debug)
+  (global-set-key (kbd "C-c d l") 'dap-debug-last)
+  (global-set-key (kbd "C-c d r") 'dap-debug-restart)
+  (global-set-key (kbd "C-c d e") 'dap-ui-repl)
+  (global-set-key (kbd "C-c d h") 'dap-hydra)
+  (global-set-key (kbd "C-c d t") 'dap-tooltip-at-point))
 
 (use-package which-key
   :ensure t
@@ -587,6 +604,11 @@ Otherwise, return result of last form in BODY."
   (global-set-key (kbd "C-x o") 'switch-window))
 
 (use-package typescript-mode
+  :mode "\\.ts\\'"
+  :config
+  (setq typescript-indent-level 2)
+  (require 'dap-node)
+  (dap-node-setup)
   :ensure t)
 
 (use-package xcscope
