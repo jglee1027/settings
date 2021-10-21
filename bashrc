@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 add_completion() {
-    which $1 > /dev/null && source <($1 completion $2)
+    which $1 &> /dev/null && source <($1 completion $2)
 }
 
 emacs_daemon() {
