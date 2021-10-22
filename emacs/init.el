@@ -65,7 +65,6 @@ Otherwise, return result of last form in BODY."
 (column-number-mode t)
 (display-time-mode t)
 (ffap-bindings)
-(iswitchb-mode)
 ;; (global-hl-line-mode t)
 ;; (ido-mode t)
 
