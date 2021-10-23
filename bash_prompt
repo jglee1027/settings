@@ -1,12 +1,17 @@
 #!/usr/bin/env bash
 
+exit_err() {
+    [ "$1" != "" ] && echo >&2 "${1}"
+    exit 1
+}
+
 git_branch_ps1() {
     echo "$(git branch 2>/dev/null | grep -e '\* ' | sed 's/^..\(.*\)/{\1}/')"
 }
 
 kctx() {
     if [ "$1" = "" ]; then
-        kubectl config use-context $(kubectl config get-contexts -o name | fzy)
+        kubectl config use-context "$(kubectl config get-contexts -o name | fzy || exit_err '^C')"
     elif [ "$1" = "on" ]; then
         export PS1_KCTX="on"
     elif [ "$1" = "off" ]; then
@@ -14,9 +19,24 @@ kctx() {
     fi
 }
 
+get_current_namespace() {
+    ctx="$(kubectl config current-context)"
+    ns="$(kubectl config view -o=jsonpath="{.contexts[?(@.name==\"${ctx}\")].context.namespace}")"
+    echo "$ns"
+}
+
+kns() {
+    if [ "$1" != "" ]; then
+        kubectl config set-context --current --namespace $1
+    else
+        kubectl config set-context --current --namespace \
+                $(kubectl get namespaces -o=custom-columns=NAME:.metadata.name | fzy || exit_err '^C')
+    fi
+}
+
 kctx_ps1() {
     if [ "$PS1_KCTX" = "on" ]; then
-        echo "[$(kubectl config current-context 2>/dev/null)]"
+        echo "[$(kubectl config current-context 2>/dev/null)/$(get_current_namespace)]"
     else
         echo ""
     fi
