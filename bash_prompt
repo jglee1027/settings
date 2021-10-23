@@ -5,10 +5,6 @@ exit_err() {
     exit 1
 }
 
-git_branch_ps1() {
-    echo "$(git branch 2>/dev/null | grep -e '\* ' | sed 's/^..\(.*\)/{\1}/')"
-}
-
 kctx() {
     if [ "$1" = "" ]; then
         kubectl config use-context "$(kubectl config get-contexts -o name | fzy || exit_err '^C')"
@@ -19,12 +15,6 @@ kctx() {
     fi
 }
 
-get_current_namespace() {
-    ctx="$(kubectl config current-context)"
-    ns="$(kubectl config view -o=jsonpath="{.contexts[?(@.name==\"${ctx}\")].context.namespace}")"
-    echo "$ns"
-}
-
 kns() {
     if [ "$1" != "" ]; then
         kubectl config set-context --current --namespace $1
@@ -32,6 +22,16 @@ kns() {
         kubectl config set-context --current --namespace \
                 $(kubectl get namespaces -o=custom-columns=NAME:.metadata.name | fzy || exit_err '^C')
     fi
+}
+
+git_branch_ps1() {
+    echo "$(git branch 2>/dev/null | grep -e '\* ' | sed 's/^..\(.*\)/{\1}/')"
+}
+
+get_current_namespace() {
+    ctx="$(kubectl config current-context)"
+    ns="$(kubectl config view -o=jsonpath="{.contexts[?(@.name==\"${ctx}\")].context.namespace}")"
+    echo "$ns"
 }
 
 kctx_ps1() {
