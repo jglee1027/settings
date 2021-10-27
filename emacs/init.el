@@ -1032,6 +1032,22 @@ finished."
                              "~/org/work.org"))
 (setq org-clock-persist t)
 
+;;;; org-babel
+(setq org-confirm-babel-evaluate nil)
+(setq org-startup-with-inline-images t)
+
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((plantuml . t)))
+(add-hook 'org-babel-after-execute-hook
+          (lambda ()
+            (when org-inline-image-overlays
+              (org-redisplay-inline-images))))
+(add-to-list 'org-structure-template-alist
+             '("u" "#+BEGIN_SRC plantuml :file ?.png
+skinparam linetype ortho
+#+END_SRC"))
+
 ;; ======================================================================
 ;; IRC
 ;; ======================================================================
