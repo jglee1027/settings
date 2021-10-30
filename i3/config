@@ -64,6 +64,7 @@ bindsym $mod+grave exec "~/settings/bin/switch-win-by-app"
 bindsym $mod+apostrophe exec "i3-easyfocus \
 --color-urgent-bg ffcccc --color-focused-bg 99ccff --color-unfocused-bg ffffcc \
 --color-urgent-fg 000000 --color-focused-fg 000000 --color-unfocused-fg 000000"
+bindsym $mod+Shift+b exec "blueman-manager"
 bindsym $mod+z exec "i3lock -c 000000"
 bindsym $mod+Shift+z exec "systemctl suspend"
 bindsym $mod+Ctrl+Shift+z exec "systemctl hibernate"
@@ -91,6 +92,7 @@ bindsym Print exec flameshot gui
 ### for_window ###
 
 for_window [title="xmessage"] floating enable
+for_window [class="(?i)blueman-manager"] floating enable
 for_window [class="Emacs"] mark "emacs" move scratchpad
 
 ### scratchpad ###
