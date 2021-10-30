@@ -11,7 +11,8 @@
 
 set $mod Mod4
 
-exec --no-startup-id xsetroot -solid "#104080"
+exec --no-startup-id xsetroot -solid "#000000"
+exec --no-startup-id xmodmap ~/.Xmodmap
 
 exec --no-startup-id xrdb ~/.Xdefaults && xrdb -merge ~/.Xresources
 
