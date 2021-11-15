@@ -385,7 +385,9 @@ Otherwise, return result of last form in BODY."
   :ensure t)
 
 (use-package flycheck
-  :ensure t)
+  :ensure t
+  :config
+  (global-flycheck-mode))
 
 (defun helm-grep-do-git-grep-prompt (arg)
   (interactive "P")
