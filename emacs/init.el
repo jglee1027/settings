@@ -16,6 +16,10 @@ Otherwise, return result of last form in BODY."
 ;; ======================================================================
 ;; MELPA
 ;; ======================================================================
+(let ((elpa-dir "~/.emacs.d/elpa"))
+  (unless (file-exists-p elpa-dir)
+    (make-directory elpa-dir)))
+
 (let ((entries (nconc (directory-files "~/settings/emacs/site-lisp" t)
                       (directory-files "~/.emacs.d/elpa" t "[^.]"))))
   (mapcar (lambda (entry)
@@ -33,15 +37,19 @@ Otherwise, return result of last form in BODY."
 (require 'package)
 (add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/") t)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+(package-initialize)
 
+(unless (package-installed-p 'use-package)
+  (package-refresh-contents)
+  (package-install 'use-package))
 
 (ignore-errors
   (eval-when-compile
     (require 'use-package)))
 
-(if (not (featurep 'use-package))
-    (defmacro use-package (name &rest args)
-      (message (format "use-package: %s cannot be loaded" name))))
+(unless (featurep 'use-package)
+  (defmacro use-package (name &rest args)
+       (message (format "use-package: %s cannot be loaded" name))))
 
 ;; ======================================================================
 ;; General setting
