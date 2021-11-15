@@ -354,6 +354,16 @@ Otherwise, return result of last form in BODY."
                   ac-source-dictionary
                   ac-source-words-in-same-mode-buffers)))
 
+(use-package company
+  :ensure t
+  :config
+  (global-company-mode))
+
+(use-package company-quickhelp
+  :ensure t
+  :config
+  (company-quickhelp-mode))
+
 (use-package cmake-ide
   :disabled
   :ensure t
@@ -373,19 +383,6 @@ Otherwise, return result of last form in BODY."
 
 (use-package dockerfile-mode
   :ensure t)
-
-(use-package markdown-mode
-  :ensure t)
-
-(use-package company
-  :ensure t
-  :config
-  (global-company-mode))
-
-(use-package company-quickhelp
-  :ensure t
-  :config
-  (company-quickhelp-mode))
 
 (use-package flycheck
   :ensure t)
@@ -535,6 +532,9 @@ Otherwise, return result of last form in BODY."
                      (if (functionp 'magit-blame-popup)
                          (magit-blame-popup)
                        (magit-blame-mode)))))
+
+(use-package markdown-mode
+  :ensure t)
 
 (use-package mu4e-views
   :ensure t
