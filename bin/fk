@@ -1,0 +1,44 @@
+#!/usr/bin/env bash
+
+command_list() {
+    echo 'exec    : kubectl exec -it $(get_pod) -- bash'
+    echo 'delpod  : kubectl delete pod $(get_pod)'
+    echo 'log     : kubectl logs $(get_pod)'
+    echo 'logf    : kubectl logs -f $(get_pod)'
+}
+
+field_1() {
+    awk '{print $1}'
+}
+
+field_2() {
+    awk '{print $2}'
+}
+
+field_3() {
+    awk '{print $3}'
+}
+
+field_4() {
+    awk '{print $4}'
+}
+
+field_5() {
+    awk '{print $5}'
+}
+
+get_pod() {
+    echo $(kubectl get po -o name | fzy | field_1)
+}
+
+if [ "$(which fzy)" == "" ]; then
+    echo "Not found fzy!!!"
+    echo "Install fzy as the following:"
+    echo "$ sudo apt install fzy"
+    exit 1
+fi
+
+cmd=`command_list | fzy | cut -d : -f 2`
+
+echo $cmd
+eval $cmd
