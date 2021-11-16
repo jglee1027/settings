@@ -616,6 +616,17 @@ Otherwise, return result of last form in BODY."
   :config
   (global-set-key (kbd "C-x o") 'switch-window))
 
+(defun term-send-reset-ps1 ()
+    "Send \'unset PROMPT_COMMAND; export PS1=xxx\' in term mode"
+  (interactive)
+  (term-send-raw-string "unset PROMPT_COMMAND
+export PS1=\"\\e[7m\\u@\\h \\w\\n\\e[0m$ \"\n"))
+
+(use-package term
+  :ensure t
+  :config
+  (define-key term-raw-escape-map (kbd "C-l") 'term-send-reset-ps1))
+
 (use-package typescript-mode
   :mode "\\.ts\\'"
   :config
