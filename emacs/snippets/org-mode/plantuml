@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: plantuml
+# key: u_
+# expand-env : ((yas/indent-line 'fixed) (yas/wrap-around-region 'nil))
+# --
+#+BEGIN_SRC plantuml :file $1.png
+skinparam linetype ortho
+$0
+#+END_SRC
