@@ -2,5 +2,6 @@
 # name: options: num:0 h:0
 # key: opt
 # --
+# -*- coding: utf-8-unix -*-
 #+OPTIONS: num:0 h:0 author:nil toc:nil
 $0
