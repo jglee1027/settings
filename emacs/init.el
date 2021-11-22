@@ -346,7 +346,7 @@ Otherwise, return result of last form in BODY."
 (use-package auto-complete-yasnippet
   :disabled
   :ensure t
-  :requires auto-complete
+  :requires (yasnippet auto-complete)
   :config
   (setq-default ac-sources
                 '(ac-source-yasnippet
@@ -639,6 +639,15 @@ export PS1=\"\\e[7m\\u@\\h \\w\\n\\e[0m$ \"\n"))
   :ensure t
   :config
   (cscope-setup))
+
+(use-package yasnippet
+  :config
+  (add-to-list 'yas-snippet-dirs "~/settings/emacs/snippets")
+  (add-to-list 'yas-snippet-dirs "~/settings/emacs/site-lisp/yasnippet/snippets")
+  (setq yas/prompt-functions (cons 'yas/dropdown-prompt
+                                   (remove 'yas/dropdown-prompt
+                                           yas/prompt-functions)))
+  (yas-global-mode 1))
 
 ;; ======================================================================
 ;; Programming modes
@@ -936,17 +945,6 @@ export PS1=\"\\e[7m\\u@\\h \\w\\n\\e[0m$ \"\n"))
   ;; add the emacs-eclim source
   (require 'ac-emacs-eclim-source)
   (ac-emacs-eclim-config))
-
-;;;; yasnippet
-(ignore-errors
-  (require 'yasnippet)
-  (yas/global-mode 1)
-  (setq yas/snippet-dirs '("~/settings/emacs/snippets"
-                           "~/settings/emacs/site-lisp/yasnippet/snippets"))
-  (setq yas/prompt-functions (cons 'yas/dropdown-prompt
-                                   (remove 'yas/dropdown-prompt
-                                           yas/prompt-functions)))
-  (require 'auto-complete-yasnippet))
 
 ;;;; wgrep
 (ignore-errors
