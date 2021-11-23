@@ -246,6 +246,12 @@ Otherwise, return result of last form in BODY."
             (local-set-key (kbd "C-c ' k") 'hs-hide-all)
             (local-set-key (kbd "C-c ' l") 'hs-show-all)))
 
+;;;; image-mode
+(add-hook 'image-mode-hook
+          (lambda()
+            (define-key image-mode-map "w" 'image-transform-fit-to-width)
+            (define-key image-mode-map "h" 'image-transform-fit-to-height)))
+
 ;;;; smerge-mode
 (add-hook 'smerge-mode-hook
           (lambda()
