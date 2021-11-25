@@ -647,6 +647,7 @@ export PS1=\"\\e[7m\\u@\\h \\w\\n\\e[0m$ \"\n"))
   (cscope-setup))
 
 (use-package yasnippet
+  :ensure t
   :config
   (add-to-list 'yas-snippet-dirs "~/settings/emacs/snippets")
   (add-to-list 'yas-snippet-dirs "~/settings/emacs/site-lisp/yasnippet/snippets")
