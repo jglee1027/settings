@@ -35,6 +35,8 @@ get_current_namespace() {
 }
 
 kctx_ps1() {
+    which kubectl &> /dev/null || return
+
     if [ "$PS1_KCTX" = "on" ]; then
         echo "[$(kubectl config current-context 2>/dev/null)/$(get_current_namespace)]"
     else
