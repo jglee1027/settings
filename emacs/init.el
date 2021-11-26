@@ -573,6 +573,9 @@ Otherwise, return result of last form in BODY."
   :config
   (add-hook 'org-mode-hook 'org-bullets-mode))
 
+(use-package ox-reveal
+  :ensure t)
+
 (use-package paredit
   :ensure t
   :config
