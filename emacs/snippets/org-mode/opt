@@ -3,6 +3,7 @@
 # key: opt
 # --
 # -*- coding: utf-8-unix -*-
+#+HTML_HEAD_EXTRA: <style>span[class^="section-number-"]:after { content: '.'; }</style>
 #+OPTIONS: num:nil h:nil toc:nil author:nil timestamp:nil
 #+REVEAL_ROOT: https://cdn.jsdelivr.net/npm/reveal.js
 #+REVEAL_THEME: white
