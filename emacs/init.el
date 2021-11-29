@@ -574,7 +574,9 @@ Otherwise, return result of last form in BODY."
   (add-hook 'org-mode-hook 'org-bullets-mode))
 
 (use-package ox-reveal
-  :ensure t)
+  :ensure t
+  :custom
+  (org-reveal-extra-css (format "file://%s/settings/reveal/scrollable.css" (getenv "HOME"))))
 
 (use-package paredit
   :ensure t
