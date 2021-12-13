@@ -571,7 +571,8 @@ Otherwise, return result of last form in BODY."
   (org-export-preserve-breaks t)
   (org-bullets-bullet-list '("⦿" "▶" "○" "◆"))
   :config
-  (add-hook 'org-mode-hook 'org-bullets-mode))
+  (add-hook 'org-mode-hook 'org-bullets-mode)
+  (add-hook 'org-mode-hook 'org-indent-mode))
 
 (use-package ox-reveal
   :ensure t
