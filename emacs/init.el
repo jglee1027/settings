@@ -453,6 +453,10 @@ Otherwise, return result of last form in BODY."
 
 (use-package indent-guide
   :ensure t
+  :custom
+  (indent-guide-char "^")
+  :custom-face
+  (indent-guide-face ((t (:inverse-video t))))
   :config
   (indent-guide-global-mode))
 
