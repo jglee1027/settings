@@ -2,7 +2,7 @@
   "Face colors with envypn font on a dark blue background")
 
 (defvar default-font-spec-eng (font-spec :family "envypn" :size 9.0))
-(defvar default-font-spec-kor (font-spec :family "NanumMyeongjo" :size 9.0))
+(defvar default-font-spec-kor (font-spec :family "NanumSquareRound" :size 9.0))
 
 (defvar default-font-spec-eng-list '((font-spec :family "envypn" :size 9.0)
                                      (font-spec :family "Ubuntu Mono" :size 9.0)
@@ -13,7 +13,8 @@
                                      (font-spec :family "Liberation Mono" :size 9.0)
                                      (font-spec :family "Consolas" :size 9.0)
                                      (font-spec :family "Monospace" :size 9.0)))
-(defvar default-font-spec-kor-list '((font-spec :family "NanumMyeongjo" :size 9.0)
+(defvar default-font-spec-kor-list '((font-spec :family "NanumSquareRound" :size 9.0)
+                                     (font-spec :family "NanumMyeongjo" :size 9.0)
                                      (font-spec :family "NanumGothic" :size 9.0)
                                      (font-spec :family "UnBatang" :size 9.0)
                                      (font-spec :family "나눔고딕코딩" :size 9.0)
@@ -25,7 +26,8 @@
                                          (font-spec :family "Menlo" :size 13.0)
                                          (font-spec :family "Monaco" :size 13.0)
                                          (font-spec :family "Courier New" :size 13.0)))
-(defvar default-font-spec-kor-mac-list '((font-spec :family "AppleMyungjo" :size 13.0)
+(defvar default-font-spec-kor-mac-list '((font-spec :family "NanumSquareRound" :size 9.0)
+                                         (font-spec :family "AppleMyungjo" :size 13.0)
                                          (font-spec :family "나눔고딕" :size 13.0)
                                          (font-spec :family "AppleGothic" :size 13.0)))
 
