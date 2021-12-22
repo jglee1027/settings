@@ -458,7 +458,7 @@ Otherwise, return result of last form in BODY."
   :custom
   (indent-guide-char "^")
   :custom-face
-  (indent-guide-face ((t (:inverse-video t))))
+  (indent-guide-face ((t (:inherit highlight))))
   :config
   (indent-guide-global-mode))
 
