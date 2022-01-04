@@ -1076,11 +1076,15 @@ finished."
                              "~/org/work.org"))
 (setq org-clock-persist t)
 
+
+(defun org-ctrl-c-underscore ()
+  "Turn an item to a normal text"
+  (interactive)
+  (org-ctrl-c-star)
+  (org-ctrl-c-star))
+
 (with-eval-after-load "org"
-  (define-key org-mode-map (kbd "C-c _") '(lambda ()
-                                            (interactive)
-                                            (org-ctrl-c-star)
-                                            (org-ctrl-c-star))))
+  (define-key org-mode-map (kbd "C-c _") 'org-ctrl-c-underscore))
 
 ;;;; org-babel
 (setq org-confirm-babel-evaluate nil)
