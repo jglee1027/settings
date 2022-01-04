@@ -1076,6 +1076,12 @@ finished."
                              "~/org/work.org"))
 (setq org-clock-persist t)
 
+(with-eval-after-load "org"
+  (define-key org-mode-map (kbd "C-c _") '(lambda ()
+                                            (interactive)
+                                            (org-ctrl-c-star)
+                                            (org-ctrl-c-star))))
+
 ;;;; org-babel
 (setq org-confirm-babel-evaluate nil)
 (setq org-startup-with-inline-images t)
