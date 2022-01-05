@@ -37,7 +37,7 @@ Otherwise, return result of last form in BODY."
 (require 'package)
 (add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/") t)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
-(add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
+(add-to-list 'package-archives '("nongnu" . "https://elpa.nongnu.org/nongnu/") t)
 (package-initialize)
 
 (unless (package-installed-p 'use-package)
@@ -570,8 +570,8 @@ Otherwise, return result of last form in BODY."
   (setq mu4e-views-auto-view-selected-message t)) ;; automatically open messages when moving in the headers view
 
 (use-package org
-  :pin org
-  :ensure org-plus-contrib
+  :pin nongnu
+  :ensure org-contrib
   :config
   (require 'ox-confluence))
 
