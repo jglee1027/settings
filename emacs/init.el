@@ -456,7 +456,7 @@ Otherwise, return result of last form in BODY."
 (use-package indent-guide
   :ensure t
   :custom
-  (indent-guide-char "^")
+  (indent-guide-char " ")
   :custom-face
   (indent-guide-face ((t (:inherit highlight))))
   :config
