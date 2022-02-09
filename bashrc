@@ -250,6 +250,7 @@ jsonindent() {
     python -m json.tool
 }
 
+export BASH_SILENCE_DEPRECATION_WARNING=1
 export TERM=xterm-256color
 alias e='emacs_client'
 alias ec='emacs_client_frame'
