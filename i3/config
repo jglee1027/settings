@@ -91,9 +91,12 @@ bindsym Print exec flameshot gui
 
 ### for_window ###
 
-for_window [title="xmessage"] floating enable
-for_window [class="(?i)blueman-manager"] floating enable
-for_window [class="Emacs"] mark "emacs" move scratchpad
+for_window [title="(?i)xterm"] border none
+for_window [class="(?i)blueman-manager"] floating enable border pixel 1
+for_window [class="(?i)google-chrome"] border pixel 1
+for_window [title="xmessage"] floating enable border pixel 1
+for_window [class="org.remmina.Remmina"] floating enable border pixel 1
+for_window [class="Emacs"] mark "emacs" move scratchpad border pixel 1
 
 ### scratchpad ###
 
