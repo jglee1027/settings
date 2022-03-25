@@ -573,7 +573,12 @@ Otherwise, return result of last form in BODY."
   :pin nongnu
   :ensure org-contrib
   :config
-  (require 'ox-confluence))
+  (require 'ox-confluence)
+  :custom
+  (org-time-stamp-custom-formats '("<%Y-%m-%d %a>" . "<%Y-%m-%d %a %H:%M>"))
+  :bind
+  (:map org-mode-map
+        ("C-c C-x i" . org-time-stamp)))
 
 (use-package org-bullets
   :ensure t
