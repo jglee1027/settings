@@ -574,6 +574,11 @@ Otherwise, return result of last form in BODY."
   :ensure org-contrib
   :config
   (require 'ox-confluence)
+  (setq-default prettify-symbols-alist '(("#+BEGIN_SRC" . "")
+                                         ("#+begin_src" . "")
+                                         ("#+END_SRC" . "")
+                                         ("#+end_src" . "")))
+  (add-hook 'org-mode-hook 'prettify-symbols-mode)
   :custom
   (org-time-stamp-custom-formats '("<%Y-%m-%d %a>" . "<%Y-%m-%d %a %H:%M>"))
   :bind
