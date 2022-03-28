@@ -1100,8 +1100,16 @@ finished."
 (defun org-ctrl-c-underscore ()
   "Turn an item to a normal text"
   (interactive)
-  (org-ctrl-c-star)
-  (org-ctrl-c-star))
+  (save-excursion
+    (save-restriction
+      (cond ((region-active-p)
+             (narrow-to-region (region-beginning) (region-end))
+             (call-interactively 'org-toggle-heading)
+             (mark-whole-buffer)
+             (call-interactively 'org-toggle-heading))
+            (t
+             (call-interactively 'org-toggle-heading)
+             (call-interactively 'org-toggle-heading))))))
 
 (with-eval-after-load "org"
   (define-key org-mode-map (kbd "C-c _") 'org-ctrl-c-underscore))
