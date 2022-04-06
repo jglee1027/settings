@@ -7,6 +7,6 @@
 #+OPTIONS: num:0 h:0 toc:nil author:nil timestamp:nil
 #+REVEAL_ROOT: https://cdn.jsdelivr.net/npm/reveal.js
 #+REVEAL_THEME: white
-#+Title: $1
+# #+Title:
 
 $0
