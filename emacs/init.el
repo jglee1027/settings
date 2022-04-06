@@ -581,6 +581,7 @@ Otherwise, return result of last form in BODY."
   (add-hook 'org-mode-hook 'prettify-symbols-mode)
   :custom
   (org-time-stamp-custom-formats '("<%Y-%m-%d %a>" . "<%Y-%m-%d %a %H:%M>"))
+  (org-agenda-format-date "%Y-%m-%d %a")
   :bind
   (:map org-mode-map
         ("C-c C-x i" . org-time-stamp)))
