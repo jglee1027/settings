@@ -626,6 +626,9 @@ Otherwise, return result of last form in BODY."
 (use-package s3ed
   :ensure t)
 
+(use-package rfc-mode
+  :ensure t)
+
 (use-package restclient
   :pin melpa
   :ensure t)
