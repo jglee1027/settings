@@ -419,7 +419,11 @@ Otherwise, return result of last form in BODY."
   :ensure t
   :config
   (global-set-key (kbd "C-c h a") 'helm-do-grep-ag)
-  (global-set-key (kbd "C-c h A") 'helm-do-ag-project-root))
+  (global-set-key (kbd "C-c h A") 'helm-do-ag-project-root)
+  (when (equal system-type 'windows-nt)
+    (setq helm-ag-base-command "rg --no-heading --vimgrep")
+    (setq helm-grep-ag-command
+          "rg --color=always --smart-case --no-heading --line-number %s -- %s %s")))
 
 (use-package helm-company
   :ensure t
