@@ -132,6 +132,15 @@ if [ -d ~/.config/terminator ]; then
 	echo terminator setting... OK
 fi
 
+if [ -d ~/.fluxbox/ ]; then
+    echo_begin fluxbox
+    diff_cp $settings_path/fluxbox/init ~/.fluxbox/init
+    diff_cp $settings_path/fluxbox/keys ~/.fluxbox/keys
+    diff_cp $settings_path/fluxbox/overlay ~/.fluxbox/overlay
+    diff_cp $settings_path/fluxbox/startup ~/.fluxbox/startup
+    echo_end   fluxbox
+fi
+
 if [ -d ~/.config/openbox ]; then
 	echo_begin openbox
 	diff_cp $settings_path/openbox/environment ~/.config/openbox/environment
