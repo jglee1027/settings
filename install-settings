@@ -50,9 +50,11 @@ if [ ! -d ~/.emacs.d/snippets ]; then
 	ln -s $PWD/$settings_path/emacs/snippets ~/.emacs.d/snippets
 fi
 
+[ ! -d ~/.emacs.d ] && mkdir ~/.emacs.d
 ln -sf $PWD/$settings_path/emacs/jglee-theme.el ~/.emacs.d/
 
 diff_cp $settings_path/emacs/.emacs ~/.emacs
+diff_cp $settings_path/emacs/.emacs-custom.el ~/.emacs-custom.el
 diff_cp $settings_path/.dir-locals.el ~/.dir-locals.el
 
 fc-list | grep NanumGothic_AndaleMono > /dev/null
