@@ -1,0 +1,235 @@
+#### Resources #####
+#https://linux.die.net/man/5/fluxbox-keys
+#https://ubuntuforums.org/showthread.php?t=617812
+
+############
+#Mod1=Alt key
+#Mod4=Left logo key
+#Menu=Right logo key
+#Mouse1=Left click
+#Mouse3=Right click
+#Mouse4=Scroll wheel up
+#Mouse5=Scroll wheel down
+###########
+
+#NOTE: unmodified Fn keys left unassigned to avoid conflict with apps
+
+###########
+
+# take a screen capture
+none Print :Exec mxfb-quickshot
+
+# open help
+# Ctrl F1 :Exec mxfb-help
+Shift F1 :Exec mx-manual
+
+# open a little run terminal
+# Ctrl F2 :Exec fbrun
+
+# use logo key for rofi
+# Super_L :Exec rofi -show drun
+Mod4 Tab :Exec rofi -modi window,run,drun,ssh -show drun
+
+# open a file manager
+# Ctrl F3 :Exec thunar /home/$USER/.fluxbox
+Mod4 e :Exec thunar
+
+# open a dropdown terminal
+# Ctrl F4 :Exec xfce4-terminal --drop-down
+
+# open the MX Tools dashboard
+# Ctrl F5 :Exec mx-tools
+
+# open xterm
+Mod4 Shift t :Exec xterm
+
+# open arandr
+Mod4 Shift p :Exec arandr
+
+# open blueman-manager
+Mod4 Shift b :Exec blueman-manager
+
+# change volume with keys
+Control Up :Exec amixer -D pulse sset Master 5%+
+Control Down :Exec amixer -D pulse sset Master 5%-
+
+# toggle touchpad
+Mod4 F5 :Exec ~/settings/bin/toggletouchpad
+
+# exit fluxbox — both work
+Control Mod1 Delete :Exit
+Control Mod1 Bksp :Exit
+
+# reload the configuration file
+Mod4 Shift c :Reconfigure
+
+# restart fluxbox
+Mod4 Shift r :Restart
+
+Mod4 w :WorkSpaceMenu
+
+Mod4 Shift z :Exec systemctl suspend
+Mod4 Ctrl Shift z :Exec systemctl hibernate
+
+###WORKSPACE###
+# change to previous/next workspace
+Control Mod4 Left :PrevWorkspace
+Control Mod4 Right :NextWorkspace
+
+Mod4 1 :Workspace 1
+Mod4 2 :Workspace 2
+Mod4 3 :Workspace 3
+Mod4 4 :Workspace 4
+Mod4 5 :Workspace 5
+Mod4 6 :Workspace 6
+Mod4 7 :Workspace 7
+Mod4 8 :Workspace 8
+Mod4 9 :Workspace 9
+Mod4 0 :Workspace 0
+
+Mod4 Shift 1 :SendToWorkspace 1
+Mod4 Shift 2 :SendToWorkspace 2
+Mod4 Shift 3 :SendToWorkspace 3
+Mod4 Shift 4 :SendToWorkspace 4
+Mod4 Shift 5 :SendToWorkspace 5
+Mod4 Shift 6 :SendToWorkspace 6
+Mod4 Shift 7 :SendToWorkspace 7
+Mod4 Shift 8 :SendToWorkspace 8
+Mod4 Shift 9 :SendToWorkspace 9
+Mod4 Shift 0 :SendToWorkspace 0
+
+###WINDOWS###
+
+# close a window
+mod1 F4 :Close
+
+# toggle whether or not current window has a border, buttons, and titlebar
+Mod4 b :ToggleDecor
+
+#Minimize all windows on the current workspace
+Mod4 d :ShowDesktop
+
+# hide menus
+OnDesktop Mouse1 :HideMenus
+OnDesktop Mouse2 :WorkspaceMenu
+OnDesktop Mouse3 :RootMenu
+
+Mod4 x :RootMenu
+
+# scroll on the desktop to change workspaces
+OnDesktop Mouse4 :PrevWorkspace
+OnDesktop Mouse5 :NextWorkspace
+
+# Win + left/right click to move/resize a window
+OnWindow Mod4 Mouse1 :MacroCmd {Raise} {Focus} {StartMoving}
+OnWindowBorder Move1 :StartMoving
+
+OnWindow Mod4 Mouse3 :MacroCmd {Raise} {Focus} {StartResizing NearestCorner}
+OnLeftGrip Move1 :StartResizing bottomleft
+OnRightGrip Move1 :StartResizing bottomright
+
+# control-click a window's titlebar and drag to attach windows
+OnTitlebar Control Mouse1 :StartTabbing
+
+# double click on the titlebar to shade/unshade
+OnTitlebar Double Mouse1 :Shade
+
+# left click on the titlebar to move the window
+OnTitlebar Mouse1 :MacroCmd {Raise} {Focus} {ActivateTab}
+OnTitlebar Move1  :StartMoving
+
+# see a menu of window options
+OnTitlebar Mouse3 :WindowMenu
+   #for apps using CSD try this instead
+   #OnWindow Mouse2 :WindowMenu
+
+# alt-tab
+Mod1 Tab :NextWindow {groups} (workspace=[current])
+Mod1 Shift Tab :PrevWindow {groups} (workspace=[current])
+
+# current window commands
+Mod1 F4 :Close
+Mod1 F5 :Kill
+Mod4 Shift q :Close
+Mod4 F9 :Minimize
+Mod4 F10 :Maximize
+Mod4 F11 :Fullscreen
+Mod4 f :Fullscreen
+
+### WINDOW TILING ###
+
+#---------------------------------------------------------------
+# Control + number keys
+#---------------------------------------------------------------
+# Make active window 1/2 of the screen
+#Control 1 :MacroCmd {ResizeTo 50% 100%} {MoveTo 00 00 Left}
+#Control 2 :MacroCmd {ResizeTo 50% 100%} {MoveTo 00 00 Right}
+#Control 3 :MacroCmd {ResizeTo 100% 50%} {MoveTo 00 00 Up}
+#Control 4 :MacroCmd {ResizeTo 100% 50%} {MoveTo 00 00 Bottom}
+# Make active window 1/4 of the screen on the upper left
+#Control 5 :MacroCmd {ResizeTo 50% 50%} {MoveTo 00 00 Up}
+#Control 6 :MacroCmd {ResizeTo 50% 50%} {MoveTo 00 00 TopRight}
+#Control 7 :MacroCmd {ResizeTo 50% 50%} {MoveTo 00 00 BottomLeft}
+#Control 8 :MacroCmd {ResizeTo 50% 50%} {MoveTo 00 00 BottomRight}
+# Make active window 1/3 of the screen on the left
+#Control 9 :MacroCmd {ResizeTo 33% 100%} {MoveTo 00 00 Left}
+# toggle active window: Maximized/ last size
+#Control 0 :ToggleCmd {Maximize} {Restore}
+
+#---------------------------------------------------------------
+# Alt/Alt-LogoKey + arrow keys
+#---------------------------------------------------------------
+# Make active window 1/2 of the screen
+Mod4 Left        :MacroCmd {ResizeTo 50% 100%} {MoveTo 00 00 Left}
+Mod4 Right       :MacroCmd {ResizeTo 50% 100%} {MoveTo 00 00 Right}
+Mod4 Up          :MacroCmd {ResizeTo 100% 50%} {MoveTo 00 00 Up}
+Mod4 Down        :MacroCmd {ResizeTo 100% 50%} {MoveTo 00 00 Bottom}
+# Make active window 1/4 of the screen on top/bottom left/right
+Mod1 Mod4 Left  :MacroCmd {ResizeTo 50% 50% } {MoveTo 00 00 TopLeft}
+Mod1 Mod4 Up    :MacroCmd {ResizeTo 50% 50% } {MoveTo 00 00 TopRight}
+Mod1 Mod4 Down  :MacroCmd {ResizeTo 50% 50% } {MoveTo 00 00 BottomLeft}
+Mod1 Mod4 Right :MacroCmd {ResizeTo 50% 50% } {MoveTo 00 00 BottomRight}
+# Make active window 1/3 of the screen on the left
+# Unavailable
+# toggle center / restore
+# Unavailable
+
+# keypad key layout
+#   +-------------+
+#   |  7   8   9  |
+#   |  4   5   6  |
+#   |  1   2   3  |
+#   |      0      |
+#   +-------------+
+#---------------------------------------------------------------
+# Alt and numpad keys : NumLock off
+#---------------------------------------------------------------
+Mod1 KP_1 :MacroCmd {ResizeTo  50%  50%} {MoveTo 00 00 BottomLeft}
+Mod1 KP_2 :MacroCmd {ResizeTo 100%  50%} {MoveTo 00 00 Bottom}
+Mod1 KP_3 :MacroCmd {ResizeTo  50%  50%} {MoveTo 00 00 BottomRight}
+Mod1 KP_4 :MacroCmd {ResizeTo  50% 100%} {MoveTo 00 00 Left}
+Mod1 KP_6 :MacroCmd {ResizeTo  50% 100%} {MoveTo 00 00 Right}
+Mod1 KP_7 :MacroCmd {ResizeTo  50%  50%} {MoveTo 00 00 TopLeft}
+Mod1 KP_8 :MacroCmd {ResizeTo 100%  50%} {MoveTo 00 00 Up}
+Mod1 KP_9 :MacroCmd {ResizeTo  50%  50%} {MoveTo 00 00 TopRight}
+# center and resize 70%
+Mod1 KP_5 :MacroCmd {ResizeTo 70% 70% } {MoveTo 00 00 Center}
+# toggle full screen / restore
+Mod1 KP_0 :ToggleCmd {Maximize} {Restore}
+
+#---------------------------------------------------------------
+# Alt and numpad keys : NumLock on
+#---------------------------------------------------------------
+Mod1 KP_End    :MacroCmd {ResizeTo 50% 50% } {MoveTo 00 00 BottomLeft}
+Mod1 KP_Down   :MacroCmd {ResizeTo 100% 50%} {MoveTo 00 00 Bottom}
+Mod1 KP_Next   :MacroCmd {ResizeTo 50% 50% } {MoveTo 00 00 BottomRight}
+Mod1 KP_Left   :MacroCmd {ResizeTo 50% 100%} {MoveTo 00 00 Left}
+Mod1 KP_Right  :MacroCmd {ResizeTo 50% 100%} {MoveTo 00 00 Right}
+Mod1 KP_Home   :MacroCmd {ResizeTo 50% 50% } {MoveTo 00 00 TopLeft}
+Mod1 KP_Up     :MacroCmd {ResizeTo 100% 50%} {MoveTo 00 00 Up}
+Mod1 KP_Prior  :MacroCmd {ResizeTo 50% 50% } {MoveTo 00 00 TopRight}
+# center and resize 70%
+Mod1 KP_Begin  :MacroCmd {ResizeTo 70% 70% } {MoveTo 00 00 Center}
+# toggle full screen / restore
+Mod1 KP_Insert :ToggleCmd {Maximize} {Restore}
+#---------------------------------------------------------------
