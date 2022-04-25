@@ -1,53 +1,53 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 settings_path=$(dirname $0)
 
 diff_file=/tmp/install.diff
 diff_cp() {
-	if [ -z "$1" -o -z "$2" ]; then
-		return 0
-	fi
+    if [ -z "$1" -o -z "$2" ]; then
+        return 0
+    fi
 
-	if [ ! -e $2 ]; then
-		$3 cp $1 $2
-	fi
+    if [ ! -e $2 ]; then
+        $3 cp $1 $2
+    fi
 
-	diff -u $2 $1 > $diff_file
-	local diff_return=$?
-	if [ $diff_return -eq 0 ]; then
-		return 1
-	fi
+    diff -u $2 $1 > $diff_file
+    local diff_return=$?
+    if [ $diff_return -eq 0 ]; then
+        return 1
+    fi
 
-	while [ 1 ]; do
-		echo cp: overwrite "'$2' [Y/n/d(diff)]? "
-		read choice
-		if [ "$choice" = "Y" -o "$choice" = "y" ]; then
-			$3 cp $1 $2
-			return 2
-		elif [ "$choice" = "N" -o "$choice" = "n" ]; then
-			return 3
-		elif [ "$choice" = "d" ]; then
-			less -X $diff_file
-		fi
-	done
+    while [ 1 ]; do
+        echo cp: overwrite "'$2' [Y/n/d(diff)]? "
+        read choice
+        if [ "$choice" = "Y" -o "$choice" = "y" ]; then
+            $3 cp $1 $2
+            return 2
+        elif [ "$choice" = "N" -o "$choice" = "n" ]; then
+            return 3
+        elif [ "$choice" = "d" ]; then
+            less -X $diff_file
+        fi
+    done
 }
 
 fge() {
-	awk -v n1=$1 -v n2=$2 'BEGIN{ if (n1 >= n2) exit 0; exit 1 }'
+    awk -v n1=$1 -v n2=$2 'BEGIN{ if (n1 >= n2) exit 0; exit 1 }'
 }
 
 echo_begin() {
-	echo "--- $1 settings ---"
+    echo "--- $1 settings ---"
 }
 
 echo_end() {
-	echo "$1 settings... OK"
+    echo "$1 settings... OK"
 }
 
 
 echo_begin emacs
 if [ ! -d ~/.emacs.d/snippets ]; then
-	ln -s $PWD/$settings_path/emacs/snippets ~/.emacs.d/snippets
+    ln -s $PWD/$settings_path/emacs/snippets ~/.emacs.d/snippets
 fi
 
 [ ! -d ~/.emacs.d ] && mkdir ~/.emacs.d
@@ -59,7 +59,7 @@ diff_cp $settings_path/.dir-locals.el ~/.dir-locals.el
 
 fc-list | grep NanumGothic_AndaleMono > /dev/null
 if [ $? -eq 0 ]; then
-	diff_cp $settings_path/emacs/linux/.Xresources ~/.Xresources
+    diff_cp $settings_path/emacs/linux/.Xresources ~/.Xresources
 fi
 
 # emacs --batch -f batch-byte-compile ~/.emacs 2> ~/.emacs.elc.log
@@ -87,19 +87,19 @@ diff_cp $settings_path/git/.gitconfig ~/.gitconfig
 
 git_version=`git --version | cut -d ' ' -f 3`
 if fge $git_version 1.7.11; then
-	git config --global push.default simple
+    git config --global push.default simple
 else
-	git config --global push.default current
+    git config --global push.default current
 fi
 
 if [ "$git_user_name" = "" ]; then
-		echo -n "user.name: "
-		read git_user_name
+        echo -n "user.name: "
+        read git_user_name
 fi
 
 if [ "$git_user_email" = "" ]; then
-		echo -n "user.email: "
-		read git_user_email
+        echo -n "user.email: "
+        read git_user_email
 fi
 
 git config --global user.name "$git_user_name"
@@ -115,21 +115,21 @@ diff_cp $settings_path/lldb/.lldbinit ~/.lldbinit
 echo_end   lldb
 
 if [ -d ~/.moc ]; then
-	echo_begin moc
-	diff_cp $settings_path/moc/config ~/.moc/config
-	echo_end   moc
+    echo_begin moc
+    diff_cp $settings_path/moc/config ~/.moc/config
+    echo_end   moc
 fi
 
 if [ -d ~/.mplayer ]; then
-	echo_begin mplayer
-	diff_cp $settings_path/mplayer/config ~/.mplayer/config
-	echo_end   mplayer
+    echo_begin mplayer
+    diff_cp $settings_path/mplayer/config ~/.mplayer/config
+    echo_end   mplayer
 fi
 
 if [ -d ~/.config/terminator ]; then
-	echo -ne "terminator setting...\r"
-	diff_cp $settings_path/terminator/config ~/.config/terminator/config
-	echo terminator setting... OK
+    echo -ne "terminator setting...\r"
+    diff_cp $settings_path/terminator/config ~/.config/terminator/config
+    echo terminator setting... OK
 fi
 
 if [ -d ~/.fluxbox/ ]; then
@@ -142,19 +142,19 @@ if [ -d ~/.fluxbox/ ]; then
 fi
 
 if [ -d ~/.config/openbox ]; then
-	echo_begin openbox
-	diff_cp $settings_path/openbox/environment ~/.config/openbox/environment
-	diff_cp $settings_path/openbox/autostart.sh ~/.config/openbox/autostart.sh
-	diff_cp $settings_path/openbox/rc.xml ~/.config/openbox/rc.xml
-	diff_cp $settings_path/openbox/menu.xml ~/.config/openbox/menu.xml
-	echo_end   oepnbox
+    echo_begin openbox
+    diff_cp $settings_path/openbox/environment ~/.config/openbox/environment
+    diff_cp $settings_path/openbox/autostart.sh ~/.config/openbox/autostart.sh
+    diff_cp $settings_path/openbox/rc.xml ~/.config/openbox/rc.xml
+    diff_cp $settings_path/openbox/menu.xml ~/.config/openbox/menu.xml
+    echo_end   oepnbox
 
-	echo_begin blueskyonyx
-	mkdir -p ~/.themes
-	if [ ! -L ~/.themes/blueskyonyx ]; then
-		ln -s $(realpath $settings_path)/themes/blueskyonyx ~/.themes/blueskyonyx
-	fi
-	echo_end   blueskyonyx
+    echo_begin blueskyonyx
+    mkdir -p ~/.themes
+    if [ ! -L ~/.themes/blueskyonyx ]; then
+        ln -s $(realpath $settings_path)/themes/blueskyonyx ~/.themes/blueskyonyx
+    fi
+    echo_end   blueskyonyx
 fi
 
 if [ -d ~/.config/i3 ]; then
@@ -165,47 +165,47 @@ if [ -d ~/.config/i3 ]; then
 fi
 
 if [ "`which xterm 2> /dev/null`" != "" ]; then
-	echo_begin xterm
-	diff_cp $settings_path/xterm/.Xdefaults ~/.Xdefaults
-	echo_end xterm
+    echo_begin xterm
+    diff_cp $settings_path/xterm/.Xdefaults ~/.Xdefaults
+    echo_end xterm
 fi
 
 if [ "`which stumpwm 2> /dev/null`" != "" ]; then
-	echo_begin StumpWM
-	diff_cp $settings_path/stumpwm/.stumpwmrc ~/.stumpwmrc
-	diff_cp $settings_path/stumpwm/stumpwm.desktop /usr/share/xsessions/stumpwm.desktop sudo
-	echo_end   StumpWM
+    echo_begin StumpWM
+    diff_cp $settings_path/stumpwm/.stumpwmrc ~/.stumpwmrc
+    diff_cp $settings_path/stumpwm/stumpwm.desktop /usr/share/xsessions/stumpwm.desktop sudo
+    echo_end   StumpWM
 fi
 
 if [ "`which tmux 2> /dev/null`" != "" ]; then
-	echo_begin tmux
-	diff_cp $settings_path/tmux/.tmux.conf ~/.tmux.conf
-	echo_end tmux
+    echo_begin tmux
+    diff_cp $settings_path/tmux/.tmux.conf ~/.tmux.conf
+    echo_end tmux
 fi
 
 if [ "`which conky 2> /dev/null`" != "" ]; then
-	echo_begin conky
-	diff_cp $settings_path/conky/.conkyrc ~/.conkyrc
-	echo_end   conky
+    echo_begin conky
+    diff_cp $settings_path/conky/.conkyrc ~/.conkyrc
+    echo_end   conky
 fi
 
 if [ "`which conkeror 2> /dev/null`" != "" ]; then
-	echo_begin conkeror
-	diff_cp $settings_path/conkeror/.conkerorrc ~/.conkerorrc
+    echo_begin conkeror
+    diff_cp $settings_path/conkeror/.conkerorrc ~/.conkerorrc
 
-	# make conkeror bookmarks synchronize with firefox bookmarks
-	firefox_config_path=~/.mozilla/firefox
-	conkeror_config_path=~/.conkeror.mozdev.org/conkeror
-	if [ -d $firefox_config_path -a -d $conkeror_config_path ]; then
-		firefox_bookmarks=$firefox_config_path/$(cat $firefox_config_path/profiles.ini | grep Path | awk 'BEGIN { FS = "=" } { print $2 }')
-		conkeror_bookmarks=$conkeror_config_path/$(cat $conkeror_config_path/profiles.ini | grep Path | awk 'BEGIN { FS = "=" } { print $2 }')
-		cp $firefox_bookmarks/places.sqlite $conkeror_bookmarks/places.sqlite
-	fi
-	echo_end   conkeror
+    # make conkeror bookmarks synchronize with firefox bookmarks
+    firefox_config_path=~/.mozilla/firefox
+    conkeror_config_path=~/.conkeror.mozdev.org/conkeror
+    if [ -d $firefox_config_path -a -d $conkeror_config_path ]; then
+        firefox_bookmarks=$firefox_config_path/$(cat $firefox_config_path/profiles.ini | grep Path | awk 'BEGIN { FS = "=" } { print $2 }')
+        conkeror_bookmarks=$conkeror_config_path/$(cat $conkeror_config_path/profiles.ini | grep Path | awk 'BEGIN { FS = "=" } { print $2 }')
+        cp $firefox_bookmarks/places.sqlite $conkeror_bookmarks/places.sqlite
+    fi
+    echo_end   conkeror
 fi
 
 if [ -f /Applications/Slate.app/Contents/MacOS/Slate ]; then
-	echo_begin Slate
-	diff_cp $settings_path/slate/.slate ~/.slate
-	echo_end   Slate
+    echo_begin Slate
+    diff_cp $settings_path/slate/.slate ~/.slate
+    echo_end   Slate
 fi
