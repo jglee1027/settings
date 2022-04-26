@@ -60,6 +60,9 @@ Mod4 F5 :Exec ~/settings/bin/toggletouchpad
 Control Mod1 Delete :Exit
 Control Mod1 Bksp :Exit
 
+# exit-options
+Mod4 Shift e :Exec exit-options
+
 # reload the configuration file
 Mod4 Shift c :Reconfigure
 
