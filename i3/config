@@ -270,7 +270,7 @@ bar {
   colors {
     background #000000
     statusline #00bfff
-    separator #ffff00
+    separator #696969
   }
   mode dock
   position top
