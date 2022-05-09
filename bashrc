@@ -268,6 +268,7 @@ alias gpush='LANGUAGE=C git push'
 alias gpull='LANGUAGE=C git pull'
 alias gr='LANGUAGE=C git-gr'
 alias gs='LANGUAGE=C git status --short --branch'
+alias gsu='LANGUAGE=C git submodule'
 alias l='ls -F'
 alias ll='ls -alF'
 alias m="make -j8"

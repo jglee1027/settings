@@ -23,5 +23,6 @@
 	s = status -sb
 	sh = show --format=fuller
 	st = status -uno
+    su = submodule
 [log]
 	date = iso
