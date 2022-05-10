@@ -587,7 +587,7 @@
     <!-- Keybindings for Touchpad management -->
     <keybind key="W-A-F5">
       <action name="Execute">
-        <command>~/settings/bin/toggletouchpad</command>
+        <command>~/settings/bin/toggletouchpad.pl</command>
       </action>
     </keybind>
   </keyboard>

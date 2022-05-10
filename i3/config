@@ -89,7 +89,7 @@ bindsym XF86MonBrightnessDown exec "~/settings/bin/brightness down"
 bindsym XF86MonBrightnessUp exec "~/settings/bin/brightness up"
 
 # touchpad
-bindsym $mod+F5 exec "~/settings/bin/toggletouchpad"
+bindsym $mod+F5 exec "~/settings/bin/toggletouchpad.pl"
 
 bindsym Print exec flameshot gui
 

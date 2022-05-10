@@ -54,7 +54,7 @@ Control Up :Exec amixer -D pulse sset Master 5%+
 Control Down :Exec amixer -D pulse sset Master 5%-
 
 # toggle touchpad
-Mod4 F5 :Exec ~/settings/bin/toggletouchpad
+Mod4 F5 :Exec ~/settings/bin/toggletouchpad.pl
 
 # exit fluxbox — both work
 Control Mod1 Delete :Exit
