@@ -27,6 +27,7 @@ chomp($touchpad_id);
 
 if ($touchpad_id eq "") {
     print "Error: Not found Touchpad\n";
+    `notify-send "Not found Touchpad"`;
     exit 1;
 }
 
