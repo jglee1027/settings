@@ -16,7 +16,7 @@ set $alt Mod1
 
 exec --no-startup-id xsetroot -solid "#000000"
 exec --no-startup-id xmodmap ~/.Xmodmap
-
+exec --no-startup-id brightnessctl set 20%
 exec --no-startup-id xrdb ~/.Xdefaults && xrdb -merge ~/.Xresources
 
 # xss-lock grabs a logind suspend inhibit lock and will use i3lock to lock the
@@ -87,6 +87,8 @@ bindsym $mod+F12 exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% 
 # brightness
 bindsym XF86MonBrightnessDown exec "~/settings/bin/brightness down"
 bindsym XF86MonBrightnessUp exec "~/settings/bin/brightness up"
+bindsym $mod+F2 exec "~/settings/bin/brightness-backlight.pl down"
+bindsym $mod+F3 exec "~/settings/bin/brightness-backlight.pl up"
 
 # touchpad
 bindsym $mod+F5 exec "~/settings/bin/toggletouchpad.pl"
