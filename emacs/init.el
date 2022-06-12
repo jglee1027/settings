@@ -397,6 +397,9 @@ Otherwise, return result of last form in BODY."
   :config
   (global-flycheck-mode))
 
+(use-package go-mode
+  :ensure t)
+
 (defun helm-grep-do-git-grep-prompt (arg)
   (interactive "P")
   (require 'helm-files)
