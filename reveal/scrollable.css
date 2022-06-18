@@ -1,5 +1,5 @@
 .slides {
-  overflow: scroll !important;
+  overflow: scroll;
   pointer-events: auto !important;
 }
 
@@ -12,4 +12,54 @@
 .slides {
   -ms-overflow-style: none;  /* IE and Edge */
   scrollbar-width: none;  /* Firefox */
+}
+
+.reveal section {
+  text-align: left;
+}
+
+.reveal p {
+  text-align: left;
+  font-size: 1.5vw;
+}
+
+.reveal h1 {
+  font-size: 2vw;
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.reveal h2 {
+  background-color: #eeeeee;
+  font-size: 2vw;
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.reveal h3 {
+  background-color: #eefeff;
+  font-size: 2vw;
+  text-align: left;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.reveal h4 {
+  background-color: #eeffee;
+  font-size: 2vw;
+  text-align: left;
+}
+
+.reveal h5 {
+  background-color: #ffeeee;
+  font-size: 2vw;
+  text-align: left;
+}
+
+.reveal h6 {
+  background-color: #ffeeff;
+  font-size: 2vw;
+  text-align: left;
 }
