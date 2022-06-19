@@ -3,9 +3,9 @@
 # key: m_
 # --
 * 개요
-** 목적: $1
-** 일시: <`(format-time-string "%Y-%m-%d %a")`> $2
-** 참석: $3
+- 목적: $1
+- 일시: <`(format-time-string "%Y-%m-%d %a")`> $2
+- 참석: $3
 * 안건
 ** $0
 * TODO
