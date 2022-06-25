@@ -39,16 +39,32 @@ kctx_ps1() {
     ctx="$(kubectl config current-context 2> /dev/null)"
 
     if [ "$PS1_KCTX" = "on" -a "$ctx" != "" ]; then
-        echo "[$ctx/$(get_current_namespace)]"
+        echo "⎈$ctx/$(get_current_namespace)"
     elif [ "$PS1_KCTX" = "on" -a "$ctx" = "" ]; then
-        echo "[NOT SET]"
+        echo "⎈NOT SET"
     else
         echo ""
     fi
 }
 
 bash_prompt() {
-    PS1="\[\033[7m\]\u@\h \w$(git_branch_ps1)$(kctx_ps1)\[\033[0m\]$(printf '\n$ ')"
+    result=$?
+    status="$result $(date +'%F %T')"
+    reverse_color="\[\033[0;7m\]"
+    normal_color="\[\033[0m\]"
+    blue_color="\[\033[0;37;44m\]"
+    green_color="\[\033[0;42m\]"
+    yellow_color="\[\033[0;43m\]"
+    red_color="\[\033[0;41m\]"
+
+    if [ "$result" = "0" ]; then
+        status_color=$yellow_color;
+    else
+        status_color=$red_color;
+    fi
+
+    PS1="$status_color${status}$reverse_color \w $green_color\$(git_branch_ps1)\
+$blue_color$(kctx_ps1)$reverse_color$(printf '\n$')$normal_color "
 }
 
 PROMPT_COMMAND=bash_prompt
