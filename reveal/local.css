@@ -49,6 +49,7 @@
 
 .reveal h2 {
   background-color: #eeeeee;
+  border-left: 10pt solid black;
   font-size: 2.5rem;
   text-align: center;
   text-overflow: ellipsis;
@@ -57,6 +58,7 @@
 
 .reveal h3 {
   background-color: #eefeff;
+  border-left: 10pt solid blue;
   font-size: 2.0rem;
   text-align: left;
   text-overflow: ellipsis;
@@ -65,18 +67,25 @@
 
 .reveal h4 {
   background-color: #eeffee;
+  border-left: 10pt solid green;
   font-size: 1.8rem;
   text-align: left;
 }
 
 .reveal h5 {
   background-color: #ffeeee;
+  border-left: 10pt solid red;
   font-size: 1.8rem;
   text-align: left;
 }
 
 .reveal h6 {
   background-color: #ffeeff;
+  border-left: 10pt solid magenta;
   font-size: 1.8rem;
   text-align: left;
+}
+
+.reveal img {
+  width: 100%;
 }
