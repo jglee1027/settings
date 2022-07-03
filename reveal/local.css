@@ -1,3 +1,7 @@
+.figure p {
+  text-align: center;
+}
+
 .slides {
   overflow: auto;
   pointer-events: auto !important;
