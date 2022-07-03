@@ -581,7 +581,10 @@ Otherwise, return result of last form in BODY."
   :ensure org-contrib
   :config
   (require 'ox-confluence)
-  (setq-default prettify-symbols-alist '(("#+BEGIN_SRC" . "")
+  (setq-default prettify-symbols-alist '(("[ ]" . "☐")
+                                         ("[X]" . "✓")
+                                         ("[-]" . "❍")
+                                         ("#+BEGIN_SRC" . "")
                                          ("#+begin_src" . "")
                                          ("#+END_SRC" . "")
                                          ("#+end_src" . "")))
