@@ -89,3 +89,18 @@
   font-size: 1.8rem;
   text-align: left;
 }
+
+.reveal ul {
+  margin-left: 0;
+  padding-left: 1em;
+}
+
+.reveal ol {
+  margin-left: 0;
+  padding-left: 1em;
+}
+
+.reveal ul ul, .reveal ul ol, .reveal ol ol, .reveal ol ul {
+  margin-left: 0px;
+  padding-left: 1em;
+}
