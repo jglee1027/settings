@@ -1,6 +1,8 @@
 (cond ((equal system-type 'darwin)
        (setq default-font-spec-eng (font-spec :family "Monaco" :size 19.0))
        (setq default-font-spec-kor (font-spec :family "AppleGothic" :size 19.0))
+       (setq face-font-rescale-alist
+             '(("AppleGothic" . 1.17)))
        (setq org-plantuml-jar-path "/usr/local/Cellar/plantuml/1.2022.1/libexec/plantuml.jar"))
       ((equal system-type 'windows-nt)
        ;; (setq default-font-spec-eng (font-spec :family "나눔고딕_AndaleMono" :size 11.0))
