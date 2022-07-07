@@ -555,7 +555,9 @@ Otherwise, return result of last form in BODY."
                        (magit-blame-mode)))))
 
 (use-package markdown-mode
-  :ensure t)
+  :ensure t
+  :custom-face
+  (markdown-code-face ((t nil))))
 
 (use-package mu4e-views
   :ensure t
