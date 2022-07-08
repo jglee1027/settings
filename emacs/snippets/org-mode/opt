@@ -7,7 +7,7 @@
 #+OPTIONS: num:0 h:0 toc:nil author:nil timestamp:nil
 #+REVEAL_INIT_OPTIONS: center: false
 # #+REVEAL_ROOT: https://cdn.jsdelivr.net/npm/reveal.js
-#+REVEAL_THEME: white
+#+REVEAL_THEME: jglee
 # #+Title:
 
 $0

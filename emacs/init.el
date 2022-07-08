@@ -612,8 +612,9 @@ Otherwise, return result of last form in BODY."
 
 (use-package ox-reveal
   :ensure t
-  :custom
-  (org-reveal-extra-css (format "file://%s/settings/reveal/local.css" (getenv "HOME"))))
+  ;; :custom
+  ;; (org-reveal-extra-css (format "file://%s/settings/reveal/local.css" (getenv "HOME")))
+  )
 
 (use-package paredit
   :ensure t
