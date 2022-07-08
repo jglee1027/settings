@@ -594,6 +594,7 @@ Otherwise, return result of last form in BODY."
   :custom
   (org-time-stamp-custom-formats '("<%Y-%m-%d %a>" . "<%Y-%m-%d %a %H:%M>"))
   (org-agenda-format-date "%Y-%m-%d %a")
+  (org-html-validation-link nil)
   :bind
   (:map org-mode-map
         ("C-c C-x i" . org-time-stamp)))
