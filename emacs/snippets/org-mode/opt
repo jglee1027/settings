@@ -4,8 +4,8 @@
 # --
 # -*- coding: utf-8-unix -*-
 # #+HTML_HEAD_EXTRA: <style>span[class^="section-number-"]:after { content: '.'; }</style>
-#+OPTIONS: num:0 h:0 toc:nil author:nil timestamp:nil
-#+REVEAL_INIT_OPTIONS: width:1200, height:800, center: true
+#+OPTIONS: num:0, h:0, toc:nil, author:nil, timestamp:nil
+#+REVEAL_INIT_OPTIONS: width:1600, height:900, center:true, disableLayout:false
 # #+REVEAL_ROOT: https://cdn.jsdelivr.net/npm/reveal.js
 #+REVEAL_THEME: jglee
 # #+Title:
