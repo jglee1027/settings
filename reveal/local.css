@@ -31,7 +31,7 @@
 }
 
 .reveal section {
-  text-align: left;
+  text-align: center;
 }
 
 .reveal {
@@ -54,6 +54,7 @@
 .reveal h2 {
   background-color: #eeeeee;
   border-left: 10pt solid black;
+  color: black;
   font-size: 2.5rem;
   text-align: center;
   text-overflow: ellipsis;
@@ -63,7 +64,9 @@
 .reveal h3 {
   background-color: #eefeff;
   border-left: 10pt solid blue;
+  color: black;
   font-size: 2.0rem;
+  padding-left: 10pt;
   text-align: left;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -72,21 +75,27 @@
 .reveal h4 {
   background-color: #eeffee;
   border-left: 10pt solid green;
+  color: black;
   font-size: 1.8rem;
+  padding-left: 10pt;
   text-align: left;
 }
 
 .reveal h5 {
   background-color: #ffeeee;
   border-left: 10pt solid red;
+  color: black;
   font-size: 1.8rem;
+  padding-left: 10pt;
   text-align: left;
 }
 
 .reveal h6 {
   background-color: #ffeeff;
   border-left: 10pt solid magenta;
+  color: black;
   font-size: 1.8rem;
+  padding-left: 10pt;
   text-align: left;
 }
 
