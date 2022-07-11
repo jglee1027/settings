@@ -4,6 +4,8 @@
 # expand-env : ((yas/indent-line 'fixed) (yas/wrap-around-region 'nil))
 # --
 #+BEGIN_SRC plantuml :file $1.png
+skinparam dpi 120
 skinparam linetype ortho
+skinparam shadowing false
 $0
 #+END_SRC
