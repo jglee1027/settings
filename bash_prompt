@@ -5,6 +5,27 @@ exit_err() {
     exit 1
 }
 
+awsp() {
+    if [ "$1" = "" ]; then
+        export AWS_PROFILE="$(aws configure list-profiles | fzy || exit_err '^C')"
+    elif [ "$1" = "on" ]; then
+        export PS1_AWSP="on"
+    elif [ "$1" = "off" ]; then
+        export PS1_AWSP=""
+    fi
+}
+
+aws_ps1() {
+    which aws &> /dev/null || return
+    if [ "$PS1_AWSP" = "on" -a "$AWS_PROFILE" != "" ]; then
+        echo "☁$AWS_PROFILE"
+    elif [ "$PS1_AWSP" = "on" -a "$AWS_PROFILE" = "" ]; then
+        echo "☁NOT SET"
+    else
+        echo ""
+    fi
+}
+
 kctx() {
     if [ "$1" = "" ]; then
         kubectl config use-context "$(kubectl config get-contexts -o name | fzy || exit_err '^C')"
@@ -64,7 +85,7 @@ bash_prompt() {
     fi
 
     PS1="$status_color${status}$reverse_color \w $green_color\$(git_branch_ps1)\
-$blue_color$(kctx_ps1)$reverse_color$(printf '\n$')$normal_color "
+$blue_color$(kctx_ps1)$(aws_ps1)$reverse_color$(printf '\n$')$normal_color "
 }
 
 PROMPT_COMMAND=bash_prompt
