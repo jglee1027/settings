@@ -276,6 +276,7 @@ alias rm#='find . -iname "#*#" -exec rm -v "{}" \;'
 alias rm~='find . -iname "*~" -exec rm -v "{}" \;'
 alias yd='youtube-dl -f bestvideo+bestaudio'
 alias weather='curl -4 http://wttr.in/Pangyo,South_Korea'
+alias xm='xmodmap ~/.Xmodmap '
 alias xt16='xterm -fa envypn -fs 16'
 
 src=${BASH_SOURCE[0]}
