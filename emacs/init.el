@@ -1109,9 +1109,7 @@ finished."
 
 (setq org-columns-default-format "%7TODO(To Do) %5Effort(Time){:} %6CLOCKSUM{Total} %38ITEM(Details) %TAGS(Context)")
 (setq org-global-properties '(("Effort_All" . "0 0:10 0:20 0:30 1:00 2:00 3:00 4:00 8:00")))
-(setq org-agenda-files (list "~/org/hobby.org"
-                             "~/org/study.org"
-                             "~/org/work.org"))
+(setq org-agenda-files (list "~/org/work.org"))
 (setq org-clock-persist t)
 
 
