@@ -42,6 +42,7 @@ Mod4 e :Exec thunar
 
 # open xterm
 Mod4 Shift t :Exec xterm
+Mod4 Return :Exec xterm
 
 # open arandr
 Mod4 Shift p :Exec arandr
