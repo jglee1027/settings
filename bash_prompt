@@ -31,6 +31,8 @@ alias kubectl='kubectl --context="$KUBECTL_CONTEXT" --namespace="$KUBECTL_NAMESP
 kctx() {
     if [ "$1" = "" ]; then
         export KUBECTL_CONTEXT="$(kubectl config get-contexts -o name | fzy || exit_err '^C')"
+    elif [ "$1" = "save" ]; then
+        kubectl config use-context $KUBECTL_CONTEXT
     elif [ "$1" = "on" ]; then
         export PS1_KCTX="on"
     elif [ "$1" = "off" ]; then
