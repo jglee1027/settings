@@ -53,9 +53,7 @@ git_branch_ps1() {
 }
 
 get_current_namespace() {
-    ctx="$KUBECTL_CONTEXT"
-    ns="$(kubectl config view -o=jsonpath="{.contexts[?(@.name==\"${ctx}\")].context.namespace}")"
-    echo "$ns"
+    echo "$KUBECTL_NAMESPACE"
 }
 
 kctx_ps1() {
