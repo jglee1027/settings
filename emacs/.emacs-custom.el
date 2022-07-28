@@ -13,7 +13,8 @@
        (setq org-plantuml-jar-path "c:/Program Files/plantuml/plantuml-1.2022.4.jar"))
       (t
        (setq default-font-spec-eng (font-spec :family "envypn" :size 19.0))
-       (setq default-font-spec-kor (font-spec :family "NanumGothic" :size 22.8))
+       ;; (setq default-font-spec-kor (font-spec :family "NanumGothic" :size 22.8))
+       (setq default-font-spec-kor (font-spec :family "Binggrae" :size 21.5))
        ;; (setq face-font-rescale-alist
        ;;       '(("NanumGothic" . 1.2)))
        
