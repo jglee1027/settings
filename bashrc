@@ -250,6 +250,26 @@ jsonindent() {
     python -m json.tool
 }
 
+watcher() {
+    if [ $# -lt 2 ]; then
+        echo "SYNOPSIS"
+        echo "    watcher interval command..."
+        return 1
+    fi
+
+    count=0
+    interval=$1
+    shift
+    while true; do
+        let "count=count+1"
+        output="$($@)"
+        clear
+        echo "--- Every ${interval}s (${count}): \"$@\" ---   $(date -R)"
+        echo "$output"
+        sleep $interval
+    done
+}
+
 export BASH_SILENCE_DEPRECATION_WARNING=1
 export TERM=xterm-256color
 alias e='emacs_client'
