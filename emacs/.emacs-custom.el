@@ -9,16 +9,14 @@
        ;; (setq default-font-spec-kor (font-spec :family "나눔고딕_AndaleMono" :size 11.0))
        (setq default-font-spec-eng (font-spec :family "Consolas" :size 13.0))
        ;; (setq default-font-spec-kor (font-spec :family "나눔고딕" :size 14.0))
-       (setq default-font-spec-kor (font-spec :family "빙그레체" :size 13.5))
+       ;; (setq default-font-spec-kor (font-spec :family "빙그레체" :size 13.5))
+       (setq default-font-spec-kor (font-spec :family "EBS HMJE Saeron R" :size 13.5))
        (setq org-plantuml-jar-path "c:/Program Files/plantuml/plantuml-1.2022.4.jar"))
       (t
        (setq default-font-spec-eng (font-spec :family "envypn" :size 19.0))
        ;; (setq default-font-spec-kor (font-spec :family "NanumGothic" :size 22.8))
        ;; (setq default-font-spec-kor (font-spec :family "Binggrae" :size 21.5))
        (setq default-font-spec-kor (font-spec :family "EBS HMJE Saeron R" :size 21.5))
-       ;; (setq face-font-rescale-alist
-       ;;       '(("NanumGothic" . 1.2)))
-       
        (setq org-plantuml-jar-path "/usr/share/plantuml/plantuml.jar")))
 
 (setq doc-view-resolution 300)
