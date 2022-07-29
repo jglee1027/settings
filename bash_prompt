@@ -32,7 +32,15 @@ kctx() {
     if [ "$1" = "" ]; then
         export KUBECTL_CONTEXT="$(kubectl config get-contexts -o name | fzy || exit_err '^C')"
     elif [ "$1" = "save" ]; then
-        kubectl config use-context $KUBECTL_CONTEXT
+        if [ "$KUBECTL_CONTEXT" = "" ]; then
+            export KUBECTL_CONTEXT="$(kubectl config get-contexts -o name | fzy || exit_err '^C')"
+        fi
+        if [ "$KUBECTL_NAMESPACE" = "" ]; then
+            export KUBECTL_NAMESPACE="$(kubectl get namespaces -o=custom-columns=NAME:.metadata.name | fzy || exit_err '^C')"
+        fi
+
+        kubectl config set-context "$KUBECTL_CONTEXT" --namespace="$KUBECTL_NAMESPACE"
+        kubectl config use-context "$KUBECTL_CONTEXT"
     elif [ "$1" = "on" ]; then
         export PS1_KCTX="on"
     elif [ "$1" = "off" ]; then
@@ -52,20 +60,20 @@ git_branch_ps1() {
     echo "$(git branch 2>/dev/null | grep -e '\* ' | sed 's/^..\(.*\)/{\1}/')"
 }
 
-get_current_namespace() {
-    echo "$KUBECTL_NAMESPACE"
-}
-
 kctx_ps1() {
     which kubectl &> /dev/null || return
     if [ "$KUBECTL_CONTEXT" = "" ]; then
         export KUBECTL_CONTEXT="$(kubectl config current-context)"
-    fi
-    ctx="$KUBECTL_CONTEXT"
 
-    if [ "$PS1_KCTX" = "on" -a "$ctx" != "" ]; then
-        echo "⎈$ctx/$(get_current_namespace)"
-    elif [ "$PS1_KCTX" = "on" -a "$ctx" = "" ]; then
+    fi
+
+    if [ "$KUBECTL_NAMESPACE" = "" ]; then
+        export KUBECTL_NAMESPACE="$(kubectl config view -o=jsonpath="{.contexts[?(@.name==\"${KUBECTL_CONTEXT}\")].context.namespace}")"
+    fi
+
+    if [ "$PS1_KCTX" = "on" -a "$KUBECTL_CONTEXT" != "" ]; then
+        echo "⎈$KUBECTL_CONTEXT/$KUBECTL_NAMESPACE"
+    elif [ "$PS1_KCTX" = "on" -a "$KUBECTL_CONTEXT" = "" ]; then
         echo "⎈NOT SET"
     else
         echo ""
