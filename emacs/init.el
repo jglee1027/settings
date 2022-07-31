@@ -469,6 +469,26 @@ Otherwise, return result of last form in BODY."
   :config
   (indent-guide-global-mode))
 
+(use-package highlight-indent-guides
+  :ensure t
+  :config
+  (add-hook 'c++-mode-hook 'highlight-indent-guides-mode)
+  (add-hook 'c-mode-hook 'highlight-indent-guides-mode)
+  (add-hook 'java-mode-hook 'highlight-indent-guides-mode)
+  (add-hook 'js-mode-hook 'highlight-indent-guides-mode)
+  (add-hook 'js2-mode-hook 'highlight-indent-guides-mode)
+  (add-hook 'objc-mode-hook 'highlight-indent-guides-mode)
+  (add-hook 'perl-mode-hook 'highlight-indent-guides-mode)
+  (add-hook 'prog-mode-hook 'highlight-indent-guides-mode)
+  (add-hook 'python-mode-hook 'highlight-indent-guides-mode)
+  (add-hook 'typescript-mode-hook 'highlight-indent-guides-mode)
+  (add-hook 'yaml-mode-hook 'highlight-indent-guides-mode)
+  (setq highlight-indent-guides-method 'column)
+  (setq highlight-indent-guides-auto-enabled nil)
+  (set-face-background 'highlight-indent-guides-odd-face "#e5e5e5")
+  (set-face-background 'highlight-indent-guides-even-face "#f5f5f5")
+  (set-face-foreground 'highlight-indent-guides-character-face "#f5f5f5"))
+
 (use-package irony
   :disabled
   :ensure nil
