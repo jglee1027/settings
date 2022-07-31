@@ -34,6 +34,7 @@ k_current_ns() {
     echo "$(kubectl config view -o=jsonpath="{.contexts[?(@.name==\"${KUBECTL_CONTEXT}\")].context.namespace}")"
 }
 
+alias k='kubectl --context="$KUBECTL_CONTEXT" --namespace="$KUBECTL_NAMESPACE"'
 alias kubectl='kubectl --context="$KUBECTL_CONTEXT" --namespace="$KUBECTL_NAMESPACE"'
 
 kctx() {
