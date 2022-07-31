@@ -253,19 +253,34 @@ jsonindent() {
 watcher() {
     if [ $# -lt 2 ]; then
         echo "SYNOPSIS"
-        echo "    watcher interval command..."
+        echo "    watcher [interval] command..."
         return 1
     fi
 
     count=0
-    interval=$1
-    shift
+    interval=1
+    if [[ "$1" =~ ^[[:digit:].e+-]+$ ]]; then
+        interval=$1
+        shift
+    fi
+
+    home=$(tput cup 0 0)
+    ed=$(tput ed)
+    el=$(tput el)
+
+    printf '%s%s' "$ed" "$home"
     while true; do
         let "count=count+1"
-        output="$($@)"
-        clear
+        rows=$(tput lines)
+        cols=$(tput cols)
+        cmd="$@"
+
         echo "--- Every ${interval}s (${count}): \"$@\" ---   $(date -R)"
-        echo "$output"
+        ${SHELL:=sh} -c "$cmd" | head -n $rows | while IFS= read line; do
+            printf '%-*.*s%s\n' $cols $cols "$line" "$el"
+        done
+
+        printf '%s%s' "$ed" "$home"
         sleep $interval
     done
 }
