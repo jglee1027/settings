@@ -26,6 +26,14 @@ aws_ps1() {
     fi
 }
 
+k_current_context() {
+    echo "$(kubectl config current-context)"
+}
+
+k_current_ns() {
+    echo "$(kubectl config view -o=jsonpath="{.contexts[?(@.name==\"${KUBECTL_CONTEXT}\")].context.namespace}")"
+}
+
 alias kubectl='kubectl --context="$KUBECTL_CONTEXT" --namespace="$KUBECTL_NAMESPACE"'
 
 kctx() {
@@ -63,12 +71,12 @@ git_branch_ps1() {
 kctx_ps1() {
     which kubectl &> /dev/null || return
     if [ "$KUBECTL_CONTEXT" = "" ]; then
-        export KUBECTL_CONTEXT="$(kubectl config current-context)"
+        export KUBECTL_CONTEXT="$(k_current_context)"
 
     fi
 
     if [ "$KUBECTL_NAMESPACE" = "" ]; then
-        export KUBECTL_NAMESPACE="$(kubectl config view -o=jsonpath="{.contexts[?(@.name==\"${KUBECTL_CONTEXT}\")].context.namespace}")"
+        export KUBECTL_NAMESPACE="$(k_current_ns)"
     fi
 
     if [ "$PS1_KCTX" = "on" -a "$KUBECTL_CONTEXT" != "" ]; then
@@ -99,5 +107,8 @@ bash_prompt() {
     PS1="$status_color${status}$reverse_color \w $green_color\$(git_branch_ps1)\
 $blue_color$(kctx_ps1)$red_color$(aws_ps1)$reverse_color$(printf '\n$')$normal_color "
 }
+
+export KUBECTL_CONTEXT="$(k_current_context)"
+export KUBECTL_NAMESPACE="$(k_current_ns)"
 
 PROMPT_COMMAND=bash_prompt
