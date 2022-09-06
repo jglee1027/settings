@@ -1,0 +1,18 @@
+#!/bin/sh
+
+display_volume=$(pacmd list-sinks|grep -A 15 '* index'| awk '/volume: front/{ print $5 }' | sed 's/[%|,]//g')
+icon_name=""
+
+if [ "$icon_name" = "" ]; then
+    if [ "$display_volume" = "0" ]; then
+        icon_name="audio-volume-off"
+    elif [ "$display_volume" -lt "33" ]; then
+        icon_name="audio-volume-low"
+    elif [ "$display_volume" -lt "67" ]; then
+        icon_name="audio-volume-medium"
+    else
+        icon_name="audio-volume-high"
+    fi
+fi
+
+notify-send "Volume" -i $icon_name -h int:value:$display_volume -h string:synchronous:volume
