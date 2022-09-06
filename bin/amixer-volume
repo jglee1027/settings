@@ -1,6 +1,6 @@
 #!/bin/sh
 
-usage="usage: $0 -c {up|down|mute} [-i increment] [-m mixer]"
+usage="usage: $0 {up|down|mute} [-i increment] [-m mixer]"
 command=
 increment=5%
 mixer=Master
