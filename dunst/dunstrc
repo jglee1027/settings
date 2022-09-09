@@ -29,14 +29,14 @@ follow = mouse
 # the top and down respectively.
 # The width can be negative.  In this case the actual width is the
 # screen width minus the width defined in within the geometry option.
-geometry = "300x5-30+20"
+geometry = "0x0-30+30"
 
 # Show how many messages are currently hidden (because of geometry).
 indicate_hidden = yes
 
 # Shrink window if it's smaller than the width.  Will be ignored if
 # width is 0.
-shrink = no
+shrink = yes
 
 # The transparency of the window.  Range: [0; 100].
 # This option will only work if a compositing window manager is
@@ -61,10 +61,10 @@ horizontal_padding = 16
 
 # Defines width in pixels of frame around the notification window.
 # Set to 0 to disable.
-frame_width = 0
+frame_width = 1
 
 # Defines color of the frame around the notification window.
-frame_color = "#aaaaaa"
+frame_color = "#ffffff"
 
 # Define a color for the separator.
 # possible values are:
