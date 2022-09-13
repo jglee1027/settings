@@ -1,0 +1,27 @@
+# -*- mode: snippet -*-
+# name: pipeline
+# key: pipeline
+# expand-env : ((yas/indent-line 'fixed) (yas/wrap-around-region 'nil))
+# --
+pipeline {
+    agent any
+
+    stages {
+        stage('${1:Build}') {
+            steps {
+                echo 'Building..'
+            }
+        }
+        stage('${2:Test}') {
+            steps {
+                echo 'Testing..'
+            }
+        }
+        stage('${3:Deploy}') {
+            steps {
+                echo 'Deploying....'
+            }
+        }
+    }
+}
+$0
