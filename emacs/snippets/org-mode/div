@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: div float
+# key: div_
+# expand-env : ((yas/indent-line 'fixed) (yas/wrap-around-region 'nil))
+# --
+#+REVEAL_HTML: <div style="float:${1:$$(yas-choose-value '("none" "left" "right" "initial" "inherit"))}; width:${2:100%}">
+$0
+#+REVEAL_HTML: </div>
