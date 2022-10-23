@@ -162,7 +162,7 @@ bindsym $mod+v split v
 bindsym $mod+f fullscreen toggle
 
 # Move floating container to the center of all outputs
-bindsym $mod+c move absolute position center
+bindsym $mod+c move position center
 
 # change container layout (stacked, tabbed, toggle split)
 bindsym $mod+s layout stacking
