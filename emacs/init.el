@@ -140,7 +140,7 @@ Otherwise, return result of last form in BODY."
 (defun remove-all-blank-lines ()
   (interactive)
   (flush-lines "^$" (beginning-of-buffer))
-  (query-replace-regexp "<\\(.*://.*\\)>" "\\1"))
+  (query-replace-regexp "<\\([[:alpha:]]*://[^ ]*\\)>" "\\1"))
 (global-set-key (kbd "C-c $") 'remove-all-blank-lines)
 (global-set-key (kbd "C-x p") 'previous-buffer)
 (global-set-key (kbd "C-x n") 'next-buffer)
