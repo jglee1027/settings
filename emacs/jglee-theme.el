@@ -210,7 +210,7 @@
    '(magit-selection-highlight ((t nil)))
    '(match ((t (:background "blue" :foreground "black"))))
    '(minibuffer-prompt ((t (:foreground "cyan"))))
-   '(mode-line ((t (:background "blue" :foreground "white"))))
+   '(mode-line ((t (:background "blue" :foreground "brightwhite"))))
    '(mode-line-inactive ((t (:background "black" :foreground "green"))))
    '(mumamo-background-chunk-major ((t nil)))
    '(mumamo-background-chunk-submode1 ((t nil)))
