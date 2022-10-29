@@ -62,8 +62,8 @@ bindsym $mod+Return exec i3-sensible-terminal
 bindsym $mod+Shift+i exec "gksudo ~/local/bin/net-in"
 bindsym $mod+Shift+o exec "gksudo ~/local/bin/net-out"
 bindsym $mod+Shift+p exec "arandr"
-bindsym $mod+Tab exec "rofi -modi window,run,drun,ssh -show drun"
-bindsym $alt+Tab exec "rofi -modi window,run,drun,ssh -show window"
+bindsym $mod+Tab exec "rofi -modi drun,run,window,ssh -show drun"
+bindsym $alt+Tab exec "rofi -modi window,drun,run,ssh -show window"
 bindsym $mod+grave workspace back_and_forth
 bindsym $mod+apostrophe exec "i3-easyfocus \
 --color-urgent-bg ffcccc --color-focused-bg 99ccff --color-unfocused-bg ffffcc \
