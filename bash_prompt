@@ -27,11 +27,15 @@ aws_ps1() {
 }
 
 k_current_context() {
-    echo "$(kubectl config current-context)"
+    echo "$(kubectl config current-context 2> /dev/null || echo "")"
 }
 
 k_current_ns() {
-    echo "$(kubectl config view -o=jsonpath="{.contexts[?(@.name==\"${KUBECTL_CONTEXT}\")].context.namespace}")"
+    if [ "$KUBECTL_CONTEXT" = "" ]; then
+        echo ""
+    else
+        echo "$(kubectl config view -o=jsonpath="{.contexts[?(@.name==\"${KUBECTL_CONTEXT}\")].context.namespace}")"
+    fi
 }
 
 alias k='kubectl --context="$KUBECTL_CONTEXT" --namespace="$KUBECTL_NAMESPACE"'
@@ -73,7 +77,6 @@ kctx_ps1() {
     which kubectl &> /dev/null || return
     if [ "$KUBECTL_CONTEXT" = "" ]; then
         export KUBECTL_CONTEXT="$(k_current_context)"
-
     fi
 
     if [ "$KUBECTL_NAMESPACE" = "" ]; then
