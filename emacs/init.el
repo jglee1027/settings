@@ -400,6 +400,9 @@ Otherwise, return result of last form in BODY."
 (use-package go-mode
   :ensure t)
 
+(use-package go-playground
+  :ensure t)
+
 (defun helm-grep-do-git-grep-prompt (arg)
   (interactive "P")
   (require 'helm-files)
