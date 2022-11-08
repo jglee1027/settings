@@ -280,5 +280,6 @@ bar {
   mode dock
   position top
   hidden_state hide
-  status_command i3status
+  status_command i3status -c ~/.config/i3/i3status.conf
+  # status_command i3blocks -c ~/.config/i3/i3blocks.conf
 }
