@@ -16,8 +16,10 @@
        ;; (setq default-font-spec-kor (font-spec :family "Cafe24 Ssurround air" :size 14.5))
        (setq org-plantuml-jar-path "c:/Program Files/plantuml/plantuml-1.2022.4.jar"))
       (t
-       (setq default-font-spec-eng (font-spec :family "envypn" :size 19.0))
-       (setq default-font-spec-kor (font-spec :family "Baekmuk Gulim" :size 21.0))
+       (setq default-font-spec-eng (font-spec :family "Source Code Pro" :size 16.0))
+       (setq default-font-spec-kor (font-spec :family "Baekmuk Gulim" :size 19.5))
+       ;; (setq default-font-spec-eng (font-spec :family "envypn" :size 19.0))
+       ;; (setq default-font-spec-kor (font-spec :family "Baekmuk Gulim" :size 21.0))
        ;; (setq default-font-spec-kor (font-spec :family "Binggrae" :size 21.5))
        ;; (setq default-font-spec-kor (font-spec :family "NanumGothic" :size 22.8))
        ;; (setq default-font-spec-kor (font-spec :family "EBS HMJE Saeron R" :size 21.5))
