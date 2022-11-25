@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+synclient VertScrollDelta=-102
+synclient HorizScrollDelta=-102
