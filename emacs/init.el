@@ -401,6 +401,7 @@ Otherwise, return result of last form in BODY."
   :ensure t)
 
 (use-package go-playground
+  :pin melpa-stable
   :ensure t)
 
 (defun helm-grep-do-git-grep-prompt (arg)
