@@ -313,9 +313,8 @@ alias yd='youtube-dl -f bestvideo+bestaudio'
 alias wa='watcher'
 alias weather='curl -4 http://wttr.in/Pangyo,South_Korea'
 alias xm='xmodmap ~/.Xmodmap '
-alias xt16="xterm -fa envypn -fs 16"
 alias xt16e="xterm -fa 'envypn' -fw 'Baekmuk Gulim' -fs 16"
-alias xt16s="xterm -fa 'Source Code Pro' -fw 'Baekmuk Gulim' -fs 16"
+alias xt16="xterm -fa 'Source Code Pro' -fw 'Baekmuk Gulim' -fs 16"
 
 src=${BASH_SOURCE[0]}
 if [ "$src" != "" ]; then
