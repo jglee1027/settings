@@ -2,8 +2,8 @@ XTerm*metaSendsEscape:true
 XTerm*utf8Title:true
 XTerm*selectToClipboard:true
 XTerm*allowBoldFonts:false
-XTerm*faceName:xft:Source Code Pro:size=9:antialias=false
-XTerm*wideFont:xft:Baekmuk Gulim:size=9:antialias=true:hinting=true:hintstyle=hint
+XTerm*faceName:xft:Source Code Pro:size=9:antialias=true
+! XTerm*wideFont:xft:Baekmuk Gulim:size=9:antialias=true:hinting=true:hintstyle=hint
 ! XTerm*faceName:xft:envypn:size=9:antialias=false
 ! XTerm*wideFont:xft:NanumGothic:size=9:antialias=true:hinting=true:hintstyle=hintfull
 ! XTerm*font:-ypn-envypn-medium-r-normal--13-130-75-75-c-90-iso8859-1
