@@ -141,6 +141,12 @@ if [ -d ~/.fluxbox/ ]; then
     echo_end   fluxbox
 fi
 
+if [ -d ~/.config/dunst ]; then
+    echo_begin dunst
+    diff_cp $settings_path/dunst/dunstrc ~/.config/dunst/dunstrc
+    echo_end dunst
+fi
+
 if [ -d ~/.config/openbox ]; then
     echo_begin openbox
     diff_cp $settings_path/openbox/environment ~/.config/openbox/environment
