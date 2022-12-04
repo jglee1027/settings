@@ -141,6 +141,7 @@ if [ -d ~/.fluxbox/ ]; then
     echo_end   fluxbox
 fi
 
+[ ! -d ~/.config/dunst ] && mkdir -p ~/.config/dunst
 if [ -d ~/.config/dunst ]; then
     echo_begin dunst
     diff_cp $settings_path/dunst/dunstrc ~/.config/dunst/dunstrc
