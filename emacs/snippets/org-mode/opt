@@ -7,6 +7,7 @@
 #+OPTIONS: num:0, h:0, toc:nil, author:nil, timestamp:nil
 #+REVEAL_INIT_OPTIONS: width:1600, height:900, center:true, minScale:1, maxScale:1, disableLayout:false, transition:'concave'
 # #+REVEAL_ROOT: https://cdn.jsdelivr.net/npm/reveal.js
+#+REVEAL_ROOT: https://cdn.jsdelivr.net/gh/jglee1027/reveal.js@main
 #+REVEAL_THEME: jglee
 #+REVEAL_TITLE_SLIDE_BACKGROUND: URL
 #+REVEAL_TITLE_SLIDE_BACKGROUND_SIZE: 60%
