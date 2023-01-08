@@ -228,6 +228,8 @@ bindsym $mod+Shift+c reload
 
 # xmodmap
 bindsym $mod+Ctrl+c exec "xmodmap ~/.Xmodmap; notify-send 'xmodmap ~/.Xmodmap'"
+bindsym $mod+Ctrl+Delete exec "~/settings/bin/swap-delete-insert"
+bindsym $mod+Ctrl+Insert exec "~/settings/bin/reset-delete-key"
 
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
 bindsym $mod+Shift+r restart

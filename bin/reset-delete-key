@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+xmodmap -e "keycode 118 = Insert" && xmodmap -e "keycode 119 = Delete"
+notify-send "Reset 'Delete' key"
