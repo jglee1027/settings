@@ -140,8 +140,33 @@ Otherwise, return result of last form in BODY."
 (defun remove-all-blank-lines ()
   (interactive)
   (flush-lines "^$" (beginning-of-buffer))
-  (query-replace-regexp "<\\([[:alpha:]]*://[^ ]*\\)>" "\\1"))
+  (replace-regexp "<\\([[:alpha:]]*://[^ ]*\\)>" "\\1"))
 (global-set-key (kbd "C-c $") 'remove-all-blank-lines)
+(defun convert-org-ascii-bullets ()
+  (interactive)
+  (goto-char (point-min))
+  (mqr-replace-regexp '(("^\\([0-9]+\\) " . "\\1. ")
+                        ("^\\([0-9]+\\)\\.\\([0-9]+\\) " . "(\\2) ")
+                        ))
+  (mqr-replace-regexp '(("^(1) " . "  ① ")
+                        ("^(2) " . "  ② ")
+                        ("^(3) " . "  ③ ")
+                        ("^(4) " . "  ④ ")
+                        ("^(5) " . "  ⑤ ")
+                        ("^(6) " . "  ⑥ ")
+                        ("^(7) " . "  ⑦ ")
+                        ("^(8) " . "  ⑧ ")
+                        ("^(9) " . "  ⑨ ")
+                        ("^(10) " . "  ⑩ ")
+                        ("- \\[X\\] " . "- [v] ")
+                        ("  •" . "    .")
+                        ("^═*$" . "")
+                        ("^─*$" . "")
+                        ("^=*$" . "")
+                        ("^~*$" . "")))
+  (flush-lines "^$" (beginning-of-buffer))
+  (replace-regexp "<\\([[:alpha:]]*://[^ ]*\\)>" "\\1"))
+(global-set-key (kbd "C-c %") 'convert-org-ascii-bullets)
 (global-set-key (kbd "C-x p") 'previous-buffer)
 (global-set-key (kbd "C-x n") 'next-buffer)
 (global-set-key (kbd "C-x <f5>")  'revert-buffer)
@@ -582,6 +607,9 @@ Otherwise, return result of last form in BODY."
   :ensure t
   :custom-face
   (markdown-code-face ((t nil))))
+
+(use-package mqr
+  :ensure t)
 
 (use-package mu4e-views
   :ensure t
