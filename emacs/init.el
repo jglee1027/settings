@@ -423,6 +423,7 @@ Otherwise, return result of last form in BODY."
   (global-flycheck-mode))
 
 (use-package go-mode
+  :pin melpa-stable
   :ensure t)
 
 (use-package go-playground
