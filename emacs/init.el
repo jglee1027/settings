@@ -1394,6 +1394,7 @@ If not-nil, *compilation* buffer is displayed."
 ;; (add-hook 'server-visit-hook 'init-ui)
 
 (load-library "kmacro-functions.el")
+(load-library "util-function.el")
 
 (if (file-exists-p custom-file)
     (load custom-file))
