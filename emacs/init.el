@@ -721,14 +721,13 @@ Otherwise, return result of last form in BODY."
   :bind
   (:map org-mode-map
         ("C-c C-x i" . org-time-stamp)))
-
 (use-package org-bullets
   :ensure t
   :custom
-  (org-ascii-bullets '((ascii ?* ?+ ?-) (latin1 ?* ?+ ?-) (utf-8 ?⦿ ?▣ ?● ?▲ ?■ ?○ ?△ ?□)))
+  (org-ascii-bullets '((ascii ?* ?+ ?-) (latin1 ?* ?+ ?-) (utf-8 ?⦿ ?▣ ?◯ ?△ ?□ ?▲ ?■)))
   (org-ascii-text-width most-positive-fixnum)
   (org-export-preserve-breaks t)
-  (org-bullets-bullet-list '("⦿" "▣" "●" "▲" "■" "○" "△" "□"))
+  (org-bullets-bullet-list '("⦿" "▣" "◯" "△" "□" "▲" "■"))
   :config
   (add-hook 'org-mode-hook 'org-bullets-mode)
   (add-hook 'org-mode-hook 'org-indent-mode))
