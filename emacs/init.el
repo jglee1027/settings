@@ -137,47 +137,6 @@ Otherwise, return result of last form in BODY."
 (global-set-key (kbd "C-c c") 'compile)
 (global-set-key (kbd "C-c C") 'recompile)
 (global-set-key (kbd "C-c TAB") 'indent-relative)
-(defun remove-all-blank-lines ()
-  (interactive)
-  (flush-lines "^$" (beginning-of-buffer))
-  (replace-regexp "<\\([[:alpha:]]*://[^ ]*\\)>" "\\1"))
-(global-set-key (kbd "C-c $") 'remove-all-blank-lines)
-(defun convert-org-ascii-bullets ()
-  (interactive)
-  (goto-char (point-min))
-  (mqr-replace-regexp '(("^\\([0-9]+\\) " . "\\1. ")
-                        ("^\\([0-9]+\\)\\.\\([0-9]+\\) " . "(\\2) ")
-                        ("^\\([0-9]+\\)\\.\\([0-9]+\\)\\.\\([0-9]+\\) " . "\\3) ")))
-  (mqr-replace-regexp '(("^(1) " . "  ① ")
-                        ("^(2) " . "  ② ")
-                        ("^(3) " . "  ③ ")
-                        ("^(4) " . "  ④ ")
-                        ("^(5) " . "  ⑤ ")
-                        ("^(6) " . "  ⑥ ")
-                        ("^(7) " . "  ⑦ ")
-                        ("^(8) " . "  ⑧ ")
-                        ("^(9) " . "  ⑨ ")
-                        ("^(10) " . "  ⑩ ")
-                        ("^1) " . "    ⑴ ")
-                        ("^2) " . "    ⑵ ")
-                        ("^3) " . "    ⑶ ")
-                        ("^4) " . "    ⑷ ")
-                        ("^5) " . "    ⑸ ")
-                        ("^6) " . "    ⑹ ")
-                        ("^7) " . "    ⑺ ")
-                        ("^8) " . "    ⑻ ")
-                        ("^9) " . "    ⑼ ")
-                        ("^10) " . "   ⑽ ")
-                        ("- \\[X\\] " . "- [v] ")
-                        ("\\(^ +\\)- " . "  \\1. ")
-                        ("^═*$" . "")
-                        ("^─*$" . "")
-                        ("^=*$" . "")
-                        ("^~*$" . "")
-                        ("^-*$" . "")))
-  (flush-lines "^$" (beginning-of-buffer))
-  (replace-regexp "<\\([[:alpha:]]*://[^ ]*\\)>" "\\1"))
-(global-set-key (kbd "C-c %") 'convert-org-ascii-bullets)
 (global-set-key (kbd "C-x p") 'previous-buffer)
 (global-set-key (kbd "C-x n") 'next-buffer)
 (global-set-key (kbd "C-x <f5>")  'revert-buffer)
@@ -188,6 +147,106 @@ Otherwise, return result of last form in BODY."
 (fset 'find-prev-tag "\C-u-\256")
 (global-set-key (kbd "M-8") 'find-next-tag)
 (global-set-key (kbd "M-7") 'find-prev-tag)
+
+;;;; text-mode
+(cl-defun org-ascii-convert (&key change-checkbox
+                                  remove-all-blank-lines
+                                  remove-angle-quote
+                                  remove-underline
+                                  use-bullet
+                                  use-hyphen
+                                  use-symbol-char)
+  (interactive)
+  (goto-char (point-min))
+  (cond (change-checkbox
+         (mqr-replace-regexp '(("☒" . "[-]")
+                               ("☐" . "[ ] ")
+                               ("☑" . "[v]")))))
+  (cond (remove-underline
+         (mqr-replace-regexp '(("^═*$" . "")
+                               ("^─*$" . "")
+                               ("^╌*$" . "")
+                               ("^=*$" . "")
+                               ("^~*$" . "")
+                               ("^-*$" . "")))))
+  (cond (remove-all-blank-lines
+         (flush-lines "^$" (beginning-of-buffer))))
+  (cond (remove-angle-quote
+         (replace-regexp "<\\([[:alpha:]]*://[^ ]*\\)>" "\\1")))
+  (cond (use-bullet
+         (mqr-replace-regexp '(("\\(^ +\\)- " . "  \\1• ")))
+         (mqr-replace-regexp '(("• \\[X\\] " . "• [v] "))))
+        (use-hyphen
+         (mqr-replace-regexp '(("\\(^ +\\)- " . "  \\1- ")))
+         (mqr-replace-regexp '(("- \\[X\\] " . "- [v] "))))
+        (t
+         (mqr-replace-regexp '(("\\(^ +\\)- " . "  \\1. ")))
+         (mqr-replace-regexp '((". \\[X\\] " . ". [v] ")))))
+  (cond (use-symbol-char
+         (mqr-replace-regexp '(("^\\([0-9]+\\) " . "
+\\1. ")
+                               ("^\\([0-9]+\\)\\.\\([0-9]+\\) " . "(\\2) ")
+                               ("^\\([0-9]+\\)\\.\\([0-9]+\\)\\.\\([0-9]+\\) " . "\\3) ")))
+         (mqr-replace-regexp '(("^(1) " . "  ① ")
+                               ("^(2) " . "  ② ")
+                               ("^(3) " . "  ③ ")
+                               ("^(4) " . "  ④ ")
+                               ("^(5) " . "  ⑤ ")
+                               ("^(6) " . "  ⑥ ")
+                               ("^(7) " . "  ⑦ ")
+                               ("^(8) " . "  ⑧ ")
+                               ("^(9) " . "  ⑨ ")
+                               ("^(10) " . "  ⑩ ")
+                               ("^1) " . "    ⑴ ")
+                               ("^2) " . "    ⑵ ")
+                               ("^3) " . "    ⑶ ")
+                               ("^4) " . "    ⑷ ")
+                               ("^5) " . "    ⑸ ")
+                               ("^6) " . "    ⑹ ")
+                               ("^7) " . "    ⑺ ")
+                               ("^8) " . "    ⑻ ")
+                               ("^9) " . "    ⑼ ")
+                               ("^10) " . "   ⑽ ")))))
+  (mqr-replace-regexp '()))
+(defun remove-blank-lines ()
+  (interactive)
+  (org-ascii-convert :change-checkbox t
+                     :remove-all-blank-lines t
+                     :remove-angle-quote t))
+(defun remove-lines-use-bullet ()
+  (interactive)
+  (org-ascii-convert :change-checkbox t
+                     :remove-all-blank-lines t
+                     :remove-angle-quote t
+                     :remove-underline t
+                     :use-bullet t
+                     :use-symbol-char t))
+(defun remove-lines-use-dot ()
+  (interactive)
+  (org-ascii-convert :change-checkbox t
+                     :remove-all-blank-lines t
+                     :remove-angle-quote t
+                     :remove-underline t
+                     :use-hyphen nil
+                     :use-symbol-char t))
+(defun remove-lines-use-hyphen ()
+  (interactive)
+  (org-ascii-convert :change-checkbox t
+                     :remove-all-blank-lines t
+                     :remove-angle-quote t
+                     :remove-underline t
+                     :use-hyphen t
+                     :use-symbol-char t))
+(add-hook 'text-mode-hook
+          (lambda()
+            (define-key text-mode-map (kbd "C-c $ $")
+              'remove-blank-lines)
+            (define-key text-mode-map (kbd "C-c $ *")
+              'remove-lines-use-bullet)
+            (define-key text-mode-map (kbd "C-c $ .")
+              'remove-lines-use-dot)
+            (define-key text-mode-map (kbd "C-c $ -")
+              'remove-lines-use-hyphen)))
 
 ;;;; gud
 
