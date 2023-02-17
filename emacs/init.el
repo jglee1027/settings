@@ -228,6 +228,10 @@ Otherwise, return result of last form in BODY."
                                ("^19) " . "   ⒆ ")
                                ("^20) " . "   ⒇ ")))))
   (mqr-replace-regexp '()))
+(defun remove-angle-quote ()
+  (interactive)
+  (org-ascii-convert :change-checkbox t
+                     :remove-angle-quote t))
 (defun remove-blank-lines ()
   (interactive)
   (org-ascii-convert :change-checkbox t
@@ -259,6 +263,8 @@ Otherwise, return result of last form in BODY."
                      :use-symbol-char t))
 (add-hook 'text-mode-hook
           (lambda()
+            (define-key text-mode-map (kbd "C-c $ <")
+              'remove-angle-quote)
             (define-key text-mode-map (kbd "C-c $ $")
               'remove-blank-lines)
             (define-key text-mode-map (kbd "C-c $ *")
