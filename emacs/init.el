@@ -181,7 +181,8 @@ Otherwise, return result of last form in BODY."
          (mqr-replace-regexp '(("- \\[X\\] " . "- [v] "))))
         (t
          (mqr-replace-regexp '(("\\(^ +\\)- " . "  \\1. ")))
-         (mqr-replace-regexp '((". \\[X\\] " . ". [v] ")))))
+         (mqr-replace-regexp '((". \\[X\\] " . ". [v] ")))
+         (mqr-replace-regexp '(("^      ." . "      :")))))
   (cond (use-symbol-char
          (mqr-replace-regexp '(("^\\([0-9]+\\) " . "
 \\1. ")
