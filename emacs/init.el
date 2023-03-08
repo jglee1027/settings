@@ -155,6 +155,7 @@ Otherwise, return result of last form in BODY."
                                   remove-underline
                                   use-bullet
                                   use-hyphen
+                                  use-markdown
                                   use-symbol-char)
   (interactive)
   (goto-char (point-min))
@@ -183,6 +184,8 @@ Otherwise, return result of last form in BODY."
          (mqr-replace-regexp '(("\\(^ +\\)- " . "  \\1. ")))
          (mqr-replace-regexp '((". \\[X\\] " . ". [v] ")))
          (mqr-replace-regexp '(("^      ." . "      :")))))
+  (cond (use-markdown
+	     (mqr-replace-regexp '(("\\*+\\([^*]*\\)\\*+" . "`\\1`")))))
   (cond (use-symbol-char
          (mqr-replace-regexp '(("^\\([0-9]+\\) " . "
 \\1. ")
@@ -245,6 +248,7 @@ Otherwise, return result of last form in BODY."
                      :remove-angle-quote t
                      :remove-underline t
                      :use-bullet t
+                     :use-markdown t
                      :use-symbol-char t))
 (defun remove-lines-use-dot ()
   (interactive)
@@ -253,6 +257,7 @@ Otherwise, return result of last form in BODY."
                      :remove-angle-quote t
                      :remove-underline t
                      :use-hyphen nil
+                     :use-markdown t
                      :use-symbol-char t))
 (defun remove-lines-use-hyphen ()
   (interactive)
@@ -261,6 +266,7 @@ Otherwise, return result of last form in BODY."
                      :remove-angle-quote t
                      :remove-underline t
                      :use-hyphen t
+                     :use-markdown t
                      :use-symbol-char t))
 (add-hook 'text-mode-hook
           (lambda()
