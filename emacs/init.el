@@ -185,7 +185,7 @@ Otherwise, return result of last form in BODY."
          (mqr-replace-regexp '((". \\[X\\] " . ". [v] ")))
          (mqr-replace-regexp '(("^      ." . "      :")))))
   (cond (use-markdown
-	     (mqr-replace-regexp '(("\\*+\\([^*]*\\)\\*+" . "`\\1`")))))
+         (mqr-replace-regexp '(("\\*\\([^*]*\\)\\*" . "`\\1`")))))
   (cond (use-symbol-char
          (mqr-replace-regexp '(("^\\([0-9]+\\) " . "
 \\1. ")
@@ -257,7 +257,7 @@ Otherwise, return result of last form in BODY."
                      :remove-angle-quote t
                      :remove-underline t
                      :use-hyphen nil
-                     :use-markdown t
+                     :use-markdown nil
                      :use-symbol-char t))
 (defun remove-lines-use-hyphen ()
   (interactive)
