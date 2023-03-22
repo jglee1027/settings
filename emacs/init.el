@@ -183,7 +183,7 @@ Otherwise, return result of last form in BODY."
         (t
          (mqr-replace-regexp '(("\\(^ +\\)- " . "  \\1. ")))
          (mqr-replace-regexp '((". \\[X\\] " . ". [v] ")))
-         (mqr-replace-regexp '(("^      ." . "      :")))))
+         (mqr-replace-regexp '(("^      \\." . "      :")))))
   (cond (use-markdown
          (mqr-replace-regexp '(("\\*\\([^*]*\\)\\*" . "`\\1`")))))
   (cond (use-symbol-char
