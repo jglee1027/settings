@@ -18,6 +18,9 @@ exec --no-startup-id xsetroot -solid "#000000"
 exec --no-startup-id xmodmap ~/.Xmodmap
 exec --no-startup-id brightnessctl set 20%
 exec --no-startup-id xrdb ~/.Xdefaults && xrdb -merge ~/.Xresources
+exec --no-startup-id systemctrl start bluetooth.service
+exec --no-startup-id fcitx5
+exec --no-startup-id volnoti
 
 # xss-lock grabs a logind suspend inhibit lock and will use i3lock to lock the
 # screen before suspend. Use loginctl lock-session to lock your screen.
