@@ -19,6 +19,9 @@
       (t
        (setq default-font-spec-eng (font-spec :family "Source Code Pro" :size 16.0))
        (setq default-font-spec-kor (font-spec :family "Baekmuk Gulim" :size 19.5))
+       ;; (setq default-font-spec-kor (font-spec :family "Spoqa Han Sans Neo" :size 21.0))
+       ;; (setq default-font-spec-kor (font-spec :family "Gmarket Sans TTF Light" :size 20.0))
+       ;; (setq default-font-spec-kor (font-spec :family "NanumSquareRound" :size 21.5))
        ;; (setq default-font-spec-eng (font-spec :family "envypn" :size 19.0))
        ;; (setq default-font-spec-kor (font-spec :family "Baekmuk Gulim" :size 21.0))
        ;; (setq default-font-spec-kor (font-spec :family "Binggrae" :size 21.5))
