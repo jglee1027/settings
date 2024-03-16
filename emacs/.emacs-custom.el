@@ -18,7 +18,8 @@
        (setq org-plantuml-jar-path "c:/Program Files/plantuml/plantuml-1.2022.4.jar"))
       (t
        (setq default-font-spec-eng (font-spec :family "Source Code Pro" :size 16.0))
-       (setq default-font-spec-kor (font-spec :family "Baekmuk Gulim" :size 19.5))
+       (setq default-font-spec-kor (font-spec :family "Noto Sans Mono CJK KR" :size 21.0))
+       ;; (setq default-font-spec-kor (font-spec :family "Baekmuk Gulim" :size 19.5))
        ;; (setq default-font-spec-kor (font-spec :family "Spoqa Han Sans Neo" :size 21.0))
        ;; (setq default-font-spec-kor (font-spec :family "Gmarket Sans TTF Light" :size 20.0))
        ;; (setq default-font-spec-kor (font-spec :family "NanumSquareRound" :size 21.5))
