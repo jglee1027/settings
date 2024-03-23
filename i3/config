@@ -20,7 +20,7 @@ exec --no-startup-id xmodmap ~/.Xmodmap
 exec --no-startup-id brightnessctl set 20%
 exec --no-startup-id xrdb ~/.Xdefaults && xrdb -merge ~/.Xresources
 exec --no-startup-id systemctrl start bluetooth.service
-exec --no-startup-id fcitx5
+exec --no-startup-id ibus-daemon -d
 exec --no-startup-id volnoti
 exec --no-startup-id gkrellm
 exec --no-startup-id autorandr --change
