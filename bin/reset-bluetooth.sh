@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 modprobe -r btusb
 modprobe -r btintel
 sleep 2
