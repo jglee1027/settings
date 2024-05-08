@@ -2,8 +2,8 @@
 
 modprobe -r btusb
 modprobe -r btintel
-sleep 2
+echo Initialize bluetooth modules && sleep 3
 modprobe btintel
 modprobe btusb
-sleep 1
+echo Restart bluetooth && sleep 3
 systemctl restart bluetooth
