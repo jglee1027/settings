@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
-modprobe -r btusb
-modprobe -r btintel
+sudo modprobe -r btusb
+sudo modprobe -r btintel
 echo Initialize bluetooth modules && sleep 3
-modprobe btintel
-modprobe btusb
+sudo modprobe btintel
+sudo modprobe btusb
 echo Restart bluetooth && sleep 3
-systemctl restart bluetooth
+sudo systemctl restart bluetooth
