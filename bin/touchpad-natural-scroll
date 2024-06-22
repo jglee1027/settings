@@ -2,3 +2,4 @@
 
 synclient VertScrollDelta=-102
 synclient HorizScrollDelta=-102
+synclient TapButton1=1
