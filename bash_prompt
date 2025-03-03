@@ -108,7 +108,7 @@ bash_prompt() {
         status_color=$red_color;
     fi
 
-    PS1="$status_color${status}$reverse_color \w $green_color\$(git_branch_ps1)\
+    PS1="$status_color${status}$reverse_color \u@\h \w $green_color\$(git_branch_ps1)\
 $blue_color$(kctx_ps1)$red_color$(aws_ps1)$reverse_color$(printf '\n$')$normal_color "
 }
 
