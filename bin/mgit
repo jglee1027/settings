@@ -11,8 +11,8 @@ do
     if [ -d $PWD/$i/.git ]; then
         COLS=`tput cols`
         BRANCH=`cd $PWD/$i && git rev-parse --abbrev-ref HEAD`
-        for ((col=0; col<$COLS; col++)); do echo -n "#"; done
-        echo -e "\r##### ${LBLUE}$i{${BRANCH}}${NORMAL} ${BLUE}$PWD/$i${NORMAL} "
+        for ((col=0; col<$COLS; col++)); do echo -n "─"; done
+        echo -e "\r───── ${LBLUE}$i{${BRANCH}}${NORMAL} ${BLUE}$PWD/$i${NORMAL} "
         if [ $# -ge 1 ]; then
             (cd $PWD/$i && LANGUAGE=C git $*)
         fi
