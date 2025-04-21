@@ -1,0 +1,20 @@
+#/usr/bin/env bash
+
+NORMAL='\033[0m'
+LBLUE='\033[01;34m'
+BLUE='\033[00;34m'
+
+SUB_DIRS=`ls -1`
+CMD="$@"
+for i in $SUB_DIRS
+do
+    if [ -d $PWD/$i/.git ]; then
+        COLS=`tput cols`
+        BRANCH=`cd $PWD/$i && git rev-parse --abbrev-ref HEAD`
+        for ((col=0; col<$COLS; col++)); do echo -n "─"; done
+        echo -e "\r───── ${LBLUE}$i{${BRANCH}}${NORMAL} ${BLUE}$PWD/$i${NORMAL} "
+        if [ $# -ge 1 ]; then
+            (cd $PWD/$i && LANGUAGE=C bash -c "$CMD")
+        fi
+    fi
+done
