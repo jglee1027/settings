@@ -1,0 +1,4 @@
+#/usr/bin/env bash
+
+chart=$(tail /tmp/rich.log | grep -oE '[A-Z]+/USDT .*BAL\([^)]+\)' | tail -n1)
+echo $chart

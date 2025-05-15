@@ -3,6 +3,6 @@
 i3status -c ~/settings/i3/i3status.conf | while :
 do
     read line
-    chart=$(tail -n1 /tmp/rich.log | grep CHART | cut -d ' ' -f 9-19)
+    chart=$(~/settings/bin/rich_chart)
     echo "$chart $line" || exit 1
 done
