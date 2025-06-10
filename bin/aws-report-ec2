@@ -1,0 +1,73 @@
+#!/usr/bin/env bash
+
+# 사용할 profile (필요시 변경 또는 주석 처리)
+# AWS_PROFILE="default"
+REGION="ap-northeast-2"
+
+echo "=== EC2 인스턴스 요약 ==="
+aws ec2 describe-instances --profile "$AWS_PROFILE" --region "$REGION" | jq -r '
+  .Reservations[].Instances[] |
+  {
+    Name: (.Tags[]? | select(.Key=="Name") | .Value) // "N/A",
+    InstanceType,
+    ASG: (.Tags[]? | select(.Key=="aws:autoscaling:groupName") | .Value) // "N/A"
+  } |
+  "Name: \(.Name), Type: \(.InstanceType), ASG: \(.ASG)"
+'
+
+echo
+echo -n "=== EC2 타입별 인스턴스 총합: "
+
+# 전체 EC2 인스턴스 수 계산
+TOTAL_COUNT=$(aws ec2 describe-instances --profile "$AWS_PROFILE" --region "$REGION" \
+  | jq '[.Reservations[].Instances[]] | length')
+
+echo "${TOTAL_COUNT}개 (전체) ==="
+
+# 타입별로 그룹화하여 정렬 출력
+aws ec2 describe-instances --profile "$AWS_PROFILE" --region "$REGION" | jq -r '
+  .Reservations[].Instances[].InstanceType
+' | sort | uniq -c | sort -nr | awk '{printf " %6d %s\n", $1, $2}'
+
+echo
+echo "=== EC2 타입별 인스턴스 총합: $(aws ec2 describe-instances --profile "$AWS_PROFILE" --region "$REGION" \
+  | jq '[.Reservations[].Instances[] | select(.Tags[]? | select(.Key=="Name") | .Value | ascii_downcase | contains("prd"))] | length')개 (PRD 인스턴스: 이름에 prd 포함, 대소문자 무시) ==="
+
+aws ec2 describe-instances --profile "$AWS_PROFILE" --region "$REGION" | jq -r '
+  .Reservations[].Instances[] |
+  select(.Tags[]? | select(.Key=="Name") | .Value | ascii_downcase | contains("prd")) |
+  .InstanceType
+' | sort | uniq -c | sort -nr | awk '{printf " %6d %s\n", $1, $2}'
+echo
+echo "=== Auto Scaling Group 요약 ==="
+aws autoscaling describe-auto-scaling-groups --profile "$AWS_PROFILE" --region "$REGION" | jq -r '
+  .AutoScalingGroups[] |
+  {
+    Name: .AutoScalingGroupName,
+    MinSize,
+    MaxSize,
+    Desired: .DesiredCapacity,
+    InstanceTypes: [.Instances[].InstanceType] | unique
+  } |
+  "ASG: \(.Name), InstanceTypes: \(.InstanceTypes | join(", ")), Min: \(.MinSize), Max: \(.MaxSize), Desired: \(.Desired)"
+'
+
+echo
+echo "=== ECS 서비스 수 및 태스크 수 ==="
+CLUSTERS=$(aws ecs list-clusters --profile "$AWS_PROFILE" --region "$REGION" --output json | jq -r '.clusterArns[]')
+
+for CLUSTER in $CLUSTERS; do
+  CLUSTER_NAME=$(basename "$CLUSTER")
+  echo "Cluster: $CLUSTER_NAME"
+
+  SERVICES=$(aws ecs list-services --cluster "$CLUSTER" --profile "$AWS_PROFILE" --region "$REGION" | jq -r '.serviceArns[]')
+
+  echo "Total services: $(echo "$SERVICES" | wc -l)"
+
+  for SERVICE in $SERVICES; do
+    SERVICE_NAME=$(basename "$SERVICE")
+    TASK_COUNT=$(aws ecs describe-services --cluster "$CLUSTER" --services "$SERVICE_NAME" --profile "$AWS_PROFILE" --region "$REGION" | jq -r '.services[0].runningCount')
+    echo "  - Service: $SERVICE_NAME, Running Tasks: $TASK_COUNT"
+  done
+  echo
+done

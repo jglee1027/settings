@@ -1,0 +1,47 @@
+#!/usr/bin/env bash
+
+# AWS 설정
+# export AWS_PROFILE="default"
+# export AWS_REGION="ap-northeast-2"
+
+echo "=== EKS 클러스터 정보 요약 ==="
+
+CLUSTERS=$(aws eks list-clusters --region "$AWS_REGION" --profile "$AWS_PROFILE" | jq -r '.clusters[]')
+TOTAL_CLUSTER_COUNT=$(echo "$CLUSTERS" | wc -l)
+
+echo "총 EKS 클러스터 수: $TOTAL_CLUSTER_COUNT"
+
+for CLUSTER in $CLUSTERS; do
+  echo
+  echo "▶ 클러스터: $CLUSTER"
+
+  # 클러스터에 연결
+  aws eks update-kubeconfig --region "$AWS_REGION" --name "$CLUSTER" --profile "$AWS_PROFILE" >/dev/null
+
+  # 사용자 정의 namespace 추출
+  USER_NAMESPACES=$(kubectl get ns -o json | jq -r '.items[].metadata.name' | grep -Ev '^(kube-|amazon-|default$)')
+  USER_NS_COUNT=$(echo "$USER_NAMESPACES" | wc -l)
+  echo "- 사용자 정의 네임스페이스 수: $USER_NS_COUNT"
+
+  # 전체 min/max/desired 값 초기화
+  TOTAL_MIN=0
+  TOTAL_MAX=0
+  TOTAL_DESIRED=0
+
+  for NS in $USER_NAMESPACES; do
+    # HPA에서 min/max 추출 (값이 없으면 0으로 처리)
+    NS_MIN=$(kubectl get hpa -n "$NS" -o json 2>/dev/null | jq '[.items[].spec.minReplicas] | add // 0')
+    NS_MAX=$(kubectl get hpa -n "$NS" -o json 2>/dev/null | jq '[.items[].spec.maxReplicas] | add // 0')
+
+    # Deployment desired replicas
+    NS_DESIRED=$(kubectl get deploy -n "$NS" -o json 2>/dev/null | jq '[.items[].spec.replicas] | add // 0')
+
+    # 누적합 계산 (정수만 처리)
+    TOTAL_MIN=$((TOTAL_MIN + NS_MIN))
+    TOTAL_MAX=$((TOTAL_MAX + NS_MAX))
+    TOTAL_DESIRED=$((TOTAL_DESIRED + NS_DESIRED))
+  done
+  echo "- 전체 minReplicas 합계: $TOTAL_MIN"
+  echo "- 전체 maxReplicas 합계: $TOTAL_MAX"
+  echo "- 전체 desiredReplicas 합계: $TOTAL_DESIRED"
+done
