@@ -3,6 +3,7 @@
 	quotepath = no
 	precomposeunicode = true
 	pager = less -Xr -x1,5
+    autocrlf = input
 [color]
 	ui = true
 [alias]
