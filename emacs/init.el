@@ -548,19 +548,12 @@ Otherwise, return result of last form in BODY."
   (global-set-key (kbd "C-c h G") 'helm-grep-do-git-grep)
   (global-set-key (kbd "C-c o") 'helm-occur)
   (global-set-key (kbd "C-x b") 'helm-buffers-list)
-  (global-set-key (kbd "C-x M-f") 'helm-find-files)
+  (global-set-key (kbd "C-x C-f") 'helm-find-files)
   (global-set-key (kbd "M-y") 'helm-show-kill-ring)
   (global-set-key (kbd "M-x") 'helm-M-x))
 
-(use-package helm-ag
-  :ensure t
-  :config
-  (global-set-key (kbd "C-c h a") 'helm-do-grep-ag)
-  (global-set-key (kbd "C-c h A") 'helm-do-ag-project-root)
-  (when (equal system-type 'windows-nt)
-    (setq helm-ag-base-command "rg --no-heading --vimgrep")
-    (setq helm-grep-ag-command
-          "rg --color=always --smart-case --no-heading --line-number %s -- %s %s")))
+(use-package helm-rg
+  :ensure t)
 
 (use-package helm-company
   :ensure t
@@ -792,9 +785,6 @@ Otherwise, return result of last form in BODY."
   (plantuml-default-exec-mode 'executable)
   :config
   (setq plantuml-output-type "png"))
-
-(use-package s3ed
-  :ensure t)
 
 (use-package rfc-mode
   :ensure t)
