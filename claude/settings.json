@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(uv sync:*)"
+    ]
+  },
+  "alwaysThinkingEnabled": false,
+  "statusLine": {
+    "type": "command",
+    "command": "/home/prince/.claude/statusline-command.sh"
+  }
+}
