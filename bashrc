@@ -287,6 +287,7 @@ watcher() {
 
 export BASH_SILENCE_DEPRECATION_WARNING=1
 export TERM=xterm-256color
+alias cld='claude --permission-mode bypassPermissions'
 alias e='emacs_client'
 alias ec='emacs_client_frame'
 alias en='emacs -nw'
