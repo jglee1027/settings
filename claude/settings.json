@@ -1,12 +1,35 @@
 {
   "permissions": {
     "allow": [
-      "Bash(uv sync:*)"
-    ]
+      "Bash(uv sync:*)",
+      "Bash(python3:*)",
+      "Bash(du:*)",
+      "Bash(pip install:*)",
+      "Bash(uv run:*)",
+      "Bash(curl:*)"
+    ],
+    "deny": [
+      "C:\\Windows\\**",
+      "C:\\Program Files\\**",
+      "C:\\Program Files (x86)\\**",
+      "C:\\Users\\*\\AppData\\**",
+      "C:\\Users\\*\\.ssh\\**",
+      "C:\\Users\\*\\.aws\\**",
+      "C:\\Users\\*\\.kube\\**",
+      "/etc/**",
+      "/sys/**",
+      "/boot/**",
+      "/root/**",
+      "~/.ssh/**",
+      "~/.aws/**",
+      "~/.kube/**"
+    ],
+    "defaultMode": "dontAsk"
   },
-  "alwaysThinkingEnabled": false,
   "statusLine": {
     "type": "command",
     "command": "/home/prince/.claude/statusline-command.sh"
-  }
+  },
+  "alwaysThinkingEnabled": false,
+  "skipDangerousModePermissionPrompt": true
 }

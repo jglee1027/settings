@@ -9,36 +9,9 @@ model=$(echo "$input" | jq -r '.model.display_name')
 total_in=$(echo "$input" | jq -r '.context_window.total_input_tokens')
 total_out=$(echo "$input" | jq -r '.context_window.total_output_tokens')
 remaining=$(echo "$input" | jq -r '.context_window.remaining_percentage // empty')
-session_id=$(echo "$input" | jq -r '.session_id')
-
-# 5-hour usage tracking
-five_hr_file="$HOME/.claude/usage_5hr_${session_id}.json"
-if [ ! -f "$five_hr_file" ]; then
-    echo "{}" > "$five_hr_file"
-fi
-
-# Cleanup entries older than 5 hours
-cutoff=$(($(date +%s) - 18000))
-jq --arg cutoff "$cutoff" 'to_entries | map(select((.key | tonumber) >= ($cutoff | tonumber))) | from_entries' "$five_hr_file" > "$five_hr_file.tmp" && mv "$five_hr_file.tmp" "$five_hr_file"
-
-# Record current usage
-timestamp=$(date +%s)
-jq --arg ts "$timestamp" --arg total_in "$total_in" --arg total_out "$total_out" \
-    '.[$ts] = {"input": ($total_in | tonumber), "output": ($total_out | tonumber)}' \
-    "$five_hr_file" > "$five_hr_file.tmp" && mv "$five_hr_file.tmp" "$five_hr_file"
-
-# Calculate 5-hour totals
-five_hr_in=$(jq '[.[] | .input] | add // 0' "$five_hr_file")
-five_hr_out=$(jq '[.[] | .output] | add // 0' "$five_hr_file")
-five_hr_total=$((five_hr_in + five_hr_out))
 
 # Session total
 session_total=$((total_in + total_out))
-
-# 5-hour limit (default 2M tokens for Team plan)
-# Pro: 1000000, Max: 5000000, Team: 2000000
-FIVE_HR_LIMIT=${CLAUDE_5HR_LIMIT:-2000000}
-five_hr_pct=$((five_hr_total * 100 / FIVE_HR_LIMIT))
 
 # Git information
 git_info=""
@@ -85,26 +58,12 @@ format_tokens() {
 }
 
 session_formatted=$(format_tokens $session_total)
-five_hr_formatted=$(format_tokens $five_hr_total)
-
-# 5-hour display with percentage (color based on usage)
-if [ "$five_hr_pct" -ge 80 ]; then
-    # Red when high usage
-    five_hr_display=$(printf '\033[38;5;196m5h: %s (%d%%)\033[0m' "$five_hr_formatted" "$five_hr_pct")
-elif [ "$five_hr_pct" -ge 50 ]; then
-    # Yellow when medium usage
-    five_hr_display=$(printf '\033[38;5;220m5h: %s (%d%%)\033[0m' "$five_hr_formatted" "$five_hr_pct")
-else
-    # Orange when low usage
-    five_hr_display=$(printf '\033[38;5;216m5h: %s (%d%%)\033[0m' "$five_hr_formatted" "$five_hr_pct")
-fi
 
 # Build output
-# Directory (cyan) | Git branch | Model (purple) | Session (green) | 5hr (orange/yellow/red) | Context
-printf '\033[38;5;75m%s\033[0m%s \033[38;5;183m%s\033[0m \033[38;5;150mS: %s\033[0m %s %s\n' \
+# Directory (cyan) | Git branch | Model (purple) | Session (green) | Context
+printf '\033[38;5;75m%s\033[0m%s \033[38;5;183m%s\033[0m \033[38;5;150mS: %s\033[0m %s\n' \
     "$(basename "$cwd")" \
     "$git_info" \
     "$model" \
     "$session_formatted" \
-    "$five_hr_display" \
     "$ctx_display"
