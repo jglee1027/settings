@@ -45,6 +45,11 @@ echo_end() {
 }
 
 
+echo_begin claude
+diff_cp $settings_path/claude/settings.json ~/.claude/settings.json
+diff_cp $settings_path/claude/statusline-command.sh ~/.claude/statusline-command.sh
+echo_end claude
+
 echo_begin emacs
 if [ ! -d ~/.emacs.d/snippets ]; then
     ln -s $PWD/$settings_path/emacs/snippets ~/.emacs.d/snippets
