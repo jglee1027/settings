@@ -1,10 +1,12 @@
 (cond ((equal system-type 'darwin)
+       (setq system-time-locale "ko_KR.UTF-8")
        (setq default-font-spec-eng (font-spec :family "Monaco" :size 19.0))
        (setq default-font-spec-kor (font-spec :family "AppleGothic" :size 19.0))
        (setq face-font-rescale-alist
              '(("AppleGothic" . 1.17)))
        (setq org-plantuml-jar-path "/usr/local/Cellar/plantuml/1.2022.1/libexec/plantuml.jar"))
       ((equal system-type 'windows-nt)
+       (setq system-time-locale "Korean_Korea.949")
        (setq default-font-spec-eng (font-spec :family "Consolas" :size 13.0))
        (setq default-font-spec-kor (font-spec :family "맑은 고딕" :size 13.3))
        ;; (setq default-font-spec-kor (font-spec :family "굴림체" :size 13.5))
@@ -17,6 +19,7 @@
        ;; (setq default-font-spec-kor (font-spec :family "Cafe24 Ssurround air" :size 14.5))
        (setq org-plantuml-jar-path "c:/Program Files/plantuml/plantuml-1.2022.4.jar"))
       (t
+       (setq system-time-locale "ko_KR.UTF-8")
        (setq default-font-spec-eng (font-spec :family "Source Code Pro" :size 16.0))
        (setq default-font-spec-kor (font-spec :family "Noto Sans Mono CJK KR" :size 21.0))
        ;; (setq default-font-spec-kor (font-spec :family "Baekmuk Gulim" :size 19.5))
