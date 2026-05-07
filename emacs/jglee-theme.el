@@ -39,11 +39,11 @@
         (t                              ; linux
          (set-face-font 'default (default-font-get default-font-spec-eng-list))))
   (cond ((find-font default-font-spec-kor)
-         (set-fontset-font nil 'korean-ksc5601 default-font-spec-kor))
+         (set-fontset-font t 'hangul default-font-spec-kor))
         ((equal system-type 'darwin)  ; macosx
-         (set-fontset-font nil 'korean-ksc5601 (default-font-get default-font-spec-kor-mac-list)))
+         (set-fontset-font t 'hangul (default-font-get default-font-spec-kor-mac-list)))
         (t                            ; linux
-         (set-fontset-font nil 'korean-ksc5601 (default-font-get default-font-spec-kor-list)))))
+         (set-fontset-font t 'hangul (default-font-get default-font-spec-kor-list)))))
 
 (when window-system
   (set-default-font)
