@@ -20,8 +20,10 @@
        (setq org-plantuml-jar-path "c:/Program Files/plantuml/plantuml-1.2022.4.jar"))
       (t
        (setq system-time-locale "ko_KR.UTF-8")
-       (setq default-font-spec-eng (font-spec :family "Source Code Pro" :size 16.0))
-       (setq default-font-spec-kor (font-spec :family "Noto Sans Mono CJK KR" :size 21.0))
+       (setq default-font-spec-eng (font-spec :family "Ubuntu Sans Mono" ))
+       (setq default-font-spec-kor (font-spec :family "Noto Sans Mono CJK KR" ))
+       (setq face-font-rescale-alist
+             '(("Noto Sans Mono CJK KR" . 1.2381)))
        ;; (setq default-font-spec-kor (font-spec :family "Baekmuk Gulim" :size 19.5))
        ;; (setq default-font-spec-kor (font-spec :family "Spoqa Han Sans Neo" :size 21.0))
        ;; (setq default-font-spec-kor (font-spec :family "Gmarket Sans TTF Light" :size 20.0))
