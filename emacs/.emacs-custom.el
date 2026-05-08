@@ -35,6 +35,10 @@
        ;; (setq default-font-spec-kor (font-spec :family "EBS HMJE Saeron R" :size 21.5))
        (setq org-plantuml-jar-path "/usr/share/plantuml/plantuml.jar")))
 
+(custom-set-faces
+ '(fixed-pitch ((t (:family (font-get default-font-spec-eng :family)))))
+ '(variable-pitch ((t (:family (font-get default-font-spec-eng :family))))))
+
 (setq doc-view-resolution 300)
 (set-face-foreground 'org-hide "#ffffff")
 (when window-system
