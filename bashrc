@@ -337,5 +337,5 @@ source $settings_dir/bash_prompt
 kctx on
 
 if [ -n "$SSH_CONNECTION" ]; then
-    tmux attach
+    tmux -u attach
 fi
