@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+# Re-sourcing this file would let the `gr` alias defined below be expanded in the
+# `gr()` function definition that shares its name, causing a syntax error.
+unalias gr 2> /dev/null
+
 add_completion() {
     which $1 &> /dev/null || return;
     source <($1 completion $2)
