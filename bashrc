@@ -272,6 +272,11 @@ watcher() {
     ed=$(tput ed)
     el=$(tput el)
 
+    # On exit, put the cursor just below the last frame so the shell prompt is
+    # not drawn on top of it.
+    lines_printed=0
+    trap 'printf "%s" "$(tput cup $lines_printed 0)"; trap - INT; return' INT
+
     printf '%s%s' "$ed" "$home"
     while true; do
         let "count=count+1"
@@ -279,10 +284,21 @@ watcher() {
         cols=$(tput cols)
         cmd="$@"
 
-        echo "--- Every ${interval}s (${count}): \"$@\" ---   $(date -R)"
-        ${SHELL:=sh} -c "$cmd" | head -n $rows | while IFS= read line; do
+        # Right-align the timestamp against the current terminal width, keeping
+        # at least one space between it and the (truncated if needed) left part.
+        left="--- Every ${interval}s (${count}): \"$@\" ---"
+        right=$(date -Is)
+        pad=$((cols - ${#right}))
+        if [ $pad -lt 1 ]; then
+            printf '%-*.*s%s\n' $cols $cols "$right" "$el"
+        else
+            printf '%-*.*s %s%s\n' $((pad - 1)) $((pad - 1)) "$left" "$right" "$el"
+        fi
+        lines_printed=1
+        while IFS= read -r line || [ -n "$line" ]; do
             printf '%-*.*s%s\n' $cols $cols "$line" "$el"
-        done
+            let "lines_printed=lines_printed+1"
+        done < <(${SHELL:=sh} -c "$cmd" 2>&1 | head -n $((rows - 1)))
 
         printf '%s%s' "$ed" "$home"
         sleep $interval
