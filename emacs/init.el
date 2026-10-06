@@ -322,12 +322,12 @@ Otherwise, return result of last form in BODY."
   (global-set-key (kbd "M-_") 'gud-down))
 
 (add-hook 'gdb-frames-mode-hook (lambda()
-                                  (global-set-key (kbd "M-+") '(lambda()
+                                  (global-set-key (kbd "M-+") #'(lambda()
                                                                  (interactive)
                                                                  (if (functionp 'gdb-frames-force-update)
                                                                      (gdb-frames-force-update))
                                                                  (gud-up 1)))
-                                  (global-set-key (kbd "M-_") '(lambda()
+                                  (global-set-key (kbd "M-_") #'(lambda()
                                                                  (interactive)
                                                                  (if (functionp 'gdb-frames-force-update)
                                                                      (gdb-frames-force-update))
@@ -432,19 +432,19 @@ Otherwise, return result of last form in BODY."
                                           :foreground "gray"))))
 
 ;;;; winmove
-(global-set-key (kbd "C-x <left>") '(lambda ()
+(global-set-key (kbd "C-x <left>") #'(lambda ()
                                       (interactive)
                                       (ignore-errors
                                         (windmove-left))))
-(global-set-key (kbd "C-x <right>") '(lambda ()
+(global-set-key (kbd "C-x <right>") #'(lambda ()
                                        (interactive)
                                        (ignore-errors
                                          (windmove-right))))
-(global-set-key (kbd "C-x <up>") '(lambda ()
+(global-set-key (kbd "C-x <up>") #'(lambda ()
                                     (interactive)
                                     (ignore-errors
                                       (windmove-up))))
-(global-set-key (kbd "C-x <down>") '(lambda ()
+(global-set-key (kbd "C-x <down>") #'(lambda ()
                                       (interactive)
                                       (ignore-errors
                                         (windmove-down))))
@@ -692,7 +692,7 @@ Otherwise, return result of last form in BODY."
   :config
   (global-set-key (kbd "C-x g") 'magit-status)
   (global-set-key (kbd "C-x v g")
-                  '(lambda()
+                  #'(lambda()
                      (interactive)
                      (if (functionp 'magit-blame-popup)
                          (magit-blame-popup)
@@ -1431,7 +1431,7 @@ If not-nil, *compilation* buffer is displayed."
 
 ;;;; el-get-post-init-hooks
 (add-hook 'el-get-post-init-hooks
-          '(lambda (package)
+          #'(lambda (package)
              (cond ((eq package 'grep-a-lot)
                     (load-library "grep-a-lot")
                     (grep-a-lot-setup-keys)))))
