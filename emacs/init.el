@@ -425,10 +425,10 @@ Otherwise, return result of last form in BODY."
                       (set-face-attribute 'whitespace-tab
                                           nil
                                           :background "magenta"
-                                          :foreground nil)
+                                          :foreground 'unspecified)
                       (set-face-attribute 'whitespace-space
                                           nil
-                                          :background nil
+                                          :background 'unspecified
                                           :foreground "gray"))))
 
 ;;;; winmove
@@ -513,9 +513,6 @@ Otherwise, return result of last form in BODY."
   (setq cmake-tab-width 4))
 
 (use-package docker-compose-mode
-  :ensure t)
-
-(use-package docker-tramp
   :ensure t)
 
 (use-package dockerfile-mode
@@ -852,7 +849,6 @@ export PS1=\"\\e[7m\\u@\\h \\w\\n\\e[0m$ \"\n"))
   :ensure t
   :config
   (add-to-list 'yas-snippet-dirs "~/settings/emacs/snippets")
-  (add-to-list 'yas-snippet-dirs "~/settings/emacs/site-lisp/yasnippet/snippets")
   (setq yas/prompt-functions (cons 'yas/dropdown-prompt
                                    (remove 'yas/dropdown-prompt
                                            yas/prompt-functions)))
