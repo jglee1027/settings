@@ -512,7 +512,8 @@ Otherwise, return result of last form in BODY."
   :config
   (setq cmake-tab-width 4))
 
-(use-package docker-compose-mode
+;; docker-compose-mode was removed from MELPA; compose files are plain YAML
+(use-package yaml-mode
   :ensure t)
 
 (use-package dockerfile-mode
